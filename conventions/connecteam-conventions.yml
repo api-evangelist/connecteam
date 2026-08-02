@@ -1,0 +1,161 @@
+generated: '2026-08-01'
+method: searched
+source: https://developer.connecteam.com/docs/introduction-1
+docs:
+- https://developer.connecteam.com/docs/authentication-1
+- https://developer.connecteam.com/docs/oauth-20
+- https://developer.connecteam.com/docs/rate-limiting-1
+- https://developer.connecteam.com/docs/pagination-1
+- https://developer.connecteam.com/docs/api-access
+- https://developer.connecteam.com/docs/beta-endpoints
+base_urls:
+- region: Global
+  url: https://api.connecteam.com
+- region: Australia
+  url: https://api-au.connecteam.com
+authentication:
+  primary:
+    style: api-key-header
+    header: X-API-KEY
+    scope: company-wide
+    issuance: Settings -> API Keys -> Add API key
+    docs: https://developer.connecteam.com/docs/authentication-1
+  alternative:
+    style: oauth2-client-credentials
+    token_endpoint: https://api.connecteam.com/oauth/v1/token
+    token_request_auth: HTTP Basic (client_id as username, client_secret as password)
+    grant_type: client_credentials
+    token_type: Bearer
+    token_lifetime_seconds: 86400
+    scopes: 61
+    app_creation: Your Name -> Integration Center -> OAuth 2.0
+    caveat: Scopes cannot be edited after app creation; the client secret is shown once.
+    docs: https://developer.connecteam.com/docs/oauth-20
+  cross_ref: authentication/connecteam-authentication.yml
+idempotency:
+  supported: false
+  idempotency_key_header: null
+  note: >-
+    Connecteam publishes no idempotency-key contract — there is no Idempotency-Key header
+    or request-id-based replay protection in the docs or the OpenAPI. The only idempotency
+    statement in the whole surface is operation-level natural idempotency on PUT
+    /time-clock/v1/time-clocks/{timeClockId}/users/{userId}/lock-days ("Idempotent: dates
+    already in the requested state are no-ops"). PUT/DELETE operations are naturally
+    idempotent by HTTP semantics; POST creates are not replay-safe.
+  naturally_idempotent_operations:
+  - update_user_lock_days_time_clock_v1_time_clocks__timeClockId__users__userId__lock_days_put
+pagination:
+  style: limit-offset
+  params:
+    limit:
+      in: query
+      type: integer
+      default: 10
+    offset:
+      in: query
+      type: integer
+      default: 0
+  termination: >-
+    Continue incrementing offset by limit until the response returns fewer items than
+    limit.
+  response_envelope: 'data.<collection> (e.g. response["data"]["users"])'
+  cursor: false
+  total_count: false
+  operations_using_it: 25
+  docs: https://developer.connecteam.com/docs/pagination-1
+sorting_and_filtering:
+  sort_params:
+  - sort
+  - order
+  date_window_params:
+  - startDate
+  - endDate
+  - startTime
+  - endTime
+  note: sort/order appear on 7 list operations; date-window filters on 6
+field_expansion:
+  supported: false
+sparse_fieldsets:
+  supported: false
+metadata:
+  custom_fields: >-
+    Connecteam models extensibility as first-class Custom Fields on users, jobs and shifts
+    (create/get/update custom fields, custom field categories and custom field options)
+    rather than as a free-form metadata bag.
+request_tracing:
+  request_id_field: request_id
+  location: error response body
+  example: '550e8400-e29b-41d4-a716-446655440000'
+  request_header: null
+  note: >-
+    Error payloads carry a request_id (UUID) alongside error and path. No documented
+    request-id request header and no correlation-id response header.
+versioning:
+  scheme: uri-path
+  form: /<domain>/v1/... and /<domain>/v2/...
+  current:
+    default: v1
+    v2_available_for: Scheduler shifts, shift auto-assign, unavailabilities
+  header_versioning: false
+  date_versioning: false
+  beta_channel:
+    documented: true
+    docs: https://developer.connecteam.com/docs/beta-endpoints
+    contract: >-
+      Beta endpoints may change request/response schemas, validation rules, error codes
+      and pagination without a deprecation window; feature availability may be per-company.
+    contact: omer.vered@connecteam.com
+  forward_compatibility: >-
+    "Flexible Schemas: Our API evolves continuously. New fields may be added to responses
+    - implement flexible schema validation to maintain compatibility."
+error_envelope:
+  formats:
+  - name: validation
+    status: 422
+    schema: HTTPValidationError
+    shape: '{ detail: [ { loc: [...], msg: string, type: string } ] }'
+    note: FastAPI-style validation error, present on all 145 operations
+  - name: domain
+    statuses:
+    - 400
+    - 403
+    - 404
+    - 409
+    schema: ValidationErrorResponse
+    shape: '{ error: "CODE: human message", path: "/...", request_id: "uuid" }'
+    note: >-
+      Machine-readable code is prefixed into the error string (e.g.
+      "TIME_ACTIVITY_NOT_FOUND: no active shift ..."), not carried as a separate field.
+  rfc9457: false
+  content_type: application/json
+  cross_ref: errors/connecteam-problem-types.yml
+rate_limit_signaling:
+  headers:
+  - x-ratelimit-minute-limit
+  - x-ratelimit-minute-remaining
+  - x-ratelimit-minute-reset
+  - x-ratelimit-day-limit
+  - x-ratelimit-day-remaining
+  - x-ratelimit-day-reset
+  reset_format: UTC epoch seconds
+  exceeded_status: 429
+  retry_after_header: false
+  guidance: exponential backoff; cache responses; distribute requests evenly
+  scope: per account (not per API key)
+  cross_ref: rate-limits/connecteam-rate-limits.yml
+  docs: https://developer.connecteam.com/docs/rate-limiting-1
+entitlement:
+  note: >-
+    API access is not universal — it is gated to the Expert plan or higher, and an API key
+    only reaches hubs on an eligible plan. General endpoints (/me, /users, /attachments,
+    /publishers) work for any account with at least one Expert+ hub; Operations,
+    Communications and HR & Skills endpoints each require that hub.
+  docs: https://developer.connecteam.com/docs/api-access
+  cross_ref: plans/connecteam-plans.yml
+webhooks:
+  managed_via_api: true
+  endpoints_prefix: /settings/v1/webhooks
+  signature_verification:
+    supported: true
+    mechanism: optional secretKey supplied at webhook creation (API only, not in the UI)
+  cross_ref: asyncapi/connecteam-events-webhooks.yml

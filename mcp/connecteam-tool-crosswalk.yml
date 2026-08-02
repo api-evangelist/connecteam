@@ -1,0 +1,115 @@
+generated: '2026-08-01'
+method: derived
+source: mcp/connecteam-mcp.yml + openapi/connecteam-openapi-original.json
+summary: >-
+  Connecteam's published MCP server is a spec-explorer, not a data-plane projection of
+  the REST API. Its three tools navigate the OpenAPI document itself (list, fetch,
+  search endpoints) and return API metadata; none of them invokes a Connecteam business
+  operation. So the crosswalk has no one-to-one tool -> operationId rows: all three tools
+  are recorded as mcp_only (they are meta-operations over the contract, not backed by any
+  public REST operation), and all 145 REST operations are rest_only (reachable through
+  the MCP server only indirectly, by the agent reading the endpoint description and then
+  issuing the HTTP call itself with its own credentials).
+surfaces:
+  openapi:
+    file: openapi/connecteam-openapi-original.json
+    source: https://api.connecteam.com/openapi.json
+    version: 3.1.0
+    operations: 145
+    paths: 98
+    gated: false
+  mcp:
+    url: https://developer.connecteam.com/mcp
+    tools: 3
+    gated: false
+    note: tools/list returns anonymously; downstream API calls require X-API-KEY or OAuth
+  graphql:
+    present: false
+    note: Connecteam publishes no GraphQL surface
+crosswalk: []
+mcp_only:
+- tool: list-endpoints
+  reason: >-
+    Meta-operation over the OpenAPI document — enumerates paths/methods/summaries. There
+    is no public Connecteam REST operation that returns an endpoint index; the spec is
+    served as a static document at https://api.connecteam.com/openapi.json.
+- tool: get-endpoint
+  reason: >-
+    Meta-operation — returns one endpoint's detail including security schemes and servers,
+    read out of the spec document. No backing REST operation.
+- tool: search-endpoints
+  reason: >-
+    Meta-operation — full-text search across paths, operations and parameters in the spec.
+    No backing REST operation.
+rest_only:
+- capability: Users
+  operations: 32
+  note: users, admins, notes, payslips, performance, custom fields and options, custom
+    field categories, smart groups and segments, pending request users, assignments
+- capability: Schedule
+  operations: 25
+  note: schedulers, shifts v1 and v2, shift layers, shift custom fields, auto-assign,
+    unavailabilities
+- capability: Time Clock
+  operations: 17
+  note: time clocks, time activities, clock in/out, manual breaks, geofences, shift
+    attachments, timesheet totals, lock days
+- capability: Tasks
+  operations: 10
+  note: task boards, tasks, sub-tasks, labels
+- capability: Forms
+  operations: 9
+  note: forms, questions, dropdown options, form submissions
+- capability: Sales
+  operations: 7
+  note: sales locations, transactions, daily sales
+- capability: Time Off
+  operations: 7
+  note: policy types, policy assignment, balances, requests
+- capability: Jobs
+  operations: 6
+  note: jobs, sub-jobs, job custom fields
+- capability: Settings
+  operations: 5
+  note: webhook create/list/get/update/delete
+- capability: Attachments
+  operations: 4
+  note: file upload, metadata, download URL
+- capability: Chat
+  operations: 4
+  note: conversations
+- capability: DailyNote
+  operations: 4
+- capability: Breadcrumbs
+  operations: 3
+  note: generate report, status, download
+- capability: Onboarding
+  operations: 3
+  note: packs, assignments
+- capability: Pay Rates
+  operations: 3
+- capability: Company Policies
+  operations: 2
+  note: pay rule policies, pay rule assignment
+- capability: Account
+  operations: 1
+  note: GET /me
+- capability: Assets
+  operations: 1
+- capability: OAuth
+  operations: 1
+  note: POST /oauth/v1/token
+- capability: Publishers
+  operations: 1
+coverage:
+  tools_named: 3
+  tools_bound_to_rest: 0
+  mcp_only: 3
+  rest_operations_total: 145
+  rest_operations_with_a_tool: 0
+  rest_capability_coverage_pct: 0
+x-evidence:
+  mcp_tools_list_fetched: '2026-08-01'
+  mcp_tools_list_status: 200
+  openapi_fetched: '2026-08-01'
+  openapi_status: 200

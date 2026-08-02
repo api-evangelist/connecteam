@@ -1,0 +1,75 @@
+generated: '2026-08-01'
+method: generated
+source: openapi/connecteam-openapi-original.json + developer.connecteam.com guides
+note: >-
+  Connecteam publishes no AGENTS.md or first-party agent skills. These are API Evangelist
+  packaged skills, one per marquee Connecteam flow. Every operationId referenced in them
+  was verified verbatim against openapi/connecteam-openapi-original.json.
+skills:
+- file: connecteam-onboard-employee.md
+  name: Onboard a new employee into Connecteam
+  api: openapi/connecteam-openapi-original.json
+  hub: All hubs (Expert+)
+  operations:
+  - get_account_information_me_get
+  - get_custom_fields_users_v1_custom_fields_get
+  - create_users_users_v1_users_post
+  - get_smart_groups_users_v1_smart_groups_get
+  - set_pay_rates_pay_rates_v1_pay_rates_put
+  - assign_user_to_policy_time_off_v1_time_off_policies__timeOffPolicyId__assignments_put
+  - get_packs_onboarding_v1_packs_get
+  - create_pack_assignments_onboarding_v1_packs__packId__assignments_post
+- file: connecteam-time-clock-timesheets.md
+  name: Clock employees in and out and reconcile timesheets
+  api: openapi/connecteam-openapi-original.json
+  hub: Operations
+  operations:
+  - get_time_clocks_time_clock_v1_time_clocks_get
+  - clock_user_in_time_clock_v1_time_clocks__timeClockId__clock_in_post
+  - clock_user_out_time_clock_v1_time_clocks__timeClockId__clock_out_post
+  - create_time_activities_time_clock_v1_time_clocks__timeClockId__time_activities_post
+  - get_timesheet_total_hours_time_clock_v1_time_clocks__timeClockId__timesheet_get
+  - update_user_lock_days_time_clock_v1_time_clocks__timeClockId__users__userId__lock_days_put
+- file: connecteam-build-a-schedule.md
+  name: Build and publish a shift schedule
+  api: openapi/connecteam-openapi-original.json
+  hub: Operations
+  operations:
+  - get_schedulers_scheduler_v1_schedulers_get
+  - create_shifts_scheduler_v1_schedulers__schedulerId__shifts_post
+  - get_shifts_scheduler_v1_schedulers__schedulerId__shifts_get
+  - get_unavailabilities_scheduler_v1_schedulers__schedulerId__unavailabilities_get
+  - create_autofill_request_scheduler_v2_schedulers__schedulerId__shifts_auto_assign_post
+  - get_autofill_status_scheduler_v2_schedulers__schedulerId__shifts_auto_assign__autoAssignRequestId__get
+- file: connecteam-subscribe-to-events.md
+  name: Subscribe to Connecteam webhooks
+  api: openapi/connecteam-openapi-original.json
+  hub: All hubs (Expert+)
+  operations:
+  - create_webhook_settings_v1_webhooks_post
+  - get_webhooks_by_type_settings_v1_webhooks_get
+  - get_webhook_settings_v1_webhooks__webhookId__get
+  - update_webhook_settings_v1_webhooks__webhookId__put
+  - delete_webhook_settings_v1_webhooks__webhookId__delete
+- file: connecteam-collect-form-submissions.md
+  name: Collect and export digital form submissions
+  api: openapi/connecteam-openapi-original.json
+  hub: Operations
+  operations:
+  - get_forms_forms_v1_forms_get
+  - get_form_forms_v1_forms__formId__get
+  - get_form_submissions_forms_v1_forms__formId__form_submissions_get
+  - get_form_submission_forms_v1_forms__formId__form_submissions__formSubmissionId__get
+  - get_file_url_attachments_v1_files__fileId__get
+- file: connecteam-manage-time-off.md
+  name: Manage time-off policies, balances and requests
+  api: openapi/connecteam-openapi-original.json
+  hub: HR & Skills
+  operations:
+  - get_policy_groups_time_off_v1_policy_types_get
+  - assign_user_to_policy_time_off_v1_time_off_policies__timeOffPolicyId__assignments_put
+  - get_balances_time_off_v1_policy_types__policyTypeId__balances_get
+  - put_user_balance_time_off_v1_policy_types__policyTypeId__balances__userId__put
+  - list_time_off_requests_time_off_v1_requests_get
+  - post_time_off_request_time_off_v1_requests_post
+  - put_time_off_request_time_off_v1_requests__requestId__put

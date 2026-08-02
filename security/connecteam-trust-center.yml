@@ -1,0 +1,77 @@
+generated: '2026-08-01'
+method: searched
+probe: true
+url: https://connecteam.com/trust-center/
+vendor_portal:
+  url: https://trust.connecteam.com/
+  provider: Vendict
+  cname: trustpage.vendict.com
+  note: >-
+    trust.connecteam.com is a JavaScript-rendered Vendict trust portal that serves only a
+    "Trust Center | Powered by Vendict" shell to an anonymous fetch, so no certification
+    detail could be read from it. The certification list below comes from the
+    first-party page at connecteam.com/trust-center/.
+certifications:
+- SOC 2 Type 2
+- ISO/IEC 27001
+- GDPR
+- HIPAA
+- CCPA
+- PCI DSS
+certification_statements:
+- name: SOC 2 Type 2
+  statement: >-
+    Achieving SOC 2 Type 2 confirms that our security measures have been extensively
+    tested and validated by an independent auditor
+- name: ISO/IEC 27001
+  statement: >-
+    Conforming with ISO/IEC 27001 demonstrates that Connecteam has established a system
+    to manage risks related to the security of company-owned data
+- name: GDPR
+  statement: >-
+    Our commitment to GDPR ensures that we provide the highest standards of data
+    protection and privacy to our customers
+- name: HIPAA
+  statement: >-
+    Connecteam's commitment to HIPAA compliance confirms that our customers can maintain
+    confidentiality, integrity, and security of health data
+- name: CCPA
+  statement: >-
+    Adhering to the CCPA, we guarantee that the personal information of our California
+    customers is managed with exceptional privacy and security
+- name: PCI DSS
+  statement: >-
+    PCI DSS compliance ensures that Connecteam adheres to the highest security protocols
+    for credit card transactions
+practices:
+  penetration_testing: >-
+    "Our systems undergo regular security audits and penetration tests to guard against
+    threats"
+related_documents:
+- name: Data Processing Addendum (DPA)
+  url: https://connecteam.com/data-processing-agreement-addendum/
+- name: Subprocessors
+  url: https://connecteam.com/subprocessors/
+- name: GDPR readiness
+  url: https://connecteam.com/gdpr-ready/
+- name: Privacy Policy
+  url: https://connecteam.com/privacy/
+gaps:
+  vulnerability_disclosure_policy: false
+  bug_bounty: false
+  security_txt: false
+  note: >-
+    No responsible-disclosure page, bug bounty program (HackerOne / Bugcrowd / Intigriti),
+    security@ contact or /.well-known/security.txt was found on any Connecteam host.
+    /security/responsible-disclosure, /responsible-disclosure and /vulnerability-disclosure
+    all return 404 on connecteam.com.
+evidence:
+- source: https://connecteam.com/trust-center/
+  http_status: 200
+  keywords: [soc 2 type 2, iso/iec 27001, gdpr, hipaa, ccpa, pci dss, penetration tests]
+- source: https://trust.connecteam.com/
+  http_status: 200
+  keywords: [trust center, vendict]
+  note: JS-rendered shell, no readable certification content
+x-evidence:
+  fetched: '2026-08-01'

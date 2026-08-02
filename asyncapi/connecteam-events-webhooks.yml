@@ -1,0 +1,343 @@
+generated: '2026-08-01'
+method: derived
+source: openapi/connecteam-openapi-original.json
+docs: https://developer.connecteam.com/docs/overview-1
+spec_type: Webhooks
+asyncapi_published: false
+note: Connecteam publishes NO AsyncAPI document. Its event surface is declared natively inside the OpenAPI
+  3.1 document under the top-level `webhooks` key (41 events), and documented in the Guides -> Webhooks
+  section. This catalog is derived from those declarations verbatim — nothing was invented.
+delivery:
+  transport: HTTPS POST to a subscriber-supplied URL
+  management_api: /settings/v1/webhooks (create, list, get, update, delete)
+  management_docs: https://developer.connecteam.com/docs/setting-up-webhook-via-api
+  signature_verification:
+    supported: true
+    mechanism: optional secretKey supplied at webhook creation
+    note: API-only — the secretKey cannot be set from the Connecteam UI
+  subscription_fields:
+  - name
+  - url
+  - featureType
+  - objectId
+  - eventTypes
+  - isDisabled
+  - secretKey
+  feature_types:
+  - users
+  - forms
+  - time_activity
+  - shift_scheduler
+  - tasks
+  - chat (Beta)
+  object_id_required: for all feature types except users
+  retries: null
+  ordering: null
+versioning:
+  shift_events: V1 (default) emits one event per user assignment; V2 aggregates all assignments of a shift
+    into one event with a base shift id. V2 must be enabled per account by contacting Connecteam.
+  docs: https://developer.connecteam.com/docs/shift-webhook-v1-vs-v2
+summary:
+  events: 41
+  by_feature_type:
+    chat: 6
+    forms: 2
+    shift_scheduler: 5
+    tasks: 2
+    time_activity: 17
+    users: 9
+guides:
+- https://developer.connecteam.com/docs/time-activity-webhook-1
+- https://developer.connecteam.com/docs/forms-webhook
+- https://developer.connecteam.com/docs/users-webhook
+- https://developer.connecteam.com/docs/scheduler-webhook
+- https://developer.connecteam.com/docs/tasks-webhook
+- https://developer.connecteam.com/docs/chat-webhook
+events:
+- event: Chat conversation created
+  operationId: chat_conversation_created_eventChat_conversation_created_post
+  summary: Chat Conversation Created Event
+  feature_type: chat
+  payload_schema: null
+  method: POST
+  direction: provider-to-subscriber
+- event: Chat conversation deleted
+  operationId: chat_conversation_deleted_eventChat_conversation_deleted_post
+  summary: Chat Conversation Deleted Event
+  feature_type: chat
+  payload_schema: null
+  method: POST
+  direction: provider-to-subscriber
+- event: Chat conversation updated
+  operationId: chat_conversation_updated_eventChat_conversation_updated_post
+  summary: Chat Conversation Updated Event
+  feature_type: chat
+  payload_schema: null
+  method: POST
+  direction: provider-to-subscriber
+- event: Chat message created
+  operationId: chat_message_created_eventChat_message_created_post
+  summary: Chat Message Created Event
+  feature_type: chat
+  payload_schema: null
+  method: POST
+  direction: provider-to-subscriber
+- event: Chat message deleted
+  operationId: chat_message_deleted_eventChat_message_deleted_post
+  summary: Chat Message Deleted Event
+  feature_type: chat
+  payload_schema: null
+  method: POST
+  direction: provider-to-subscriber
+- event: Chat message updated
+  operationId: chat_message_updated_eventChat_message_updated_post
+  summary: Chat Message Updated Event
+  feature_type: chat
+  payload_schema: null
+  method: POST
+  direction: provider-to-subscriber
+- event: Form Submission
+  operationId: form_submission_eventForm_Submission_post
+  summary: Form Submission Event
+  feature_type: forms
+  payload_schema: null
+  method: POST
+  direction: provider-to-subscriber
+- event: Form submission Edited
+  operationId: form_submission_edited_eventForm_submission_Edited_post
+  summary: Form Submission Edited Event
+  feature_type: forms
+  payload_schema: null
+  method: POST
+  direction: provider-to-subscriber
+- event: Availability status created
+  operationId: availability_status_created_eventAvailability_status_created_post
+  summary: Availability Status Created Event
+  feature_type: shift_scheduler
+  payload_schema: null
+  method: POST
+  direction: provider-to-subscriber
+- event: Availability status deleted
+  operationId: availability_status_deleted_eventAvailability_status_deleted_post
+  summary: Availability Status Deleted Event
+  feature_type: shift_scheduler
+  payload_schema: null
+  method: POST
+  direction: provider-to-subscriber
+- event: Shifts created
+  operationId: shifts_created_eventShifts_created_post
+  summary: Shifts Created Event
+  feature_type: shift_scheduler
+  payload_schema: null
+  method: POST
+  direction: provider-to-subscriber
+- event: Shifts deleted
+  operationId: shifts_deleted_eventShifts_deleted_post
+  summary: Shifts Deleted Event
+  feature_type: shift_scheduler
+  payload_schema: null
+  method: POST
+  direction: provider-to-subscriber
+- event: Shifts updated
+  operationId: shifts_updated_eventShifts_updated_post
+  summary: Shifts Updated Event
+  feature_type: shift_scheduler
+  payload_schema: null
+  method: POST
+  direction: provider-to-subscriber
+- event: Task Completed
+  operationId: task_completed_eventTask_Completed_post
+  summary: Task Completed Event
+  feature_type: tasks
+  payload_schema: null
+  method: POST
+  direction: provider-to-subscriber
+- event: Task Published
+  operationId: task_published_eventTask_Published_post
+  summary: Task Published Event
+  feature_type: tasks
+  payload_schema: null
+  method: POST
+  direction: provider-to-subscriber
+- event: Time activity admin add
+  operationId: time_activity_admin_add_eventTime_activity_admin_add_post
+  summary: Time Activity Admin Add Event
+  feature_type: time_activity
+  payload_schema: null
+  method: POST
+  direction: provider-to-subscriber
+- event: Time activity admin approved add request
+  operationId: time_activity_admin_approved_add_request_eventTime_activity_admin_approved_add_request_post
+  summary: Time Activity Admin Approved Add Request Event
+  feature_type: time_activity
+  payload_schema: null
+  method: POST
+  direction: provider-to-subscriber
+- event: Time activity admin approved clock out outside geo fence request
+  operationId: time_activity_admin_approved_clock_out_outside_geo_fence_request_eventTime_activity_admin_approved_clock_out_outside_geo_fence_request_post
+  summary: Time Activity Admin Approved Clock Out Outside Geo Fence Request Event
+  feature_type: time_activity
+  payload_schema: null
+  method: POST
+  direction: provider-to-subscriber
+- event: Time activity admin approved clock out without NFC request
+  operationId: time_activity_admin_approved_clock_out_without_nfc_request_eventTime_activity_admin_approved_clock_out_without_NFC_request_post
+  summary: Time Activity Admin Approved Clock Out Without Nfc Request Event
+  feature_type: time_activity
+  payload_schema: null
+  method: POST
+  direction: provider-to-subscriber
+- event: Time activity admin approved delete request
+  operationId: time_activity_admin_approved_delete_request_eventTime_activity_admin_approved_delete_request_post
+  summary: Time Activity Admin Approved Delete Request Event
+  feature_type: time_activity
+  payload_schema: null
+  method: POST
+  direction: provider-to-subscriber
+- event: Time activity admin approved edit request
+  operationId: time_activity_admin_approved_edit_request_eventTime_activity_admin_approved_edit_request_post
+  summary: Time Activity Admin Approved Edit Request Event
+  feature_type: time_activity
+  payload_schema: null
+  method: POST
+  direction: provider-to-subscriber
+- event: Time activity admin declined request
+  operationId: time_activity_admin_declined_request_eventTime_activity_admin_declined_request_post
+  summary: Time Activity Admin Declined Request Event
+  feature_type: time_activity
+  payload_schema: null
+  method: POST
+  direction: provider-to-subscriber
+- event: Time activity admin delete
+  operationId: time_activity_admin_delete_eventTime_activity_admin_delete_post
+  summary: Time Activity Admin Delete Event
+  feature_type: time_activity
+  payload_schema: null
+  method: POST
+  direction: provider-to-subscriber
+- event: Time activity admin edit
+  operationId: time_activity_admin_edit_eventTime_activity_admin_edit_post
+  summary: Time Activity Admin Edit Event
+  feature_type: time_activity
+  payload_schema: null
+  method: POST
+  direction: provider-to-subscriber
+- event: Time activity auto approved add request
+  operationId: time_activity_auto_approved_add_request_eventTime_activity_auto_approved_add_request_post
+  summary: Time Activity Auto Approved Add Request Event
+  feature_type: time_activity
+  payload_schema: null
+  method: POST
+  direction: provider-to-subscriber
+- event: Time activity auto approved clock out outside geo fence request
+  operationId: time_activity_auto_approved_clock_out_outside_geo_fence_request_eventTime_activity_auto_approved_clock_out_outside_geo_fence_request_post
+  summary: Time Activity Auto Approved Clock Out Outside Geo Fence Request Event
+  feature_type: time_activity
+  payload_schema: null
+  method: POST
+  direction: provider-to-subscriber
+- event: Time activity auto approved clock out without NFC request
+  operationId: time_activity_auto_approved_clock_out_without_nfc_request_eventTime_activity_auto_approved_clock_out_without_NFC_request_post
+  summary: Time Activity Auto Approved Clock Out Without Nfc Request Event
+  feature_type: time_activity
+  payload_schema: null
+  method: POST
+  direction: provider-to-subscriber
+- event: Time activity auto approved delete request
+  operationId: time_activity_auto_approved_delete_request_eventTime_activity_auto_approved_delete_request_post
+  summary: Time Activity Auto Approved Delete Request Event
+  feature_type: time_activity
+  payload_schema: null
+  method: POST
+  direction: provider-to-subscriber
+- event: Time activity auto approved edit request
+  operationId: time_activity_auto_approved_edit_request_eventTime_activity_auto_approved_edit_request_post
+  summary: Time Activity Auto Approved Edit Request Event
+  feature_type: time_activity
+  payload_schema: null
+  method: POST
+  direction: provider-to-subscriber
+- event: Time activity auto clock out
+  operationId: time_activity_auto_clock_out_eventTime_activity_auto_clock_out_post
+  summary: Time Activity Auto Clock Out Event
+  feature_type: time_activity
+  payload_schema: null
+  method: POST
+  direction: provider-to-subscriber
+- event: Time activity clock in
+  operationId: time_activity_clock_in_eventTime_activity_clock_in_post
+  summary: Time Activity Clock In Event
+  feature_type: time_activity
+  payload_schema: null
+  method: POST
+  direction: provider-to-subscriber
+- event: Time activity clock out
+  operationId: time_activity_clock_out_eventTime_activity_clock_out_post
+  summary: Time Activity Clock Out Event
+  feature_type: time_activity
+  payload_schema: null
+  method: POST
+  direction: provider-to-subscriber
+- event: Manager Field Updated
+  operationId: manager_field_updated_eventManager_Field_Updated_post
+  summary: Manager Field Updated Event
+  feature_type: users
+  payload_schema: null
+  method: POST
+  direction: provider-to-subscriber
+- event: Pending User Request Fulfilled
+  operationId: pending_user_request_approvedPending_User_Request_Fulfilled_post
+  summary: Pending User Request Approved
+  feature_type: users
+  payload_schema: null
+  method: POST
+  direction: provider-to-subscriber
+- event: User archived
+  operationId: user_archived_eventUser_archived_post
+  summary: User Archived Event
+  feature_type: users
+  payload_schema: null
+  method: POST
+  direction: provider-to-subscriber
+- event: User created
+  operationId: user_created_eventUser_created_post
+  summary: User Created Event
+  feature_type: users
+  payload_schema: null
+  method: POST
+  direction: provider-to-subscriber
+- event: User deleted
+  operationId: user_deleted_eventUser_deleted_post
+  summary: User Deleted Event
+  feature_type: users
+  payload_schema: null
+  method: POST
+  direction: provider-to-subscriber
+- event: User demoted
+  operationId: user_demoted_eventUser_demoted_post
+  summary: User Demoted Event
+  feature_type: users
+  payload_schema: null
+  method: POST
+  direction: provider-to-subscriber
+- event: User promoted
+  operationId: user_promoted_eventUser_promoted_post
+  summary: User Promoted Event
+  feature_type: users
+  payload_schema: null
+  method: POST
+  direction: provider-to-subscriber
+- event: User restored
+  operationId: user_restored_eventUser_restored_post
+  summary: User Restored Event
+  feature_type: users
+  payload_schema: null
+  method: POST
+  direction: provider-to-subscriber
+- event: User updated
+  operationId: user_updated_eventUser_updated_post
+  summary: User Updated Event
+  feature_type: users
+  payload_schema: null
+  method: POST
+  direction: provider-to-subscriber

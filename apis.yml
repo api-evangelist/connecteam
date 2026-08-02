@@ -1,23 +1,169 @@
 aid: connecteam
 name: Connecteam
-description: 'Connecteam is a company surfaced via the API Evangelist harvest backlog (source: secondary-market)
-  and added to the network as a stub for full-pipeline profiling.'
+description: 'Connecteam is a mobile-first workforce management platform for deskless
+  and non-desk teams, bundling time clock and GPS timesheets, job scheduling, task
+  boards, digital forms and checklists, chat and company communication, HR onboarding,
+  time off, pay rates and sales data into three purchasable hubs (Operations, Communications,
+  HR & Skills). Its public REST API at api.connecteam.com is described by an OpenAPI
+  3.1 contract covering 145 operations across 98 paths, authenticated either with a
+  company X-API-KEY header or OAuth 2.0 client-credentials tokens scoped across 61
+  named permissions, and it declares 41 webhook events for time activity, shifts, users,
+  tasks, forms and chat. API access is gated to the Expert plan and above, with per-plan
+  rate limits surfaced in x-ratelimit-* response headers.'
 url: https://raw.githubusercontent.com/api-evangelist/connecteam/refs/heads/main/apis.yml
+image: https://connecteam.com/wp-content/uploads/2024/03/Share-image-homepage.png
 x-type: company
 x-source: harvest:secondary-market
-x-tier: stub
-x-tier-reason: harvest
 specificationVersion: '0.20'
 created: '2026-08-01'
 modified: '2026-08-01'
 tags:
 - Company
-apis: []
+- Workforce Management
+- Human Resources
+- Time Tracking
+- Scheduling
+- Employee Communication
+- Task Management
+- Forms
+- Deskless
+- SaaS
+apis:
+- aid: connecteam:api
+  name: Connecteam API
+  description: 'The Connecteam public REST API. 145 operations across users, admins,
+    smart groups and custom fields; time clock, time activities, geofences, breadcrumbs
+    and lock days; job scheduling and shifts (v1 and v2); quick tasks and task boards;
+    forms and form submissions; chat conversations and messages; time off policies,
+    balances and requests; pay rates and pay-rule policies; assets, jobs, onboarding
+    packs, sales data, daily notes, attachments, publishers and webhook settings.'
+  humanURL: https://developer.connecteam.com/
+  baseURL: https://api.connecteam.com
+  tags:
+  - Workforce Management
+  - Time Tracking
+  - Scheduling
+  - Human Resources
+  properties:
+  - type: OpenAPI
+    url: openapi/connecteam-openapi-original.json
+  - type: Documentation
+    url: https://developer.connecteam.com/docs/introduction-1
+  - type: APIReference
+    url: https://developer.connecteam.com/reference/
+  - type: Webhooks
+    url: asyncapi/connecteam-events-webhooks.yml
+  - type: MCPServer
+    url: mcp/connecteam-mcp.yml
+  - type: ToolCrosswalk
+    url: mcp/connecteam-tool-crosswalk.yml
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com
 - FN: APIs.json
   email: info@apis.io
 common:
+- type: AgenticAccess
+  url: agentic-access/connecteam-agentic-access.yml
+- type: DomainSecurity
+  url: security/connecteam-domain-security.yml
+- type: OAuthScopes
+  url: scopes/connecteam-scopes.yml
+- type: Authentication
+  url: authentication/connecteam-authentication.yml
 - type: Website
-  url: https://forgeglobal.com/connecteam_stock/
+  url: https://connecteam.com/
+- type: DeveloperPortal
+  url: https://developer.connecteam.com/
+- type: Documentation
+  url: https://developer.connecteam.com/docs/introduction-1
+- type: APIReference
+  url: https://developer.connecteam.com/reference/
+- type: GettingStarted
+  url: https://developer.connecteam.com/docs/introduction-1
+- type: Support
+  url: https://help.connecteam.com/en/
+- type: HelpCenter
+  url: https://help.connecteam.com/en/
+- type: Blog
+  url: https://connecteam.com/blog/
+- type: GitHubOrganization
+  url: https://github.com/Connecteam
+- type: Pricing
+  url: https://connecteam.com/pricing/
+- type: SignUp
+  url: https://connecteam.com/employee-app-360-funnel/
+- type: Login
+  url: https://connecteam.com/login/
+- type: TermsOfService
+  url: https://connecteam.com/terms-conditions/
+- type: PrivacyPolicy
+  url: https://connecteam.com/privacy/
+- type: StatusPage
+  url: https://connecteam.statuspage.io/
+- type: ChangeLog
+  url: https://developer.connecteam.com/changelog
+- type: TrustCenter
+  url: security/connecteam-trust-center.yml
+- type: Compliance
+  url: https://connecteam.com/trust-center/
+- type: LLMsTxt
+  url: llms/connecteam-llms.txt
+- type: WellKnown
+  url: well-known/connecteam-well-known.yml
+- type: APICatalog
+  url: well-known/connecteam-api-catalog.json
+- type: Packages
+  url: packages/connecteam-packages.yml
+- type: Conventions
+  url: conventions/connecteam-conventions.yml
+- type: RateLimits
+  url: rate-limits/connecteam-rate-limits.yml
+- type: Plans
+  url: plans/connecteam-plans.yml
+- type: ErrorCatalog
+  url: errors/connecteam-problem-types.yml
+- type: Lifecycle
+  url: lifecycle/connecteam-lifecycle.yml
+- type: ChangeLog
+  url: changelog/connecteam-changelog.yml
+- type: Conformance
+  url: conformance/connecteam-conformance.yml
+- type: DataModel
+  url: data-model/connecteam-data-model.yml
+- type: Overlay
+  url: overlays/connecteam-api-overlay.yaml
+- type: AgentSkill
+  url: skills/_index.yml
+- type: Webhooks
+  url: asyncapi/connecteam-events-webhooks.yml
+- type: MCPServer
+  url: mcp/connecteam-mcp.yml
+x-enrichment:
+  date: '2026-08-01'
+  status: enriched
+  artifacts_added: 30
+  pass: local-v1
+x-enrichment-notes:
+  no_agent_card: >-
+    No A2A agent card exists. /.well-known/agent-card.json and /.well-known/agent.json
+    404 on connecteam.com and developer.connecteam.com; api.connecteam.com answers 200
+    with an HTML application shell for every path, which is a catch-all false positive,
+    not a card. Nothing was authored.
+  no_official_sdks: >-
+    No SDKs pointer was emitted. Connecteam publishes zero first-party client libraries
+    and its docs explicitly disclaim the third-party SDK shown in the API reference
+    sandbox.
+  no_idempotency: >-
+    No Idempotency pointer was emitted. Connecteam publishes no Idempotency-Key contract;
+    only the lock-days PUT documents natural idempotency.
+  no_security_disclosure: >-
+    No Security pointer was emitted. There is no security.txt, responsible-disclosure
+    page, bug bounty or security@ contact on any Connecteam host.
+  no_deprecation_policy: >-
+    No Deprecation pointer was emitted. Connecteam publishes a Beta-stability contract but
+    no deprecation/sunset policy for GA endpoints and no RFC 8594 headers.
+  no_asyncapi: >-
+    No AsyncAPI pointer was emitted. The 41 events are declared natively in the OpenAPI
+    3.1 `webhooks` object; no AsyncAPI document is published, so only Webhooks was wired.
+  not_applicable: [sandbox, cli, components, grpc, decline-codes, graphql]

@@ -1,0 +1,107 @@
+generated: '2026-08-01'
+method: derived
+source: openapi/connecteam-openapi-original.json + developer.connecteam.com docs + connecteam.com/trust-center/
+standards:
+- id: openapi-3.1
+  conforms: true
+  evidence: 'openapi: 3.1.0 served at https://api.connecteam.com/openapi.json; 98 paths,
+    145 operations, 582 component schemas'
+- id: oauth2
+  conforms: true
+  evidence: securitySchemes.OAuth2 type oauth2, clientCredentials flow, tokenUrl /oauth/v1/token,
+    61 scopes; documented at https://developer.connecteam.com/docs/oauth-20
+- id: rfc6749-client-credentials
+  conforms: true
+  evidence: POST https://api.connecteam.com/oauth/v1/token with HTTP Basic client auth and
+    grant_type=client_credentials, returning access_token/token_type/expires_in/scope
+- id: rfc6750-bearer-token
+  conforms: true
+  evidence: 'access tokens returned as token_type: Bearer and sent in the Authorization header'
+- id: rfc7617-http-basic
+  conforms: true
+  evidence: securitySchemes.HTTPBasic (client_id as username, client_secret as password)
+    on the token endpoint
+- id: oidc
+  conforms: false
+  evidence: no openIdConnect securityScheme; /.well-known/openid-configuration returns 404
+    on developer.connecteam.com and an HTML catch-all on api.connecteam.com
+- id: rfc8414-oauth-authorization-server-metadata
+  conforms: false
+  evidence: /.well-known/oauth-authorization-server not served
+- id: rfc9727-api-catalog
+  conforms: true
+  evidence: https://developer.connecteam.com/.well-known/api-catalog returns 200
+    application/linkset+json with service-desc and service-doc links
+- id: rfc9116-security-txt
+  conforms: false
+  evidence: /.well-known/security.txt returns 404 on every Connecteam host
+- id: rfc9457-problem-details
+  conforms: false
+  evidence: >-
+    error bodies are application/json with either a FastAPI HTTPValidationError
+    ({detail:[{loc,msg,type}]}) or a ValidationErrorResponse ({error,path,request_id}) —
+    no application/problem+json media type and no type/title/status/detail/instance members
+- id: rfc8594-sunset-header
+  conforms: false
+  evidence: no Sunset or Deprecation response headers documented or present in the spec
+- id: rfc6902-json-patch
+  conforms: false
+  evidence: updates use PUT/POST with full JSON bodies
+- id: idempotency-key
+  conforms: false
+  evidence: no Idempotency-Key header or replay-protection contract in docs or spec
+- id: pagination
+  conforms: true
+  style: limit-offset
+  evidence: limit and offset query parameters on 25 list operations; documented at
+    https://developer.connecteam.com/docs/pagination-1
+- id: rate-limit-headers
+  conforms: true
+  style: x-ratelimit-* (non-standard; not RFC 9239 RateLimit / RateLimit-Policy)
+  evidence: x-ratelimit-minute-limit / -remaining / -reset and x-ratelimit-day-* documented
+    at https://developer.connecteam.com/docs/rate-limiting-1
+- id: webhooks
+  conforms: true
+  evidence: 41 events declared under OpenAPI 3.1 `webhooks`; subscriptions managed via
+    /settings/v1/webhooks with an optional secretKey for signature verification
+- id: asyncapi
+  conforms: false
+  evidence: no AsyncAPI document published; the event surface is described only through
+    OpenAPI 3.1 webhooks and the Guides -> Webhooks docs section
+- id: mcp
+  conforms: true
+  evidence: hosted MCP server at https://developer.connecteam.com/mcp returns 3 tools on an
+    anonymous tools/list (spec-explorer server, not a data-plane server)
+- id: a2a
+  conforms: false
+  evidence: no agent card at /.well-known/agent-card.json or /.well-known/agent.json on any
+    host
+- id: llms-txt
+  conforms: true
+  evidence: https://developer.connecteam.com/llms.txt returns 200 text/plain in llms.txt
+    format (guides index plus per-endpoint links)
+- id: scim2
+  conforms: false
+  evidence: no /scim/v2 paths; user provisioning is a bespoke /users/v1 surface
+- id: odata
+  conforms: false
+- id: json-api
+  conforms: false
+  evidence: responses use a bespoke {data:{...}} envelope
+- id: graphql
+  conforms: false
+  evidence: no GraphQL endpoint published
+- id: grpc
+  conforms: false
+  evidence: no .proto published in github.com/Connecteam, on buf.build, or in the docs
+compliance:
+  published: true
+  source: https://connecteam.com/trust-center/
+  certifications:
+  - SOC 2 Type 2
+  - ISO/IEC 27001
+  - GDPR
+  - HIPAA
+  - CCPA
+  - PCI DSS
+  cross_ref: security/connecteam-trust-center.yml

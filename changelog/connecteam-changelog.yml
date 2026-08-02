@@ -1,0 +1,80 @@
+generated: '2026-08-01'
+method: searched
+source: https://developer.connecteam.com/changelog.rss
+docs: https://developer.connecteam.com/changelog
+feed: https://developer.connecteam.com/changelog.rss
+feed_format: RSS 2.0 (paginated; ?page=2 for older entries)
+scheme:
+  versioning: uri-path (v1 / v2 per domain), no semantic release numbers
+  entry_labels: released | improved (encoded in the changelog slug)
+  cadence: roughly weekly during 2026
+current_version: v1 (v2 available for Scheduler shifts, auto-assign and unavailabilities)
+window: most recent 10 entries as of 2026-08-01
+entries:
+- date: '2026-07-13'
+  title: 'Time Off: accrualType and policyId Added to Policy Types & Balances Response'
+  kind: additive
+  breaking: false
+  area: Time Off
+  url: https://developer.connecteam.com/changelog/time-off-accrual-type-and-policy-id-improved
+- date: '2026-07-06'
+  title: 'Time Clock: isSplitShiftOnManualBreak on Create Time Activities'
+  kind: additive
+  breaking: false
+  area: Time Clock
+  url: https://developer.connecteam.com/changelog/time-clock-create-time-activities-split-shifts-improved
+- date: '2026-07-02'
+  title: 'Chat: Create Conversation API'
+  kind: new-endpoint
+  breaking: false
+  area: Chat
+  url: https://developer.connecteam.com/changelog/chat-create-conversation-api-released
+- date: '2026-06-24'
+  title: 'Time Clock: Manual Break Clock In/Out API'
+  kind: new-endpoint
+  breaking: false
+  area: Time Clock
+  url: https://developer.connecteam.com/changelog/time-clock-manual-break-clocking-api-released
+- date: '2026-06-24'
+  title: 'Forms: API guides and creation-date filters'
+  kind: additive
+  breaking: false
+  area: Forms
+  url: https://developer.connecteam.com/changelog/forms-api-guides-and-date-filters
+- date: '2026-06-17'
+  title: 'Time Off: duration Field Added to Get Requests Response'
+  kind: additive
+  breaking: false
+  area: Time Off
+  url: https://developer.connecteam.com/changelog/time-off-duration-field-improved
+- date: '2026-06-10'
+  title: 'Time Clock: Delete Time Activity API'
+  kind: new-endpoint
+  breaking: false
+  area: Time Clock
+  url: https://developer.connecteam.com/changelog/time-clock-delete-time-activity-api-released
+- date: '2026-06-09'
+  title: 'Time Clock: Breadcrumbs Report API'
+  kind: new-endpoint
+  breaking: false
+  area: Time Clock
+  url: https://developer.connecteam.com/changelog/time-clock-breadcrumbs-api-released
+- date: '2026-06-08'
+  title: 'Time Clock: Offline Mode for Clock In/Out'
+  kind: additive
+  breaking: false
+  area: Time Clock
+  url: https://developer.connecteam.com/changelog/time-clock-clock-in-out-offline-mode-improved
+- date: '2026-06-08'
+  title: 'Time Off: Get Time Off Requests API'
+  kind: new-endpoint
+  breaking: false
+  area: Time Off
+  url: https://developer.connecteam.com/changelog/time-off-get-requests-api-released
+summary:
+  entries_captured: 10
+  breaking_changes_in_window: 0
+  new_endpoints_in_window: 5
+  most_active_areas:
+  - Time Clock
+  - Time Off

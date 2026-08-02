@@ -1,0 +1,479 @@
+generated: '2026-08-01'
+method: searched
+source: https://developer.connecteam.com/docs/oauth-20 + openapi/connecteam-openapi-original.json
+docs: https://developer.connecteam.com/docs/oauth-20
+flow: client_credentials
+token_endpoint: https://api.connecteam.com/oauth/v1/token
+token_lifetime_seconds: 86400
+naming_convention: feature.permission (e.g. users.read, schedule.write)
+grant_note: Scopes are selected when the OAuth app is created in Your Name -> Integration Center -> OAuth
+  2.0 and CANNOT be edited afterwards. Request the minimum set. The client secret is displayed once.
+permission_matrix:
+- feature: Account Information
+  prefix: account_information
+  read: true
+  write: true
+  delete: true
+- feature: Company Policies
+  prefix: company_policies
+  read: true
+  write: true
+  delete: true
+- feature: Users
+  prefix: users
+  read: true
+  write: true
+  delete: true
+- feature: Assets
+  prefix: assets
+  read: true
+  write: true
+  delete: true
+- feature: Sales Data
+  prefix: sales_data
+  read: true
+  write: true
+  delete: true
+- feature: Attachments
+  prefix: attachments
+  read: true
+  write: true
+  delete: true
+- feature: Quick Tasks
+  prefix: quick_tasks
+  read: true
+  write: true
+  delete: true
+- feature: Publishers
+  prefix: publishers
+  read: true
+  write: true
+  delete: true
+- feature: Chat
+  prefix: chat
+  read: true
+  write: true
+  delete: true
+- feature: Jobs (Resources)
+  prefix: jobs
+  read: true
+  write: true
+  delete: true
+- feature: Schedule
+  prefix: schedule
+  read: true
+  write: true
+  delete: true
+- feature: Daily Note
+  prefix: daily_note
+  read: true
+  write: true
+  delete: true
+- feature: Time Clock
+  prefix: time_clock
+  read: true
+  write: true
+  delete: true
+- feature: Time Off
+  prefix: time_off
+  read: true
+  write: true
+  delete: true
+- feature: Forms
+  prefix: forms
+  read: true
+  write: true
+  delete: true
+- feature: Settings
+  prefix: settings
+  read: true
+  write: true
+  delete: true
+spec_only_scopes_note: 'The OpenAPI declares scopes the docs matrix omits: company_insights.read, nfc.{read,write,delete},
+  pay_rates.{read,write,delete}, onboarding.{read,write,delete}, company_checklist.{read,write}, recognitions.read
+  and celebrations.read. Some are read-only (company_insights, recognitions, celebrations) or write-only
+  pairs (company_checklist), which breaks the uniform read/write/delete triple the docs page implies.'
+schemes:
+- name: OAuth2
+  source: openapi/connecteam-openapi-original.json
+  flows:
+  - flow: clientCredentials
+    tokenUrl: /oauth/v1/token
+  description: OAuth2 Bearer token
+scopes:
+- scope: account_information.delete
+  description: account information - delete
+  flows:
+  - clientCredentials
+  sources:
+  - openapi/connecteam-openapi-original.json
+- scope: account_information.read
+  description: account information - read
+  flows:
+  - clientCredentials
+  sources:
+  - openapi/connecteam-openapi-original.json
+- scope: account_information.write
+  description: account information - write
+  flows:
+  - clientCredentials
+  sources:
+  - openapi/connecteam-openapi-original.json
+- scope: assets.delete
+  description: assets - delete
+  flows:
+  - clientCredentials
+  sources:
+  - openapi/connecteam-openapi-original.json
+- scope: assets.read
+  description: assets - read
+  flows:
+  - clientCredentials
+  sources:
+  - openapi/connecteam-openapi-original.json
+- scope: assets.write
+  description: assets - write
+  flows:
+  - clientCredentials
+  sources:
+  - openapi/connecteam-openapi-original.json
+- scope: attachments.delete
+  description: attachments - delete
+  flows:
+  - clientCredentials
+  sources:
+  - openapi/connecteam-openapi-original.json
+- scope: attachments.read
+  description: attachments - read
+  flows:
+  - clientCredentials
+  sources:
+  - openapi/connecteam-openapi-original.json
+- scope: attachments.write
+  description: attachments - write
+  flows:
+  - clientCredentials
+  sources:
+  - openapi/connecteam-openapi-original.json
+- scope: celebrations.read
+  description: celebrations - read
+  flows:
+  - clientCredentials
+  sources:
+  - openapi/connecteam-openapi-original.json
+- scope: chat.delete
+  description: chat - delete
+  flows:
+  - clientCredentials
+  sources:
+  - openapi/connecteam-openapi-original.json
+- scope: chat.read
+  description: chat - read
+  flows:
+  - clientCredentials
+  sources:
+  - openapi/connecteam-openapi-original.json
+- scope: chat.write
+  description: chat - write
+  flows:
+  - clientCredentials
+  sources:
+  - openapi/connecteam-openapi-original.json
+- scope: company_checklist.read
+  description: company checklist - read
+  flows:
+  - clientCredentials
+  sources:
+  - openapi/connecteam-openapi-original.json
+- scope: company_checklist.write
+  description: company checklist - write
+  flows:
+  - clientCredentials
+  sources:
+  - openapi/connecteam-openapi-original.json
+- scope: company_insights.read
+  description: company insights - read
+  flows:
+  - clientCredentials
+  sources:
+  - openapi/connecteam-openapi-original.json
+- scope: company_policies.delete
+  description: company policies - delete
+  flows:
+  - clientCredentials
+  sources:
+  - openapi/connecteam-openapi-original.json
+- scope: company_policies.read
+  description: company policies - read
+  flows:
+  - clientCredentials
+  sources:
+  - openapi/connecteam-openapi-original.json
+- scope: company_policies.write
+  description: company policies - write
+  flows:
+  - clientCredentials
+  sources:
+  - openapi/connecteam-openapi-original.json
+- scope: daily_note.delete
+  description: daily note - delete
+  flows:
+  - clientCredentials
+  sources:
+  - openapi/connecteam-openapi-original.json
+- scope: daily_note.read
+  description: daily note - read
+  flows:
+  - clientCredentials
+  sources:
+  - openapi/connecteam-openapi-original.json
+- scope: daily_note.write
+  description: daily note - write
+  flows:
+  - clientCredentials
+  sources:
+  - openapi/connecteam-openapi-original.json
+- scope: forms.delete
+  description: forms - delete
+  flows:
+  - clientCredentials
+  sources:
+  - openapi/connecteam-openapi-original.json
+- scope: forms.read
+  description: forms - read
+  flows:
+  - clientCredentials
+  sources:
+  - openapi/connecteam-openapi-original.json
+- scope: forms.write
+  description: forms - write
+  flows:
+  - clientCredentials
+  sources:
+  - openapi/connecteam-openapi-original.json
+- scope: jobs.delete
+  description: jobs - delete
+  flows:
+  - clientCredentials
+  sources:
+  - openapi/connecteam-openapi-original.json
+- scope: jobs.read
+  description: jobs - read
+  flows:
+  - clientCredentials
+  sources:
+  - openapi/connecteam-openapi-original.json
+- scope: jobs.write
+  description: jobs - write
+  flows:
+  - clientCredentials
+  sources:
+  - openapi/connecteam-openapi-original.json
+- scope: nfc.delete
+  description: nfc - delete
+  flows:
+  - clientCredentials
+  sources:
+  - openapi/connecteam-openapi-original.json
+- scope: nfc.read
+  description: nfc - read
+  flows:
+  - clientCredentials
+  sources:
+  - openapi/connecteam-openapi-original.json
+- scope: nfc.write
+  description: nfc - write
+  flows:
+  - clientCredentials
+  sources:
+  - openapi/connecteam-openapi-original.json
+- scope: onboarding.delete
+  description: onboarding - delete
+  flows:
+  - clientCredentials
+  sources:
+  - openapi/connecteam-openapi-original.json
+- scope: onboarding.read
+  description: onboarding - read
+  flows:
+  - clientCredentials
+  sources:
+  - openapi/connecteam-openapi-original.json
+- scope: onboarding.write
+  description: onboarding - write
+  flows:
+  - clientCredentials
+  sources:
+  - openapi/connecteam-openapi-original.json
+- scope: pay_rates.delete
+  description: pay rates - delete
+  flows:
+  - clientCredentials
+  sources:
+  - openapi/connecteam-openapi-original.json
+- scope: pay_rates.read
+  description: pay rates - read
+  flows:
+  - clientCredentials
+  sources:
+  - openapi/connecteam-openapi-original.json
+- scope: pay_rates.write
+  description: pay rates - write
+  flows:
+  - clientCredentials
+  sources:
+  - openapi/connecteam-openapi-original.json
+- scope: publishers.delete
+  description: publishers - delete
+  flows:
+  - clientCredentials
+  sources:
+  - openapi/connecteam-openapi-original.json
+- scope: publishers.read
+  description: publishers - read
+  flows:
+  - clientCredentials
+  sources:
+  - openapi/connecteam-openapi-original.json
+- scope: publishers.write
+  description: publishers - write
+  flows:
+  - clientCredentials
+  sources:
+  - openapi/connecteam-openapi-original.json
+- scope: quick_tasks.delete
+  description: quick tasks - delete
+  flows:
+  - clientCredentials
+  sources:
+  - openapi/connecteam-openapi-original.json
+- scope: quick_tasks.read
+  description: quick tasks - read
+  flows:
+  - clientCredentials
+  sources:
+  - openapi/connecteam-openapi-original.json
+- scope: quick_tasks.write
+  description: quick tasks - write
+  flows:
+  - clientCredentials
+  sources:
+  - openapi/connecteam-openapi-original.json
+- scope: recognitions.read
+  description: recognitions - read
+  flows:
+  - clientCredentials
+  sources:
+  - openapi/connecteam-openapi-original.json
+- scope: sales_data.delete
+  description: sales data - delete
+  flows:
+  - clientCredentials
+  sources:
+  - openapi/connecteam-openapi-original.json
+- scope: sales_data.read
+  description: sales data - read
+  flows:
+  - clientCredentials
+  sources:
+  - openapi/connecteam-openapi-original.json
+- scope: sales_data.write
+  description: sales data - write
+  flows:
+  - clientCredentials
+  sources:
+  - openapi/connecteam-openapi-original.json
+- scope: schedule.delete
+  description: schedule - delete
+  flows:
+  - clientCredentials
+  sources:
+  - openapi/connecteam-openapi-original.json
+- scope: schedule.read
+  description: schedule - read
+  flows:
+  - clientCredentials
+  sources:
+  - openapi/connecteam-openapi-original.json
+- scope: schedule.write
+  description: schedule - write
+  flows:
+  - clientCredentials
+  sources:
+  - openapi/connecteam-openapi-original.json
+- scope: settings.delete
+  description: settings - delete
+  flows:
+  - clientCredentials
+  sources:
+  - openapi/connecteam-openapi-original.json
+- scope: settings.read
+  description: settings - read
+  flows:
+  - clientCredentials
+  sources:
+  - openapi/connecteam-openapi-original.json
+- scope: settings.write
+  description: settings - write
+  flows:
+  - clientCredentials
+  sources:
+  - openapi/connecteam-openapi-original.json
+- scope: time_clock.delete
+  description: time clock - delete
+  flows:
+  - clientCredentials
+  sources:
+  - openapi/connecteam-openapi-original.json
+- scope: time_clock.read
+  description: time clock - read
+  flows:
+  - clientCredentials
+  sources:
+  - openapi/connecteam-openapi-original.json
+- scope: time_clock.write
+  description: time clock - write
+  flows:
+  - clientCredentials
+  sources:
+  - openapi/connecteam-openapi-original.json
+- scope: time_off.delete
+  description: time off - delete
+  flows:
+  - clientCredentials
+  sources:
+  - openapi/connecteam-openapi-original.json
+- scope: time_off.read
+  description: time off - read
+  flows:
+  - clientCredentials
+  sources:
+  - openapi/connecteam-openapi-original.json
+- scope: time_off.write
+  description: time off - write
+  flows:
+  - clientCredentials
+  sources:
+  - openapi/connecteam-openapi-original.json
+- scope: users.delete
+  description: users - delete
+  flows:
+  - clientCredentials
+  sources:
+  - openapi/connecteam-openapi-original.json
+- scope: users.read
+  description: users - read
+  flows:
+  - clientCredentials
+  sources:
+  - openapi/connecteam-openapi-original.json
+- scope: users.write
+  description: users - write
+  flows:
+  - clientCredentials
+  sources:
+  - openapi/connecteam-openapi-original.json
+summary:
+  scopes_total: 62
+  features_in_docs_matrix: 16
+  source_of_truth: the OpenAPI securitySchemes.OAuth2.flows.clientCredentials.scopes map

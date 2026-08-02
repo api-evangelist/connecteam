@@ -1,0 +1,123 @@
+overlay: 1.0.0
+info:
+  title: API Evangelist enhancements for the Connecteam API
+  version: 1.0.0
+extends: openapi/connecteam-openapi-original.json
+x-generated: '2026-08-01'
+x-method: generated
+x-source: >-
+  Derived from the verbatim spec at https://api.connecteam.com/openapi.json plus the
+  published guides at developer.connecteam.com. Captures API Evangelist annotations
+  without mutating the harvested original.
+actions:
+- target: $.info
+  update:
+    description: >-
+      The Connecteam public REST API for non-desk workforce management: users and admins,
+      time clock and timesheets, job scheduling and shifts, quick tasks, digital forms,
+      chat, time off, pay rates, onboarding packs, assets, sales data and webhook settings.
+      API access requires the Expert plan or higher and is scoped to the hubs (Operations,
+      Communications, HR & Skills) the account has purchased.
+    contact:
+      name: Connecteam Developer Portal
+      url: https://developer.connecteam.com/
+    termsOfService: https://connecteam.com/terms-conditions/
+    x-apievangelist-reviewed: '2026-08-01'
+    x-apievangelist-artifacts:
+      conventions: conventions/connecteam-conventions.yml
+      errors: errors/connecteam-problem-types.yml
+      lifecycle: lifecycle/connecteam-lifecycle.yml
+      webhooks: asyncapi/connecteam-events-webhooks.yml
+      scopes: scopes/connecteam-scopes.yml
+      authentication: authentication/connecteam-authentication.yml
+      data_model: data-model/connecteam-data-model.yml
+      skills: skills/_index.yml
+      mcp: mcp/connecteam-mcp.yml
+- target: $.servers
+  description: >-
+    The harvested spec declares only the global server. Connecteam documents a second
+    regional base URL for Australia at
+    https://developer.connecteam.com/docs/introduction-1.
+  update:
+  - url: https://api.connecteam.com/
+    description: Global
+  - url: https://api-au.connecteam.com/
+    description: Australia
+- target: $.info
+  update:
+    x-rate-limits:
+      scope: per account
+      headers:
+      - x-ratelimit-minute-limit
+      - x-ratelimit-minute-remaining
+      - x-ratelimit-minute-reset
+      - x-ratelimit-day-limit
+      - x-ratelimit-day-remaining
+      - x-ratelimit-day-reset
+      exceeded_status: 429
+      tiers:
+      - plan: SBP
+        per_minute: 5
+        per_day: 100
+      - plan: Expert
+        per_minute: 100
+        per_day: 10000
+      - plan: Enterprise
+        per_minute: 200
+        per_day: 20000
+      docs: https://developer.connecteam.com/docs/rate-limiting-1
+- target: $.info
+  update:
+    x-pagination:
+      style: limit-offset
+      limit_param: limit
+      limit_default: 10
+      offset_param: offset
+      offset_default: 0
+      envelope: data.<collection>
+      docs: https://developer.connecteam.com/docs/pagination-1
+- target: $.info
+  update:
+    x-idempotency:
+      supported: false
+      note: >-
+        Connecteam publishes no Idempotency-Key contract. Only
+        PUT /time-clock/v1/time-clocks/{timeClockId}/users/{userId}/lock-days documents
+        natural idempotency. Non-GET retries must be reconciled by re-reading.
+- target: $.info
+  update:
+    x-gaps:
+      note: >-
+        Contract-quality gaps recorded for a follow-up with the provider. These are
+        observations about the published spec, not changes to it.
+      undeclared_429: >-
+        429 Too Many Requests is documented in the rate-limiting guide but declared on
+        0 of 145 operations.
+      undeclared_401: >-
+        401 is declared on only 1 operation (the OAuth token endpoint) even though all
+        144 business operations require authentication.
+      no_global_security: >-
+        The document has no top-level `security` block; auth is repeated per operation.
+      sparse_examples: >-
+        Only 6 of 145 operations carry a response example, all of them error examples.
+      no_rate_limit_headers_in_spec: >-
+        The x-ratelimit-* response headers are documented in prose but absent from every
+        operation's `responses.headers`.
+      tag_shape: >-
+        Tags are colon-delimited hierarchy strings (e.g.
+        "Time Clock:v1:TimeClocks:TimeClock:GeoFences") rather than flat tag names, and
+        the document declares no top-level `tags` array with descriptions, so 68 distinct
+        tag strings render without any tag-level documentation.
+- target: $.paths['/attachments/v1/files/download-url'].post
+  update:
+    x-apievangelist-note: >-
+      Flagged deprecated in the published spec. Use
+      GET /attachments/v1/files/{fileId} (get_file_url_attachments_v1_files__fileId__get)
+      to retrieve file metadata and the download URL instead.
+- target: $.webhooks
+  description: >-
+    41 events are declared natively in this OpenAPI 3.1 document. Connecteam publishes no
+    AsyncAPI; the derived event catalog with feature-type grouping and subscription
+    mechanics is at asyncapi/connecteam-events-webhooks.yml.
+  update:
+    x-apievangelist-event-catalog: asyncapi/connecteam-events-webhooks.yml

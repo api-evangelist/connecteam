@@ -1,0 +1,86 @@
+generated: '2026-08-01'
+method: searched
+source: live GET probes of /.well-known/* on every Connecteam host
+note: >-
+  api.connecteam.com answers HTTP 200 with an HTML application shell for any unknown
+  path, so every /.well-known/* result on that host is a catch-all false positive and
+  is recorded as such rather than as a hit. Only developer.connecteam.com serves a real
+  well-known document.
+hosts:
+- host: https://developer.connecteam.com
+  documents:
+  - path: /.well-known/api-catalog
+    status: 200
+    content_type: application/linkset+json
+    standard: RFC 9727 (API Catalog)
+    file: connecteam-api-catalog.json
+    note: linkset pointing at the OpenAPI service-desc and the HTML service-doc
+  - path: /.well-known/security.txt
+    status: 404
+  - path: /.well-known/openid-configuration
+    status: 404
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+  - path: /.well-known/agent-card.json
+    status: 404
+  - path: /.well-known/agent.json
+    status: 404
+  - path: /.well-known/ai-plugin.json
+    status: 404
+- host: https://api.connecteam.com
+  documents:
+  - path: /.well-known/security.txt
+    status: 200
+    hit: false
+    note: HTML application shell (catch-all), not RFC 9116 text
+  - path: /.well-known/openid-configuration
+    status: 200
+    hit: false
+    note: HTML application shell (catch-all), not OIDC discovery JSON
+  - path: /.well-known/oauth-authorization-server
+    status: 200
+    hit: false
+    note: HTML application shell (catch-all), not RFC 8414 metadata
+  - path: /.well-known/api-catalog
+    status: 200
+    hit: false
+    note: HTML application shell (catch-all)
+  - path: /.well-known/agent-card.json
+    status: 200
+    hit: false
+    note: HTML application shell (catch-all), not an A2A AgentCard
+  - path: /.well-known/agent.json
+    status: 200
+    hit: false
+    note: HTML application shell (catch-all), not an A2A AgentCard
+  - path: /.well-known/ai-plugin.json
+    status: 200
+    hit: false
+    note: HTML application shell (catch-all)
+- host: https://connecteam.com
+  documents:
+  - path: /.well-known/security.txt
+    status: 404
+  - path: /.well-known/api-catalog
+    status: 404
+  - path: /.well-known/agent-card.json
+    status: 404
+  - path: /.well-known/agent.json
+    status: 404
+  - path: /.well-known/openid-configuration
+    status: 404
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+  - path: /.well-known/ai-plugin.json
+    status: 404
+summary:
+  real_hits: 1
+  security_txt: false
+  oidc_discovery: false
+  oauth_authorization_server: false
+  api_catalog: true
+  agent_card: false
+x-evidence:
+  fetched: '2026-08-01'
+  api_catalog_url: https://developer.connecteam.com/.well-known/api-catalog
+  api_catalog_status: 200

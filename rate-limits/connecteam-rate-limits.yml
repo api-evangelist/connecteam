@@ -1,0 +1,46 @@
+generated: '2026-08-01'
+method: searched
+source: https://developer.connecteam.com/docs/rate-limiting-1
+scope: per account (not per API key)
+exceeded_status: 429
+exceeded_message: Too Many Requests
+retry_after_header: false
+guidance: >-
+  Implement retry logic with exponential backoff. Monitor rate limit headers to adjust
+  your request rate dynamically. Cache responses to reduce repeated requests and
+  distribute requests evenly to avoid spikes.
+increase: Contact support for higher limits (additional cost may apply).
+headers:
+- name: x-ratelimit-minute-limit
+  description: Max requests per minute
+- name: x-ratelimit-minute-remaining
+  description: Requests left in current minute
+- name: x-ratelimit-minute-reset
+  description: Reset time (UTC epoch seconds)
+- name: x-ratelimit-day-limit
+  description: Max requests per day
+- name: x-ratelimit-day-remaining
+  description: Requests left today
+- name: x-ratelimit-day-reset
+  description: Reset time (UTC epoch seconds)
+rate_limits:
+- plan: SBP
+  plan_label: Small Business Plan
+  limit_count: 5
+  limit_period: minute
+- plan: SBP
+  plan_label: Small Business Plan
+  limit_count: 100
+  limit_period: day
+- plan: Expert
+  limit_count: 100
+  limit_period: minute
+- plan: Expert
+  limit_count: 10000
+  limit_period: day
+- plan: Enterprise
+  limit_count: 200
+  limit_period: minute
+- plan: Enterprise
+  limit_count: 20000
+  limit_period: day

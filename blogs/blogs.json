@@ -1,0 +1,14 @@
+{
+  "repo": "connecteam",
+  "feeds": [
+    {
+      "source": "https://help.connecteam.com/en/",
+      "feed_url": "https://help.connecteam.com/en/feed.xml",
+      "title": "",
+      "saved": 25,
+      "method": "discovered"
+    }
+  ],
+  "post_count": 25,
+  "fetched": "2026-08-01T15:49:00Z"
+}

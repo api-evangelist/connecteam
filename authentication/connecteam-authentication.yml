@@ -1,0 +1,57 @@
+generated: '2026-08-01'
+method: searched
+source: https://developer.connecteam.com/docs/authentication-1 + openapi/connecteam-openapi-original.json
+summary:
+  types:
+  - apiKey
+  - http
+  - oauth2
+  api_key_in:
+  - header
+  oauth2_flows:
+  - clientCredentials
+schemes:
+- name: APIKeyHeader
+  type: apiKey
+  in: header
+  parameter: X-API-KEY
+  description: The Api key of the company given by Connecteam
+  sources:
+  - openapi/connecteam-openapi-original.json
+- name: OAuth2
+  type: oauth2
+  flows:
+  - flow: clientCredentials
+    tokenUrl: /oauth/v1/token
+    scopes: 62
+  description: OAuth2 Bearer token
+  sources:
+  - openapi/connecteam-openapi-original.json
+- name: HTTPBasic
+  type: http
+  scheme: basic
+  description: Use client_id as Username and client_secret as Password
+  sources:
+  - openapi/connecteam-openapi-original.json
+docs:
+- https://developer.connecteam.com/docs/authentication-1
+- https://developer.connecteam.com/docs/oauth-20
+- https://developer.connecteam.com/docs/api-access
+issuance:
+  api_key: Settings -> API Keys -> Add API key (company-wide secret)
+  oauth_app: Your Name -> Integration Center -> OAuth 2.0 -> Create app
+token_endpoint: https://api.connecteam.com/oauth/v1/token
+token_lifetime_seconds: 86400
+refresh_token: false
+entitlement: API access requires the Expert plan or higher; the credential only reaches hubs on an eligible
+  plan.
+notes:
+- The API key is company-wide and unscoped — it is equivalent to a password and grants everything the
+  account's hubs allow. OAuth 2.0 client credentials is the scoped, short-lived alternative and is the
+  correct choice for agents.
+- HTTPBasic is used ONLY to authenticate the token request (client_id as username, client_secret as password);
+  it is not an API-call credential.
+- No OpenID Connect, no /.well-known/oauth-authorization-server metadata, no mTLS.
+cross_ref:
+- scopes/connecteam-scopes.yml
+- conventions/connecteam-conventions.yml

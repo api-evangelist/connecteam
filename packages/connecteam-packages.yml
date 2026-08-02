@@ -1,0 +1,64 @@
+generated: '2026-08-01'
+method: searched
+source: npm registry search, PyPI, RubyGems, github.com/Connecteam, developer.connecteam.com
+summary:
+  official_packages: 0
+  third_party_packages: 4
+  note: >-
+    Connecteam publishes NO first-party client SDKs. The developer docs state this
+    explicitly under "SDK Notice": "The SDK suggested in the API reference sandbox is
+    a third-party package, not an official Connecteam SDK."
+    (https://developer.connecteam.com/docs/introduction-1). The github.com/Connecteam
+    organization holds 22 repositories, all of which are forks of unrelated open-source
+    projects (js-xlsx, react-native-*, airbyte, backstage, imgproxy) — none is a
+    Connecteam API client. PyPI, RubyGems, Packagist, crates.io, pkg.go.dev, NuGet and
+    Maven Central return no first-party Connecteam client library.
+packages: []
+third_party:
+- language: typescript
+  registry: npm
+  name: connecteam-mcp
+  url: https://www.npmjs.com/package/connecteam-mcp
+  install: npm install connecteam-mcp
+  official: false
+  version_seen: 0.0.1-alpha.1
+  maintainer: asaf_n
+  repository: https://github.com/Asafniv/connecteam-mcp
+  note: >-
+    Self-describes as "The official TypeScript library for the Connecteam Mcp API" but
+    is published by an individual maintainer under a personal GitHub account and is not
+    referenced from developer.connecteam.com. Treated as third-party.
+- language: typescript
+  registry: npm
+  name: connecteam-mcp-mcp
+  url: https://www.npmjs.com/package/connecteam-mcp-mcp
+  install: npm install connecteam-mcp-mcp
+  official: false
+  maintainer: asaf_n
+  repository: https://github.com/Asafniv/connecteam-mcp
+  note: MCP server wrapper published alongside connecteam-mcp; same third-party maintainer.
+- language: javascript
+  registry: npm
+  name: '@pipedream/connecteam'
+  url: https://www.npmjs.com/package/@pipedream/connecteam
+  install: npm install @pipedream/connecteam
+  official: false
+  note: Pipedream integration components, published by Pipedream, not Connecteam.
+- language: javascript
+  registry: npm
+  name: '@keystrokehq/connecteam'
+  url: https://www.npmjs.com/package/@keystrokehq/connecteam
+  install: npm install @keystrokehq/connecteam
+  official: false
+  note: Published by Keystroke HQ as part of github.com/keystrokehq/keystroke.
+registries_checked:
+- registry: npm
+  result: 4 third-party matches, 0 first-party
+- registry: pypi
+  result: 404 for "connecteam"
+- registry: rubygems
+  result: 404 for "connecteam"
+- registry: github
+  result: github.com/Connecteam exists (22 repos, all forks of unrelated projects)
+- registry: docs
+  result: developer.connecteam.com explicitly disclaims any official SDK

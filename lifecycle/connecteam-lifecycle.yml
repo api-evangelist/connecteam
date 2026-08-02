@@ -1,0 +1,64 @@
+generated: '2026-08-01'
+method: searched
+source: https://developer.connecteam.com/docs/beta-endpoints
+versioning:
+  scheme: uri-path
+  form: /<domain>/v1/... and /<domain>/v2/...
+  current: v1 (default); v2 available for Scheduler shifts, shift auto-assign and
+    unavailabilities
+  docs: https://developer.connecteam.com/docs/scheduler-shifts-vision
+  migration_guide: https://developer.connecteam.com/docs/scheduler-shifts-vision-migration
+  note: >-
+    v1 and v2 shift APIs run side by side. v2 aggregates all user assignments of a shift
+    into a single base shift; v2 webhook behaviour must be enabled per account by
+    contacting Connecteam. The "JS Vision" guide set documents the v1-vs-v2 differences,
+    ID and response-shape changes, an endpoint-by-endpoint reference, and a migration
+    playbook.
+stability:
+  forward_compatibility: >-
+    "Flexible Schemas: Our API evolves continuously. New fields may be added to responses
+    - implement flexible schema validation to maintain compatibility."
+  beta_channel:
+    documented: true
+    url: https://developer.connecteam.com/docs/beta-endpoints
+    contract: >-
+      Beta endpoints may change request/response schemas, validation rules, error codes,
+      pagination behaviour and availability, and documentation may be updated without a
+      prior deprecation window. Beta endpoints do not carry the same backward-compatibility
+      guarantees as generally available endpoints.
+    labelling: '"Beta" in the endpoint title or a callout on the page in the API Reference'
+    contact: omer.vered@connecteam.com
+    guidance:
+    - Parse responses flexibly; ignore unknown fields
+    - Avoid hard dependencies on Beta-only fields in critical production workflows
+    - Monitor the changelog for graduation announcements
+deprecation:
+  policy_url: https://developer.connecteam.com/docs/beta-endpoints
+  policy_published: partial
+  sunset_header: false
+  deprecation_header: false
+  note: >-
+    Connecteam publishes a Beta-stability contract but no general deprecation or sunset
+    policy for generally available endpoints, and no RFC 8594 Sunset/Deprecation response
+    headers appear in the OpenAPI. The only formal removal signal is the OpenAPI
+    `deprecated: true` flag.
+deprecated_operations:
+- openapi/connecteam-openapi-original.json#generate_download_url_attachments_v1_files_download_url_post
+sla:
+  url: null
+  uptime_target: null
+  note: No public SLA or uptime commitment found on connecteam.com or the developer portal.
+status_page:
+  url: https://connecteam.statuspage.io/
+  provider: Atlassian Statuspage
+  title: Connecteam Status
+  note: >-
+    status.connecteam.com does not resolve; the status page is served on the vendor
+    subdomain and is not linked from the developer portal.
+changelog:
+  url: https://developer.connecteam.com/changelog
+  cross_ref: changelog/connecteam-changelog.yml
+x-evidence:
+  status_page_fetched: '2026-08-01'
+  status_page_status: 200
+  status_page_title: Connecteam Status

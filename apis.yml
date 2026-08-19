@@ -14,7 +14,7 @@ url: https://raw.githubusercontent.com/api-evangelist/connecteam/refs/heads/main
 image: https://connecteam.com/wp-content/uploads/2024/03/Share-image-homepage.png
 x-type: company
 x-source: harvest:secondary-market
-specificationVersion: '0.20'
+specificationVersion: '0.23'
 created: '2026-08-01'
 modified: '2026-08-01'
 tags:

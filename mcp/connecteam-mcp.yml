@@ -7,41 +7,33 @@ server:
   transport: http
   url: https://developer.connecteam.com/mcp
   protocol: MCP over streamable HTTP (responses returned as text/event-stream)
-  authentication: >-
-    The tools/list handshake is anonymous — no OAuth challenge, no token required. The
-    docs state "If your APIs require authentication, you can pass in headers via query
-    parameters or however headers are configured in your MCP client", i.e. the caller
-    supplies their own X-API-KEY or OAuth bearer token for any downstream Connecteam API
-    call the agent then makes.
-  hosted_by: >-
-    developer.connecteam.com is a ReadMe-hosted developer portal; the MCP server is the
-    portal's spec-explorer server sitting in front of the Connecteam OpenAPI, not a
-    separate data-plane server on api.connecteam.com. api.connecteam.com/mcp answers
-    HTTP 302 back to the marketing site.
+  authentication: The tools/list handshake is anonymous — no OAuth challenge, no token required. The docs
+    state "If your APIs require authentication, you can pass in headers via query parameters or however
+    headers are configured in your MCP client", i.e. the caller supplies their own X-API-KEY or OAuth
+    bearer token for any downstream Connecteam API call the agent then makes.
+  hosted_by: developer.connecteam.com is a ReadMe-hosted developer portal; the MCP server is the portal's
+    spec-explorer server sitting in front of the Connecteam OpenAPI, not a separate data-plane server
+    on api.connecteam.com. api.connecteam.com/mcp answers HTTP 302 back to the marketing site.
   install:
-    cursor: '~/.cursor/mcp.json'
-    windsurf: '~/.codeium/windsurf/mcp_config.json'
+    cursor: ~/.cursor/mcp.json
+    windsurf: ~/.codeium/windsurf/mcp_config.json
     claude_desktop: claude_desktop_config.json
     config: '{"mcpServers": {"connecteam": {"url": "https://developer.connecteam.com/mcp"}}}'
 kind: spec-explorer
-note: >-
-  This is a discovery/introspection server, not one tool per API operation. The three
-  tools navigate the Connecteam OpenAPI (list, fetch, search endpoints); the agent then
-  issues the HTTP call itself. Recorded exactly as published — no candidate tools were
-  invented for the 145 REST operations.
+note: This is a discovery/introspection server, not one tool per API operation. The three tools navigate
+  the Connecteam OpenAPI (list, fetch, search endpoints); the agent then issues the HTTP call itself.
+  Recorded exactly as published — no candidate tools were invented for the 145 REST operations.
 tools:
 - name: list-endpoints
-  description: >-
-    Lists all API paths and their HTTP methods with summaries, organized by path.
-    Results can be passed directly into 'get-endpoint'.
+  description: Lists all API paths and their HTTP methods with summaries, organized by path. Results can
+    be passed directly into 'get-endpoint'.
   input_schema_properties: []
   annotations:
     readOnlyHint: true
     openWorldHint: false
 - name: get-endpoint
-  description: >-
-    Gets detailed information about a specific API endpoint, including security schemes
-    and servers.
+  description: Gets detailed information about a specific API endpoint, including security schemes and
+    servers.
   input_schema_properties:
   - path
   - method
@@ -49,9 +41,8 @@ tools:
     readOnlyHint: true
     openWorldHint: false
 - name: search-endpoints
-  description: >-
-    Performs a deep search through paths, operations, and parameters to discover relevant
-    API endpoints.
+  description: Performs a deep search through paths, operations, and parameters to discover relevant API
+    endpoints.
   input_schema_properties:
   - pattern
   annotations:
@@ -61,8 +52,16 @@ raw_tools_list: connecteam-mcp-tools-list.json
 x-evidence:
   fetched: '2026-08-01'
   url: https://developer.connecteam.com/mcp
-  method: 'POST {"jsonrpc":"2.0","id":1,"method":"tools/list"}'
+  method: POST {"jsonrpc":"2.0","id":1,"method":"tools/list"}
   http_status: 200
   content_type: text/event-stream
   tools_returned: 3
   gated: false
+deployment:
+  mode: remote
+  endpoint: https://developer.connecteam.com/mcp
+  verified: probed
+  probe: live
+  tools: 3
+  checked: '2026-08-12'
+  source: catalog MCP census

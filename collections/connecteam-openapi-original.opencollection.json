@@ -1,0 +1,5400 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Connecteam API documentation",
+    "version": "v1"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Account",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get account information",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.connecteam.com/me",
+            "auth": {
+              "type": "apikey",
+              "key": "X-API-KEY",
+              "value": "{{X-API-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Retrieve the account information"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Settings:v1:Webhook",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get webhook",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.connecteam.com/settings/v1/webhooks/:webhookId",
+            "params": [
+              {
+                "name": "webhookId",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the webhook"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "X-API-KEY",
+              "value": "{{X-API-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Retrieve single webhook information by its unique ID"
+        },
+        {
+          "info": {
+            "name": "Update Webhook",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.connecteam.com/settings/v1/webhooks/:webhookId",
+            "params": [
+              {
+                "name": "webhookId",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the webhook"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "X-API-KEY",
+              "value": "{{X-API-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Update an existing webhook settings by its unique ID."
+        },
+        {
+          "info": {
+            "name": "Delete webhook",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.connecteam.com/settings/v1/webhooks/:webhookId",
+            "params": [
+              {
+                "name": "webhookId",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the webhook"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "X-API-KEY",
+              "value": "{{X-API-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Delete a single webhook configuration by its unique ID"
+        },
+        {
+          "info": {
+            "name": "Get webhooks",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.connecteam.com/settings/v1/webhooks",
+            "params": [
+              {
+                "name": "featureType",
+                "value": "",
+                "type": "query",
+                "description": "The feature type of the webhook. Current options are: users, forms, time_activity, tasks"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "The maximum number of results to display per page"
+              },
+              {
+                "name": "offset",
+                "value": "",
+                "type": "query",
+                "description": "The resource offset of the last successfully read resource will be returned as the paging.offset JSON property of a paginated response containing more results"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "X-API-KEY",
+              "value": "{{X-API-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Retrieves a list of webhook settings associated with the account."
+        },
+        {
+          "info": {
+            "name": "Create webhook",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.connecteam.com/settings/v1/webhooks",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "X-API-KEY",
+              "value": "{{X-API-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Create individual webhook settings under specified details"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Attachments:v1:Files",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Generate upload url",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.connecteam.com/attachments/v1/files/generate-upload-url",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "X-API-KEY",
+              "value": "{{X-API-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Generates a pre-signed URL that can be used to securely upload an attachment to the cloud. The pre-signed URL ensures temporary access for the upload (300 seconds), and it will be associated with a specific feature within the application."
+        },
+        {
+          "info": {
+            "name": "Finalize upload",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.connecteam.com/attachments/v1/files/complete-upload/:fileId",
+            "params": [
+              {
+                "name": "fileId",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier for the uploaded filetype"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "X-API-KEY",
+              "value": "{{X-API-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Finalizes the upload process for the attachment identified by the fileId. It confirms and registers the uploaded file, ensuring it is properly associated with the relevant feature."
+        },
+        {
+          "info": {
+            "name": "Get file metadata",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.connecteam.com/attachments/v1/files/:fileId",
+            "params": [
+              {
+                "name": "fileId",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier for the uploaded filetype"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "X-API-KEY",
+              "value": "{{X-API-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Retrieve detailed information about a previously uploaded attachment identified by the fileId. The response includes its metadata, and the status of the upload process."
+        },
+        {
+          "info": {
+            "name": "Generate download URL",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.connecteam.com/attachments/v1/files/download-url",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "X-API-KEY",
+              "value": "{{X-API-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Generates a time limited URL for downloading a file."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Forms:v1:Forms",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get form",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.connecteam.com/forms/v1/forms/:formId",
+            "params": [
+              {
+                "name": "formId",
+                "value": "",
+                "type": "path",
+                "description": "Form id to return"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "X-API-KEY",
+              "value": "{{X-API-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Retrieve single form information by its unique ID"
+        },
+        {
+          "info": {
+            "name": "Get forms",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.connecteam.com/forms/v1/forms",
+            "params": [
+              {
+                "name": "name",
+                "value": "",
+                "type": "query",
+                "description": "The name of the form to filter by (partial, case-insensitive match)"
+              },
+              {
+                "name": "startDate",
+                "value": "",
+                "type": "query",
+                "description": "Filter forms created on or after this date (form creation date) in ISO 8601 format (YYYY-MM-DD). Inclusive."
+              },
+              {
+                "name": "endDate",
+                "value": "",
+                "type": "query",
+                "description": "Filter forms created on or before this date (form creation date) in ISO 8601 format (YYYY-MM-DD). Inclusive."
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "The maximum number of results to display per page"
+              },
+              {
+                "name": "offset",
+                "value": "",
+                "type": "query",
+                "description": "The resource offset of the last successfully read resource will be returned as the paging.offset JSON property of a paginated response containing more results"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "X-API-KEY",
+              "value": "{{X-API-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Retrieve a list of forms associated with the account"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Forms:v1:Form Submissions",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get form submissions",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.connecteam.com/forms/v1/forms/:formId/form-submissions",
+            "params": [
+              {
+                "name": "formId",
+                "value": "",
+                "type": "path",
+                "description": "Filter by Form Id"
+              },
+              {
+                "name": "userIds",
+                "value": "",
+                "type": "query",
+                "description": "Filter by submitting user ids"
+              },
+              {
+                "name": "submittingStartTimestamp",
+                "value": "",
+                "type": "query",
+                "description": "Filter form submissions that were submitted from this timestamp"
+              },
+              {
+                "name": "submittingEndTime",
+                "value": "",
+                "type": "query",
+                "description": "Filter form submissions that were submitted until this timestamp"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "The maximum number of results to display per page"
+              },
+              {
+                "name": "offset",
+                "value": "",
+                "type": "query",
+                "description": "The resource offset of the last successfully read resource will be returned as the paging.offset JSON property of a paginated response containing more results"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "X-API-KEY",
+              "value": "{{X-API-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Retrieve a list of form submissions by form ID"
+        },
+        {
+          "info": {
+            "name": "Get form submission",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.connecteam.com/forms/v1/forms/:formId/form-submissions/:formSubmissionId",
+            "params": [
+              {
+                "name": "formId",
+                "value": "",
+                "type": "path",
+                "description": "Form Id"
+              },
+              {
+                "name": "formSubmissionId",
+                "value": "",
+                "type": "path",
+                "description": "Filter by Form submission id"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "X-API-KEY",
+              "value": "{{X-API-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Retrieve a single form submission by form submission ID"
+        },
+        {
+          "info": {
+            "name": "Update form submission",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.connecteam.com/forms/v1/forms/:formId/form-submissions/:formSubmissionId",
+            "params": [
+              {
+                "name": "formId",
+                "value": "",
+                "type": "path",
+                "description": "Form Id"
+              },
+              {
+                "name": "formSubmissionId",
+                "value": "",
+                "type": "path",
+                "description": "Filter by Form submission id"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "X-API-KEY",
+              "value": "{{X-API-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Update a single form submission by form submission ID. Currently, updates are only supported for manager fields."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Forms:v1:Questions",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get dropdown question options",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.connecteam.com/forms/v1/forms/:formId/questions/:questionId",
+            "params": [
+              {
+                "name": "formId",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the form"
+              },
+              {
+                "name": "questionId",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the question within the specified form. This question must be of type dropdown."
+              },
+              {
+                "name": "includeDeleted",
+                "value": "",
+                "type": "query",
+                "description": "Include deleted options"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "The maximum number of results to display per page"
+              },
+              {
+                "name": "offset",
+                "value": "",
+                "type": "query",
+                "description": "The resource offset of the last successfully read resource will be returned as the paging.offset JSON property of a paginated response containing more results"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "X-API-KEY",
+              "value": "{{X-API-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Retrieve the list of selectable options for a dropdown-type question within a specified form."
+        },
+        {
+          "info": {
+            "name": "Add dropdown options",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.connecteam.com/forms/v1/forms/:formId/questions/:questionId",
+            "params": [
+              {
+                "name": "formId",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the form"
+              },
+              {
+                "name": "questionId",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the question within the specified form. This question must be of type dropdown."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "X-API-KEY",
+              "value": "{{X-API-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Add a new value option under a specified question. The value will be added to the existing value options and will not override them. Make sure the question type is of dropdown one."
+        },
+        {
+          "info": {
+            "name": "Update dropdown option",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.connecteam.com/forms/v1/forms/:formId/questions/:questionId/options/:optionId",
+            "params": [
+              {
+                "name": "formId",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the form"
+              },
+              {
+                "name": "questionId",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the question within the specified form. This question must be of type dropdown."
+              },
+              {
+                "name": "optionId",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the specific option within the dropdown list."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "X-API-KEY",
+              "value": "{{X-API-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Update the label of an existing option in a dropdown-type question within a specified form. This action overrides the current value."
+        },
+        {
+          "info": {
+            "name": "Delete dropdown option",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.connecteam.com/forms/v1/forms/:formId/questions/:questionId/options/:optionId",
+            "params": [
+              {
+                "name": "formId",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the form"
+              },
+              {
+                "name": "questionId",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the question within the specified form. This question must be of type dropdown."
+              },
+              {
+                "name": "optionId",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the specific option within the dropdown list"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "X-API-KEY",
+              "value": "{{X-API-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Delete an existing selectable option from a dropdown-type question within a specified form."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Schedule:v1:Schedulers",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get schedulers",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.connecteam.com/scheduler/v1/schedulers",
+            "auth": {
+              "type": "apikey",
+              "key": "X-API-KEY",
+              "value": "{{X-API-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Retrieve a list of schedulers associated with the account"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Schedule:v1:Schedulers:Unavailabilities",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get user unavailabilities",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.connecteam.com/scheduler/v1/schedulers/user-unavailability",
+            "params": [
+              {
+                "name": "userId",
+                "value": "",
+                "type": "query",
+                "description": "The unique identifier of the user"
+              },
+              {
+                "name": "startTime",
+                "value": "",
+                "type": "query",
+                "description": "The start time to filter by in Unix format (in seconds)"
+              },
+              {
+                "name": "endTime",
+                "value": "",
+                "type": "query",
+                "description": "The end time to filter by in Unix format (in seconds)"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "X-API-KEY",
+              "value": "{{X-API-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Retrieve a list of user unavailabilities, approved time-off requests and assigned shifts"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Schedule:v1:Schedulers:Schedule:Shifts:Shifts",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get shifts",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.connecteam.com/scheduler/v1/schedulers/:schedulerId/shifts",
+            "params": [
+              {
+                "name": "schedulerId",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the schedule"
+              },
+              {
+                "name": "startTime",
+                "value": "",
+                "type": "query",
+                "description": "The start time to filter by in Unix format (in seconds)"
+              },
+              {
+                "name": "endTime",
+                "value": "",
+                "type": "query",
+                "description": "The end time to filter by in Unix format (in seconds)"
+              },
+              {
+                "name": "isOpenShift",
+                "value": "",
+                "type": "query",
+                "description": "Filter shifts that are open shifts"
+              },
+              {
+                "name": "isPublished",
+                "value": "",
+                "type": "query",
+                "description": "Filter shifts that are published"
+              },
+              {
+                "name": "isRequireAdminApproval",
+                "value": "",
+                "type": "query",
+                "description": "Filter shifts that require admin approval"
+              },
+              {
+                "name": "jobId",
+                "value": "",
+                "type": "query",
+                "description": "List of job IDs"
+              },
+              {
+                "name": "assignedUserIds",
+                "value": "",
+                "type": "query",
+                "description": "List of user IDs"
+              },
+              {
+                "name": "shiftId",
+                "value": "",
+                "type": "query",
+                "description": "List of shift IDs"
+              },
+              {
+                "name": "title",
+                "value": "",
+                "type": "query",
+                "description": "Title of the shift"
+              },
+              {
+                "name": "sort",
+                "value": "",
+                "type": "query",
+                "description": "Sort key"
+              },
+              {
+                "name": "order",
+                "value": "",
+                "type": "query",
+                "description": "Sort order, set only if sort key is set"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "The maximum number of results to display per page"
+              },
+              {
+                "name": "offset",
+                "value": "",
+                "type": "query",
+                "description": "The resource offset of the last successfully read resource will be returned as the paging.offset JSON property of a paginated response containing more results"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "X-API-KEY",
+              "value": "{{X-API-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Retrieve a list of shifts under a specific schedule"
+        },
+        {
+          "info": {
+            "name": "Create shifts",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.connecteam.com/scheduler/v1/schedulers/:schedulerId/shifts",
+            "params": [
+              {
+                "name": "schedulerId",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the schedule"
+              },
+              {
+                "name": "notifyUsers",
+                "value": "",
+                "type": "query",
+                "description": "Indicates whether to send a notification to the users assigned to the shifts. This applies only to shifts that are published."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "X-API-KEY",
+              "value": "{{X-API-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Create single or multiple shifts under a specific schedule"
+        },
+        {
+          "info": {
+            "name": "Update shifts",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.connecteam.com/scheduler/v1/schedulers/:schedulerId/shifts",
+            "params": [
+              {
+                "name": "schedulerId",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the schedule"
+              },
+              {
+                "name": "notifyUsers",
+                "value": "",
+                "type": "query",
+                "description": "Indicates whether to send a notification to the users assigned to the shifts. This applies only to shifts that are published."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "X-API-KEY",
+              "value": "{{X-API-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Update single or multiple shifts under a specific schedule"
+        },
+        {
+          "info": {
+            "name": "Delete shifts",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.connecteam.com/scheduler/v1/schedulers/:schedulerId/shifts",
+            "params": [
+              {
+                "name": "schedulerId",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the schedule"
+              },
+              {
+                "name": "notifyUsers",
+                "value": "",
+                "type": "query",
+                "description": "Indicates whether to send a notification to the users assigned to the shifts. This applies only to shifts that are published."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "X-API-KEY",
+              "value": "{{X-API-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Delete single or multiple shifts in a specified schedule"
+        },
+        {
+          "info": {
+            "name": "Get shift",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.connecteam.com/scheduler/v1/schedulers/:schedulerId/shifts/:shiftId",
+            "params": [
+              {
+                "name": "shiftId",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the shift"
+              },
+              {
+                "name": "schedulerId",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the schedule"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "X-API-KEY",
+              "value": "{{X-API-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Retrieve single shift information by its unique ID"
+        },
+        {
+          "info": {
+            "name": "Delete shift",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.connecteam.com/scheduler/v1/schedulers/:schedulerId/shifts/:shiftId",
+            "params": [
+              {
+                "name": "shiftId",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the shift to delete"
+              },
+              {
+                "name": "schedulerId",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the schedule"
+              },
+              {
+                "name": "notifyUsers",
+                "value": "",
+                "type": "query",
+                "description": "Indicates whether to send a notification to the users assigned to the shifts. This applies only to shifts that are published."
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "X-API-KEY",
+              "value": "{{X-API-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Delete a single shift by its unique ID"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Schedule:v1:Schedulers:Schedule:Shift layers",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get shift layers",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.connecteam.com/scheduler/v1/schedulers/:schedulerId/shift-layers",
+            "params": [
+              {
+                "name": "schedulerId",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the schedule"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "X-API-KEY",
+              "value": "{{X-API-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Retrieve a list of shift layers under a specified schedule"
+        },
+        {
+          "info": {
+            "name": "Get shift layer values",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.connecteam.com/scheduler/v1/schedulers/:schedulerId/shift-layers/:layerId/values",
+            "params": [
+              {
+                "name": "schedulerId",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the schedule"
+              },
+              {
+                "name": "layerId",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the layer"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "The maximum number of results to display per page"
+              },
+              {
+                "name": "offset",
+                "value": "",
+                "type": "query",
+                "description": "The resource offset of the last successfully read resource will be returned as the paging.offset JSON property of a paginated response containing more results"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "X-API-KEY",
+              "value": "{{X-API-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Retrieve the possible values of a shift layer"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Schedule:v1:Schedulers:Schedule:Shift Custom Fields",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get shift custom fields",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.connecteam.com/scheduler/v1/schedulers/:schedulerId/custom-fields",
+            "params": [
+              {
+                "name": "schedulerId",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the schedule"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "The maximum number of results to display per page"
+              },
+              {
+                "name": "offset",
+                "value": "",
+                "type": "query",
+                "description": "The resource offset of the last successfully read resource will be returned as the paging.offset JSON property of a paginated response containing more results"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "X-API-KEY",
+              "value": "{{X-API-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Retrieves all shift custom fields associated with the scheduler"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Schedule:v1:Schedulers:Schedule:Shift Auto Assign",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Create auto-assign request",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.connecteam.com/scheduler/v1/schedulers/:schedulerId/shifts/auto-assign",
+            "params": [
+              {
+                "name": "schedulerId",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the schedule"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "X-API-KEY",
+              "value": "{{X-API-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Initiate a request to auto-assign shifts by their IDs. If multiple IDs are provided, all corresponding shifts must occur within the same work week (e.g., Monday to Sunday). This endpoint only submits the request; processing may take a few minutes. The auto-assignment considers user preferences to work, unavailability, and approved time off. For assignment status, refer to the auto-assign status endpoint."
+        },
+        {
+          "info": {
+            "name": "Get auto-assign status",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.connecteam.com/scheduler/v1/schedulers/:schedulerId/shifts/auto-assign/:autoAssignRequestId",
+            "params": [
+              {
+                "name": "autoAssignRequestId",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the auto assign request"
+              },
+              {
+                "name": "schedulerId",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the schedule"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "X-API-KEY",
+              "value": "{{X-API-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Retrieve the status of an auto-assign request using its unique request ID. The response categorizes the results into 'scheduled shifts' for successfully assigned shifts and 'unscheduled shifts' for those where auto-assignment was not successful."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Schedule:v1:Schedulers:Schedule:Schedule Unavailability",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Create schedule unavailability",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.connecteam.com/scheduler/v1/schedulers/:schedulerId/unavailability",
+            "params": [
+              {
+                "name": "schedulerId",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the schedule"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "X-API-KEY",
+              "value": "{{X-API-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Create a single unavailability in the specified schedule for a designated user on a given date. The unavailability can be set for the entire day or for a specific part of it. Repeating unavailabilities are currently not supported. The timezone of the unavailability will be determined based on the schedule's settings."
+        },
+        {
+          "info": {
+            "name": "Delete schedule unavailability",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.connecteam.com/scheduler/v1/schedulers/:schedulerId/unavailability/:unavailabilityId",
+            "params": [
+              {
+                "name": "unavailabilityId",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the unavailability"
+              },
+              {
+                "name": "schedulerId",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the schedule"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "X-API-KEY",
+              "value": "{{X-API-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Delete existing unavailability by its unavailability ID"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Schedule:v1:Schedulers:Schedule:Schedule Unavailabilities",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get schedule unavailabilities",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.connecteam.com/scheduler/v1/schedulers/:schedulerId/unavailabilities",
+            "params": [
+              {
+                "name": "schedulerId",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the schedule"
+              },
+              {
+                "name": "startTime",
+                "value": "",
+                "type": "query",
+                "description": "The start time to filter by in Unix format (in seconds)"
+              },
+              {
+                "name": "endTime",
+                "value": "",
+                "type": "query",
+                "description": "The end time to filter by in Unix format (in seconds)"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "The maximum number of results to display per page"
+              },
+              {
+                "name": "offset",
+                "value": "",
+                "type": "query",
+                "description": "The resource offset of the last successfully read resource will be returned as the paging.offset JSON property of a paginated response containing more results"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "X-API-KEY",
+              "value": "{{X-API-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Retrieve a list of unavailabilities under a specific schedule filtered by date range. The response is paginated and can be filtered by user ID."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Schedule:v2:Schedulers:Schedule:Shifts (V2):Shifts",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get shifts",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.connecteam.com/scheduler/v2/schedulers/:schedulerId/shifts",
+            "params": [
+              {
+                "name": "schedulerId",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the schedule"
+              },
+              {
+                "name": "startTime",
+                "value": "",
+                "type": "query",
+                "description": "The start time to filter by in Unix format (in seconds)"
+              },
+              {
+                "name": "endTime",
+                "value": "",
+                "type": "query",
+                "description": "The end time to filter by in Unix format (in seconds)"
+              },
+              {
+                "name": "isOpenShift",
+                "value": "",
+                "type": "query",
+                "description": "Filter shifts that are open shifts"
+              },
+              {
+                "name": "isPublished",
+                "value": "",
+                "type": "query",
+                "description": "Filter shifts that are published"
+              },
+              {
+                "name": "isRequireAdminApproval",
+                "value": "",
+                "type": "query",
+                "description": "Filter shifts that require admin approval"
+              },
+              {
+                "name": "jobId",
+                "value": "",
+                "type": "query",
+                "description": "List of job IDs"
+              },
+              {
+                "name": "assignedUserIds",
+                "value": "",
+                "type": "query",
+                "description": "List of user IDs"
+              },
+              {
+                "name": "shiftId",
+                "value": "",
+                "type": "query",
+                "description": "List of shift IDs"
+              },
+              {
+                "name": "title",
+                "value": "",
+                "type": "query",
+                "description": "Title of the shift"
+              },
+              {
+                "name": "sort",
+                "value": "",
+                "type": "query",
+                "description": "Sort key"
+              },
+              {
+                "name": "order",
+                "value": "",
+                "type": "query",
+                "description": "Sort order, set only if sort key is set"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "The maximum number of results to display per page"
+              },
+              {
+                "name": "offset",
+                "value": "",
+                "type": "query",
+                "description": "The resource offset of the last successfully read resource will be returned as the paging.offset JSON property of a paginated response containing more results"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "X-API-KEY",
+              "value": "{{X-API-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Retrieve a list of shifts under a specific schedule"
+        },
+        {
+          "info": {
+            "name": "Create shifts",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.connecteam.com/scheduler/v2/schedulers/:schedulerId/shifts",
+            "params": [
+              {
+                "name": "schedulerId",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the schedule"
+              },
+              {
+                "name": "notifyUsers",
+                "value": "",
+                "type": "query",
+                "description": "Indicates whether to send a notification to the users assigned to the shifts. This applies only to shifts that are published."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "X-API-KEY",
+              "value": "{{X-API-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Create single or multiple shifts under a specific schedule"
+        },
+        {
+          "info": {
+            "name": "Update shifts",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.connecteam.com/scheduler/v2/schedulers/:schedulerId/shifts",
+            "params": [
+              {
+                "name": "schedulerId",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the schedule"
+              },
+              {
+                "name": "notifyUsers",
+                "value": "",
+                "type": "query",
+                "description": "Indicates whether to send a notification to the users assigned to the shifts. This applies only to shifts that are published."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "X-API-KEY",
+              "value": "{{X-API-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Update single or multiple shifts under a specific schedule"
+        },
+        {
+          "info": {
+            "name": "Delete shifts",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.connecteam.com/scheduler/v2/schedulers/:schedulerId/shifts",
+            "params": [
+              {
+                "name": "schedulerId",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the schedule"
+              },
+              {
+                "name": "notifyUsers",
+                "value": "",
+                "type": "query",
+                "description": "Indicates whether to send a notification to the users assigned to the shifts. This applies only to shifts that are published."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "X-API-KEY",
+              "value": "{{X-API-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Delete single or multiple shifts in a specified schedule"
+        },
+        {
+          "info": {
+            "name": "Get shift",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.connecteam.com/scheduler/v2/schedulers/:schedulerId/shifts/:shiftId",
+            "params": [
+              {
+                "name": "shiftId",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the shift"
+              },
+              {
+                "name": "schedulerId",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the schedule"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "X-API-KEY",
+              "value": "{{X-API-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Retrieve single shift information by its unique ID"
+        },
+        {
+          "info": {
+            "name": "Delete shift",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.connecteam.com/scheduler/v2/schedulers/:schedulerId/shifts/:shiftId",
+            "params": [
+              {
+                "name": "shiftId",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the shift to delete"
+              },
+              {
+                "name": "schedulerId",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the schedule"
+              },
+              {
+                "name": "notifyUsers",
+                "value": "",
+                "type": "query",
+                "description": "Indicates whether to send a notification to the users assigned to the shifts. This applies only to shifts that are published."
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "X-API-KEY",
+              "value": "{{X-API-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Delete a single shift by its unique ID"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Schedule:v2:Schedulers:Schedule:Shift Auto Assign (V2):Shift Auto Assign",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Create auto-assign request",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.connecteam.com/scheduler/v2/schedulers/:schedulerId/shifts/auto-assign",
+            "params": [
+              {
+                "name": "schedulerId",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the schedule"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "X-API-KEY",
+              "value": "{{X-API-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Initiate a request to auto-assign shifts by their IDs. If multiple IDs are provided, all corresponding shifts must occur within the same work week (e.g., Monday to Sunday). This endpoint only submits the request; processing may take a few minutes. The auto-assignment considers user preferences to work, unavailability, and approved time off. For assignment status, refer to the auto-assign status endpoint."
+        },
+        {
+          "info": {
+            "name": "Get auto-assign status",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.connecteam.com/scheduler/v2/schedulers/:schedulerId/shifts/auto-assign/:autoAssignRequestId",
+            "params": [
+              {
+                "name": "autoAssignRequestId",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the auto assign request"
+              },
+              {
+                "name": "schedulerId",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the schedule"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "X-API-KEY",
+              "value": "{{X-API-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Retrieve the status of an auto-assign request using its unique request ID. The response categorizes the results into 'scheduled shifts' for successfully assigned shifts and 'unscheduled shifts' for those where auto-assignment was not successful."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Schedule:v2:Schedulers:Unavailabilities (V2):Unavailabilities",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get user unavailabilities",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.connecteam.com/scheduler/v2/schedulers/user-unavailability",
+            "params": [
+              {
+                "name": "userId",
+                "value": "",
+                "type": "query",
+                "description": "The unique identifier of the user"
+              },
+              {
+                "name": "startTime",
+                "value": "",
+                "type": "query",
+                "description": "The start time to filter by in Unix format (in seconds)"
+              },
+              {
+                "name": "endTime",
+                "value": "",
+                "type": "query",
+                "description": "The end time to filter by in Unix format (in seconds)"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "X-API-KEY",
+              "value": "{{X-API-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Retrieve a list of user unavailabilities, approved time-off requests and assigned shifts"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Jobs:v1:Jobs",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get jobs",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.connecteam.com/jobs/v1/jobs",
+            "params": [
+              {
+                "name": "instanceIds",
+                "value": "",
+                "type": "query",
+                "description": "List of instance IDs (schedule id or time clock id) to filter by"
+              },
+              {
+                "name": "jobIds",
+                "value": "",
+                "type": "query",
+                "description": "List of job IDs to filter by. In cases where a job ID includes nested sub-jobs, all sub-jobs under that parent job will be retrieved alongside with the parent job. Note that this filter does not support direct querying by sub-job IDs. To retrieve specific sub-jobs, please use the Get Job endpoint"
+              },
+              {
+                "name": "jobNames",
+                "value": "",
+                "type": "query",
+                "description": "List of job names to filter by. In case where a sub-job name is provided, the relevant sub-job with all other nested sub-jobs will be retrieved alongside with the parent job."
+              },
+              {
+                "name": "jobCodes",
+                "value": "",
+                "type": "query",
+                "description": "List of job codes to filter by. In case where a sub-job code is provided, the relevant sub-job with all other nested sub-jobs will be retrieved alongside with the parent job."
+              },
+              {
+                "name": "includeDeleted",
+                "value": "",
+                "type": "query",
+                "description": "Determines whether the response includes jobs that have been deleted. Default value is set to true."
+              },
+              {
+                "name": "sort",
+                "value": "",
+                "type": "query",
+                "description": "Sort key"
+              },
+              {
+                "name": "order",
+                "value": "",
+                "type": "query",
+                "description": "Sort order, set only if sort key is set"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "The maximum number of results to display per page"
+              },
+              {
+                "name": "offset",
+                "value": "",
+                "type": "query",
+                "description": "The resource offset of the last successfully read resource will be returned as the paging.offset JSON property of a paginated response containing more results"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "X-API-KEY",
+              "value": "{{X-API-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Get a list of job objects relevant to instance id (scheduler id or time clock id).\nIf unified jobs are disabled, only schedulers are supported"
+        },
+        {
+          "info": {
+            "name": "Create jobs",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.connecteam.com/jobs/v1/jobs",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "X-API-KEY",
+              "value": "{{X-API-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Create individual or multiple jobs under a specified scheduler"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Jobs:v1:Job",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get job",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.connecteam.com/jobs/v1/jobs/:jobId",
+            "params": [
+              {
+                "name": "jobId",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the job"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "X-API-KEY",
+              "value": "{{X-API-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Retrieve a single job information by its unique ID"
+        },
+        {
+          "info": {
+            "name": "Update job",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.connecteam.com/jobs/v1/jobs/:jobId",
+            "params": [
+              {
+                "name": "jobId",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the job"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "X-API-KEY",
+              "value": "{{X-API-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Update a single job by its unique identifier. Currently, updating job with nested sub-jobs is not supported."
+        },
+        {
+          "info": {
+            "name": "Delete job",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.connecteam.com/jobs/v1/jobs/:jobId",
+            "params": [
+              {
+                "name": "jobId",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the job"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "X-API-KEY",
+              "value": "{{X-API-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Delete a single job by its unique identifier.\n        Currently, deleting a sub-job and/or job with nested sub-jobs is not supported."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Jobs:v1:Custom Fields",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get resource custom fields",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.connecteam.com/jobs/v1/custom-fields",
+            "params": [
+              {
+                "name": "customFieldIds",
+                "value": "",
+                "type": "query",
+                "description": "Custom field ids to filter by"
+              },
+              {
+                "name": "categoryIds",
+                "value": "",
+                "type": "query",
+                "description": "Custom field category ids to filter by"
+              },
+              {
+                "name": "customFieldTypes",
+                "value": "",
+                "type": "query",
+                "description": "Custom field types to filter by"
+              },
+              {
+                "name": "customFieldNames",
+                "value": "",
+                "type": "query",
+                "description": "Custom field names to filter by"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "The maximum number of results to display per page"
+              },
+              {
+                "name": "offset",
+                "value": "",
+                "type": "query",
+                "description": "The resource offset of the last successfully read resource will be returned as the paging.offset JSON property of a paginated response containing more results"
+              },
+              {
+                "name": "sort",
+                "value": "",
+                "type": "query",
+                "description": "Sort key"
+              },
+              {
+                "name": "order",
+                "value": "",
+                "type": "query",
+                "description": "Sort order, set only if sort key is set"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "X-API-KEY",
+              "value": "{{X-API-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Retrieves all resource custom fields associated with the account. Optionally, filter the results by custom field IDs, names, or types."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Users:v1:Users",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get users",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.connecteam.com/users/v1/users",
+            "params": [
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "The maximum number of results to display per page"
+              },
+              {
+                "name": "offset",
+                "value": "",
+                "type": "query",
+                "description": "The resource offset of the last successfully read resource will be returned as the paging.offset JSON property of a paginated response containing more results"
+              },
+              {
+                "name": "sort",
+                "value": "",
+                "type": "query",
+                "description": "Sort key"
+              },
+              {
+                "name": "order",
+                "value": "",
+                "type": "query",
+                "description": "Sort order, set only if sort key is set"
+              },
+              {
+                "name": "userIds",
+                "value": "",
+                "type": "query",
+                "description": "List of user IDs for filtering."
+              },
+              {
+                "name": "userStatus",
+                "value": "",
+                "type": "query",
+                "description": "Filter users by status. Default is active."
+              },
+              {
+                "name": "fullNames",
+                "value": "",
+                "type": "query",
+                "description": "List of full names to filter by. Specify the exact first and last name with a space between them as shown in the platform (ignore capitalization)."
+              },
+              {
+                "name": "phoneNumbers",
+                "value": "",
+                "type": "query",
+                "description": "List of phone numbers to filter by (in format +<country code><phone number>)."
+              },
+              {
+                "name": "emailAddresses",
+                "value": "",
+                "type": "query",
+                "description": "List of email addresses to filter by (in format test@test.com)."
+              },
+              {
+                "name": "createdAt",
+                "value": "",
+                "type": "query",
+                "description": "Parameter specifying the date in Unix format (in seconds). Only users created after this date will be included in the results."
+              },
+              {
+                "name": "modifiedAt",
+                "value": "",
+                "type": "query",
+                "description": "Parameter specifying the date in in Unix format (in seconds). Only users with fields updated after this date will be included in the results."
+              },
+              {
+                "name": "lastLogin",
+                "value": "",
+                "type": "query",
+                "description": "Parameter specifying the date in in Unix format (in seconds). Only users who's logged in after this date will be included in the results."
+              },
+              {
+                "name": "archivedAt",
+                "value": "",
+                "type": "query",
+                "description": "Parameter specifying the date in Unix format (in seconds). Only users archived after this date will be included in the results."
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "X-API-KEY",
+              "value": "{{X-API-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Retrieves a list of all users associated with the account. Optionally, filter by user ID to receive specific user information"
+        },
+        {
+          "info": {
+            "name": "Create users",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.connecteam.com/users/v1/users",
+            "params": [
+              {
+                "name": "sendActivation",
+                "value": "",
+                "type": "query",
+                "description": "Optional flag to send activation sms."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "X-API-KEY",
+              "value": "{{X-API-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Create individual or multiple users associated with the account using the provided details."
+        },
+        {
+          "info": {
+            "name": "Update users",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.connecteam.com/users/v1/users",
+            "params": [
+              {
+                "name": "editUsersByPhone",
+                "value": "",
+                "type": "query",
+                "description": "Optional flag to edit users by phone (default by user id)."
+              },
+              {
+                "name": "includeSmartGroupIds",
+                "value": "",
+                "type": "query",
+                "description": "Indicates whether to include smart group IDs in the response body for the updated user(s). Please note that setting this value to true may increase the request time significantly."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "X-API-KEY",
+              "value": "{{X-API-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Update individual or multiple users associated with the account using the provided details. You can specify updates either by their phone number or unique userID."
+        },
+        {
+          "info": {
+            "name": "Archive users",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.connecteam.com/users/v1/users",
+            "params": [
+              {
+                "name": "deletionType",
+                "value": "",
+                "type": "query",
+                "description": "Determines whether to archive the users or permanently delete the users from the account. Permanent deletion is limited to 25 users per request."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "X-API-KEY",
+              "value": "{{X-API-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Archive or permanently delete individual or multiple users associated with the account by their unique userID. In case of deletion, it will permanently delete the users from the system and cannot be undone."
+        },
+        {
+          "info": {
+            "name": "Delete user",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.connecteam.com/users/v1/users/:userId",
+            "params": [
+              {
+                "name": "userId",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the user to archive or delete"
+              },
+              {
+                "name": "deletionType",
+                "value": "",
+                "type": "query",
+                "description": "Determines whether to archive the user or permanently delete the user from the account."
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "X-API-KEY",
+              "value": "{{X-API-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Delete or archive user associated with the account. In case of deletion, it will permanently delete the user from the system and cannot be undone."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Users:v1:Custom Fields",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get custom fields",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.connecteam.com/users/v1/custom-fields",
+            "params": [
+              {
+                "name": "customFieldIds",
+                "value": "",
+                "type": "query",
+                "description": "Custom field ids to filter by"
+              },
+              {
+                "name": "categoryIds",
+                "value": "",
+                "type": "query",
+                "description": "Custom field category ids to filter by"
+              },
+              {
+                "name": "customFieldTypes",
+                "value": "",
+                "type": "query",
+                "description": "Custom field types to filter by"
+              },
+              {
+                "name": "customFieldNames",
+                "value": "",
+                "type": "query",
+                "description": "Custom field names to filter by"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "The maximum number of results to display per page"
+              },
+              {
+                "name": "offset",
+                "value": "",
+                "type": "query",
+                "description": "The resource offset of the last successfully read resource will be returned as the paging.offset JSON property of a paginated response containing more results"
+              },
+              {
+                "name": "sort",
+                "value": "",
+                "type": "query",
+                "description": "Sort key"
+              },
+              {
+                "name": "order",
+                "value": "",
+                "type": "query",
+                "description": "Sort order, set only if sort key is set"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "X-API-KEY",
+              "value": "{{X-API-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Retrieves all custom fields associated with the account. Optionally, filter the results by categories, names, types, or custom field IDs."
+        },
+        {
+          "info": {
+            "name": "Create custom fields",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.connecteam.com/users/v1/custom-fields",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "X-API-KEY",
+              "value": "{{X-API-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Create individual or multiple custom fields associated with the account under a specific category."
+        },
+        {
+          "info": {
+            "name": "Update custom fields",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.connecteam.com/users/v1/custom-fields",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "X-API-KEY",
+              "value": "{{X-API-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Update custom fields settings by their unique ID"
+        },
+        {
+          "info": {
+            "name": "Delete custom fields",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.connecteam.com/users/v1/custom-fields",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "X-API-KEY",
+              "value": "{{X-API-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Delete individual or multiple custom fields associated with the account by their unique ID."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Users:v1:Custom Fields:Custom Field options",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get custom field options",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.connecteam.com/users/v1/custom-fields/:customFieldId/options",
+            "params": [
+              {
+                "name": "customFieldId",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the custom field"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "The maximum number of results to display per page"
+              },
+              {
+                "name": "offset",
+                "value": "",
+                "type": "query",
+                "description": "The resource offset of the last successfully read resource will be returned as the paging.offset JSON property of a paginated response containing more results"
+              },
+              {
+                "name": "isDisabled",
+                "value": "",
+                "type": "query",
+                "description": "Parameter specifying the if to filter only for disabled options."
+              },
+              {
+                "name": "isDeleted",
+                "value": "",
+                "type": "query",
+                "description": "Parameter specifying the if to filter only for deleted options."
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "X-API-KEY",
+              "value": "{{X-API-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Retrieve a list of all dropdown value options under a specified custom field"
+        },
+        {
+          "info": {
+            "name": "Create custom field option",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.connecteam.com/users/v1/custom-fields/:customFieldId/options",
+            "params": [
+              {
+                "name": "customFieldId",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the custom field"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "X-API-KEY",
+              "value": "{{X-API-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Add new option for a specified custom field.The option will be added to the existing ones and will not overwrite them.Currently supports dropdown custom fields options."
+        },
+        {
+          "info": {
+            "name": "Update custom field option",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.connecteam.com/users/v1/custom-fields/:customFieldId/options/:optionId",
+            "params": [
+              {
+                "name": "optionId",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the option to update"
+              },
+              {
+                "name": "customFieldId",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the custom field"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "X-API-KEY",
+              "value": "{{X-API-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Update the value for an option under a specified custom field"
+        },
+        {
+          "info": {
+            "name": "Delete custom field option",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.connecteam.com/users/v1/custom-fields/:customFieldId/options/:optionId",
+            "params": [
+              {
+                "name": "optionId",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the option to delete"
+              },
+              {
+                "name": "customFieldId",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the custom field"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "X-API-KEY",
+              "value": "{{X-API-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Delete the value for an option under a specified custom field"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Users:v1:Custom Field Categories",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get custom field categories",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.connecteam.com/users/v1/custom-field-categories",
+            "params": [
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "The maximum number of results to display per page"
+              },
+              {
+                "name": "offset",
+                "value": "",
+                "type": "query",
+                "description": "The resource offset of the last successfully read resource will be returned as the paging.offset JSON property of a paginated response containing more results"
+              },
+              {
+                "name": "categoryIds",
+                "value": "",
+                "type": "query",
+                "description": "Custom field category ids to filter by"
+              },
+              {
+                "name": "categoryNames",
+                "value": "",
+                "type": "query",
+                "description": "Custom field category names to filter by"
+              },
+              {
+                "name": "sort",
+                "value": "",
+                "type": "query",
+                "description": "Sort key"
+              },
+              {
+                "name": "order",
+                "value": "",
+                "type": "query",
+                "description": "Sort order, set only if sort key is set"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "X-API-KEY",
+              "value": "{{X-API-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Retrieves all custom fields categories associated with the account. Optionally, filter the results by category IDs and/or names."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Users:v1:Smart Groups",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get smart groups",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.connecteam.com/users/v1/smart-groups",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "query",
+                "description": "The unique identifier of the smart group."
+              },
+              {
+                "name": "name",
+                "value": "",
+                "type": "query",
+                "description": "The name of the smart group to filter by."
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "X-API-KEY",
+              "value": "{{X-API-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Retrieves a list of smart groups associated with the account."
+        },
+        {
+          "info": {
+            "name": "Create smart group",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.connecteam.com/users/v1/smart-groups",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "X-API-KEY",
+              "value": "{{X-API-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Create a new smart group under a specified segment. The smart group settings are currently based only on dropdown custom field type (support for additional field types will be added in the future). The created group is dynamic, meaning any new or existing users who meet the selected value criteria will be automatically added to the smart group."
+        },
+        {
+          "info": {
+            "name": "Update smart group",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.connecteam.com/users/v1/smart-groups/:smartGroupId",
+            "params": [
+              {
+                "name": "smartGroupId",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the smart group to update"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "X-API-KEY",
+              "value": "{{X-API-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Update an existing smart group by its unique identifier. Any changes to the applied filters will override the current settings and may result in changes to the users associated with the smart group."
+        },
+        {
+          "info": {
+            "name": "Delete smart group",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.connecteam.com/users/v1/smart-groups/:smartGroupId",
+            "params": [
+              {
+                "name": "smartGroupId",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the smart group to update"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "X-API-KEY",
+              "value": "{{X-API-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Delete existing smart group by its unique identifier"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Users:v1:Smart Group Segments",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get smart group segments",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.connecteam.com/users/v1/smart-group-segments",
+            "params": [
+              {
+                "name": "segmentIds",
+                "value": "",
+                "type": "query",
+                "description": "Smart group segment IDs to filter by"
+              },
+              {
+                "name": "names",
+                "value": "",
+                "type": "query",
+                "description": "Smart group segment names to filter by"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "X-API-KEY",
+              "value": "{{X-API-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Retrieves all smart group segments associated with the account. Optionally, filter the results by segment IDs and/or names."
+        },
+        {
+          "info": {
+            "name": "Create smart group segment",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.connecteam.com/users/v1/smart-group-segments",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "X-API-KEY",
+              "value": "{{X-API-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Create a new segment for smart groups associated with the account. The segment can be assigned a name and a color."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Users:v1:Admins",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Promote to admin",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.connecteam.com/users/v1/admins",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "X-API-KEY",
+              "value": "{{X-API-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Promote an existing user to an admin. An invitation link will be sent to the specified email address of the user"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Users:v1:Notes",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Create user note",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.connecteam.com/users/v1/users/:userId/notes",
+            "params": [
+              {
+                "name": "userId",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of user to create note for"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "X-API-KEY",
+              "value": "{{X-API-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Create new note on the profile of the specified user"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Users:v1:Payslips",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Upload a payslip",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.connecteam.com/users/v1/users/:userId/payslips",
+            "params": [
+              {
+                "name": "userId",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the user"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "X-API-KEY",
+              "value": "{{X-API-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Upload a payslip for a user for a specified period. The payslip attachment must be uploaded first via the attachments endpoint."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Users:v1:Performance",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Update performance data",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.connecteam.com/users/v1/users/:userId/performance/:date",
+            "params": [
+              {
+                "name": "date",
+                "value": "",
+                "type": "path",
+                "description": "The date to which the value(s) will be added, specified in ISO 8601 format (e.g., 2025-01-25)"
+              },
+              {
+                "name": "userId",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the user whose data is being accessed or modified"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "X-API-KEY",
+              "value": "{{X-API-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Update or add performance data values for a specific user on a given date. If a value already exists for that date, it will be replaced with the new value. If no value exists, the new value will be added."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Users:v1:Pending Request Users",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List pending users",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.connecteam.com/users/v1/pending-users",
+            "params": [
+              {
+                "name": "ids",
+                "value": "",
+                "type": "query",
+                "description": "Filter by pending user IDs. Default: all."
+              },
+              {
+                "name": "status",
+                "value": "",
+                "type": "query",
+                "description": "Filter by status: 'pending', 'approved', or 'declined'. Default: all statuses."
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "X-API-KEY",
+              "value": "{{X-API-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "List pending user join requests, optionally filtered by IDs and/or status."
+        },
+        {
+          "info": {
+            "name": "Create pending users",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.connecteam.com/users/v1/pending-users",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "X-API-KEY",
+              "value": "{{X-API-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Create request to new users that will appear to admin in pending approval."
+        },
+        {
+          "info": {
+            "name": "Bulk delete pending users",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.connecteam.com/users/v1/pending-users",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "X-API-KEY",
+              "value": "{{X-API-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Delete multiple pending user requests by their IDs."
+        },
+        {
+          "info": {
+            "name": "Update invite links data",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.connecteam.com/users/v1/pending-users/",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "X-API-KEY",
+              "value": "{{X-API-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Approve or reject pending user requests by ID."
+        },
+        {
+          "info": {
+            "name": "Update pending user",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.connecteam.com/users/v1/pending-users/:pendingUserId",
+            "params": [
+              {
+                "name": "pendingUserId",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the pending user request to update."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "X-API-KEY",
+              "value": "{{X-API-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Update an existing pending user request."
+        },
+        {
+          "info": {
+            "name": "Delete pending user",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.connecteam.com/users/v1/pending-users/:pendingUserId",
+            "params": [
+              {
+                "name": "pendingUserId",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the pending user"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "X-API-KEY",
+              "value": "{{X-API-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Hard delete pending user request based on user id."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Users:v1:Assignments",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get user assignments",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.connecteam.com/users/v1/users/:userId/assignments",
+            "params": [
+              {
+                "name": "userId",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the user"
+              },
+              {
+                "name": "assetTypes",
+                "value": "",
+                "type": "query",
+                "description": "Specify the asset types for which you wish to retrieve details. Multiple asset types can be selected."
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "X-API-KEY",
+              "value": "{{X-API-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Retrieve a list of assigned assets of a specified user within the account. The available asset types are defined in the corresponding assetTypes enumeration param."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Users:v1:Performance Indicators",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get indicators",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.connecteam.com/users/v1/performance-indicators",
+            "params": [
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "The maximum number of results to display per page"
+              },
+              {
+                "name": "offset",
+                "value": "",
+                "type": "query",
+                "description": "The resource offset of the last successfully read resource will be returned as the paging.offset JSON property of a paginated response containing more results"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "X-API-KEY",
+              "value": "{{X-API-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Retrieve the metric indicators of the performance data associated with account."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Company Policies:v1:PayRulePolicies",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get company pay rule policies",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.connecteam.com/company-policies/v1/pay-rule-policies",
+            "auth": {
+              "type": "apikey",
+              "key": "X-API-KEY",
+              "value": "{{X-API-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Retrieve a list of policies associated with the account. Currently supports pay rule policies."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Company Policies:v1:PayRuleAssignment",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Assign user to pay rule policy",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.connecteam.com/company-policies/v1/pay-rule-policies/:payRulePolicyId/assignments",
+            "params": [
+              {
+                "name": "payRulePolicyId",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the pay rule policy to assign"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "X-API-KEY",
+              "value": "{{X-API-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Assign user to specified pay rule policy. If the provided effective date is earlier than the currently assigned policy's effective date, the existing policy assignment will be replaced and removed."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Time Off:v1:PolicyTypes",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get policy types",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.connecteam.com/time-off/v1/policy-types",
+            "auth": {
+              "type": "apikey",
+              "key": "X-API-KEY",
+              "value": "{{X-API-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Retrieve a list of policy types associated with the account"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Time Off:v1:Balances",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get user balances",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.connecteam.com/time-off/v1/policy-types/:policyTypeId/balances",
+            "params": [
+              {
+                "name": "policyTypeId",
+                "value": "",
+                "type": "path",
+                "description": "Policy type id"
+              },
+              {
+                "name": "userIds",
+                "value": "",
+                "type": "query",
+                "description": "List of user ids"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "The maximum number of results to display per page"
+              },
+              {
+                "name": "offset",
+                "value": "",
+                "type": "query",
+                "description": "The resource offset of the last successfully read resource will be returned as the paging.offset JSON property of a paginated response containing more results"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "X-API-KEY",
+              "value": "{{X-API-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Retrieve a list of user time-off balances within a policy type"
+        },
+        {
+          "info": {
+            "name": "Update user balance",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.connecteam.com/time-off/v1/policy-types/:policyTypeId/balances/:userId",
+            "params": [
+              {
+                "name": "policyTypeId",
+                "value": "",
+                "type": "path",
+                "description": "Policy type id"
+              },
+              {
+                "name": "userId",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the user to update balance"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "X-API-KEY",
+              "value": "{{X-API-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Update user time-off balance within a policy type"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Time Off:v1:TimeOffRequests",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get time off requests",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.connecteam.com/time-off/v1/requests",
+            "params": [
+              {
+                "name": "startDate",
+                "value": "",
+                "type": "query",
+                "description": "Start of the date range, inclusive, in ISO 8601 format (YYYY-MM-DD). Any request overlapping [startDate, endDate] is returned."
+              },
+              {
+                "name": "endDate",
+                "value": "",
+                "type": "query",
+                "description": "End of the date range, inclusive, in ISO 8601 format (YYYY-MM-DD). Must be on or after startDate. Range may not exceed 365 days."
+              },
+              {
+                "name": "userIds",
+                "value": "",
+                "type": "query",
+                "description": "Filter by one or more employee IDs. Omit to include all employees."
+              },
+              {
+                "name": "statuses",
+                "value": "",
+                "type": "query",
+                "description": "Filter by status. Allowed: approved, pending, denied. Repeat the param for multiple values. Defaults to ['approved'] when omitted."
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "The maximum number of results to display per page"
+              },
+              {
+                "name": "offset",
+                "value": "",
+                "type": "query",
+                "description": "The resource offset of the last successfully read resource will be returned as the paging.offset JSON property of a paginated response containing more results"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "X-API-KEY",
+              "value": "{{X-API-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Retrieve a paginated list of time-off requests whose date range overlaps the requested window, with optional filtering by employees and statuses. Approved requests include duration (the amount deducted from balance, in the policy units of hours or days); it is omitted for other statuses. Defaults to approved status when no status filter is provided."
+        },
+        {
+          "info": {
+            "name": "Create time off request",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.connecteam.com/time-off/v1/requests",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "X-API-KEY",
+              "value": "{{X-API-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Create a new time-off request for a user under a specified policy. The time-off request can be either in pending or approved status."
+        },
+        {
+          "info": {
+            "name": "Update time off request",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.connecteam.com/time-off/v1/requests/:requestId",
+            "params": [
+              {
+                "name": "requestId",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the time off request"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "X-API-KEY",
+              "value": "{{X-API-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Update an existing time-off request. The time-off request can be modified with new dates, times, status, or notes."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Time Off:v1:PolicyAssignment",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Assign user to time-off policy",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.connecteam.com/time-off/v1/time-off-policies/:timeOffPolicyId/assignments",
+            "params": [
+              {
+                "name": "timeOffPolicyId",
+                "value": "",
+                "type": "path",
+                "description": "The time off policy id"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "X-API-KEY",
+              "value": "{{X-API-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Assign user to specified time-off policy."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Time Clock:v1:TimeClocks",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get time clocks",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.connecteam.com/time-clock/v1/time-clocks",
+            "auth": {
+              "type": "apikey",
+              "key": "X-API-KEY",
+              "value": "{{X-API-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Retrieve a list of time clocks associated with the account"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Time Clock:v1:TimeClocks:TimeClock:TimeActivities",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get time activities",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.connecteam.com/time-clock/v1/time-clocks/:timeClockId/time-activities",
+            "params": [
+              {
+                "name": "timeClockId",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the time clock"
+              },
+              {
+                "name": "startDate",
+                "value": "",
+                "type": "query",
+                "description": "The start time to filter by in ISO 8601 format (YYYY-MM-DD)"
+              },
+              {
+                "name": "endDate",
+                "value": "",
+                "type": "query",
+                "description": "The end time to filter by in ISO 8601 format (YYYY-MM-DD)"
+              },
+              {
+                "name": "userIds",
+                "value": "",
+                "type": "query",
+                "description": "Filter time activities by a list of user IDs. Users who are no longer assigned to the specified time clock cannot be retrieved with this filter."
+              },
+              {
+                "name": "jobIds",
+                "value": "",
+                "type": "query",
+                "description": "The job IDs of shifts"
+              },
+              {
+                "name": "manualBreakIds",
+                "value": "",
+                "type": "query",
+                "description": "The manual break IDs of manual breaks"
+              },
+              {
+                "name": "policyTypeIds",
+                "value": "",
+                "type": "query",
+                "description": "The policy type IDs of time offs"
+              },
+              {
+                "name": "activityTypes",
+                "value": "",
+                "type": "query",
+                "description": "The time activity types: shift, manual_break or time_off"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "X-API-KEY",
+              "value": "{{X-API-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Retrieve a list of time activities in under a specified time clock.\nTime activities include shift and/or manual breaks"
+        },
+        {
+          "info": {
+            "name": "Create time activities",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.connecteam.com/time-clock/v1/time-clocks/:timeClockId/time-activities",
+            "params": [
+              {
+                "name": "timeClockId",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the time clock"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "X-API-KEY",
+              "value": "{{X-API-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Create multiple time activities in a time clock"
+        },
+        {
+          "info": {
+            "name": "Update time activities",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.connecteam.com/time-clock/v1/time-clocks/:timeClockId/time-activities",
+            "params": [
+              {
+                "name": "timeClockId",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the time clock"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "X-API-KEY",
+              "value": "{{X-API-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Update time activities for users assigned to a specific time clock. Time activities can include adjustments to shifts and/or manual breaks."
+        },
+        {
+          "info": {
+            "name": "Delete time activity",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.connecteam.com/time-clock/v1/time-clocks/:timeClockId/time-activities/:timeActivityId",
+            "params": [
+              {
+                "name": "timeActivityId",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the time activity to delete"
+              },
+              {
+                "name": "timeClockId",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the time clock"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "X-API-KEY",
+              "value": "{{X-API-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Deletes a single time activity (a punch shift or a manual break) from a specified time clock. The activity is identified by its unique ID - the same id returned by GET .../time-activities (and used in PUT). The server resolves which user the activity belongs to; the caller supplies only the time clock and the activity ID. The activity cannot be deleted if it falls on a locked or approved timesheet day; the request fails with HAS_LOCKED_DAYS. Time-off / absence entries are not addressable here an"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Time Clock:v1:TimeClocks:TimeClock:ShiftAttachments",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get shift attachments",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.connecteam.com/time-clock/v1/time-clocks/:timeClockId/shift-attachments",
+            "params": [
+              {
+                "name": "timeClockId",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the time clock"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "X-API-KEY",
+              "value": "{{X-API-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Get shift attachments of a time clock"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Time Clock:v1:TimeClocks:TimeClock:ManualBreaks",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get manual breaks",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.connecteam.com/time-clock/v1/time-clocks/:timeClockId/manual-breaks",
+            "params": [
+              {
+                "name": "timeClockId",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the time clock"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "X-API-KEY",
+              "value": "{{X-API-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Get multiple manual breaks of a time clock"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Time Clock:v1:TimeClocks:TimeClock:ManualBreaks:ManualBreakClockIn",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Clock in to a manual break",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.connecteam.com/time-clock/v1/time-clocks/:timeClockId/manual-breaks/:manualBreakId/clock-in",
+            "params": [
+              {
+                "name": "manualBreakId",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the manual break to start"
+              },
+              {
+                "name": "timeClockId",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the time clock"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "X-API-KEY",
+              "value": "{{X-API-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Start a manual break for an employee. If the employee is clocked into a shift on the same time clock, the shift is automatically closed and the break is started in one call (attributed to the shift's job). If the employee is idle, the break starts standalone. Pass an optional timestamp to record a break that started earlier (offline sync)."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Time Clock:v1:TimeClocks:TimeClock:ManualBreaks:ManualBreakClockOut",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Clock out from a manual break",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.connecteam.com/time-clock/v1/time-clocks/:timeClockId/manual-breaks/clock-out",
+            "params": [
+              {
+                "name": "timeClockId",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the time clock"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "X-API-KEY",
+              "value": "{{X-API-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "End the currently open manual break for an employee. By default, if the break was started from an open shift, the shift is re-opened on the same job (mobile 'Return to job'). Set isResumeShift=false to end the break without resuming. Mandatory breaks cannot be ended before their configured minimum duration. Pass an optional timestamp to record a break that ended earlier (offline sync)."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Time Clock:v1:TimeClocks:TimeClock:ClockIn",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Clock in",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.connecteam.com/time-clock/v1/time-clocks/:timeClockId/clock-in",
+            "params": [
+              {
+                "name": "timeClockId",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the time clock"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "X-API-KEY",
+              "value": "{{X-API-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Record the start time for the work period of an employee. The start time is automatically captured when the call is executed."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Time Clock:v1:TimeClocks:TimeClock:ClockOut",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Clock out",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.connecteam.com/time-clock/v1/time-clocks/:timeClockId/clock-out",
+            "params": [
+              {
+                "name": "timeClockId",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the time clock"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "X-API-KEY",
+              "value": "{{X-API-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Record the end time for the work period of an employee. The end time is automatically captured when the call is executed. The clock-out will be associated with the current open shift."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Time Clock:v1:TimeClocks:TimeClock:GeoFences",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get geofences",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.connecteam.com/time-clock/v1/time-clocks/:timeClockId/geofences",
+            "params": [
+              {
+                "name": "timeClockId",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the time clock"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "X-API-KEY",
+              "value": "{{X-API-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Get all geofences for a specified time clock"
+        },
+        {
+          "info": {
+            "name": "Create geofences",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.connecteam.com/time-clock/v1/time-clocks/:timeClockId/geofences",
+            "params": [
+              {
+                "name": "timeClockId",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the time clock"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "X-API-KEY",
+              "value": "{{X-API-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Create new geofences site under a specified time clock. The geofence can be associated with multiple job IDs that are assigned to the time clock only"
+        },
+        {
+          "info": {
+            "name": "Get geofence",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.connecteam.com/time-clock/v1/time-clocks/:timeClockId/geofences/:fenceId",
+            "params": [
+              {
+                "name": "fenceId",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the geofence to get"
+              },
+              {
+                "name": "timeClockId",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the time clock"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "X-API-KEY",
+              "value": "{{X-API-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Get a geofence site under a specified time clock"
+        },
+        {
+          "info": {
+            "name": "Delete geofence",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.connecteam.com/time-clock/v1/time-clocks/:timeClockId/geofences/:fenceId",
+            "params": [
+              {
+                "name": "fenceId",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the geofence to delete"
+              },
+              {
+                "name": "timeClockId",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the time clock"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "X-API-KEY",
+              "value": "{{X-API-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Delete a geofence site under a specified time clock"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Time Clock:v1:TimeClocks:TimeClock:Get timesheet totals",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get timesheet totals",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.connecteam.com/time-clock/v1/time-clocks/:timeClockId/timesheet",
+            "params": [
+              {
+                "name": "timeClockId",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the time clock"
+              },
+              {
+                "name": "startDate",
+                "value": "",
+                "type": "query",
+                "description": "The start of the reporting period, in ISO 8601 format (YYYY-MM-DD). The filter includes all records from 00:00:00 on the specified date.\n            Example: A startDate of 2025-01-01 includes data starting from 2025-01-01T00:00:00"
+              },
+              {
+                "name": "endDate",
+                "value": "",
+                "type": "query",
+                "description": "The end of the reporting period, in ISO 8601 format (YYYY-MM-DD). The filter includes all records up to 23:59:59 on the specified date.\n            Example: An endDate of 2025-01-01 includes data up to 2025-01-01T23:59:59. The end date must be no more than 45 days after the start date. If there is an ongoing overnight shift that continues past the end date, the hours of the overnight  will only be included if it has been configured in the time clock settings."
+              },
+              {
+                "name": "userIds",
+                "value": "",
+                "type": "query",
+                "description": "List of user IDs to filter the results. Only time entries associated with these users will be included. If a user has no recorded time entries within the specified date range, they will be excluded from the results."
+              },
+              {
+                "name": "groupIds",
+                "value": "",
+                "type": "query",
+                "description": "List of cohort/group IDs to filter the results. Only time entries associated with users in these cohorts will be included."
+              },
+              {
+                "name": "jobIds",
+                "value": "",
+                "type": "query",
+                "description": "List of job IDs to filter the results. Currently supports only parent job IDs and regular job IDs. If a parent job ID is provided, only sub-jobs that have actual recorded hours will be included in the response."
+              },
+              {
+                "name": "isApproved",
+                "value": "",
+                "type": "query",
+                "description": "Filter by approval status. If not provided, returns all records (approved and unapproved). Set to true for approved only, false for unapproved only."
+              },
+              {
+                "name": "isSubmitted",
+                "value": "",
+                "type": "query",
+                "description": "Filter by submission status. If not provided, returns all records (submitted and unsubmitted). Set to true for submitted only, false for unsubmitted only."
+              },
+              {
+                "name": "isLocked",
+                "value": "",
+                "type": "query",
+                "description": "Filter by lock status. If not provided, returns all records (locked and unlocked). Set to true for locked only, false for unlocked only."
+              },
+              {
+                "name": "includePlanVsActual",
+                "value": "",
+                "type": "query",
+                "description": "When false (default), Plan vs Actual fields are omitted from the response and scheduled shifts are not fetched. When true, each daily record includes a dailyScheduledDetails object with dailyScheduledHours, dailyScheduledDifferenceHours, dailyScheduledShifts, and shifts (planned shift ids) comparing planned schedule hours to actual worked hours. Does not require Plan vs Actual to be enabled in time clock settings."
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "X-API-KEY",
+              "value": "{{X-API-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Retrieves detailed work records for each employee within a specified date range. This endpoint is designed to support payroll processing by providing total worked hours, categorized by pay rules and resource (if applied in the account settings). Ideal for integrating with external payroll systems to ensure accurate information. The pay rate will be presented in case it is defined within the account. If an automated unpaid break is applied, it will  be deducted from the total hours value. In orde"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Time Clock:v1:TimeClocks:TimeClock:LockDays",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Update user lock days",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.connecteam.com/time-clock/v1/time-clocks/:timeClockId/users/:userId/lock-days",
+            "params": [
+              {
+                "name": "timeClockId",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the time clock"
+              },
+              {
+                "name": "userId",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the user whose data is being accessed or modified"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "X-API-KEY",
+              "value": "{{X-API-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Locks or unlocks one or more calendar days for a specific user on a given Time Clock. The isLocked boolean on the request body selects the operation: true (the default) prevents subsequent time-activity edits on those dates; false removes the per-day lock and allows edits again. Idempotent: dates already in the requested state are no-ops, and the response reflects the final state. This endpoint does not reopen approved payroll periods. If isLocked is false and any of the requested dates would ac"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Breadcrumbs:Breadcrumbs",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Generate breadcrumbs report",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.connecteam.com/time-clock/breadcrumbs/v1/report",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "X-API-KEY",
+              "value": "{{X-API-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Initiate a breadcrumbs report for a specific date. Returns a request ID that can be used to check the report status."
+        },
+        {
+          "info": {
+            "name": "Get breadcrumbs report status",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.connecteam.com/time-clock/breadcrumbs/v1/report/:fileId",
+            "params": [
+              {
+                "name": "fileId",
+                "value": "",
+                "type": "path",
+                "description": "The request ID from the report endpoint"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "X-API-KEY",
+              "value": "{{X-API-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Get the status of a breadcrumbs report task. Returns 'completed' when the file is ready in S3."
+        },
+        {
+          "info": {
+            "name": "Download breadcrumbs report",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.connecteam.com/time-clock/breadcrumbs/v1/report/:fileId/download",
+            "params": [
+              {
+                "name": "fileId",
+                "value": "",
+                "type": "path",
+                "description": "The request ID from the report endpoint"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "X-API-KEY",
+              "value": "{{X-API-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Stream the breadcrumbs JSON report directly from S3. Only available when the task status is 'completed'."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Pay Rates:v1:Pay Rates:v1:PayRates",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get pay rates",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.connecteam.com/pay-rates/v1/pay-rates",
+            "params": [
+              {
+                "name": "startDate",
+                "value": "",
+                "type": "query",
+                "description": "Return pay rates that are in effect during the date range starting from this date, in ISO 8601 format (YYYY-MM-DD). This includes rates with an effective date before startDate if they are still the most recent rate at the start of the range. Must be used together with endDate. Date range cannot exceed 365 days."
+              },
+              {
+                "name": "endDate",
+                "value": "",
+                "type": "query",
+                "description": "Return pay rates that are in effect during the date range ending at this date, in ISO 8601 format (YYYY-MM-DD). Must be used together with startDate. Date range cannot exceed 365 days."
+              },
+              {
+                "name": "userIds",
+                "value": "",
+                "type": "query",
+                "description": "List of user IDs to retrieve pay rates for. If omitted, pay rates for all users will be returned (subject to pagination)."
+              },
+              {
+                "name": "rateType",
+                "value": "",
+                "type": "query",
+                "description": "Filter by rate type. Valid values: hourly, monthly, yearly."
+              },
+              {
+                "name": "resourceIds",
+                "value": "",
+                "type": "query",
+                "description": "Filter resource rate details to include only specific resources. This filter only affects resourcesRates; other pay rate fields are always returned."
+              },
+              {
+                "name": "isIncludeHistory",
+                "value": "",
+                "type": "query",
+                "description": "When set to true, includes the complete modification history for each pay rate. Note: Setting this to true may increase response time and payload size."
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "The maximum number of results to display per page"
+              },
+              {
+                "name": "offset",
+                "value": "",
+                "type": "query",
+                "description": "The resource offset of the last successfully read resource will be returned as the paging.offset JSON property of a paginated response containing more results"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "X-API-KEY",
+              "value": "{{X-API-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Retrieves pay rate information for one or more users within your organization. This endpoint supports flexible filtering by effective dates, rate types, and resource assignments. It's designed for payroll integration scenarios where you need to fetch pay rates for multiple employees at once. The response includes historical modification data when requested, allowing you to track changes over time for audit and compliance purposes. Pagination is supported for large result sets."
+        },
+        {
+          "info": {
+            "name": "Set pay rates",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.connecteam.com/pay-rates/v1/pay-rates",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "X-API-KEY",
+              "value": "{{X-API-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Creates or updates pay rates for one or more users. If a pay rate exists for the same effective date, it is replaced; otherwise, a new entry is added to the pay rate history. The effective date cannot be on or after any approved or locked timesheet days. If such days exist, the request fails with HAS_LOCKED_DAYS. For bulk requests with resource rates enabled, the system validates user eligibility and tracks all changes. When isResourceRateEnabled is true, resourcesRates must include all resource"
+        },
+        {
+          "info": {
+            "name": "Delete pay rate",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.connecteam.com/pay-rates/v1/pay-rates/users/:userId/:effectiveDate",
+            "params": [
+              {
+                "name": "userId",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the user"
+              },
+              {
+                "name": "effectiveDate",
+                "value": "",
+                "type": "path",
+                "description": "The effective date of the pay rate (format: YYYY-MM-DD)"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "X-API-KEY",
+              "value": "{{X-API-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Deletes a specific pay rate entry for a user. The pay rate is identified by the user ID and effective date. This operation cannot be undone. The system validates that the effective date does not affect any approved or locked timesheet days. If the user has any approved or locked days on or after this effective date, the delete request will fail with error code HAS_LOCKED_DAYS. You cannot delete pay rates that are currently being used for finalized payroll calculations. Additionally, at least one"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Tasks:v1:Tasks:TasksBoards",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Update task",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.connecteam.com/tasks/v1/taskboards/:taskBoardId/tasks/:taskId",
+            "params": [
+              {
+                "name": "taskId",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the task."
+              },
+              {
+                "name": "taskBoardId",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the taskBoard"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "X-API-KEY",
+              "value": "{{X-API-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Update a quick task under a specified task board. Any new attachments will replace the existing ones."
+        },
+        {
+          "info": {
+            "name": "Delete task",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.connecteam.com/tasks/v1/taskboards/:taskBoardId/tasks/:taskId",
+            "params": [
+              {
+                "name": "taskId",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the task"
+              },
+              {
+                "name": "taskBoardId",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the taskBoard"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "X-API-KEY",
+              "value": "{{X-API-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Delete quick task under a specified task board"
+        },
+        {
+          "info": {
+            "name": "Get tasks",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.connecteam.com/tasks/v1/taskboards/:taskBoardId/tasks",
+            "params": [
+              {
+                "name": "taskBoardId",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the taskBoard"
+              },
+              {
+                "name": "taskIds",
+                "value": "",
+                "type": "query",
+                "description": "List of task IDs to filter by"
+              },
+              {
+                "name": "labelIds",
+                "value": "",
+                "type": "query",
+                "description": "List of label IDs to filter by. Tasks retrieved will include the specified label(s), but may also include additional labels."
+              },
+              {
+                "name": "userIds",
+                "value": "",
+                "type": "query",
+                "description": "List of assigned user IDs on the task to filter by. Group tasks will be also included in the results."
+              },
+              {
+                "name": "status",
+                "value": "",
+                "type": "query",
+                "description": "draft/published/completed/all - all is by default"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "The maximum number of results to display per page"
+              },
+              {
+                "name": "offset",
+                "value": "",
+                "type": "query",
+                "description": "The resource offset of the last successfully read resource will be returned as the paging.offset JSON property of a paginated response containing more results"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "X-API-KEY",
+              "value": "{{X-API-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Retrieves a list of tasks under a specified task board"
+        },
+        {
+          "info": {
+            "name": "Create task",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.connecteam.com/tasks/v1/taskboards/:taskBoardId/tasks",
+            "params": [
+              {
+                "name": "taskBoardId",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the taskBoard"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "X-API-KEY",
+              "value": "{{X-API-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Create quick task for specified users by their ID, detailing information such as title, due date and description. Attachments for the quick task must first be uploaded via the attachments endpoint."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Tasks:v1:TaskBoards",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get task boards",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.connecteam.com/tasks/v1/taskboards",
+            "auth": {
+              "type": "apikey",
+              "key": "X-API-KEY",
+              "value": "{{X-API-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Retrieve a list of task boards associated with the account"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Tasks:v1:TaskLabels",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get task labels",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.connecteam.com/tasks/v1/taskboards/:taskBoardId/labels",
+            "params": [
+              {
+                "name": "taskBoardId",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the task board to filter by"
+              },
+              {
+                "name": "title",
+                "value": "",
+                "type": "query",
+                "description": "The title (name) of the label to filter by"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "The maximum number of results to display per page"
+              },
+              {
+                "name": "offset",
+                "value": "",
+                "type": "query",
+                "description": "The resource offset of the last successfully read resource will be returned as the paging.offset JSON property of a paginated response containing more results"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "X-API-KEY",
+              "value": "{{X-API-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Retrieve a list of task labels associated with the account"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Tasks:v1:SubTasks:Tasks:TaskBoards",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get sub-tasks",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.connecteam.com/tasks/v1/taskboards/:taskBoardId/tasks/:taskId/sub-tasks",
+            "params": [
+              {
+                "name": "taskBoardId",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the task board"
+              },
+              {
+                "name": "taskId",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the parent task"
+              },
+              {
+                "name": "subtaskIds",
+                "value": "",
+                "type": "query",
+                "description": "Optional list of subtask IDs to filter by"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "The maximum number of results to display per page"
+              },
+              {
+                "name": "offset",
+                "value": "",
+                "type": "query",
+                "description": "The resource offset of the last successfully read resource will be returned as the paging.offset JSON property of a paginated response containing more results"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "X-API-KEY",
+              "value": "{{X-API-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Retrieve a list of sub-tasks under a specified parent task"
+        },
+        {
+          "info": {
+            "name": "Create sub-task",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.connecteam.com/tasks/v1/taskboards/:taskBoardId/tasks/:taskId/sub-tasks",
+            "params": [
+              {
+                "name": "taskBoardId",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the task board"
+              },
+              {
+                "name": "taskId",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the parent task"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "X-API-KEY",
+              "value": "{{X-API-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Create a single sub-task under a specified parent task"
+        },
+        {
+          "info": {
+            "name": "Update sub-task",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.connecteam.com/tasks/v1/taskboards/:taskBoardId/tasks/:taskId/sub-tasks/:subTaskId",
+            "params": [
+              {
+                "name": "subTaskId",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the sub-task"
+              },
+              {
+                "name": "taskBoardId",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the task board"
+              },
+              {
+                "name": "taskId",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the parent task"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "X-API-KEY",
+              "value": "{{X-API-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Update a single sub-task under a specified parent task"
+        },
+        {
+          "info": {
+            "name": "Delete sub-task",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.connecteam.com/tasks/v1/taskboards/:taskBoardId/tasks/:taskId/sub-tasks/:subTaskId",
+            "params": [
+              {
+                "name": "subTaskId",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the sub-task"
+              },
+              {
+                "name": "taskBoardId",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the task board"
+              },
+              {
+                "name": "taskId",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the parent task"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "X-API-KEY",
+              "value": "{{X-API-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Delete a single sub-task under a specified parent task"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Sales:Sales V1:Sales Locations",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get locations",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.connecteam.com/sales/v1/locations",
+            "params": [
+              {
+                "name": "locationIds",
+                "value": "",
+                "type": "query",
+                "description": "List of location IDs to filter by"
+              },
+              {
+                "name": "locationNames",
+                "value": "",
+                "type": "query",
+                "description": "List of location names to filter by"
+              },
+              {
+                "name": "isActive",
+                "value": "",
+                "type": "query",
+                "description": "Filter by active status"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "The maximum number of results to display per page"
+              },
+              {
+                "name": "offset",
+                "value": "",
+                "type": "query",
+                "description": "The resource offset of the last successfully read resource will be returned as the paging.offset JSON property of a paginated response containing more results"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "X-API-KEY",
+              "value": "{{X-API-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Retrieve a list of locations associated with the account"
+        },
+        {
+          "info": {
+            "name": "Create location",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.connecteam.com/sales/v1/locations",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "X-API-KEY",
+              "value": "{{X-API-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Create a new location entity, which can be used to sync sales data with third-party systems. Location can represent a physical branch, store or facility."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Sales:Sales V1:Sales Locations:Sales Daily",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Set projected sales",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.connecteam.com/sales/v1/locations/:locationId/daily-sales",
+            "params": [
+              {
+                "name": "locationId",
+                "value": "",
+                "type": "path",
+                "description": "Unique identifier of the location (from the Get locations endpoint)."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "X-API-KEY",
+              "value": "{{X-API-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Set projected sales for a single location for one or more days in a single request. Each item in updates specifies a date and projectedSales value; each date may appear only once. This replaces the projected total for that day and does not modify totalSales. To record or change actual (totalSales) values, use the Create transactions endpoint. Location IDs are available from the Get locations endpoint."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Sales:Sales V1:Sales Transactions",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Create transactions",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.connecteam.com/sales/v1/transactions",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "X-API-KEY",
+              "value": "{{X-API-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Create new sale transactions for specified locations."
+        },
+        {
+          "info": {
+            "name": "Delete transactions",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.connecteam.com/sales/v1/transactions",
+            "params": [
+              {
+                "name": "locationId",
+                "value": "",
+                "type": "query",
+                "description": "The location ID derived from the locations API"
+              },
+              {
+                "name": "startTime",
+                "value": "",
+                "type": "query",
+                "description": "The start time of the specified period in UNIX timestamp"
+              },
+              {
+                "name": "endTime",
+                "value": "",
+                "type": "query",
+                "description": "The end time of the specified period in UNIX timestamp"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "X-API-KEY",
+              "value": "{{X-API-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Delete transactions within a specified time period. All transactions during this period will be permanently removed."
+        },
+        {
+          "info": {
+            "name": "Delete transaction",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.connecteam.com/sales/v1/transactions/:transactionId",
+            "params": [
+              {
+                "name": "transactionId",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the transaction"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "X-API-KEY",
+              "value": "{{X-API-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Delete single transaction by its ID"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Sales:Sales V1:Sales Daily",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get daily sales",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.connecteam.com/sales/v1/daily-sales",
+            "params": [
+              {
+                "name": "startDate",
+                "value": "",
+                "type": "query",
+                "description": "Start of the date range, inclusive, in ISO 8601 format (YYYY-MM-DD). Must be used with endDate."
+              },
+              {
+                "name": "endDate",
+                "value": "",
+                "type": "query",
+                "description": "End of the date range, inclusive, in ISO 8601 format (YYYY-MM-DD). Must be on or after startDate."
+              },
+              {
+                "name": "locationIds",
+                "value": "",
+                "type": "query",
+                "description": "Filter by location IDs from the Get locations endpoint. Omit to include all account locations. If any ID is invalid, the request fails."
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "X-API-KEY",
+              "value": "{{X-API-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Retrieve daily sales totals per location for a date range. Each entry includes totalSales (aggregated from transactions) and projectedSales (set via Set projected sales). Required query parameters: startDate and endDate (ISO 8601, YYYY-MM-DD). Optionally filter by locationIds; if omitted, all account locations are included. Only days with stored daily aggregation data are returned; days with no data are omitted (not returned as zero). To record or change actual sales, use the Create transactions"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "DailyNote:v1:DailyNote",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get note",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.connecteam.com/daily-info/v1/daily-note/:noteId",
+            "params": [
+              {
+                "name": "noteId",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the note"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "X-API-KEY",
+              "value": "{{X-API-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Get a single note by its unique identifier"
+        },
+        {
+          "info": {
+            "name": "Update note",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.connecteam.com/daily-info/v1/daily-note/:noteId",
+            "params": [
+              {
+                "name": "noteId",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the note"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "X-API-KEY",
+              "value": "{{X-API-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Update a single note by its unique identifier"
+        },
+        {
+          "info": {
+            "name": "Delete note",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.connecteam.com/daily-info/v1/daily-note/:noteId",
+            "params": [
+              {
+                "name": "noteId",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the note"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "X-API-KEY",
+              "value": "{{X-API-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Delete a single note by its unique identifier"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "DailyNote:v1:DailyNotes",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Create daily note",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.connecteam.com/daily-info/v1/daily-notes",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "X-API-KEY",
+              "value": "{{X-API-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Create a note under a specified schedule for a specific date"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Chat:v1:Conversations",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get conversations",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.connecteam.com/chat/v1/conversations",
+            "params": [
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "The maximum number of results to display per page"
+              },
+              {
+                "name": "offset",
+                "value": "",
+                "type": "query",
+                "description": "The resource offset of the last successfully read resource will be returned as the paging.offset JSON property of a paginated response containing more results"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "X-API-KEY",
+              "value": "{{X-API-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Retrieves a list of team chats and/or channels associated with the account. The list excludes private conversations."
+        },
+        {
+          "info": {
+            "name": "Create conversation",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.connecteam.com/chat/v1/conversations",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "X-API-KEY",
+              "value": "{{X-API-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Creates a team chat or channel as the authenticated user. Members are assigned via userIds (individual users) and/or smartGroupIds (dynamic cohorts) - at least one assignment is required. Use type: \"team\" for a collaborative chat where members can send messages, or type: \"channel\" for a broadcast group where only admins post. A custom publisher can subsequently post into the created group via POST /chat/v1/conversations/{conversationId}/message."
+        },
+        {
+          "info": {
+            "name": "Send message",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.connecteam.com/chat/v1/conversations/:conversationId/message",
+            "params": [
+              {
+                "name": "conversationId",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the conversation"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "X-API-KEY",
+              "value": "{{X-API-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Sends a new message to a specific chat, whether it’s channel or a team chat"
+        },
+        {
+          "info": {
+            "name": "Send private message",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.connecteam.com/chat/v1/conversations/privateMessage/:userId",
+            "params": [
+              {
+                "name": "userId",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the user"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "X-API-KEY",
+              "value": "{{X-API-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Send a private message to a specified user within the account. The sender will be a custom publisher. If a conversation between the custom publisher and the addressed user already exists, it will send the message to the same conversation, if not, it will create a new conversation with the specified user."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Publishers:v1:Publishers",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get publishers",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.connecteam.com/publishers/v1/publishers",
+            "params": [
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "The maximum number of results to display per page"
+              },
+              {
+                "name": "offset",
+                "value": "",
+                "type": "query",
+                "description": "The resource offset of the last successfully read resource will be returned as the paging.offset JSON property of a paginated response containing more results"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "X-API-KEY",
+              "value": "{{X-API-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Retrieves a list of custom publishers associated with the account."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Assets:v1:Asset",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get asset metadata",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.connecteam.com/assets/v1/asset/:assetId",
+            "params": [
+              {
+                "name": "assetId",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the asset."
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "X-API-KEY",
+              "value": "{{X-API-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Retrieve all metadata associated with a specified asset."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Onboarding:v1:Onboarding:Packs",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get onboarding packs",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.connecteam.com/onboarding/v1/packs",
+            "auth": {
+              "type": "apikey",
+              "key": "X-API-KEY",
+              "value": "{{X-API-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Retrieve all onboarding packs for the company"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Onboarding:v1:Onboarding:Assignments",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get pack assignments",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.connecteam.com/onboarding/v1/packs/:packId/assignments",
+            "params": [
+              {
+                "name": "packId",
+                "value": "",
+                "type": "path",
+                "description": "The onboarding pack ID"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "X-API-KEY",
+              "value": "{{X-API-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Retrieve all user assignments for a specific onboarding pack"
+        },
+        {
+          "info": {
+            "name": "Assign users to pack",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.connecteam.com/onboarding/v1/packs/:packId/assignments",
+            "params": [
+              {
+                "name": "packId",
+                "value": "",
+                "type": "path",
+                "description": "The onboarding pack ID"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "X-API-KEY",
+              "value": "{{X-API-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Assign one or more users to a specific onboarding pack. All-or-nothing: if any user ID is invalid, no assignments are created."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "OAuth",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Issue Access Token",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.connecteam.com/oauth/v1/token",
+            "body": {
+              "type": "form-urlencoded",
+              "data": []
+            },
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Issue an OAuth access token using client credentials grant. Use HTTP Basic Authentication with your client_id and client_secret."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

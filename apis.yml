@@ -27,6 +27,17 @@ tags:
 - Task Management
 - Forms
 - Deskless
+- Software-as-a-Service
+tags_raw:
+- Company
+- Workforce Management
+- Human Resources
+- Time Tracking
+- Scheduling
+- Employee Communication
+- Task Management
+- Forms
+- Deskless
 - SaaS
 apis:
 - aid: connecteam:api

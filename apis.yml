@@ -11,6 +11,17 @@ description: 'Connecteam is a mobile-first workforce management platform for des
   tasks, forms and chat. API access is gated to the Expert plan and above, with per-plan
   rate limits surfaced in x-ratelimit-* response headers.'
 url: https://raw.githubusercontent.com/api-evangelist/connecteam/refs/heads/main/apis.yml
+deliveryModel:
+  model: saas
+  open_source: false
+  commercial: true
+  callable_host: false
+  label: Hosted service · you call their endpoint
+  confidence: medium
+  source:
+  - pricing
+  generated: '2026-08-28'
+  method: derived
 image: https://connecteam.com/wp-content/uploads/2024/03/Share-image-homepage.png
 x-type: company
 x-source: harvest:secondary-market

@@ -1380,6 +1380,9 @@ maintainers:
 - FN: APIs.json
   email: info@apis.io
 common:
+- type: CapabilityMap
+  url: capabilities/connecteam-capability-edges.yml
+  name: Connecteam Business Capability Map
 - type: AgenticAccess
   url: agentic-access/connecteam-agentic-access.yml
 - type: DomainSecurity

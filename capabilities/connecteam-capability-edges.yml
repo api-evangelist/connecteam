@@ -1,0 +1,213 @@
+slug: connecteam
+provider: Connecteam
+generated_by: planning/capability-mapping/scripts/classify_capabilities.py
+model: claude-opus-5
+frame:
+- Software & Technology
+min_confidence: 0.7
+capability_model:
+  source: https://github.com/vincentmakes/turbo-ea-capabilities
+  license: CC-BY-4.0
+  attribution: Turbo EA Capabilities by Vincent Verdet — Turbo EA, https://github.com/vincentmakes/turbo-ea-capabilities,
+    CC BY 4.0
+  notice: NOTICE
+edge_count: 20
+edges:
+- tag: Schedule:v1:Schedulers:Schedule:Shifts:Shifts
+  spec_file: connecteam-schedule-v1-schedulers-schedule-shifts-shifts-api-openapi.yml
+  capability_id: BC-300
+  capability_id_l1: BC-300
+  capability_name: Human Capital Management
+  confidence: 0.85
+  evidence: GET/POST/PUT/DELETE /scheduler/v1/schedulers/{schedulerId}/shifts  "Get shifts", "Create shifts",
+    "Update shifts", "Delete shifts"
+  reason: Full lifecycle management of employee work shifts (with break data, layers, notes) in a deskless
+    workforce platform — employee shift scheduling under Human Capital Management. No candidate L2 names
+    operational shift scheduling precisely, so L1 only.
+- tag: Users:v1:Users
+  spec_file: connecteam-users-v1-users-api-openapi.yml
+  capability_id: BC-300.70
+  capability_id_l1: BC-300
+  capability_name: HR Operations Management
+  confidence: 0.85
+  evidence: GET /users/v1/users  Get users ... POST Create users ... DELETE archive_users  Archive users
+  reason: Full lifecycle CRUD (create, update, archive, delete) over employee records in a workforce management
+    platform — employee master records / HR service delivery, the core of HR Operations Management.
+- tag: Pay Rates:v1:Pay Rates:v1:PayRates
+  spec_file: connecteam-pay-rates-v1-pay-rates-v1-payrates-api-openapi.yml
+  capability_id: BC-300.30
+  capability_id_l1: BC-300
+  capability_name: Compensation & Benefits Management
+  confidence: 0.82
+  evidence: PUT /pay-rates/v1/pay-rates  Set pay rates; schemas WageTypesEnum, PayRateByUserRequest, effectiveDate
+  reason: Maintains per-user wage rates with wage types and effective dates — employee pay structure administration,
+    i.e. Compensation & Benefits Management. Could alternatively be read as payroll HR Operations, hence
+    not 0.95.
+- tag: Time Clock:v1:TimeClocks:TimeClock:ClockIn
+  spec_file: connecteam-time-clock-v1-timeclocks-timeclock-clockin-api-openapi.yml
+  capability_id: BC-300.70
+  capability_id_l1: BC-300
+  capability_name: HR Operations Management
+  confidence: 0.8
+  evidence: POST /time-clock/v1/time-clocks/{timeClockId}/clock-in "Clock in"; schemas ClockInRequest,
+    PunchSourceType, GpsData
+  reason: Records employee punch-in events for time and attendance, the operational input to payroll administration
+    within HR Operations Management.
+- tag: Time Clock:v1:TimeClocks:TimeClock:ClockOut
+  spec_file: connecteam-time-clock-v1-timeclocks-timeclock-clockout-api-openapi.yml
+  capability_id: BC-300.70
+  capability_id_l1: BC-300
+  capability_name: HR Operations Management
+  confidence: 0.8
+  evidence: POST /time-clock/v1/time-clocks/{timeClockId}/clock-out "Clock out"; schemas ClockOutRequest,
+    AutoClockOutModeType
+  reason: Records employee punch-out events for time and attendance tracking, an HR operations/payroll-feeding
+    activity.
+- tag: Time Clock:v1:TimeClocks:TimeClock:Get timesheet totals
+  spec_file: connecteam-time-clock-v1-timeclocks-timeclock-get-timesheet-totals-api-openapi.yml
+  capability_id: BC-300.70
+  capability_id_l1: BC-300
+  capability_name: HR Operations Management
+  confidence: 0.8
+  evidence: GET /time-clock/v1/time-clocks/{timeClockId}/timesheet "Get timesheet totals"; schemas TimesheetTotalHoursGetResponse,
+    PayRuleResponse, PayItemResponse, UserHoursSummaryResponse
+  reason: Aggregates employee worked hours with pay rules and pay items — timesheet/payroll administration,
+    squarely HR Operations Management.
+- tag: Users:v1:Payslips
+  spec_file: connecteam-users-v1-payslips-api-openapi.yml
+  capability_id: BC-300.70
+  capability_id_l1: BC-300
+  capability_name: HR Operations Management
+  confidence: 0.8
+  evidence: POST /users/v1/users/{userId}/payslips  Upload a payslip
+  reason: Uploading payslips against an employee record is payroll administration / HR service delivery,
+    squarely within HR Operations Management. Some chance the intended fit is Compensation & Benefits,
+    so not maximal confidence.
+- tag: Onboarding:v1:Onboarding:Assignments
+  spec_file: connecteam-onboarding-v1-onboarding-assignments-api-openapi.yml
+  capability_id: BC-300.10
+  capability_id_l1: BC-300
+  capability_name: Talent Acquisition Management
+  confidence: 0.75
+  evidence: POST /onboarding/v1/packs/{packId}/assignments  Assign users to pack; schema OnboardingStatus
+  reason: Assigns employees to HR onboarding packs and tracks onboarding status — the vendor explicitly
+    bundles 'HR onboarding'. Onboarding sits under Talent Acquisition Management in the candidate list;
+    some chance it belongs under Learning & Development, hence 0.75.
+- tag: Schedule:v1:Schedulers:Schedule:Shift Auto Assign
+  spec_file: connecteam-schedule-v1-schedulers-schedule-shift-auto-assign-api-openapi.yml
+  capability_id: BC-300
+  capability_id_l1: BC-300
+  capability_name: Human Capital Management
+  confidence: 0.75
+  evidence: POST .../shifts/auto-assign  "Create auto-assign request"; GET .../auto-assign/{autoAssignRequestId}  "Get
+    auto-assign status"
+  reason: Automated assignment of employees to open shifts — core workforce shift scheduling, which belongs
+    to Human Capital Management; no L2 in the list specifically names operational shift scheduling.
+- tag: Schedule:v2:Schedulers:Schedule:Shift Auto Assign (V2):Shift Auto Assign
+  spec_file: connecteam-schedule-v2-schedulers-schedule-shift-auto-assign-v2-shift-auto-assign-api-openapi.yml
+  capability_id: BC-300
+  capability_id_l1: BC-300
+  capability_name: Human Capital Management
+  confidence: 0.75
+  evidence: POST /scheduler/v2/schedulers/{schedulerId}/shifts/auto-assign  "Create auto-assign request"
+  reason: V2 of automated shift assignment to employees — workforce shift scheduling under Human Capital
+    Management; no L2 in the candidate list matches operational scheduling specifically.
+- tag: Schedule:v2:Schedulers:Schedule:Shifts (V2):Shifts
+  spec_file: connecteam-schedule-v2-schedulers-schedule-shifts-v2-shifts-api-openapi.yml
+  capability_id: BC-300
+  capability_id_l1: BC-300
+  capability_name: Human Capital Management
+  confidence: 0.75
+  evidence: POST /scheduler/v2/schedulers/{schedulerId}/shifts "Create shifts"; schemas ShiftCreateRequest,
+    ShiftUpdateBreakDataApi
+  reason: Operations create, update and delete employee work shifts in a job scheduler — workforce shift
+    scheduling, part of Human Capital Management. No single L2 cleanly covers operational shift rostering
+    (between workforce planning and HR operations), so L1 only.
+- tag: Onboarding:v1:Onboarding:Packs
+  spec_file: connecteam-onboarding-v1-onboarding-packs-api-openapi.yml
+  capability_id: BC-300.10
+  capability_id_l1: BC-300
+  capability_name: Talent Acquisition Management
+  confidence: 0.72
+  evidence: GET /onboarding/v1/packs  Get onboarding packs
+  reason: Catalogue of employee onboarding packs in a workforce platform that offers 'HR onboarding'.
+    Maps to the onboarding portion of Talent Acquisition Management; thin surface and possible L&D overlap
+    keep confidence moderate.
+- tag: Settings:v1:Webhook
+  spec_file: connecteam-settings-v1-webhook-api-openapi.yml
+  capability_id: BC-4270.80
+  capability_id_l1: BC-4270
+  capability_name: Webhook & Event Subscription Management
+  confidence: 0.72
+  evidence: POST /settings/v1/webhooks "Create webhook"; schemas WebhookCreateRequest, WebhookOrigin,
+    WebhookListResponse
+  reason: CRUD lifecycle over outbound webhook subscriptions exposed to API consumers, which is exactly
+    Webhook & Event Subscription Management in the platform frame. It is integration plumbing rather than
+    a workforce capability.
+- tag: Time Clock:v1:TimeClocks:TimeClock:TimeActivities
+  spec_file: connecteam-time-clock-v1-timeclocks-timeclock-timeactivities-api-openapi.yml
+  capability_id: BC-300.70
+  capability_id_l1: BC-300
+  capability_name: HR Operations Management
+  confidence: 0.72
+  evidence: POST/PUT /time-clock/v1/time-clocks/{timeClockId}/time-activities — "Create time activities",
+    "Update time activities"; schemas ShiftActivityResponse, TimeOffDurationResponse
+  reason: Full CRUD over employee shift/time activities (shifts, breaks, time off durations) is timesheet
+    administration — employee time records under HR operations.
+- tag: Time Off:v1:TimeOffRequests
+  spec_file: connecteam-time-off-v1-timeoffrequests-api-openapi.yml
+  capability_id: BC-300.70
+  capability_id_l1: BC-300
+  capability_name: HR Operations Management
+  confidence: 0.72
+  evidence: POST /time-off/v1/requests — "Create time off request"; TimeOffRequestCreateRequest
+  reason: Employee leave request creation, listing and update is absence/leave administration, a core
+    HR operations service for employees.
+- tag: Schedule:v1:Schedulers:Schedule:Schedule Unavailabilities
+  spec_file: connecteam-schedule-v1-schedulers-schedule-schedule-unavailabilities-api-openapi.yml
+  capability_id: BC-300
+  capability_id_l1: BC-300
+  capability_name: Human Capital Management
+  confidence: 0.7
+  evidence: GET /scheduler/v1/schedulers/{schedulerId}/unavailabilities  "Get schedule unavailabilities"
+    (SchedulerUnavailabilityResponse)
+  reason: Retrieves employee unavailability windows used when building shift schedules — workforce availability/absence
+    data within the employee lifecycle. No single L2 is clearly named.
+- tag: Schedule:v1:Schedulers:Schedule:Schedule Unavailability
+  spec_file: connecteam-schedule-v1-schedulers-schedule-schedule-unavailability-api-openapi.yml
+  capability_id: BC-300
+  capability_id_l1: BC-300
+  capability_name: Human Capital Management
+  confidence: 0.7
+  evidence: POST .../unavailability  "Create schedule unavailability"; DELETE .../unavailability/{unavailabilityId}
+  reason: Creates and removes employee unavailability records feeding shift scheduling, i.e. workforce
+    availability administration under Human Capital Management.
+- tag: Schedule:v1:Schedulers:Unavailabilities
+  spec_file: connecteam-schedule-v1-schedulers-unavailabilities-api-openapi.yml
+  capability_id: BC-300
+  capability_id_l1: BC-300
+  capability_name: Human Capital Management
+  confidence: 0.7
+  evidence: GET /scheduler/v1/schedulers/user-unavailability  "Get user unavailabilities" (AbsenceType,
+    SingleAbsence, UserUnavailabilityItem)
+  reason: Returns per-user absence/unavailability data used for scheduling, i.e. workforce absence and
+    availability information within Human Capital Management.
+- tag: Time Clock:v1:TimeClocks:TimeClock:ManualBreaks:ManualBreakClockIn
+  spec_file: connecteam-time-clock-v1-timeclocks-timeclock-manualbreaks-manualbreakclockin-api-openapi.yml
+  capability_id: BC-300.70
+  capability_id_l1: BC-300
+  capability_name: HR Operations Management
+  confidence: 0.7
+  evidence: POST .../manual-breaks/{manualBreakId}/clock-in — "Clock in to a manual break"; schemas PunchSourceResponse,
+    ShiftResponse, GpsData
+  reason: Punch/clock-in against an employee shift is employee time-and-attendance capture, part of HR
+    operations for a workforce management platform.
+- tag: Time Clock:v1:TimeClocks:TimeClock:ManualBreaks:ManualBreakClockOut
+  spec_file: connecteam-time-clock-v1-timeclocks-timeclock-manualbreaks-manualbreakclockout-api-openapi.yml
+  capability_id: BC-300.70
+  capability_id_l1: BC-300
+  capability_name: HR Operations Management
+  confidence: 0.7
+  evidence: POST .../manual-breaks/clock-out — "Clock out from a manual break"; ManualBreakClockOutRequest,
+    PunchSourceType
+  reason: Clock-out punch recording on an employee shift is time-and-attendance capture, i.e. HR operations.

@@ -1,0 +1,320 @@
+openapi: 3.2.0
+info:
+  title: Connecteam API documentation Schedule:v1:Schedulers:Schedule:Schedule Unavailability API
+  version: v1
+servers:
+- url: https://api.connecteam.com/
+tags:
+- name: Schedule:v1:Schedulers:Schedule:Schedule Unavailability
+paths:
+  /scheduler/v1/schedulers/{schedulerId}/unavailability:
+    post:
+      tags:
+      - Schedule:v1:Schedulers:Schedule:Schedule Unavailability
+      summary: Create schedule unavailability
+      description: Create a single unavailability in the specified schedule for a designated user on a given date. The unavailability can be set for the entire day or for a specific part of it. Repeating unavailabilities are currently not supported. The timezone of the unavailability will be determined based on the schedule's settings.
+      operationId: create_scheduler_unavailability_scheduler_v1_schedulers__schedulerId__unavailability_post
+      security:
+      - APIKeyHeader: []
+      - OAuth2:
+        - schedule.write
+      parameters:
+      - name: schedulerId
+        in: path
+        required: true
+        schema:
+          type: integer
+          description: The unique identifier of the schedule
+          title: Schedulerid
+        description: The unique identifier of the schedule
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UnavailabilityCreateRequest'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIResponseV2_UnavailabilityCreateResponse_'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /scheduler/v1/schedulers/{schedulerId}/unavailability/{unavailabilityId}:
+    delete:
+      tags:
+      - Schedule:v1:Schedulers:Schedule:Schedule Unavailability
+      summary: Delete schedule unavailability
+      description: Delete existing unavailability by its unavailability ID
+      operationId: delete_scheduler_unavailability_scheduler_v1_schedulers__schedulerId__unavailability__unavailabilityId__delete
+      security:
+      - APIKeyHeader: []
+      - OAuth2:
+        - schedule.delete
+      parameters:
+      - name: unavailabilityId
+        in: path
+        required: true
+        schema:
+          type: string
+          description: The unique identifier of the unavailability
+          title: Unavailabilityid
+        description: The unique identifier of the unavailability
+      - name: schedulerId
+        in: path
+        required: true
+        schema:
+          type: integer
+          description: The unique identifier of the schedule
+          title: Schedulerid
+        description: The unique identifier of the schedule
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIResponseV2_UnavailabilityDeleteResponse_'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+components:
+  schemas:
+    UnavailabilityCreateResponse:
+      properties:
+        id:
+          type: string
+          title: Id
+          description: The ID of the unavailability
+        userId:
+          type: integer
+          minimum: 1.0
+          title: Userid
+          description: The ID of the user to which the unavailability is assigned
+        isAllDay:
+          type: boolean
+          title: Isallday
+          description: Whether the unavailability is for the entire day
+        unavailabilityDate:
+          type: string
+          title: Unavailabilitydate
+          description: The date of the unavailability in ISO format (YYYY-MM-DD)
+        startTime:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Starttime
+          description: The start time of the unavailability in ISO format (HH:MM:SS)
+        endTime:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Endtime
+          description: The end time of the unavailability in ISO format (HH:MM:SS)
+        timezone:
+          type: string
+          title: Timezone
+          description: The timezone of the unavailability in Tz format (e.g. America/New_York)
+        note:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Note
+          description: Optional note with additional details about the unavailability
+      type: object
+      required:
+      - id
+      - userId
+      - isAllDay
+      - unavailabilityDate
+      - timezone
+      title: UnavailabilityCreateResponse
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    APIResponseV2_UnavailabilityDeleteResponse_:
+      properties:
+        requestId:
+          type: string
+          title: Requestid
+        data:
+          $ref: '#/components/schemas/UnavailabilityDeleteResponse'
+      type: object
+      required:
+      - data
+      title: APIResponseV2[UnavailabilityDeleteResponse]
+    UnavailabilityCreateRequest:
+      properties:
+        userId:
+          type: integer
+          minimum: 1.0
+          title: Userid
+          description: The unique identifier of the user to which the unavailability will be assigned
+        isAllDay:
+          type: boolean
+          title: Isallday
+          description: Specifies the type of the time period for the unavailability, Defaults to true. If set to false, start and end time fields must be specified.
+        unavailabilityDate:
+          type: string
+          title: Unavailabilitydate
+          description: The date of the unavailability in ISO format (YYYY-MM-DD).
+        timezone:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Timezone
+          description: The timezone of the unavailability in Tz format (e.g. America/New_York). If not specified, it uses the timezone configured in the app settings.
+        note:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Note
+          description: Optional note with additional details about the unavailability
+        startTime:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Starttime
+          description: The start time of the unavailability in ISO format (HH:MM:SS). This field is required if isAllDay set to false.
+        endTime:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Endtime
+          description: The end time of the unavailability in ISO format (HH:MM:SS). This field is required if isAllDay set to false.
+      type: object
+      required:
+      - userId
+      - isAllDay
+      - unavailabilityDate
+      title: UnavailabilityCreateRequest
+    APIResponseV2_UnavailabilityCreateResponse_:
+      properties:
+        requestId:
+          type: string
+          title: Requestid
+        data:
+          $ref: '#/components/schemas/UnavailabilityCreateResponse'
+      type: object
+      required:
+      - data
+      title: APIResponseV2[UnavailabilityCreateResponse]
+    UnavailabilityDeleteResponse:
+      properties: {}
+      type: object
+      title: UnavailabilityDeleteResponse
+  securitySchemes:
+    APIKeyHeader:
+      type: apiKey
+      description: The Api key of the company given by Connecteam
+      in: header
+      name: X-API-KEY
+    OAuth2:
+      type: oauth2
+      description: OAuth2 Bearer token
+      flows:
+        clientCredentials:
+          scopes:
+            account_information.read: account information - read
+            account_information.write: account information - write
+            account_information.delete: account information - delete
+            company_policies.read: company policies - read
+            company_policies.write: company policies - write
+            company_policies.delete: company policies - delete
+            company_insights.read: company insights - read
+            users.read: users - read
+            users.write: users - write
+            users.delete: users - delete
+            assets.read: assets - read
+            assets.write: assets - write
+            assets.delete: assets - delete
+            sales_data.read: sales data - read
+            sales_data.write: sales data - write
+            sales_data.delete: sales data - delete
+            attachments.read: attachments - read
+            attachments.write: attachments - write
+            attachments.delete: attachments - delete
+            quick_tasks.read: quick tasks - read
+            quick_tasks.write: quick tasks - write
+            quick_tasks.delete: quick tasks - delete
+            publishers.read: publishers - read
+            publishers.write: publishers - write
+            publishers.delete: publishers - delete
+            chat.read: chat - read
+            chat.write: chat - write
+            chat.delete: chat - delete
+            jobs.read: jobs - read
+            jobs.write: jobs - write
+            jobs.delete: jobs - delete
+            schedule.read: schedule - read
+            schedule.write: schedule - write
+            schedule.delete: schedule - delete
+            daily_note.read: daily note - read
+            daily_note.write: daily note - write
+            daily_note.delete: daily note - delete
+            time_clock.read: time clock - read
+            time_clock.write: time clock - write
+            time_clock.delete: time clock - delete
+            nfc.read: nfc - read
+            nfc.write: nfc - write
+            nfc.delete: nfc - delete
+            time_off.read: time off - read
+            time_off.write: time off - write
+            time_off.delete: time off - delete
+            pay_rates.read: pay rates - read
+            pay_rates.write: pay rates - write
+            pay_rates.delete: pay rates - delete
+            forms.read: forms - read
+            forms.write: forms - write
+            forms.delete: forms - delete
+            onboarding.read: onboarding - read
+            onboarding.write: onboarding - write
+            onboarding.delete: onboarding - delete
+            settings.read: settings - read
+            settings.write: settings - write
+            settings.delete: settings - delete
+            company_checklist.read: company checklist - read
+            company_checklist.write: company checklist - write
+            recognitions.read: recognitions - read
+            celebrations.read: celebrations - read
+          tokenUrl: /oauth/v1/token
+    HTTPBasic:
+      type: http
+      description: Use client_id as Username and client_secret as Password
+      scheme: basic

@@ -1,0 +1,295 @@
+openapi: 3.2.0
+info:
+  title: Connecteam API documentation Users:v1:Smart Group Segments API
+  version: v1
+servers:
+- url: https://api.connecteam.com/
+tags:
+- name: Users:v1:Smart Group Segments
+paths:
+  /users/v1/smart-group-segments:
+    get:
+      tags:
+      - Users:v1:Smart Group Segments
+      summary: Get smart group segments
+      description: Retrieves all smart group segments associated with the account. Optionally, filter the results by segment IDs and/or names.
+      operationId: get_smart_group_segments_users_v1_smart_group_segments_get
+      security:
+      - APIKeyHeader: []
+      - OAuth2:
+        - users.read
+      parameters:
+      - name: segmentIds
+        in: query
+        required: false
+        schema:
+          title: Segmentids
+          description: Smart group segment IDs to filter by
+          type: array
+          items:
+            type: integer
+        description: Smart group segment IDs to filter by
+      - name: names
+        in: query
+        required: false
+        schema:
+          title: Names
+          description: Smart group segment names to filter by
+          type: array
+          items:
+            type: string
+        description: Smart group segment names to filter by
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIResponse_SmartGroupSegmentsResponse_'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    post:
+      tags:
+      - Users:v1:Smart Group Segments
+      summary: Create smart group segment
+      description: Create a new segment for smart groups associated with the account. The segment can be assigned a name and a color.
+      operationId: create_smart_group_segment_users_v1_smart_group_segments_post
+      security:
+      - APIKeyHeader: []
+      - OAuth2:
+        - users.write
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              title: Request
+              allOf:
+              - $ref: '#/components/schemas/SmartGroupSegmentCreateRequest'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIResponse_SmartGroupSegmentCreateResponse_'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+components:
+  schemas:
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    SmartGroupSegmentCreateRequest:
+      properties:
+        name:
+          type: string
+          title: Name
+          description: The name of the smart group segment
+        color:
+          type: string
+          title: Color
+          description: 'The color hex code for the smart group segment (e.g. #ff5722)'
+      type: object
+      required:
+      - name
+      - color
+      title: SmartGroupSegmentCreateRequest
+    SmartGroupSegment:
+      properties:
+        id:
+          type: integer
+          title: Id
+          description: The unique identifier of the smart group segment
+        name:
+          type: string
+          title: Name
+          description: The name of the smart group segment
+        color:
+          type: string
+          title: Color
+          description: The color hex code of the smart group segment
+        sortOrder:
+          type: integer
+          title: Sortorder
+          description: The sort order of the smart group segment
+      type: object
+      required:
+      - id
+      - name
+      - color
+      - sortOrder
+      title: SmartGroupSegment
+    SmartGroupSegmentsResponse:
+      properties:
+        segments:
+          items:
+            $ref: '#/components/schemas/SmartGroupSegment'
+          type: array
+          title: Segments
+          description: List of smart group segments
+      type: object
+      required:
+      - segments
+      title: SmartGroupSegmentsResponse
+    APIResponse_SmartGroupSegmentCreateResponse_:
+      properties:
+        requestId:
+          type: string
+          title: Requestid
+        data:
+          $ref: '#/components/schemas/SmartGroupSegmentCreateResponse'
+      type: object
+      required:
+      - data
+      title: APIResponse[SmartGroupSegmentCreateResponse]
+    APIResponse_SmartGroupSegmentsResponse_:
+      properties:
+        requestId:
+          type: string
+          title: Requestid
+        data:
+          $ref: '#/components/schemas/SmartGroupSegmentsResponse'
+      type: object
+      required:
+      - data
+      title: APIResponse[SmartGroupSegmentsResponse]
+    SmartGroupSegmentCreateResponse:
+      properties:
+        id:
+          type: integer
+          title: Id
+          description: The unique identifier of the smart group segment
+        name:
+          type: string
+          title: Name
+          description: The name of the smart group segment
+        color:
+          type: string
+          title: Color
+          description: The color hex code of the smart group segment
+        sortOrder:
+          type: integer
+          title: Sortorder
+          description: The sort order of the smart group segment
+      type: object
+      required:
+      - id
+      - name
+      - color
+      - sortOrder
+      title: SmartGroupSegmentCreateResponse
+  securitySchemes:
+    APIKeyHeader:
+      type: apiKey
+      description: The Api key of the company given by Connecteam
+      in: header
+      name: X-API-KEY
+    OAuth2:
+      type: oauth2
+      description: OAuth2 Bearer token
+      flows:
+        clientCredentials:
+          scopes:
+            account_information.read: account information - read
+            account_information.write: account information - write
+            account_information.delete: account information - delete
+            company_policies.read: company policies - read
+            company_policies.write: company policies - write
+            company_policies.delete: company policies - delete
+            company_insights.read: company insights - read
+            users.read: users - read
+            users.write: users - write
+            users.delete: users - delete
+            assets.read: assets - read
+            assets.write: assets - write
+            assets.delete: assets - delete
+            sales_data.read: sales data - read
+            sales_data.write: sales data - write
+            sales_data.delete: sales data - delete
+            attachments.read: attachments - read
+            attachments.write: attachments - write
+            attachments.delete: attachments - delete
+            quick_tasks.read: quick tasks - read
+            quick_tasks.write: quick tasks - write
+            quick_tasks.delete: quick tasks - delete
+            publishers.read: publishers - read
+            publishers.write: publishers - write
+            publishers.delete: publishers - delete
+            chat.read: chat - read
+            chat.write: chat - write
+            chat.delete: chat - delete
+            jobs.read: jobs - read
+            jobs.write: jobs - write
+            jobs.delete: jobs - delete
+            schedule.read: schedule - read
+            schedule.write: schedule - write
+            schedule.delete: schedule - delete
+            daily_note.read: daily note - read
+            daily_note.write: daily note - write
+            daily_note.delete: daily note - delete
+            time_clock.read: time clock - read
+            time_clock.write: time clock - write
+            time_clock.delete: time clock - delete
+            nfc.read: nfc - read
+            nfc.write: nfc - write
+            nfc.delete: nfc - delete
+            time_off.read: time off - read
+            time_off.write: time off - write
+            time_off.delete: time off - delete
+            pay_rates.read: pay rates - read
+            pay_rates.write: pay rates - write
+            pay_rates.delete: pay rates - delete
+            forms.read: forms - read
+            forms.write: forms - write
+            forms.delete: forms - delete
+            onboarding.read: onboarding - read
+            onboarding.write: onboarding - write
+            onboarding.delete: onboarding - delete
+            settings.read: settings - read
+            settings.write: settings - write
+            settings.delete: settings - delete
+            company_checklist.read: company checklist - read
+            company_checklist.write: company checklist - write
+            recognitions.read: recognitions - read
+            celebrations.read: celebrations - read
+          tokenUrl: /oauth/v1/token
+    HTTPBasic:
+      type: http
+      description: Use client_id as Username and client_secret as Password
+      scheme: basic

@@ -1,0 +1,350 @@
+openapi: 3.2.0
+info:
+  title: Connecteam API documentation Time Clock:v1:TimeClocks:TimeClock:LockDays API
+  version: v1
+servers:
+- url: https://api.connecteam.com/
+tags:
+- name: Time Clock:v1:TimeClocks:TimeClock:LockDays
+paths:
+  /time-clock/v1/time-clocks/{timeClockId}/users/{userId}/lock-days:
+    put:
+      tags:
+      - Time Clock:v1:TimeClocks:TimeClock:LockDays
+      summary: Update user lock days
+      description: 'Locks or unlocks one or more calendar days for a specific user on a given Time Clock. The isLocked boolean on the request body selects the operation: true (the default) prevents subsequent time-activity edits on those dates; false removes the per-day lock and allows edits again. Idempotent: dates already in the requested state are no-ops, and the response reflects the final state. This endpoint does not reopen approved payroll periods. If isLocked is false and any of the requested dates would actually transition from locked to unlocked but fall inside an approved period for this user, the entire request is rejected with DAYS_IN_APPROVED_PERIOD (409); no dates are unlocked. Approved periods must be reopened from the dashboard before calling this endpoint with isLocked: false. isLocked: true on an approved-period day is allowed and is a no-op for day-lock state.'
+      operationId: update_user_lock_days_time_clock_v1_time_clocks__timeClockId__users__userId__lock_days_put
+      security:
+      - APIKeyHeader: []
+      - OAuth2:
+        - time_clock.write
+      parameters:
+      - name: timeClockId
+        in: path
+        required: true
+        schema:
+          title: Timeclockid
+          description: The unique identifier of the time clock
+          type: integer
+        description: The unique identifier of the time clock
+      - name: userId
+        in: path
+        required: true
+        schema:
+          title: Userid
+          description: The ID of the user whose data is being accessed or modified
+          minimum: 1
+          type: integer
+        description: The ID of the user whose data is being accessed or modified
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              title: Request
+              description: Lock-state change to apply for this user.
+              allOf:
+              - $ref: '#/components/schemas/LockDaysPutRequest'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIResponse_LockDaysPutResponse_'
+        '400':
+          description: Invalid request body
+          content:
+            application/json:
+              examples:
+                duplicate_dates:
+                  summary: Duplicate dates
+                  value:
+                    details:
+                      error_message: Request body is invalid
+                      error_code: 1002
+                    error:
+                      __root__:
+                        message: dates must be unique
+                        type: value_error
+                    path: /time-clock/v1/time-clocks/{timeClockId}/users/{userId}/lock-days
+                    request_id: 550e8400-e29b-41d4-a716-446655440000
+                too_many_dates:
+                  summary: More than 50 dates
+                  value:
+                    details:
+                      error_message: Request body is invalid
+                      error_code: 1002
+                    error:
+                      body.dates:
+                        message: ensure this value has at most 50 items
+                        type: value_error.list.max_items
+                    path: /time-clock/v1/time-clocks/{timeClockId}/users/{userId}/lock-days
+                    request_id: 550e8400-e29b-41d4-a716-446655440000
+                empty_dates:
+                  summary: Empty dates
+                  value:
+                    details:
+                      error_message: Request body is invalid
+                      error_code: 1002
+                    error:
+                      body.dates:
+                        message: ensure this value has at least 1 items
+                        type: value_error.list.min_items
+                    path: /time-clock/v1/time-clocks/{timeClockId}/users/{userId}/lock-days
+                    request_id: 550e8400-e29b-41d4-a716-446655440000
+                invalid_date_format:
+                  summary: Invalid date format
+                  value:
+                    details:
+                      error_message: Request body is invalid
+                      error_code: 1002
+                    error:
+                      body.dates.0:
+                        message: Date must be a valid date and in the format yyyy-MM-dd (iso format) got 2026/04/10
+                        type: value_error
+                    path: /time-clock/v1/time-clocks/{timeClockId}/users/{userId}/lock-days
+                    request_id: 550e8400-e29b-41d4-a716-446655440000
+              schema:
+                $ref: '#/components/schemas/ValidationErrorResponse'
+        '403':
+          description: Lock days are disabled for this Time Clock. Enable Timesheet Approval (Lock Days) before calling this endpoint.
+          content:
+            application/json:
+              example:
+                error: 'LOCK_DAYS_DISABLED: lock days settings are disabled for time clock 12345. Enable Timesheet Approval (Lock Days) in the Time Clock settings before calling this endpoint.'
+                path: /time-clock/v1/time-clocks/{timeClockId}/users/{userId}/lock-days
+                request_id: 550e8400-e29b-41d4-a716-446655440000
+              schema:
+                $ref: '#/components/schemas/ValidationErrorResponse'
+        '404':
+          description: The userId in the path does not exist in the company.
+          content:
+            application/json:
+              example:
+                error: User with ID 12345 not found
+                path: /time-clock/v1/time-clocks/{timeClockId}/users/{userId}/lock-days
+                request_id: 550e8400-e29b-41d4-a716-446655440000
+              schema:
+                $ref: '#/components/schemas/ValidationErrorResponse'
+        '409':
+          description: Only when isLocked is false. One or more dates that would actually transition from locked to unlocked are part of an approved payroll period for this user. The entire request is rejected; no dates are unlocked. Reopen the approved period from the dashboard and retry.
+          content:
+            application/json:
+              example:
+                error: 'DAYS_IN_APPROVED_PERIOD: cannot unlock days in an approved payroll period for user 12345 on time clock 67890: [''2026-04-10'', ''2026-04-11'']. Reopen the approved period from the dashboard and retry.'
+                path: /time-clock/v1/time-clocks/{timeClockId}/users/{userId}/lock-days
+                request_id: 550e8400-e29b-41d4-a716-446655440000
+              schema:
+                $ref: '#/components/schemas/ValidationErrorResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+components:
+  schemas:
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    LockDaysPutRequest:
+      properties:
+        isLocked:
+          type: boolean
+          title: Islocked
+          description: Target lock state for the requested dates. true locks the dates (prevents further time-activity edits). false unlocks the dates. When omitted, defaults to true.
+          default: true
+        dates:
+          items:
+            type: string
+          type: array
+          maxItems: 50
+          minItems: 1
+          title: Dates
+          description: Dates to update for this user, in YYYY-MM-DD format. Min 1 date, max 50 dates per request. Must be unique within the request.
+      type: object
+      required:
+      - dates
+      title: LockDaysPutRequest
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    ErrorParing:
+      properties:
+        error_message:
+          type: string
+          title: Error Message
+        error_code:
+          type: integer
+          title: Error Code
+      type: object
+      required:
+      - error_message
+      - error_code
+      title: ErrorParing
+      description: V1 error paring model for backward compatibility
+    ValidationErrorResponse:
+      properties:
+        details:
+          allOf:
+          - $ref: '#/components/schemas/ErrorParing'
+          title: Details
+          default:
+            error_message: Request is invalid
+            error_code: 1004
+        error:
+          anyOf:
+          - type: object
+          - items:
+              type: object
+            type: array
+          - type: string
+          title: Error
+          default: Validation Error
+        path:
+          type: string
+          title: Path
+        requestId:
+          type: string
+          title: Requestid
+      type: object
+      title: ValidationErrorResponse
+      description: "All errors responses should include:\nrequest_id,\nConnecteam error code and error message,\nthe url path,\nthe request body,\nand error data which can be a pydantic class or a dict and should look something like this:\n`{\n    \"error.path\": \"the gist of the error\"\n}`\n\nfor example if the user doesn't exist it should look something like this:\n`{\n    \"user.id\": \"user doesn't exist\"\n}`"
+    APIResponse_LockDaysPutResponse_:
+      properties:
+        requestId:
+          type: string
+          title: Requestid
+        data:
+          $ref: '#/components/schemas/LockDaysPutResponse'
+      type: object
+      required:
+      - data
+      title: APIResponse[LockDaysPutResponse]
+    LockDaysPutResponse:
+      properties:
+        userId:
+          type: integer
+          minimum: 1.0
+          title: Userid
+          description: The unique identifier of the user (echoed from the path).
+        isLocked:
+          type: boolean
+          title: Islocked
+          description: The state applied. Echoes the request value (true if locked, false if unlocked).
+        dates:
+          items:
+            type: string
+          type: array
+          title: Dates
+          description: Final state for the requested dates, in YYYY-MM-DD format. When isLocked is true, every date is now locked (including dates that were already locked). When isLocked is false, every date is now unlocked (including dates that were already unlocked).
+      type: object
+      required:
+      - userId
+      - isLocked
+      - dates
+      title: LockDaysPutResponse
+  securitySchemes:
+    APIKeyHeader:
+      type: apiKey
+      description: The Api key of the company given by Connecteam
+      in: header
+      name: X-API-KEY
+    OAuth2:
+      type: oauth2
+      description: OAuth2 Bearer token
+      flows:
+        clientCredentials:
+          scopes:
+            account_information.read: account information - read
+            account_information.write: account information - write
+            account_information.delete: account information - delete
+            company_policies.read: company policies - read
+            company_policies.write: company policies - write
+            company_policies.delete: company policies - delete
+            company_insights.read: company insights - read
+            users.read: users - read
+            users.write: users - write
+            users.delete: users - delete
+            assets.read: assets - read
+            assets.write: assets - write
+            assets.delete: assets - delete
+            sales_data.read: sales data - read
+            sales_data.write: sales data - write
+            sales_data.delete: sales data - delete
+            attachments.read: attachments - read
+            attachments.write: attachments - write
+            attachments.delete: attachments - delete
+            quick_tasks.read: quick tasks - read
+            quick_tasks.write: quick tasks - write
+            quick_tasks.delete: quick tasks - delete
+            publishers.read: publishers - read
+            publishers.write: publishers - write
+            publishers.delete: publishers - delete
+            chat.read: chat - read
+            chat.write: chat - write
+            chat.delete: chat - delete
+            jobs.read: jobs - read
+            jobs.write: jobs - write
+            jobs.delete: jobs - delete
+            schedule.read: schedule - read
+            schedule.write: schedule - write
+            schedule.delete: schedule - delete
+            daily_note.read: daily note - read
+            daily_note.write: daily note - write
+            daily_note.delete: daily note - delete
+            time_clock.read: time clock - read
+            time_clock.write: time clock - write
+            time_clock.delete: time clock - delete
+            nfc.read: nfc - read
+            nfc.write: nfc - write
+            nfc.delete: nfc - delete
+            time_off.read: time off - read
+            time_off.write: time off - write
+            time_off.delete: time off - delete
+            pay_rates.read: pay rates - read
+            pay_rates.write: pay rates - write
+            pay_rates.delete: pay rates - delete
+            forms.read: forms - read
+            forms.write: forms - write
+            forms.delete: forms - delete
+            onboarding.read: onboarding - read
+            onboarding.write: onboarding - write
+            onboarding.delete: onboarding - delete
+            settings.read: settings - read
+            settings.write: settings - write
+            settings.delete: settings - delete
+            company_checklist.read: company checklist - read
+            company_checklist.write: company checklist - write
+            recognitions.read: recognitions - read
+            celebrations.read: celebrations - read
+          tokenUrl: /oauth/v1/token
+    HTTPBasic:
+      type: http
+      description: Use client_id as Username and client_secret as Password
+      scheme: basic

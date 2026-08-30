@@ -1,0 +1,813 @@
+openapi: 3.2.0
+info:
+  title: Connecteam API documentation Pay Rates:v1:Pay Rates:v1:PayRates API
+  version: v1
+servers:
+- url: https://api.connecteam.com/
+tags:
+- name: Pay Rates:v1:Pay Rates:v1:PayRates
+paths:
+  /pay-rates/v1/pay-rates:
+    get:
+      tags:
+      - Pay Rates:v1:Pay Rates:v1:PayRates
+      summary: Get pay rates
+      description: Retrieves pay rate information for one or more users within your organization. This endpoint supports flexible filtering by effective dates, rate types, and resource assignments. It's designed for payroll integration scenarios where you need to fetch pay rates for multiple employees at once. The response includes historical modification data when requested, allowing you to track changes over time for audit and compliance purposes. Pagination is supported for large result sets.
+      operationId: get_pay_rates_pay_rates_v1_pay_rates_get
+      security:
+      - APIKeyHeader: []
+      - OAuth2:
+        - pay_rates.read
+      parameters:
+      - name: startDate
+        in: query
+        required: true
+        schema:
+          title: Startdate
+          description: Return pay rates that are in effect during the date range starting from this date, in ISO 8601 format (YYYY-MM-DD). This includes rates with an effective date before startDate if they are still the most recent rate at the start of the range. Must be used together with endDate. Date range cannot exceed 365 days.
+          type: string
+        description: Return pay rates that are in effect during the date range starting from this date, in ISO 8601 format (YYYY-MM-DD). This includes rates with an effective date before startDate if they are still the most recent rate at the start of the range. Must be used together with endDate. Date range cannot exceed 365 days.
+      - name: endDate
+        in: query
+        required: true
+        schema:
+          title: Enddate
+          description: Return pay rates that are in effect during the date range ending at this date, in ISO 8601 format (YYYY-MM-DD). Must be used together with startDate. Date range cannot exceed 365 days.
+          type: string
+        description: Return pay rates that are in effect during the date range ending at this date, in ISO 8601 format (YYYY-MM-DD). Must be used together with startDate. Date range cannot exceed 365 days.
+      - name: userIds
+        in: query
+        required: false
+        schema:
+          title: Userids
+          description: List of user IDs to retrieve pay rates for. If omitted, pay rates for all users will be returned (subject to pagination).
+          type: array
+          items:
+            type: integer
+        description: List of user IDs to retrieve pay rates for. If omitted, pay rates for all users will be returned (subject to pagination).
+      - name: rateType
+        in: query
+        required: false
+        schema:
+          description: 'Filter by rate type. Valid values: hourly, monthly, yearly.'
+          allOf:
+          - $ref: '#/components/schemas/WageTypesEnum'
+        description: 'Filter by rate type. Valid values: hourly, monthly, yearly.'
+      - name: resourceIds
+        in: query
+        required: false
+        schema:
+          title: Resourceids
+          description: Filter resource rate details to include only specific resources. This filter only affects resourcesRates; other pay rate fields are always returned.
+          type: array
+          items:
+            type: string
+        description: Filter resource rate details to include only specific resources. This filter only affects resourcesRates; other pay rate fields are always returned.
+      - name: isIncludeHistory
+        in: query
+        required: false
+        schema:
+          title: Isincludehistory
+          description: 'When set to true, includes the complete modification history for each pay rate. Note: Setting this to true may increase response time and payload size.'
+          default: false
+          type: boolean
+        description: 'When set to true, includes the complete modification history for each pay rate. Note: Setting this to true may increase response time and payload size.'
+      - name: limit
+        in: query
+        required: false
+        schema:
+          title: Limit
+          description: The maximum number of results to display per page
+          default: 100
+          minimum: 1
+          maximum: 500
+          type: integer
+        description: The maximum number of results to display per page
+      - name: offset
+        in: query
+        required: false
+        schema:
+          title: Offset
+          description: The resource offset of the last successfully read resource will be returned as the paging.offset JSON property of a paginated response containing more results
+          default: 0
+          minimum: 0
+          type: integer
+        description: The resource offset of the last successfully read resource will be returned as the paging.offset JSON property of a paginated response containing more results
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedBaseResponse_PayRatesGetResponseData_'
+        '400':
+          description: Invalid request parameters
+          content:
+            application/json:
+              examples:
+                invalid_date_range:
+                  summary: Date range exceeds 365 days
+                  value:
+                    details:
+                      error_message: Request query is invalid
+                      error_code: 1003
+                    error:
+                      __root__:
+                        message: Date range cannot exceed 365 days
+                        type: value_error
+                    path: /pay-rates/v1/pay-rates
+                    request_id: 550e8400-e29b-41d4-a716-446655440000
+                invalid_date_format:
+                  summary: Invalid date format
+                  value:
+                    details:
+                      error_message: Request query is invalid
+                      error_code: 1003
+                    error:
+                      query.start_date:
+                        message: invalid date format, expected YYYY-MM-DD
+                        type: value_error.date
+                    path: /pay-rates/v1/pay-rates
+                    request_id: 550e8400-e29b-41d4-a716-446655440000
+              schema:
+                $ref: '#/components/schemas/ValidationErrorResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    put:
+      tags:
+      - Pay Rates:v1:Pay Rates:v1:PayRates
+      summary: Set pay rates
+      description: Creates or updates pay rates for one or more users. If a pay rate exists for the same effective date, it is replaced; otherwise, a new entry is added to the pay rate history. The effective date cannot be on or after any approved or locked timesheet days. If such days exist, the request fails with HAS_LOCKED_DAYS. For bulk requests with resource rates enabled, the system validates user eligibility and tracks all changes. When isResourceRateEnabled is true, resourcesRates must include all resources with custom rates.
+      operationId: set_pay_rates_pay_rates_v1_pay_rates_put
+      security:
+      - APIKeyHeader: []
+      - OAuth2:
+        - pay_rates.write
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              title: Pay Rates Request
+              description: The pay rates to set
+              allOf:
+              - $ref: '#/components/schemas/PayRatesPutRequest'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIResponse_PayRatePutResponse_'
+        '400':
+          description: Invalid request body
+          content:
+            application/json:
+              examples:
+                invalid_rate_value:
+                  summary: Rate must be >= 0
+                  value:
+                    details:
+                      error_message: Request body is invalid
+                      error_code: 1002
+                    error:
+                      body.payRatesByUsers.0.payRate.defaultRate:
+                        message: ensure this value is greater than or equal to 0
+                        type: value_error.number.not_ge
+                    path: /pay-rates/v1/pay-rates
+                    request_id: 550e8400-e29b-41d4-a716-446655440000
+                missing_default_rate:
+                  summary: defaultRate required when enabled
+                  value:
+                    details:
+                      error_message: Request body is invalid
+                      error_code: 1002
+                    error:
+                      __root__:
+                        message: defaultRate is required when isDefaultRateEnabled is true
+                        type: value_error
+                    path: /pay-rates/v1/pay-rates
+                    request_id: 550e8400-e29b-41d4-a716-446655440000
+                invalid_date_format:
+                  summary: Invalid date format
+                  value:
+                    details:
+                      error_message: Request body is invalid
+                      error_code: 1002
+                    error:
+                      body.payRatesByUsers.0.payRate.effectiveDate:
+                        message: invalid date format, expected YYYY-MM-DD
+                        type: value_error.date
+                    path: /pay-rates/v1/pay-rates
+                    request_id: 550e8400-e29b-41d4-a716-446655440000
+                user_not_found:
+                  summary: User ID(s) don't exist
+                  value:
+                    details:
+                      error_message: Request is invalid
+                      error_code: 1004
+                    error: 'Users: [12345, 67890] not exists'
+                    path: /pay-rates/v1/pay-rates
+                    request_id: 550e8400-e29b-41d4-a716-446655440000
+              schema:
+                $ref: '#/components/schemas/ValidationErrorResponse'
+        '409':
+          description: The effective date conflicts with approved or locked timesheet days. Cannot create, update, or delete pay rates that would affect finalized timesheets
+          content:
+            application/json:
+              example:
+                details:
+                  error_message: Cannot modify pay rate
+                  error_code: HAS_LOCKED_DAYS
+                error: Cannot modify pay rate that affects locked or approved timesheet days
+                path: /pay-rates/v1/pay-rates
+                request_id: 550e8400-e29b-41d4-a716-446655440000
+              schema:
+                $ref: '#/components/schemas/ValidationErrorResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /pay-rates/v1/pay-rates/users/{userId}/{effectiveDate}:
+    delete:
+      tags:
+      - Pay Rates:v1:Pay Rates:v1:PayRates
+      summary: Delete pay rate
+      description: Deletes a specific pay rate entry for a user. The pay rate is identified by the user ID and effective date. This operation cannot be undone. The system validates that the effective date does not affect any approved or locked timesheet days. If the user has any approved or locked days on or after this effective date, the delete request will fail with error code HAS_LOCKED_DAYS. You cannot delete pay rates that are currently being used for finalized payroll calculations. Additionally, at least one pay rate must remain for each user (if required by company policy).
+      operationId: delete_pay_rate_pay_rates_v1_pay_rates_users__userId___effectiveDate__delete
+      security:
+      - APIKeyHeader: []
+      - OAuth2:
+        - pay_rates.delete
+      parameters:
+      - name: userId
+        in: path
+        required: true
+        schema:
+          type: integer
+          description: The ID of the user
+          title: Userid
+        description: The ID of the user
+      - name: effectiveDate
+        in: path
+        required: true
+        schema:
+          type: string
+          description: 'The effective date of the pay rate (format: YYYY-MM-DD)'
+          title: Effectivedate
+        description: 'The effective date of the pay rate (format: YYYY-MM-DD)'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIResponse_PayRateDeleteResponse_'
+        '404':
+          description: Pay rate not found for given user ID and effective date
+          content:
+            application/json:
+              example:
+                error: Pay rate not found for user 12345 on effective date 2024-01-01
+                path: /pay-rates/v1/pay-rates/users/12345/2024-01-01
+                request_id: 550e8400-e29b-41d4-a716-446655440000
+              schema:
+                $ref: '#/components/schemas/ValidationErrorResponse'
+        '409':
+          description: The effective date conflicts with approved or locked timesheet days. Cannot create, update, or delete pay rates that would affect finalized timesheets
+          content:
+            application/json:
+              example:
+                details:
+                  error_message: Cannot delete pay rate
+                  error_code: HAS_LOCKED_DAYS
+                error: Cannot delete pay rate that affects locked or approved timesheet days
+                path: /pay-rates/v1/pay-rates/users/12345/2024-01-01
+                request_id: 550e8400-e29b-41d4-a716-446655440000
+              schema:
+                $ref: '#/components/schemas/ValidationErrorResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+components:
+  schemas:
+    APIResponse_PayRatePutResponse_:
+      properties:
+        requestId:
+          type: string
+          title: Requestid
+        data:
+          $ref: '#/components/schemas/PayRatePutResponse'
+      type: object
+      required:
+      - data
+      title: APIResponse[PayRatePutResponse]
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    WageTypesEnum:
+      type: string
+      enum:
+      - hourly
+      - monthly
+      - yearly
+      title: WageTypesEnum
+      description: An enumeration.
+    PayRateRequest:
+      properties:
+        effectiveDate:
+          type: string
+          title: Effectivedate
+          description: The date this pay rate becomes effective (YYYY-MM-DD). Cannot be on or before any approved/locked timesheet days for this user
+        rateType:
+          allOf:
+          - $ref: '#/components/schemas/WageTypesEnum'
+          description: 'Type of rate: hourly, monthly, or yearly'
+        isDefaultRateEnabled:
+          type: boolean
+          title: Isdefaultrateenabled
+          description: Whether to enable the default rate
+          default: true
+        defaultRate:
+          type: number
+          minimum: 0.0
+          title: Defaultrate
+          description: The default rate amount. Must be >= 0 ($0 is allowed for unpaid/volunteer work). Required when isDefaultRateEnabled is true
+        isResourceRateEnabled:
+          type: boolean
+          title: Isresourcerateenabled
+          description: Whether to enable resource-specific rates
+          default: false
+        isApplyDefaultRateToNewResource:
+          type: boolean
+          title: Isapplydefaultratetonewresource
+          description: Auto-apply default rate to new resources and parent rate to new sub-resources
+          default: true
+        resourcesRates:
+          items:
+            $ref: '#/components/schemas/ResourceRateRequest'
+          type: array
+          title: Resourcesrates
+          description: Array of resource-specific rate configurations. Include ALL resources that should have custom rates
+      type: object
+      required:
+      - effectiveDate
+      - rateType
+      title: PayRateRequest
+    PayRatesGetResponseData:
+      properties:
+        payRatesByUsers:
+          items:
+            $ref: '#/components/schemas/PayRateByUserResponse'
+          type: array
+          title: Payratesbyusers
+          description: Array of user records with their pay rate configurations
+      type: object
+      required:
+      - payRatesByUsers
+      title: PayRatesGetResponseData
+    PayRateByUserRequest:
+      properties:
+        userId:
+          type: integer
+          title: Userid
+          description: The unique identifier of the user to create/update pay rate for
+        payRate:
+          allOf:
+          - $ref: '#/components/schemas/PayRateRequest'
+          title: Payrate
+          description: Pay rate configuration for this user
+      type: object
+      required:
+      - userId
+      - payRate
+      title: PayRateByUserRequest
+    PayRateResponse:
+      properties:
+        effectiveDate:
+          type: string
+          title: Effectivedate
+          description: The date this pay rate becomes effective, in YYYY-MM-DD format
+        rateType:
+          allOf:
+          - $ref: '#/components/schemas/WageTypesEnum'
+          description: 'Type of rate calculation. Values: hourly, monthly, yearly'
+        isDefaultRateEnabled:
+          type: boolean
+          title: Isdefaultrateenabled
+          description: Whether the default rate is enabled for this user
+        defaultRate:
+          type: number
+          title: Defaultrate
+          description: The default rate amount. Only present when isDefaultRateEnabled is true
+        isResourceRateEnabled:
+          type: boolean
+          title: Isresourcerateenabled
+          description: Whether resource-specific rates are enabled
+        isApplyDefaultRateToNewResource:
+          type: boolean
+          title: Isapplydefaultratetonewresource
+          description: When true, newly assigned resources will automatically use the defaultRate if no specific rate is configured
+        resourcesRates:
+          items:
+            $ref: '#/components/schemas/ResourceRateResponse'
+          type: array
+          title: Resourcesrates
+          description: Array of resource-specific rate configurations. Only present when isResourceRateEnabled is true
+        createdBy:
+          type: integer
+          title: Createdby
+          description: User ID of the person who created this pay rate entry
+        createdAt:
+          type: integer
+          title: Createdat
+          description: Unix timestamp (seconds since epoch) when this pay rate was created
+        modifiedAt:
+          type: integer
+          title: Modifiedat
+          description: Unix timestamp (seconds since epoch) of the last modification. Only present if the pay rate has been modified
+        modifications:
+          items:
+            $ref: '#/components/schemas/PayRateModificationResponse'
+          type: array
+          title: Modifications
+          description: Complete modification history. Only present when includeHistory=true
+      type: object
+      required:
+      - effectiveDate
+      - rateType
+      - isDefaultRateEnabled
+      - isResourceRateEnabled
+      - isApplyDefaultRateToNewResource
+      - createdBy
+      - createdAt
+      title: PayRateResponse
+    ResourceRateRequest:
+      properties:
+        resourceId:
+          type: string
+          title: Resourceid
+          description: The unique identifier of the resource
+        rate:
+          type: number
+          minimum: 0.0
+          title: Rate
+          description: The rate amount for this resource. Must be >= 0 ($0 is allowed for unpaid work)
+        useDefaultRate:
+          type: boolean
+          title: Usedefaultrate
+          description: Use default rate instead of resource-specific rate. When true, the rate field is not required
+          default: false
+        subResourcesRates:
+          items:
+            $ref: '#/components/schemas/SubResourceRateRequest'
+          type: array
+          title: Subresourcesrates
+          description: Array of sub-resource rate configurations
+      type: object
+      required:
+      - resourceId
+      title: ResourceRateRequest
+    PaginatedBaseResponse_PayRatesGetResponseData_:
+      properties:
+        requestId:
+          type: string
+          title: Requestid
+        data:
+          $ref: '#/components/schemas/PayRatesGetResponseData'
+        paging:
+          $ref: '#/components/schemas/PagingResponseModel'
+      type: object
+      required:
+      - data
+      - paging
+      title: PaginatedBaseResponse[PayRatesGetResponseData]
+    ValidationErrorResponse:
+      properties:
+        details:
+          allOf:
+          - $ref: '#/components/schemas/ErrorParing'
+          title: Details
+          default:
+            error_message: Request is invalid
+            error_code: 1004
+        error:
+          anyOf:
+          - type: object
+          - items:
+              type: object
+            type: array
+          - type: string
+          title: Error
+          default: Validation Error
+        path:
+          type: string
+          title: Path
+        requestId:
+          type: string
+          title: Requestid
+      type: object
+      title: ValidationErrorResponse
+      description: "All errors responses should include:\nrequest_id,\nConnecteam error code and error message,\nthe url path,\nthe request body,\nand error data which can be a pydantic class or a dict and should look something like this:\n`{\n    \"error.path\": \"the gist of the error\"\n}`\n\nfor example if the user doesn't exist it should look something like this:\n`{\n    \"user.id\": \"user doesn't exist\"\n}`"
+    PagingResponseModel:
+      properties:
+        offset:
+          type: integer
+          minimum: 0.0
+          title: Offset
+          description: The resource offset of the last successfully read resource will be returned as the paging.offset JSON property of a paginated response containing more results
+        total:
+          type: integer
+          minimum: 0.0
+          title: Total
+          description: Total number of resources matching the request, ignoring pagination. Use this to retrieve the full count without paginating through every page. Only populated by endpoints that compute it.
+      type: object
+      required:
+      - offset
+      title: PagingResponseModel
+    ErrorParing:
+      properties:
+        error_message:
+          type: string
+          title: Error Message
+        error_code:
+          type: integer
+          title: Error Code
+      type: object
+      required:
+      - error_message
+      - error_code
+      title: ErrorParing
+      description: V1 error paring model for backward compatibility
+    SubResourceRateRequest:
+      properties:
+        subResourceId:
+          type: string
+          title: Subresourceid
+          description: The unique identifier of the sub-resource
+        rate:
+          type: number
+          minimum: 0.0
+          title: Rate
+          description: The rate amount for this sub-resource. Must be >= 0 ($0 is allowed for unpaid work)
+        useParentRate:
+          type: boolean
+          title: Useparentrate
+          description: Inherit parent resource's rate. When true, the rate field is not required
+          default: false
+      type: object
+      required:
+      - subResourceId
+      title: SubResourceRateRequest
+    PayRateModificationResponse:
+      properties:
+        modifiedBy:
+          type: integer
+          title: Modifiedby
+          description: User ID of the person who made this modification
+        modifiedAt:
+          type: integer
+          title: Modifiedat
+          description: Unix timestamp (seconds since epoch) when this modification was made
+        previousRateType:
+          allOf:
+          - $ref: '#/components/schemas/WageTypesEnum'
+          description: The rate type before this modification, if changed
+        previousDefaultRate:
+          type: number
+          title: Previousdefaultrate
+          description: The default rate before this modification, if changed
+        previousIsDefaultRateEnabled:
+          type: boolean
+          title: Previousisdefaultrateenabled
+          description: Whether the default rate was enabled before this modification, if changed
+        previousIsResourceRateEnabled:
+          type: boolean
+          title: Previousisresourcerateenabled
+          description: Whether resource-specific rates were enabled before this modification, if changed
+      type: object
+      required:
+      - modifiedBy
+      - modifiedAt
+      title: PayRateModificationResponse
+    PayRateByUserResponse:
+      properties:
+        userId:
+          type: integer
+          title: Userid
+          description: The unique identifier of the user in the Connecteam system
+        payRate:
+          allOf:
+          - $ref: '#/components/schemas/PayRateResponse'
+          title: Payrate
+          description: Pay rate configuration for this user
+      type: object
+      required:
+      - userId
+      - payRate
+      title: PayRateByUserResponse
+    APIResponse_PayRateDeleteResponse_:
+      properties:
+        requestId:
+          type: string
+          title: Requestid
+        data:
+          $ref: '#/components/schemas/PayRateDeleteResponse'
+      type: object
+      required:
+      - data
+      title: APIResponse[PayRateDeleteResponse]
+    ResourceRateResponse:
+      properties:
+        resourceId:
+          type: string
+          title: Resourceid
+          description: The unique identifier of the resource in the Connecteam system
+        rate:
+          type: number
+          title: Rate
+          description: The rate amount for this specific resource. Only present when isUsingDefaultRate is false
+        isUsingDefaultRate:
+          type: boolean
+          title: Isusingdefaultrate
+          description: When true, this resource uses the user's defaultRate instead of the resource-specific rate
+        subResourcesRates:
+          items:
+            $ref: '#/components/schemas/SubResourceRateResponse'
+          type: array
+          title: Subresourcesrates
+          description: Array of sub-resource rate configurations nested under this parent resource
+      type: object
+      required:
+      - resourceId
+      - isUsingDefaultRate
+      title: ResourceRateResponse
+    PayRateDeleteResponse:
+      properties:
+        success:
+          type: boolean
+          title: Success
+          description: Indicates whether the deletion was successful
+      type: object
+      required:
+      - success
+      title: PayRateDeleteResponse
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    PayRatePutResponse:
+      properties:
+        payRatesByUsers:
+          items:
+            $ref: '#/components/schemas/PayRateByUserResponse'
+          type: array
+          title: Payratesbyusers
+          description: Array of user records with their updated pay rate configurations
+      type: object
+      required:
+      - payRatesByUsers
+      title: PayRatePutResponse
+    SubResourceRateResponse:
+      properties:
+        subResourceId:
+          type: string
+          title: Subresourceid
+          description: The unique identifier of the sub-resource
+        rate:
+          type: number
+          title: Rate
+          description: The rate amount for this sub-resource. Only present when isUsingParentRate is false
+        isUsingParentRate:
+          type: boolean
+          title: Isusingparentrate
+          description: When true, this sub-resource inherits the parent resource's rate
+      type: object
+      required:
+      - subResourceId
+      - isUsingParentRate
+      title: SubResourceRateResponse
+    PayRatesPutRequest:
+      properties:
+        payRatesByUsers:
+          items:
+            $ref: '#/components/schemas/PayRateByUserRequest'
+          type: array
+          maxItems: 500
+          title: Payratesbyusers
+          description: Array of user pay rate configurations. Max 500 users per request
+      type: object
+      required:
+      - payRatesByUsers
+      title: PayRatesPutRequest
+  securitySchemes:
+    APIKeyHeader:
+      type: apiKey
+      description: The Api key of the company given by Connecteam
+      in: header
+      name: X-API-KEY
+    OAuth2:
+      type: oauth2
+      description: OAuth2 Bearer token
+      flows:
+        clientCredentials:
+          scopes:
+            account_information.read: account information - read
+            account_information.write: account information - write
+            account_information.delete: account information - delete
+            company_policies.read: company policies - read
+            company_policies.write: company policies - write
+            company_policies.delete: company policies - delete
+            company_insights.read: company insights - read
+            users.read: users - read
+            users.write: users - write
+            users.delete: users - delete
+            assets.read: assets - read
+            assets.write: assets - write
+            assets.delete: assets - delete
+            sales_data.read: sales data - read
+            sales_data.write: sales data - write
+            sales_data.delete: sales data - delete
+            attachments.read: attachments - read
+            attachments.write: attachments - write
+            attachments.delete: attachments - delete
+            quick_tasks.read: quick tasks - read
+            quick_tasks.write: quick tasks - write
+            quick_tasks.delete: quick tasks - delete
+            publishers.read: publishers - read
+            publishers.write: publishers - write
+            publishers.delete: publishers - delete
+            chat.read: chat - read
+            chat.write: chat - write
+            chat.delete: chat - delete
+            jobs.read: jobs - read
+            jobs.write: jobs - write
+            jobs.delete: jobs - delete
+            schedule.read: schedule - read
+            schedule.write: schedule - write
+            schedule.delete: schedule - delete
+            daily_note.read: daily note - read
+            daily_note.write: daily note - write
+            daily_note.delete: daily note - delete
+            time_clock.read: time clock - read
+            time_clock.write: time clock - write
+            time_clock.delete: time clock - delete
+            nfc.read: nfc - read
+            nfc.write: nfc - write
+            nfc.delete: nfc - delete
+            time_off.read: time off - read
+            time_off.write: time off - write
+            time_off.delete: time off - delete
+            pay_rates.read: pay rates - read
+            pay_rates.write: pay rates - write
+            pay_rates.delete: pay rates - delete
+            forms.read: forms - read
+            forms.write: forms - write
+            forms.delete: forms - delete
+            onboarding.read: onboarding - read
+            onboarding.write: onboarding - write
+            onboarding.delete: onboarding - delete
+            settings.read: settings - read
+            settings.write: settings - write
+            settings.delete: settings - delete
+            company_checklist.read: company checklist - read
+            company_checklist.write: company checklist - write
+            recognitions.read: recognitions - read
+            celebrations.read: celebrations - read
+          tokenUrl: /oauth/v1/token
+    HTTPBasic:
+      type: http
+      description: Use client_id as Username and client_secret as Password
+      scheme: basic

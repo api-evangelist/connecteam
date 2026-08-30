@@ -1,0 +1,612 @@
+openapi: 3.2.0
+info:
+  title: Connecteam API documentation Chat:v1:Conversations API
+  version: v1
+servers:
+- url: https://api.connecteam.com/
+tags:
+- name: Chat:v1:Conversations
+paths:
+  /chat/v1/conversations:
+    post:
+      tags:
+      - Chat:v1:Conversations
+      summary: Create conversation
+      description: 'Creates a team chat or channel as the authenticated user. Members are assigned via userIds (individual users) and/or smartGroupIds (dynamic cohorts) - at least one assignment is required. Use type: "team" for a collaborative chat where members can send messages, or type: "channel" for a broadcast group where only admins post. A custom publisher can subsequently post into the created group via POST /chat/v1/conversations/{conversationId}/message.'
+      operationId: create_conversation_chat_v1_conversations_post
+      security:
+      - APIKeyHeader: []
+      - OAuth2:
+        - chat.write
+      requestBody:
+        content:
+          application/json:
+            schema:
+              title: Request
+              allOf:
+              - $ref: '#/components/schemas/ConversationMutationRequest'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIResponse_ConversationMutationResponse_'
+        '404':
+          description: Conversation could not be resolved after creation
+          content:
+            application/json:
+              example:
+                error: Conversation b7e2c1a4-8f3d-4c9a-a1b2-3c4d5e6f7a8b not found
+                path: /chat/v1/conversations
+                request_id: 550e8400-e29b-41d4-a716-446655440000
+              schema:
+                $ref: '#/components/schemas/ValidationErrorResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    get:
+      tags:
+      - Chat:v1:Conversations
+      summary: Get conversations
+      description: Retrieves a list of team chats and/or channels associated with the account. The list excludes private conversations.
+      operationId: get_conversations_chat_v1_conversations_get
+      security:
+      - APIKeyHeader: []
+      - OAuth2:
+        - chat.read
+      parameters:
+      - name: limit
+        in: query
+        required: false
+        schema:
+          title: Limit
+          description: The maximum number of results to display per page
+          default: 10
+          minimum: 1
+          maximum: 100
+          type: integer
+        description: The maximum number of results to display per page
+      - name: offset
+        in: query
+        required: false
+        schema:
+          title: Offset
+          description: The resource offset of the last successfully read resource will be returned as the paging.offset JSON property of a paginated response containing more results
+          default: 0
+          minimum: 0
+          type: integer
+        description: The resource offset of the last successfully read resource will be returned as the paging.offset JSON property of a paginated response containing more results
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedBaseResponse_ConversationsResponse_'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /chat/v1/conversations/{conversationId}/message:
+    post:
+      tags:
+      - Chat:v1:Conversations
+      summary: Send message
+      description: Sends a new message to a specific chat, whether it’s channel or a team chat
+      operationId: send_message_to_conversation_chat_v1_conversations__conversationId__message_post
+      security:
+      - APIKeyHeader: []
+      - OAuth2:
+        - chat.write
+      parameters:
+      - name: conversationId
+        in: path
+        required: true
+        schema:
+          title: Conversationid
+          description: The unique identifier of the conversation
+          type: string
+        description: The unique identifier of the conversation
+      requestBody:
+        content:
+          application/json:
+            schema:
+              title: Request
+              allOf:
+              - $ref: '#/components/schemas/ConversationPostMessageRequest'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIResponse_BaseResponse_'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /chat/v1/conversations/privateMessage/{userId}:
+    post:
+      tags:
+      - Chat:v1:Conversations
+      summary: Send private message
+      description: Send a private message to a specified user within the account. The sender will be a custom publisher. If a conversation between the custom publisher and the addressed user already exists, it will send the message to the same conversation, if not, it will create a new conversation with the specified user.
+      operationId: send_message_to_private_conversation_chat_v1_conversations_privateMessage__userId__post
+      security:
+      - APIKeyHeader: []
+      - OAuth2:
+        - chat.write
+      parameters:
+      - name: userId
+        in: path
+        required: true
+        schema:
+          title: Userid
+          description: The unique identifier of the user
+          type: integer
+        description: The unique identifier of the user
+      requestBody:
+        content:
+          application/json:
+            schema:
+              title: Request
+              allOf:
+              - $ref: '#/components/schemas/ConversationPostMessageRequest'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIResponse_BaseResponse_'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+components:
+  schemas:
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    ImageAttachmentRequest:
+      properties:
+        type:
+          type: string
+          enum:
+          - image
+          title: Type
+          description: The type of the attachment.
+        fileId:
+          type: string
+          title: Fileid
+          description: The unique identifier of the image.
+      type: object
+      required:
+      - type
+      - fileId
+      title: ImageAttachmentRequest
+    ConversationMutationResponse:
+      properties:
+        conversation:
+          allOf:
+          - $ref: '#/components/schemas/ConversationDetailsResponse'
+          title: Conversation
+          description: The created or updated conversation
+      type: object
+      required:
+      - conversation
+      title: ConversationMutationResponse
+    ConversationDetailsResponse:
+      properties:
+        id:
+          type: string
+          title: Id
+          description: The unique identifier of the conversation. Use for sending messages and follow-up calls.
+        title:
+          type: string
+          title: Title
+          description: The conversation title
+        type:
+          allOf:
+          - $ref: '#/components/schemas/ConversationType'
+          description: The conversation type (team or channel)
+        assignedUserIds:
+          items:
+            type: integer
+          type: array
+          title: Assigneduserids
+          description: Individual user IDs assigned to the conversation
+        assignedSmartGroupIds:
+          items:
+            type: integer
+          type: array
+          title: Assignedsmartgroupids
+          description: Smart group IDs assigned to the conversation
+        adminUserIds:
+          items:
+            type: integer
+          type: array
+          title: Adminuserids
+          description: User IDs with admin privileges in the conversation
+        isLocked:
+          type: boolean
+          title: Islocked
+          description: Whether the conversation is locked
+        isMembersHidden:
+          type: boolean
+          title: Ismembershidden
+          description: Whether the member list is hidden
+          default: false
+        description:
+          items:
+            type: object
+          type: array
+          title: Description
+          description: Structured conversation description blocks
+      type: object
+      required:
+      - id
+      - title
+      - type
+      - assignedUserIds
+      - assignedSmartGroupIds
+      - adminUserIds
+      title: ConversationDetailsResponse
+    FileAttachmentRequest:
+      properties:
+        type:
+          type: string
+          enum:
+          - file
+          title: Type
+          description: The type of the attachment.
+        fileId:
+          type: string
+          title: Fileid
+          description: The unique identifier of the file.
+      type: object
+      required:
+      - type
+      - fileId
+      title: FileAttachmentRequest
+    APIResponse_ConversationMutationResponse_:
+      properties:
+        requestId:
+          type: string
+          title: Requestid
+        data:
+          $ref: '#/components/schemas/ConversationMutationResponse'
+      type: object
+      required:
+      - data
+      title: APIResponse[ConversationMutationResponse]
+    ValidationErrorResponse:
+      properties:
+        details:
+          allOf:
+          - $ref: '#/components/schemas/ErrorParing'
+          title: Details
+          default:
+            error_message: Request is invalid
+            error_code: 1004
+        error:
+          anyOf:
+          - type: object
+          - items:
+              type: object
+            type: array
+          - type: string
+          title: Error
+          default: Validation Error
+        path:
+          type: string
+          title: Path
+        requestId:
+          type: string
+          title: Requestid
+      type: object
+      title: ValidationErrorResponse
+      description: "All errors responses should include:\nrequest_id,\nConnecteam error code and error message,\nthe url path,\nthe request body,\nand error data which can be a pydantic class or a dict and should look something like this:\n`{\n    \"error.path\": \"the gist of the error\"\n}`\n\nfor example if the user doesn't exist it should look something like this:\n`{\n    \"user.id\": \"user doesn't exist\"\n}`"
+    ConversationType:
+      type: string
+      enum:
+      - team
+      - channel
+      title: ConversationType
+      description: An enumeration.
+    APIResponse_BaseResponse_:
+      properties:
+        requestId:
+          type: string
+          title: Requestid
+        data:
+          $ref: '#/components/schemas/BaseResponse'
+      type: object
+      required:
+      - data
+      title: APIResponse[BaseResponse]
+    PagingResponseModel:
+      properties:
+        offset:
+          type: integer
+          minimum: 0.0
+          title: Offset
+          description: The resource offset of the last successfully read resource will be returned as the paging.offset JSON property of a paginated response containing more results
+        total:
+          type: integer
+          minimum: 0.0
+          title: Total
+          description: Total number of resources matching the request, ignoring pagination. Use this to retrieve the full count without paginating through every page. Only populated by endpoints that compute it.
+      type: object
+      required:
+      - offset
+      title: PagingResponseModel
+    PaginatedBaseResponse_ConversationsResponse_:
+      properties:
+        requestId:
+          type: string
+          title: Requestid
+        data:
+          $ref: '#/components/schemas/ConversationsResponse'
+        paging:
+          $ref: '#/components/schemas/PagingResponseModel'
+      type: object
+      required:
+      - data
+      - paging
+      title: PaginatedBaseResponse[ConversationsResponse]
+    ConversationsResponse:
+      properties:
+        conversations:
+          items:
+            $ref: '#/components/schemas/ConversationResponse'
+          type: array
+          title: Conversations
+          description: The list of conversations
+      type: object
+      required:
+      - conversations
+      title: ConversationsResponse
+    ErrorParing:
+      properties:
+        error_message:
+          type: string
+          title: Error Message
+        error_code:
+          type: integer
+          title: Error Code
+      type: object
+      required:
+      - error_message
+      - error_code
+      title: ErrorParing
+      description: V1 error paring model for backward compatibility
+    ConversationTypeResponse:
+      enum:
+      - team
+      - channel
+      title: ConversationTypeResponse
+      description: An enumeration.
+    ConversationMutationRequest:
+      properties:
+        title:
+          type: string
+          title: Title
+          description: The conversation title shown in the chat clients. Must be non-empty after trimming whitespace.
+        type:
+          allOf:
+          - $ref: '#/components/schemas/ConversationType'
+          description: The conversation type. team = collaborative chat, all members can send messages. channel = broadcast group, only admins can send messages.
+        assignedUserIds:
+          items:
+            type: integer
+          type: array
+          title: Assigneduserids
+          description: Individual user IDs assigned as members. At least one of assignedUserIds or assignedSmartGroupIds must be provided. Defaults to an empty array.
+        assignedSmartGroupIds:
+          items:
+            type: integer
+          type: array
+          title: Assignedsmartgroupids
+          description: Smart group (dynamic cohort) IDs assigned to the conversation. Membership follows the smart group's rules. At least one of assignedUserIds or assignedSmartGroupIds must be provided. Defaults to an empty array.
+        adminUserIds:
+          items:
+            type: integer
+          type: array
+          title: Adminuserids
+          description: User IDs granted admin privileges in the conversation (manage members/settings; for channels, the only users who can post). An admin id must also be an assigned member (via assignedUserIds or an assigned smart group) to take effect. If omitted, defaults are applied.
+        isLocked:
+          type: boolean
+          title: Islocked
+          description: Whether the conversation is created locked (members cannot send messages until an admin unlocks it). Defaults to unlocked.
+        isMembersHidden:
+          type: boolean
+          title: Ismembershidden
+          description: Whether the member list is hidden from members in the chat clients. Defaults to false.
+          default: false
+        description:
+          items:
+            type: object
+          type: array
+          title: Description
+          description: Ordered list of structured rich-text blocks shown in the conversation details (not a chat message). Each block is a typed object, e.g. {"type":"html","html":"<div>...</div>"}. Defaults to an empty array.
+      type: object
+      required:
+      - title
+      - type
+      title: ConversationMutationRequest
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    ConversationPostMessageRequest:
+      properties:
+        senderId:
+          type: integer
+          title: Senderid
+          description: The unique identifier of the sender (custom publisher). The custom publishers page can be found in the UI under Settings -> Feed settings.
+        text:
+          type: string
+          maxLength: 1000
+          title: Text
+          description: Specifies the text content of the message. Must be in UTF-8 and less than 500 characters.
+        attachments:
+          items:
+            oneOf:
+            - $ref: '#/components/schemas/ImageAttachmentRequest'
+            - $ref: '#/components/schemas/FileAttachmentRequest'
+            discriminator:
+              propertyName: type
+              mapping:
+                image: '#/components/schemas/ImageAttachmentRequest'
+                file: '#/components/schemas/FileAttachmentRequest'
+          type: array
+          title: Attachments
+          description: List of attachments to be associated with the message.
+          default: []
+      type: object
+      required:
+      - senderId
+      - text
+      title: ConversationPostMessageRequest
+    ConversationResponse:
+      properties:
+        id:
+          type: string
+          title: Id
+          description: The unique identifier of the conversation
+        title:
+          type: string
+          title: Title
+          description: The title of the conversation
+        type:
+          allOf:
+          - $ref: '#/components/schemas/ConversationTypeResponse'
+          description: The type of the conversation
+        conversationSource:
+          type: string
+          title: Conversationsource
+          description: Origin of the conversation
+      type: object
+      required:
+      - id
+      - title
+      - type
+      - conversationSource
+      title: ConversationResponse
+    BaseResponse:
+      properties: {}
+      type: object
+      title: BaseResponse
+  securitySchemes:
+    APIKeyHeader:
+      type: apiKey
+      description: The Api key of the company given by Connecteam
+      in: header
+      name: X-API-KEY
+    OAuth2:
+      type: oauth2
+      description: OAuth2 Bearer token
+      flows:
+        clientCredentials:
+          scopes:
+            account_information.read: account information - read
+            account_information.write: account information - write
+            account_information.delete: account information - delete
+            company_policies.read: company policies - read
+            company_policies.write: company policies - write
+            company_policies.delete: company policies - delete
+            company_insights.read: company insights - read
+            users.read: users - read
+            users.write: users - write
+            users.delete: users - delete
+            assets.read: assets - read
+            assets.write: assets - write
+            assets.delete: assets - delete
+            sales_data.read: sales data - read
+            sales_data.write: sales data - write
+            sales_data.delete: sales data - delete
+            attachments.read: attachments - read
+            attachments.write: attachments - write
+            attachments.delete: attachments - delete
+            quick_tasks.read: quick tasks - read
+            quick_tasks.write: quick tasks - write
+            quick_tasks.delete: quick tasks - delete
+            publishers.read: publishers - read
+            publishers.write: publishers - write
+            publishers.delete: publishers - delete
+            chat.read: chat - read
+            chat.write: chat - write
+            chat.delete: chat - delete
+            jobs.read: jobs - read
+            jobs.write: jobs - write
+            jobs.delete: jobs - delete
+            schedule.read: schedule - read
+            schedule.write: schedule - write
+            schedule.delete: schedule - delete
+            daily_note.read: daily note - read
+            daily_note.write: daily note - write
+            daily_note.delete: daily note - delete
+            time_clock.read: time clock - read
+            time_clock.write: time clock - write
+            time_clock.delete: time clock - delete
+            nfc.read: nfc - read
+            nfc.write: nfc - write
+            nfc.delete: nfc - delete
+            time_off.read: time off - read
+            time_off.write: time off - write
+            time_off.delete: time off - delete
+            pay_rates.read: pay rates - read
+            pay_rates.write: pay rates - write
+            pay_rates.delete: pay rates - delete
+            forms.read: forms - read
+            forms.write: forms - write
+            forms.delete: forms - delete
+            onboarding.read: onboarding - read
+            onboarding.write: onboarding - write
+            onboarding.delete: onboarding - delete
+            settings.read: settings - read
+            settings.write: settings - write
+            settings.delete: settings - delete
+            company_checklist.read: company checklist - read
+            company_checklist.write: company checklist - write
+            recognitions.read: recognitions - read
+            celebrations.read: celebrations - read
+          tokenUrl: /oauth/v1/token
+    HTTPBasic:
+      type: http
+      description: Use client_id as Username and client_secret as Password
+      scheme: basic

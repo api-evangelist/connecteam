@@ -1,0 +1,370 @@
+openapi: 3.2.0
+info:
+  title: Connecteam API documentation Time Clock:v1:TimeClocks:TimeClock:ManualBreaks:ManualBreakClockOut API
+  version: v1
+servers:
+- url: https://api.connecteam.com/
+tags:
+- name: Time Clock:v1:TimeClocks:TimeClock:ManualBreaks:ManualBreakClockOut
+paths:
+  /time-clock/v1/time-clocks/{timeClockId}/manual-breaks/clock-out:
+    post:
+      tags:
+      - Time Clock:v1:TimeClocks:TimeClock:ManualBreaks:ManualBreakClockOut
+      summary: Clock out from a manual break
+      description: End the currently open manual break for an employee. By default, if the break was started from an open shift, the shift is re-opened on the same job (mobile 'Return to job'). Set isResumeShift=false to end the break without resuming. Mandatory breaks cannot be ended before their configured minimum duration. Pass an optional timestamp to record a break that ended earlier (offline sync).
+      operationId: clock_out_manual_break_time_clock_v1_time_clocks__timeClockId__manual_breaks_clock_out_post
+      security:
+      - APIKeyHeader: []
+      - OAuth2:
+        - time_clock.write
+      parameters:
+      - name: timeClockId
+        in: path
+        required: true
+        schema:
+          title: Timeclockid
+          description: The unique identifier of the time clock
+          type: integer
+        description: The unique identifier of the time clock
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              title: Request
+              allOf:
+              - $ref: '#/components/schemas/ManualBreakClockOutRequest'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIResponse_ManualBreakClockOutResponse_'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+components:
+  schemas:
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    ManualBreakClockOutResponse:
+      properties:
+        id:
+          type: string
+          title: Id
+          description: The unique identifier of the break activity that was ended
+        end:
+          allOf:
+          - $ref: '#/components/schemas/TimeActivityTimePointResponse'
+          title: End
+          description: The break end time recorded by the server
+        isResumeShift:
+          type: boolean
+          title: Isresumeshift
+          description: 'The actual outcome: true if a shift was re-opened after the break, false otherwise'
+        resumedShift:
+          allOf:
+          - $ref: '#/components/schemas/v2__features__punchclock__external_api__v1__time_clocks__models__shift_response__ShiftResponse'
+          title: Resumedshift
+          description: The shift that was re-opened after the break ended. Present only when isResumeShift is true.
+      type: object
+      required:
+      - id
+      - end
+      - isResumeShift
+      title: ManualBreakClockOutResponse
+    PunchSourceType:
+      type: string
+      enum:
+      - autoClockOut
+      - nfc
+      - mobile
+      - pc
+      - kiosk
+      - api
+      - admin
+      title: PunchSourceType
+      description: An enumeration.
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    ManualBreakClockOutRequest:
+      properties:
+        userId:
+          type: integer
+          title: Userid
+          description: The unique identifier of the user. Make sure the user is assigned to the specified time clock.
+        timezone:
+          type: string
+          title: Timezone
+          description: The timezone in Tz format (e.g. America/New_York). If not specified, the time clock's configured timezone is used.
+        timestamp:
+          type: integer
+          minimum: 1.0
+          title: Timestamp
+          description: The break-end time in Unix format (in seconds). If omitted, the server captures the time when the request is received. Must be no more than 12 hours in the past, not in the future, and after the open break's start time. For mandatory breaks, the elapsed time used for the early-return check is measured against this value.
+        isResumeShift:
+          type: boolean
+          title: Isresumeshift
+          description: Controls what happens after the break ends. Defaults to true (mobile 'Return to job'). When true and the break was started from an open shift, the shift is re-opened on the same job. When the break is standalone, no shift is resumed. Set to false to end the break without resuming (mobile 'End shift'). The response returns the actual outcome, which may be false even when true was requested.
+          default: true
+        locationData:
+          allOf:
+          - $ref: '#/components/schemas/GpsData'
+          title: Locationdata
+          description: GPS data associated with the break end
+      type: object
+      required:
+      - userId
+      title: ManualBreakClockOutRequest
+    APIResponse_ManualBreakClockOutResponse_:
+      properties:
+        requestId:
+          type: string
+          title: Requestid
+        data:
+          $ref: '#/components/schemas/ManualBreakClockOutResponse'
+      type: object
+      required:
+      - data
+      title: APIResponse[ManualBreakClockOutResponse]
+    PunchSourceResponse:
+      properties:
+        id:
+          type: string
+          title: Id
+          description: Unique identifier of the source (for NFC or geofence-based sources)
+        type:
+          allOf:
+          - $ref: '#/components/schemas/PunchSourceType'
+          description: Indicates how the punch was performed
+        mode:
+          allOf:
+          - $ref: '#/components/schemas/AutoClockOutModeType'
+          description: For autoClockOut type, indicates the reason for the auto clock out (e.g., dailyLimit, geofenceExit)
+        name:
+          type: string
+          title: Name
+          description: Human-readable name of the source (for NFC or geofence-based sources)
+      type: object
+      required:
+      - type
+      title: PunchSourceResponse
+    v2__features__punchclock__external_api__v1__time_clocks__models__shift_response__ShiftResponse:
+      properties:
+        id:
+          type: string
+          title: Id
+          description: The unique identifier of the time clock
+        managerNote:
+          type: string
+          title: Managernote
+          description: The manager note providing additional details
+        employeeNote:
+          type: string
+          title: Employeenote
+          description: The employee note providing additional details
+        start:
+          allOf:
+          - $ref: '#/components/schemas/TimeActivityTimePointResponse'
+          title: Start
+          description: The start time of the time activity
+        end:
+          allOf:
+          - $ref: '#/components/schemas/TimeActivityTimePointResponse'
+          title: End
+          description: The end time of the time activity
+        createdAt:
+          type: integer
+          minimum: 1.0
+          title: Createdat
+          description: The creation time of the time activity
+        modifiedAt:
+          type: integer
+          minimum: 1.0
+          title: Modifiedat
+          description: The last modification time of the time activity
+        userId:
+          type: integer
+          title: Userid
+          description: The unique identifier of the user. Make sure the user is assigned to the specified time clock.
+        jobId:
+          type: string
+          title: Jobid
+          description: The unique identifier of the associated job or sub-job. Make sure the job is assigned to the specified time clock.
+        schedulerShiftId:
+          type: string
+          title: Schedulershiftid
+          description: The scheduled shift from the schedule associated with the clocking in event
+      type: object
+      required:
+      - id
+      - start
+      - userId
+      title: ShiftResponse
+    GpsData:
+      properties:
+        address:
+          type: string
+          title: Address
+          description: The address associated with the GPS data.
+        longitude:
+          type: number
+          title: Longitude
+          description: The longitude coordinate.
+        latitude:
+          type: number
+          title: Latitude
+          description: The latitude coordinate.
+      type: object
+      title: GpsData
+    AutoClockOutModeType:
+      type: string
+      enum:
+      - dailyLimit
+      - hourLimit
+      - schedulerShiftEnded
+      - geofenceExit
+      - disabledGps
+      - disabledGpsPermission
+      title: AutoClockOutModeType
+      description: An enumeration.
+    TimeActivityTimePointResponse:
+      properties:
+        timestamp:
+          type: integer
+          minimum: 1.0
+          title: Timestamp
+          description: The timestamp in Unix format (in seconds)
+        timezone:
+          type: string
+          title: Timezone
+          description: The timezone in Tz format (e.g. America/New_York)
+        locationData:
+          allOf:
+          - $ref: '#/components/schemas/GpsData'
+          title: Locationdata
+          description: The location data
+        geofenceId:
+          type: string
+          title: Geofenceid
+          description: The ID of the geofence the user was inside when this punch was recorded. None if the punch was outside any configured geofence.
+        source:
+          allOf:
+          - $ref: '#/components/schemas/PunchSourceResponse'
+          title: Source
+          description: Describes the origin from which the punch was created
+      type: object
+      required:
+      - timestamp
+      - timezone
+      title: TimeActivityTimePointResponse
+  securitySchemes:
+    APIKeyHeader:
+      type: apiKey
+      description: The Api key of the company given by Connecteam
+      in: header
+      name: X-API-KEY
+    OAuth2:
+      type: oauth2
+      description: OAuth2 Bearer token
+      flows:
+        clientCredentials:
+          scopes:
+            account_information.read: account information - read
+            account_information.write: account information - write
+            account_information.delete: account information - delete
+            company_policies.read: company policies - read
+            company_policies.write: company policies - write
+            company_policies.delete: company policies - delete
+            company_insights.read: company insights - read
+            users.read: users - read
+            users.write: users - write
+            users.delete: users - delete
+            assets.read: assets - read
+            assets.write: assets - write
+            assets.delete: assets - delete
+            sales_data.read: sales data - read
+            sales_data.write: sales data - write
+            sales_data.delete: sales data - delete
+            attachments.read: attachments - read
+            attachments.write: attachments - write
+            attachments.delete: attachments - delete
+            quick_tasks.read: quick tasks - read
+            quick_tasks.write: quick tasks - write
+            quick_tasks.delete: quick tasks - delete
+            publishers.read: publishers - read
+            publishers.write: publishers - write
+            publishers.delete: publishers - delete
+            chat.read: chat - read
+            chat.write: chat - write
+            chat.delete: chat - delete
+            jobs.read: jobs - read
+            jobs.write: jobs - write
+            jobs.delete: jobs - delete
+            schedule.read: schedule - read
+            schedule.write: schedule - write
+            schedule.delete: schedule - delete
+            daily_note.read: daily note - read
+            daily_note.write: daily note - write
+            daily_note.delete: daily note - delete
+            time_clock.read: time clock - read
+            time_clock.write: time clock - write
+            time_clock.delete: time clock - delete
+            nfc.read: nfc - read
+            nfc.write: nfc - write
+            nfc.delete: nfc - delete
+            time_off.read: time off - read
+            time_off.write: time off - write
+            time_off.delete: time off - delete
+            pay_rates.read: pay rates - read
+            pay_rates.write: pay rates - write
+            pay_rates.delete: pay rates - delete
+            forms.read: forms - read
+            forms.write: forms - write
+            forms.delete: forms - delete
+            onboarding.read: onboarding - read
+            onboarding.write: onboarding - write
+            onboarding.delete: onboarding - delete
+            settings.read: settings - read
+            settings.write: settings - write
+            settings.delete: settings - delete
+            company_checklist.read: company checklist - read
+            company_checklist.write: company checklist - write
+            recognitions.read: recognitions - read
+            celebrations.read: celebrations - read
+          tokenUrl: /oauth/v1/token
+    HTTPBasic:
+      type: http
+      description: Use client_id as Username and client_secret as Password
+      scheme: basic

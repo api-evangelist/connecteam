@@ -1,0 +1,603 @@
+openapi: 3.2.0
+info:
+  title: Connecteam API documentation Jobs:v1:Job API
+  version: v1
+servers:
+- url: https://api.connecteam.com/
+tags:
+- name: Jobs:v1:Job
+paths:
+  /jobs/v1/jobs/{jobId}:
+    get:
+      tags:
+      - Jobs:v1:Job
+      summary: Get job
+      description: Retrieve a single job information by its unique ID
+      operationId: get_job_jobs_v1_jobs__jobId__get
+      security:
+      - APIKeyHeader: []
+      - OAuth2:
+        - jobs.read
+      parameters:
+      - name: jobId
+        in: path
+        required: true
+        schema:
+          type: string
+          description: The unique identifier of the job
+          title: Jobid
+        description: The unique identifier of the job
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIResponseV2_JobResponse_'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    put:
+      tags:
+      - Jobs:v1:Job
+      summary: Update job
+      description: Update a single job by its unique identifier. Currently, updating job with nested sub-jobs is not supported.
+      operationId: update_job_jobs_v1_jobs__jobId__put
+      security:
+      - APIKeyHeader: []
+      - OAuth2:
+        - jobs.write
+      parameters:
+      - name: jobId
+        in: path
+        required: true
+        schema:
+          type: string
+          description: The unique identifier of the job
+          title: Jobid
+        description: The unique identifier of the job
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              anyOf:
+              - $ref: '#/components/schemas/SubJobUpdateRequest'
+              - $ref: '#/components/schemas/JobUpdateRequest'
+              title: Job Request
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIResponseV2_JobResponse_'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    delete:
+      tags:
+      - Jobs:v1:Job
+      summary: Delete job
+      description: "Delete a single job by its unique identifier.\n        Currently, deleting a sub-job and/or job with nested sub-jobs is not supported."
+      operationId: delete_job_jobs_v1_jobs__jobId__delete
+      security:
+      - APIKeyHeader: []
+      - OAuth2:
+        - jobs.delete
+      parameters:
+      - name: jobId
+        in: path
+        required: true
+        schema:
+          type: string
+          description: The unique identifier of the job
+          title: Jobid
+        description: The unique identifier of the job
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIResponseV2_DeleteJobResponse_'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+components:
+  schemas:
+    SubJobUpdateRequest:
+      properties:
+        title:
+          type: string
+          title: Title
+          description: The title of the job
+        code:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Code
+          description: The code of the job
+          default: ''
+        description:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Description
+          description: The description of the job
+          default: ''
+        fenceSize:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Fencesize
+          description: The geofence size of the job
+        gps:
+          anyOf:
+          - $ref: '#/components/schemas/GpsDataV2'
+          - type: 'null'
+          description: The GPS data of the job
+        assign:
+          anyOf:
+          - $ref: '#/components/schemas/AssignDataIn'
+          - type: 'null'
+          description: Data related to job assignment
+        customFields:
+          items:
+            $ref: '#/components/schemas/BaseCustomFieldV2'
+          type: array
+          title: Customfields
+          description: The job's custom fields
+        parentId:
+          type: string
+          title: Parentid
+          description: The ID of the parent job, if any
+        useParentData:
+          type: boolean
+          title: Useparentdata
+          description: Indicates whether to use the parent job's data or not
+      type: object
+      required:
+      - title
+      - parentId
+      - useParentData
+      title: SubJobUpdateRequest
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    APIResponseV2_DeleteJobResponse_:
+      properties:
+        requestId:
+          type: string
+          title: Requestid
+        data:
+          $ref: '#/components/schemas/DeleteJobResponse'
+      type: object
+      required:
+      - data
+      title: APIResponseV2[DeleteJobResponse]
+    BaseCustomFieldV2:
+      properties:
+        customFieldId:
+          type: integer
+          minimum: 1.0
+          title: Customfieldid
+          description: The custom field unique id
+        value:
+          title: Value
+          description: 'The value of the custom field. Our real-time API documentation experience does not support custom fields of the dropdown type.To update dropdown fields value(s), pass an array of objects with the IDs of the selected dropdown values (e.g., [{id: 1}, {id: 2}]).'
+      type: object
+      required:
+      - customFieldId
+      - value
+      title: BaseCustomFieldV2
+    GpsDataV2:
+      properties:
+        address:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Address
+          description: The address associated with the GPS data.
+        longitude:
+          anyOf:
+          - type: number
+            maximum: 180.0
+            minimum: -180.0
+            description: The longitude coordinate.
+          - type: 'null'
+          title: Longitude
+          description: The longitude coordinate.
+        latitude:
+          anyOf:
+          - type: number
+            maximum: 90.0
+            minimum: -90.0
+            description: The latitude coordinate.
+          - type: 'null'
+          title: Latitude
+          description: The latitude coordinate.
+      type: object
+      title: GpsDataV2
+    APIResponseV2_JobResponse_:
+      properties:
+        requestId:
+          type: string
+          title: Requestid
+        data:
+          $ref: '#/components/schemas/JobResponse'
+      type: object
+      required:
+      - data
+      title: APIResponseV2[JobResponse]
+    UserCustomFields:
+      type: string
+      enum:
+      - email
+      - date
+      - phone
+      - number
+      - str
+      - dropdown
+      - file
+      - directManager
+      - birthday
+      - link
+      - location
+      title: UserCustomFields
+    DeleteJobResponse:
+      properties: {}
+      type: object
+      title: DeleteJobResponse
+    CustomFieldResponseV2:
+      properties:
+        customFieldId:
+          type: integer
+          minimum: 1.0
+          title: Customfieldid
+          description: The custom field unique id
+        value:
+          title: Value
+          description: The custom field value
+        type:
+          $ref: '#/components/schemas/UserCustomFields'
+          description: The custom field type
+        name:
+          type: string
+          title: Name
+          description: The custom field name
+      type: object
+      required:
+      - customFieldId
+      - value
+      - type
+      - name
+      title: CustomFieldResponseV2
+    BaseJobResponse:
+      properties:
+        jobId:
+          type: string
+          title: Jobid
+          description: The job ID
+        title:
+          type: string
+          title: Title
+          description: The title of the Job
+        code:
+          type: string
+          title: Code
+          description: The code of the Job.
+        color:
+          type: string
+          title: Color
+          description: The color associated with the job
+        customFields:
+          items:
+            $ref: '#/components/schemas/CustomFieldResponseV2'
+          type: array
+          title: Customfields
+          description: The job's custom fields
+        description:
+          type: string
+          title: Description
+          description: The job description
+        fenceSize:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Fencesize
+          description: The geofence size of the job
+        gps:
+          anyOf:
+          - $ref: '#/components/schemas/GpsDataV2'
+          - type: 'null'
+          description: GPS data associated with the job
+        isDeleted:
+          type: boolean
+          title: Isdeleted
+          description: Indicates whether the job is deleted or not
+          default: false
+        assign:
+          $ref: '#/components/schemas/AssignDataApi'
+          description: Data related to job assignment
+        useParentData:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          title: Useparentdata
+          description: Indicates whether to use the parent job's data or not
+        parentId:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Parentid
+          description: The ID of the parent job, if any
+        subJobs:
+          anyOf:
+          - items:
+              $ref: '#/components/schemas/BaseJobResponse'
+            type: array
+          - type: 'null'
+          title: Subjobs
+          description: The sub jobs of the parent job, if any
+        instanceIds:
+          anyOf:
+          - items:
+              type: integer
+            type: array
+          - type: 'null'
+          title: Instanceids
+          description: The instance IDs associated with the job
+      type: object
+      required:
+      - jobId
+      - title
+      - code
+      - color
+      - description
+      - assign
+      title: BaseJobResponse
+    JobUpdateRequest:
+      properties:
+        title:
+          type: string
+          title: Title
+          description: The title of the job
+        code:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Code
+          description: The code of the job
+          default: ''
+        description:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Description
+          description: The description of the job
+          default: ''
+        fenceSize:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Fencesize
+          description: The geofence size of the job
+        gps:
+          anyOf:
+          - $ref: '#/components/schemas/GpsDataV2'
+          - type: 'null'
+          description: The GPS data of the job
+        assign:
+          $ref: '#/components/schemas/AssignDataIn'
+          description: Settings related to job assignment
+        customFields:
+          items:
+            $ref: '#/components/schemas/BaseCustomFieldV2'
+          type: array
+          title: Customfields
+          description: The job's custom fields
+        color:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Color
+          description: 'The color associated with the job. Should be one of the following colors: [''#4B7AC5'', ''#801A1A'', ''#AE2121'', ''#DC7A7A'', ''#B0712E'', ''#D4985A'', ''#E4B37F'', ''#AE8E2D'', ''#CBA73A'', ''#D9B443'', ''#487037'', ''#6F9B5C'', ''#91B282'', ''#365C64'', ''#5687B3'', ''#7C9BA2'', ''#3968BB'', ''#85A6DA'', ''#225A8C'', ''#548CBE'', ''#81A8CC'', ''#4E3F75'', ''#604E8E'', ''#8679AA'', ''#983D73'', ''#A43778'', ''#D178AD'', ''#6B2E4C'', ''#925071'', ''#B57D9A'', ''#3a3a3a'', ''#616161'', ''#969696'']'
+          default: '#4B7AC5'
+        instanceIds:
+          anyOf:
+          - items:
+              type: integer
+            type: array
+          - type: 'null'
+          title: Instanceids
+          description: List of instance ids (schedule id or time clock id) to assign the job to
+      type: object
+      required:
+      - title
+      title: JobUpdateRequest
+    AssignDataIn:
+      properties:
+        type:
+          $ref: '#/components/schemas/AssignDataTypes'
+          description: The type of the assign data (users, groups, both), default is both.
+          default: both
+        userIds:
+          anyOf:
+          - items:
+              type: integer
+              minimum: 1.0
+              description: Integer with minimum value of 1
+            type: array
+          - type: 'null'
+          title: Userids
+          description: The user ids to assign to this entity (if assigning type is users).
+        groupIds:
+          anyOf:
+          - items:
+              type: integer
+              minimum: 1.0
+              description: Integer with minimum value of 1
+            type: array
+          - type: 'null'
+          title: Groupids
+          description: The group ids to assign to this entity (if assigning type is groups).
+      type: object
+      title: AssignDataIn
+    AssignDataApi:
+      properties:
+        type:
+          anyOf:
+          - $ref: '#/components/schemas/AssignDataTypes'
+          - type: 'null'
+          description: The type of the assign data (users, groups, both), default is both.
+          default: both
+        userIds:
+          anyOf:
+          - items:
+              type: integer
+            type: array
+          - type: 'null'
+          title: Userids
+          description: The user ids to assign to this entity (if assigning type is users).
+        groupIds:
+          anyOf:
+          - items:
+              type: integer
+            type: array
+          - type: 'null'
+          title: Groupids
+          description: The group ids to assign to this entity (if assigning type is groups).
+      type: object
+      title: AssignDataApi
+    JobResponse:
+      properties:
+        job:
+          $ref: '#/components/schemas/BaseJobResponse'
+          description: The job
+      type: object
+      required:
+      - job
+      title: JobResponse
+    AssignDataTypes:
+      type: string
+      enum:
+      - users
+      - groups
+      - both
+      title: AssignDataTypes
+  securitySchemes:
+    APIKeyHeader:
+      type: apiKey
+      description: The Api key of the company given by Connecteam
+      in: header
+      name: X-API-KEY
+    OAuth2:
+      type: oauth2
+      description: OAuth2 Bearer token
+      flows:
+        clientCredentials:
+          scopes:
+            account_information.read: account information - read
+            account_information.write: account information - write
+            account_information.delete: account information - delete
+            company_policies.read: company policies - read
+            company_policies.write: company policies - write
+            company_policies.delete: company policies - delete
+            company_insights.read: company insights - read
+            users.read: users - read
+            users.write: users - write
+            users.delete: users - delete
+            assets.read: assets - read
+            assets.write: assets - write
+            assets.delete: assets - delete
+            sales_data.read: sales data - read
+            sales_data.write: sales data - write
+            sales_data.delete: sales data - delete
+            attachments.read: attachments - read
+            attachments.write: attachments - write
+            attachments.delete: attachments - delete
+            quick_tasks.read: quick tasks - read
+            quick_tasks.write: quick tasks - write
+            quick_tasks.delete: quick tasks - delete
+            publishers.read: publishers - read
+            publishers.write: publishers - write
+            publishers.delete: publishers - delete
+            chat.read: chat - read
+            chat.write: chat - write
+            chat.delete: chat - delete
+            jobs.read: jobs - read
+            jobs.write: jobs - write
+            jobs.delete: jobs - delete
+            schedule.read: schedule - read
+            schedule.write: schedule - write
+            schedule.delete: schedule - delete
+            daily_note.read: daily note - read
+            daily_note.write: daily note - write
+            daily_note.delete: daily note - delete
+            time_clock.read: time clock - read
+            time_clock.write: time clock - write
+            time_clock.delete: time clock - delete
+            nfc.read: nfc - read
+            nfc.write: nfc - write
+            nfc.delete: nfc - delete
+            time_off.read: time off - read
+            time_off.write: time off - write
+            time_off.delete: time off - delete
+            pay_rates.read: pay rates - read
+            pay_rates.write: pay rates - write
+            pay_rates.delete: pay rates - delete
+            forms.read: forms - read
+            forms.write: forms - write
+            forms.delete: forms - delete
+            onboarding.read: onboarding - read
+            onboarding.write: onboarding - write
+            onboarding.delete: onboarding - delete
+            settings.read: settings - read
+            settings.write: settings - write
+            settings.delete: settings - delete
+            company_checklist.read: company checklist - read
+            company_checklist.write: company checklist - write
+            recognitions.read: recognitions - read
+            celebrations.read: celebrations - read
+          tokenUrl: /oauth/v1/token
+    HTTPBasic:
+      type: http
+      description: Use client_id as Username and client_secret as Password
+      scheme: basic

@@ -1,0 +1,657 @@
+openapi: 3.2.0
+info:
+  title: Connecteam API documentation Settings:v1:Webhook API
+  version: v1
+servers:
+- url: https://api.connecteam.com/
+tags:
+- name: Settings:v1:Webhook
+paths:
+  /settings/v1/webhooks/{webhookId}:
+    get:
+      tags:
+      - Settings:v1:Webhook
+      summary: Get webhook
+      description: Retrieve single webhook information by its unique ID
+      operationId: get_webhook_settings_v1_webhooks__webhookId__get
+      security:
+      - APIKeyHeader: []
+      - OAuth2:
+        - settings.read
+      parameters:
+      - name: webhookId
+        in: path
+        required: true
+        schema:
+          type: integer
+          description: The unique identifier of the webhook
+          title: Webhookid
+        description: The unique identifier of the webhook
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIResponseV2_PublicBaseWebhookResponse_'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    put:
+      tags:
+      - Settings:v1:Webhook
+      summary: Update Webhook
+      description: Update an existing webhook settings by its unique ID.
+      operationId: update_webhook_settings_v1_webhooks__webhookId__put
+      security:
+      - APIKeyHeader: []
+      - OAuth2:
+        - settings.write
+      parameters:
+      - name: webhookId
+        in: path
+        required: true
+        schema:
+          type: integer
+          description: The unique identifier of the webhook
+          title: Webhookid
+        description: The unique identifier of the webhook
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WebhookUpdateRequest'
+              description: Update data for new webhook
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIResponseV2_PublicBaseWebhookResponse_'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    delete:
+      tags:
+      - Settings:v1:Webhook
+      summary: Delete webhook
+      description: Delete a single webhook configuration by its unique ID
+      operationId: delete_webhook_settings_v1_webhooks__webhookId__delete
+      security:
+      - APIKeyHeader: []
+      - OAuth2:
+        - settings.delete
+      parameters:
+      - name: webhookId
+        in: path
+        required: true
+        schema:
+          type: integer
+          description: The unique identifier of the webhook
+          title: Webhookid
+        description: The unique identifier of the webhook
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIResponseV2_WebhookDeleteResponse_'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /settings/v1/webhooks:
+    post:
+      tags:
+      - Settings:v1:Webhook
+      summary: Create webhook
+      description: Create individual webhook settings under specified details
+      operationId: create_webhook_settings_v1_webhooks_post
+      security:
+      - APIKeyHeader: []
+      - OAuth2:
+        - settings.write
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WebhookCreateRequest'
+              description: Create data for new webhook
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIResponseV2_PublicBaseWebhookResponse_'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    get:
+      tags:
+      - Settings:v1:Webhook
+      summary: Get webhooks
+      description: Retrieves a list of webhook settings associated with the account.
+      operationId: get_webhooks_by_type_settings_v1_webhooks_get
+      security:
+      - APIKeyHeader: []
+      - OAuth2:
+        - settings.read
+      parameters:
+      - name: featureType
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          description: 'The feature type of the webhook. Current options are: users, forms, time_activity, tasks'
+          title: Featuretype
+        description: 'The feature type of the webhook. Current options are: users, forms, time_activity, tasks'
+      - name: limit
+        in: query
+        required: false
+        schema:
+          type: integer
+          maximum: 100
+          minimum: 1
+          description: The maximum number of results to display per page
+          default: 10
+          title: Limit
+        description: The maximum number of results to display per page
+      - name: offset
+        in: query
+        required: false
+        schema:
+          type: integer
+          minimum: 0
+          description: The resource offset of the last successfully read resource will be returned as the paging.offset JSON property of a paginated response containing more results
+          default: 0
+          title: Offset
+        description: The resource offset of the last successfully read resource will be returned as the paging.offset JSON property of a paginated response containing more results
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedBaseResponseV2_WebhookListResponse_'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+components:
+  schemas:
+    PaginatedBaseResponseV2_WebhookListResponse_:
+      properties:
+        requestId:
+          type: string
+          title: Requestid
+        data:
+          $ref: '#/components/schemas/WebhookListResponse'
+        paging:
+          $ref: '#/components/schemas/PagingResponseModelV2'
+      type: object
+      required:
+      - data
+      - paging
+      title: PaginatedBaseResponseV2[WebhookListResponse]
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    PagingResponseModelV2:
+      properties:
+        offset:
+          type: integer
+          minimum: 0.0
+          title: Offset
+          description: The resource offset of the last successfully read resource will be returned as the paging.offset JSON property of a paginated response containing more results
+        total:
+          anyOf:
+          - type: integer
+            minimum: 0.0
+          - type: 'null'
+          title: Total
+          description: Total number of resources matching the request, ignoring pagination. Use this to retrieve the full count without paginating through every page. Only populated by endpoints that compute it.
+      type: object
+      required:
+      - offset
+      title: PagingResponseModelV2
+    APIResponseV2_WebhookDeleteResponse_:
+      properties:
+        requestId:
+          type: string
+          title: Requestid
+        data:
+          $ref: '#/components/schemas/WebhookDeleteResponse'
+      type: object
+      required:
+      - data
+      title: APIResponseV2[WebhookDeleteResponse]
+    WebhookResponse:
+      properties:
+        id:
+          type: integer
+          title: Id
+          description: The unique identifier of the webhook
+        name:
+          type: string
+          title: Name
+          description: The name of the webhook
+        userId:
+          type: integer
+          title: Userid
+          description: Webhook creator's user id
+        timeCreated:
+          type: integer
+          title: Timecreated
+          description: The timestamp when the webhook was created
+        url:
+          type: string
+          minLength: 1
+          format: uri
+          title: Url
+          description: The webhook's URL
+        isDisabled:
+          type: boolean
+          title: Isdisabled
+          description: The webhook's disabled status
+        featureType:
+          type: string
+          title: Featuretype
+          description: The webhook's feature type
+        entityId:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Entityid
+          description: The webhook's entity id as a string. `null` for broadcast webhooks.
+        objectId:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Objectid
+          description: Deprecated. The legacy numeric object id for this webhook.
+          deprecated: true
+        retryLimit:
+          type: integer
+          title: Retrylimit
+          description: The webhook's retry limit
+        eventTypes:
+          items:
+            type: string
+          type: array
+          title: Eventtypes
+          description: The webhook's event types
+        webhookVersion:
+          type: integer
+          title: Webhookversion
+          description: The version of the webhook payload schema
+          default: 1
+        origin:
+          $ref: '#/components/schemas/WebhookOrigin'
+          description: The webhook's origin
+          default: organic
+      type: object
+      required:
+      - id
+      - name
+      - userId
+      - timeCreated
+      - url
+      - isDisabled
+      - featureType
+      - retryLimit
+      - eventTypes
+      title: WebhookResponse
+    PublicBaseWebhookResponse:
+      properties:
+        id:
+          type: integer
+          title: Id
+          description: The unique identifier of the webhook
+        name:
+          type: string
+          title: Name
+          description: The name of the webhook
+        userId:
+          type: integer
+          title: Userid
+          description: Webhook creator's user id
+        timeCreated:
+          type: integer
+          title: Timecreated
+          description: The timestamp when the webhook was created
+        url:
+          type: string
+          minLength: 1
+          format: uri
+          title: Url
+          description: The webhook's URL
+        isDisabled:
+          type: boolean
+          title: Isdisabled
+          description: The webhook's disabled status
+        featureType:
+          type: string
+          title: Featuretype
+          description: The webhook's feature type
+        entityId:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Entityid
+          description: The webhook's entity id as a string. `null` for broadcast webhooks.
+        objectId:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Objectid
+          description: Deprecated. The legacy numeric object id for this webhook.
+          deprecated: true
+        retryLimit:
+          type: integer
+          title: Retrylimit
+          description: The webhook's retry limit
+        eventTypes:
+          items:
+            type: string
+          type: array
+          title: Eventtypes
+          description: The webhook's event types
+        webhookVersion:
+          type: integer
+          title: Webhookversion
+          description: The version of the webhook payload schema
+          default: 1
+      type: object
+      required:
+      - id
+      - name
+      - userId
+      - timeCreated
+      - url
+      - isDisabled
+      - featureType
+      - retryLimit
+      - eventTypes
+      title: PublicBaseWebhookResponse
+    WebhookListResponse:
+      properties:
+        webhooks:
+          items:
+            $ref: '#/components/schemas/WebhookResponse'
+          type: array
+          title: Webhooks
+          description: List of webhooks
+      type: object
+      required:
+      - webhooks
+      title: WebhookListResponse
+    WebhookOrigin:
+      type: string
+      enum:
+      - organic
+      - integration
+      title: WebhookOrigin
+    APIResponseV2_PublicBaseWebhookResponse_:
+      properties:
+        requestId:
+          type: string
+          title: Requestid
+        data:
+          $ref: '#/components/schemas/PublicBaseWebhookResponse'
+      type: object
+      required:
+      - data
+      title: APIResponseV2[PublicBaseWebhookResponse]
+    WebhookUpdateRequest:
+      properties:
+        name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Name
+          description: The name of the webhook
+        url:
+          anyOf:
+          - type: string
+            minLength: 1
+            format: uri
+          - type: 'null'
+          title: Url
+          description: The specified endpoint url the payload will be sent to when the event is triggered. Must be a valid https endpoint.
+        secretKey:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Secretkey
+          description: The secret key for this webhook
+        isDisabled:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          title: Isdisabled
+          description: Determines whether the webhook settings is disabled or enabled upon creation. Default to enabled.
+        featureType:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Featuretype
+          description: 'The feature type of the webhook. Current options are: users, forms, time_activity, tasks'
+        entityId:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Entityid
+          description: The ID of the entity scoping this webhook, as a string. For numeric-scoped features (e.g. time activity, shift scheduler) pass the numeric ID as a string, e.g. "67". For string-scoped features (e.g. chat) pass the domain identifier directly, e.g. "conv_abc". If both `entity_id` and `object_id` are provided, `entity_id` wins.
+        objectId:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Objectid
+          description: Deprecated. Use `entity_id` instead. Kept for backward compatibility.
+          deprecated: true
+        eventTypes:
+          anyOf:
+          - items:
+              type: string
+            type: array
+            minItems: 1
+          - type: 'null'
+          title: Eventtypes
+          description: The event types under the specified feature type. The list of events is available in the Guides section or on the platform.
+        webhookVersion:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Webhookversion
+          description: The version of the webhook payload schema.
+      type: object
+      title: WebhookUpdateRequest
+    WebhookCreateRequest:
+      properties:
+        name:
+          type: string
+          title: Name
+          description: The name of the webhook
+        url:
+          type: string
+          minLength: 1
+          format: uri
+          title: Url
+          description: The specified endpoint url the payload will be sent to when the event is triggered. Must be a valid https endpoint.
+        secretKey:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Secretkey
+          description: The secret key for this webhook
+        isDisabled:
+          type: boolean
+          title: Isdisabled
+          description: Determines whether the webhook settings is disabled or enabled upon creation. Default to enabled.
+          default: false
+        featureType:
+          type: string
+          title: Featuretype
+          description: 'The feature type of the webhook. Current options are: users, forms, time_activity, tasks'
+        entityId:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Entityid
+          description: The ID of the entity scoping this webhook, as a string. For numeric-scoped features (e.g. time activity, shift scheduler) pass the numeric ID as a string, e.g. "67". For string-scoped features (e.g. chat) pass the domain identifier directly, e.g. "conv_abc". If both `entity_id` and `object_id` are provided, `entity_id` wins.
+        objectId:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Objectid
+          description: Deprecated. Use `entity_id` instead. Kept for backward compatibility.
+          deprecated: true
+        eventTypes:
+          items:
+            type: string
+          type: array
+          minItems: 1
+          title: Eventtypes
+          description: The event types under the specified feature type. The list of events is available in the Guides section or on the platform.
+        webhookVersion:
+          type: integer
+          title: Webhookversion
+          description: The version of the webhook payload schema. Defaults to 1.
+          default: 1
+      type: object
+      required:
+      - name
+      - url
+      - featureType
+      - eventTypes
+      title: WebhookCreateRequest
+    WebhookDeleteResponse:
+      properties: {}
+      type: object
+      title: WebhookDeleteResponse
+  securitySchemes:
+    APIKeyHeader:
+      type: apiKey
+      description: The Api key of the company given by Connecteam
+      in: header
+      name: X-API-KEY
+    OAuth2:
+      type: oauth2
+      description: OAuth2 Bearer token
+      flows:
+        clientCredentials:
+          scopes:
+            account_information.read: account information - read
+            account_information.write: account information - write
+            account_information.delete: account information - delete
+            company_policies.read: company policies - read
+            company_policies.write: company policies - write
+            company_policies.delete: company policies - delete
+            company_insights.read: company insights - read
+            users.read: users - read
+            users.write: users - write
+            users.delete: users - delete
+            assets.read: assets - read
+            assets.write: assets - write
+            assets.delete: assets - delete
+            sales_data.read: sales data - read
+            sales_data.write: sales data - write
+            sales_data.delete: sales data - delete
+            attachments.read: attachments - read
+            attachments.write: attachments - write
+            attachments.delete: attachments - delete
+            quick_tasks.read: quick tasks - read
+            quick_tasks.write: quick tasks - write
+            quick_tasks.delete: quick tasks - delete
+            publishers.read: publishers - read
+            publishers.write: publishers - write
+            publishers.delete: publishers - delete
+            chat.read: chat - read
+            chat.write: chat - write
+            chat.delete: chat - delete
+            jobs.read: jobs - read
+            jobs.write: jobs - write
+            jobs.delete: jobs - delete
+            schedule.read: schedule - read
+            schedule.write: schedule - write
+            schedule.delete: schedule - delete
+            daily_note.read: daily note - read
+            daily_note.write: daily note - write
+            daily_note.delete: daily note - delete
+            time_clock.read: time clock - read
+            time_clock.write: time clock - write
+            time_clock.delete: time clock - delete
+            nfc.read: nfc - read
+            nfc.write: nfc - write
+            nfc.delete: nfc - delete
+            time_off.read: time off - read
+            time_off.write: time off - write
+            time_off.delete: time off - delete
+            pay_rates.read: pay rates - read
+            pay_rates.write: pay rates - write
+            pay_rates.delete: pay rates - delete
+            forms.read: forms - read
+            forms.write: forms - write
+            forms.delete: forms - delete
+            onboarding.read: onboarding - read
+            onboarding.write: onboarding - write
+            onboarding.delete: onboarding - delete
+            settings.read: settings - read
+            settings.write: settings - write
+            settings.delete: settings - delete
+            company_checklist.read: company checklist - read
+            company_checklist.write: company checklist - write
+            recognitions.read: recognitions - read
+            celebrations.read: celebrations - read
+          tokenUrl: /oauth/v1/token
+    HTTPBasic:
+      type: http
+      description: Use client_id as Username and client_secret as Password
+      scheme: basic

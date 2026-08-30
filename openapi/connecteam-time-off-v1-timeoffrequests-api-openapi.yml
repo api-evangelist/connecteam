@@ -1,0 +1,628 @@
+openapi: 3.2.0
+info:
+  title: Connecteam API documentation Time Off:v1:TimeOffRequests API
+  version: v1
+servers:
+- url: https://api.connecteam.com/
+tags:
+- name: Time Off:v1:TimeOffRequests
+paths:
+  /time-off/v1/requests:
+    get:
+      tags:
+      - Time Off:v1:TimeOffRequests
+      summary: Get time off requests
+      description: Retrieve a paginated list of time-off requests whose date range overlaps the requested window, with optional filtering by employees and statuses. Approved requests include duration (the amount deducted from balance, in the policy units of hours or days); it is omitted for other statuses. Defaults to approved status when no status filter is provided.
+      operationId: list_time_off_requests_time_off_v1_requests_get
+      security:
+      - APIKeyHeader: []
+      - OAuth2:
+        - time_off.read
+      parameters:
+      - name: startDate
+        in: query
+        required: true
+        schema:
+          title: Startdate
+          description: Start of the date range, inclusive, in ISO 8601 format (YYYY-MM-DD). Any request overlapping [startDate, endDate] is returned.
+          type: string
+        description: Start of the date range, inclusive, in ISO 8601 format (YYYY-MM-DD). Any request overlapping [startDate, endDate] is returned.
+      - name: endDate
+        in: query
+        required: true
+        schema:
+          title: Enddate
+          description: End of the date range, inclusive, in ISO 8601 format (YYYY-MM-DD). Must be on or after startDate. Range may not exceed 365 days.
+          type: string
+        description: End of the date range, inclusive, in ISO 8601 format (YYYY-MM-DD). Must be on or after startDate. Range may not exceed 365 days.
+      - name: userIds
+        in: query
+        required: false
+        schema:
+          title: Userids
+          description: Filter by one or more employee IDs. Omit to include all employees.
+          type: array
+          items:
+            type: integer
+            minimum: 1
+        description: Filter by one or more employee IDs. Omit to include all employees.
+      - name: statuses
+        in: query
+        required: false
+        schema:
+          title: Statuses
+          description: 'Filter by status. Allowed: approved, pending, denied. Repeat the param for multiple values. Defaults to [''approved''] when omitted.'
+          type: array
+          items:
+            enum:
+            - approved
+            - pending
+            - denied
+            type: string
+        description: 'Filter by status. Allowed: approved, pending, denied. Repeat the param for multiple values. Defaults to [''approved''] when omitted.'
+      - name: limit
+        in: query
+        required: false
+        schema:
+          title: Limit
+          description: The maximum number of results to display per page
+          default: 10
+          minimum: 1
+          maximum: 100
+          type: integer
+        description: The maximum number of results to display per page
+      - name: offset
+        in: query
+        required: false
+        schema:
+          title: Offset
+          description: The resource offset of the last successfully read resource will be returned as the paging.offset JSON property of a paginated response containing more results
+          default: 0
+          minimum: 0
+          type: integer
+        description: The resource offset of the last successfully read resource will be returned as the paging.offset JSON property of a paginated response containing more results
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedBaseResponse_TimeOffRequestsListResponse_'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    post:
+      tags:
+      - Time Off:v1:TimeOffRequests
+      summary: Create time off request
+      description: Create a new time-off request for a user under a specified policy. The time-off request can be either in pending or approved status.
+      operationId: post_time_off_request_time_off_v1_requests_post
+      security:
+      - APIKeyHeader: []
+      - OAuth2:
+        - time_off.write
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              title: Time Off Request Create Request
+              description: Request model for the new Time Off Request
+              allOf:
+              - $ref: '#/components/schemas/TimeOffRequestCreateRequest'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIResponse_TimeOffRequestCreateResponse_'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /time-off/v1/requests/{requestId}:
+    put:
+      tags:
+      - Time Off:v1:TimeOffRequests
+      summary: Update time off request
+      description: Update an existing time-off request. The time-off request can be modified with new dates, times, status, or notes.
+      operationId: put_time_off_request_time_off_v1_requests__requestId__put
+      security:
+      - APIKeyHeader: []
+      - OAuth2:
+        - time_off.write
+      parameters:
+      - name: requestId
+        in: path
+        required: true
+        schema:
+          title: Requestid
+          description: The unique identifier of the time off request
+          type: string
+        description: The unique identifier of the time off request
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              title: Time Off Request Update Request
+              description: Request model for updating the Time Off Request
+              allOf:
+              - $ref: '#/components/schemas/TimeOffRequestUpdateRequest'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIResponse_TimeOffRequestUpdateResponse_'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+components:
+  schemas:
+    TimeOffRequestCreateResponse:
+      properties:
+        id:
+          type: string
+          title: Id
+          description: The unique identifier of the time-off request.
+        timeClockId:
+          type: integer
+          title: Timeclockid
+          description: The unique identifier of the time clock where the time off appears on the timesheet. Omitted when the request is not linked to a time clock.
+        policyTypeId:
+          type: string
+          title: Policytypeid
+          description: The unique identifier of the time-off policy type.
+        userId:
+          type: integer
+          title: Userid
+          description: The unique identifier of the employee the request belongs to.
+        isAllDay:
+          type: boolean
+          title: Isallday
+          description: true if the request covers full days; false if it uses specific times.
+        duration:
+          allOf:
+          - $ref: '#/components/schemas/TimeOffRequestDuration'
+          title: Duration
+          description: Amount of time deducted from balance for this request, expressed in the policy units (hours or days). Returned only for approved requests; omitted otherwise.
+        startDate:
+          type: string
+          title: Startdate
+          description: Start date of the time off.
+        endDate:
+          type: string
+          title: Enddate
+          description: End date of the time off.
+        startTime:
+          type: string
+          title: Starttime
+          description: Start time of the time off.
+        endTime:
+          type: string
+          title: Endtime
+          description: End time of the time off.
+        timezone:
+          type: string
+          title: Timezone
+          description: Timezone of the request, e.g. America/New_York.
+        status:
+          type: string
+          enum:
+          - approved
+          - pending
+          - denied
+          title: Status
+          description: 'Request status: approved, pending, or denied.'
+        employeeNote:
+          type: string
+          title: Employeenote
+          description: Note added by the employee. Empty string when none.
+          default: ''
+        managerNote:
+          type: string
+          title: Managernote
+          description: Note added by the manager. Empty string when none.
+          default: ''
+      type: object
+      required:
+      - id
+      - policyTypeId
+      - userId
+      - isAllDay
+      - startDate
+      - endDate
+      - startTime
+      - endTime
+      - timezone
+      - status
+      title: TimeOffRequestCreateResponse
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    PolicyUnitsEnum:
+      type: string
+      enum:
+      - hours
+      - days
+      title: PolicyUnitsEnum
+      description: An enumeration.
+    PaginatedBaseResponse_TimeOffRequestsListResponse_:
+      properties:
+        requestId:
+          type: string
+          title: Requestid
+        data:
+          $ref: '#/components/schemas/TimeOffRequestsListResponse'
+        paging:
+          $ref: '#/components/schemas/PagingResponseModel'
+      type: object
+      required:
+      - data
+      - paging
+      title: PaginatedBaseResponse[TimeOffRequestsListResponse]
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    TimeOffRequestDuration:
+      properties:
+        units:
+          allOf:
+          - $ref: '#/components/schemas/PolicyUnitsEnum'
+          description: 'The unit the amount is expressed in, matching the policy type: hours or days.'
+        amount:
+          type: number
+          title: Amount
+          description: Amount of time deducted from balance for this request, expressed in the policy units. For all-day requests this reflects the policy work schedule per calendar day, not the start/end time span. This is the value stored when the request was approved.
+      type: object
+      required:
+      - units
+      - amount
+      title: TimeOffRequestDuration
+    TimeOffRequestUpdateResponse:
+      properties:
+        id:
+          type: string
+          title: Id
+          description: The unique identifier of the time off request
+        timeClockId:
+          type: integer
+          title: Timeclockid
+          description: The unique identifier of the time clock where the time off will be presented in the timesheet
+        userId:
+          type: integer
+          title: Userid
+          description: The user id
+        isAllDay:
+          type: boolean
+          title: Isallday
+          description: Indicates whether the time off is for the entire day
+        startDate:
+          type: string
+          title: Startdate
+          description: The start date of the time off
+        endDate:
+          type: string
+          title: Enddate
+          description: The end date of the time off
+        startTime:
+          type: string
+          title: Starttime
+          description: The start time of the time off
+        endTime:
+          type: string
+          title: Endtime
+          description: The end time of the time off
+        timezone:
+          type: string
+          title: Timezone
+          description: The timezone of the time off
+        status:
+          type: string
+          enum:
+          - approved
+          - pending
+          - denied
+          title: Status
+          description: The status of the time off
+        managerNote:
+          type: string
+          title: Managernote
+          description: The manager note of the time off
+      type: object
+      required:
+      - id
+      - userId
+      - isAllDay
+      - startDate
+      - endDate
+      - startTime
+      - endTime
+      - timezone
+      - status
+      title: TimeOffRequestUpdateResponse
+    TimeOffRequestUpdateRequest:
+      properties:
+        timeClockId:
+          type: integer
+          title: Timeclockid
+          description: The unique identifier of the time clock where the time off will be presented in the timesheet
+        isAllDay:
+          type: boolean
+          title: Isallday
+          description: Specifies the type of the time period. If set to false, start and end time fields must be specified.
+        startDate:
+          type: string
+          title: Startdate
+          description: The start date of the time off in ISO format (YYYY-MM-DD)
+        endDate:
+          type: string
+          title: Enddate
+          description: The end time of the time off in ISO format (YYYY-MM-DD). End date must be similar to Start date if isAllDay set to false.
+        startTime:
+          type: string
+          title: Starttime
+          description: The start time of the time off in ISO format (HH:MM:SS). This field is required if isAllDay set to false.
+        endTime:
+          type: string
+          title: Endtime
+          description: The end time of the time off in ISO format (HH:MM:SS). This field is required if isAllDay set to false.
+        timezone:
+          type: string
+          title: Timezone
+          description: The timezone in Tz format (e.g. America/New_York)
+        status:
+          type: string
+          enum:
+          - approved
+          - pending
+          - denied
+          title: Status
+          description: The status of the time off request.
+        managerNote:
+          type: string
+          title: Managernote
+          description: Manager note providing additional details
+        isAdjustForDayLightSaving:
+          type: boolean
+          title: Isadjustfordaylightsaving
+          description: Specifies if the time given should offset the daylight savings time change if the time falls exactly on the daylight savings time change. Set to true only if the time coincides with the rollback hour, otherwise, it should remain false.
+      additionalProperties: false
+      type: object
+      title: TimeOffRequestUpdateRequest
+    APIResponse_TimeOffRequestUpdateResponse_:
+      properties:
+        requestId:
+          type: string
+          title: Requestid
+        data:
+          $ref: '#/components/schemas/TimeOffRequestUpdateResponse'
+      type: object
+      required:
+      - data
+      title: APIResponse[TimeOffRequestUpdateResponse]
+    APIResponse_TimeOffRequestCreateResponse_:
+      properties:
+        requestId:
+          type: string
+          title: Requestid
+        data:
+          $ref: '#/components/schemas/TimeOffRequestCreateResponse'
+      type: object
+      required:
+      - data
+      title: APIResponse[TimeOffRequestCreateResponse]
+    TimeOffRequestCreateRequest:
+      properties:
+        timeClockId:
+          type: integer
+          title: Timeclockid
+          description: The unique identifier of the time clock where the time off will be presented in the timesheet
+        userId:
+          type: integer
+          minimum: 1.0
+          title: Userid
+          description: The ID of the user to create the time off request
+        policyTypeId:
+          type: string
+          title: Policytypeid
+          description: The ID of the policy type
+        isAllDay:
+          type: boolean
+          title: Isallday
+          description: Specifies the type of the time period. Defaults to true. If set to false, start and end time fields must be specified.
+        startDate:
+          type: string
+          title: Startdate
+          description: The start date of the time off in ISO format (YYYY-MM-DD)
+        endDate:
+          type: string
+          title: Enddate
+          description: The end time of the time off in ISO format (YYYY-MM-DD). End date must be similar to Start date if isAllDay set to false.
+        startTime:
+          type: string
+          title: Starttime
+          description: The start time of the time off in ISO format (HH:MM:SS). This field is required if isAllDay set to false.
+        endTime:
+          type: string
+          title: Endtime
+          description: The end time of the time off in ISO format (HH:MM:SS). This field is required if isAllDay set to false.
+        timezone:
+          type: string
+          title: Timezone
+          description: The timezone in Tz format (e.g. America/New_York)
+        status:
+          type: string
+          enum:
+          - approved
+          - pending
+          - denied
+          title: Status
+          description: The status of the time off request.
+        employeeNote:
+          type: string
+          title: Employeenote
+          description: Employee note providing additional details
+          default: ''
+        managerNote:
+          type: string
+          title: Managernote
+          description: Manager note providing additional details
+          default: ''
+        isAdjustForDayLightSaving:
+          type: boolean
+          title: Isadjustfordaylightsaving
+          description: Specifies if the time given should offset the daylight savings time change if the time falls exactly on the daylight savings time change. Set to true only if the time coincides with the rollback hour, otherwise, it should remain false.
+          default: false
+      type: object
+      required:
+      - userId
+      - policyTypeId
+      - isAllDay
+      - startDate
+      - endDate
+      - timezone
+      - status
+      title: TimeOffRequestCreateRequest
+    PagingResponseModel:
+      properties:
+        offset:
+          type: integer
+          minimum: 0.0
+          title: Offset
+          description: The resource offset of the last successfully read resource will be returned as the paging.offset JSON property of a paginated response containing more results
+        total:
+          type: integer
+          minimum: 0.0
+          title: Total
+          description: Total number of resources matching the request, ignoring pagination. Use this to retrieve the full count without paginating through every page. Only populated by endpoints that compute it.
+      type: object
+      required:
+      - offset
+      title: PagingResponseModel
+    TimeOffRequestsListResponse:
+      properties:
+        requests:
+          items:
+            $ref: '#/components/schemas/TimeOffRequestCreateResponse'
+          type: array
+          title: Requests
+          description: List of time-off requests matching the filters.
+      type: object
+      required:
+      - requests
+      title: TimeOffRequestsListResponse
+  securitySchemes:
+    APIKeyHeader:
+      type: apiKey
+      description: The Api key of the company given by Connecteam
+      in: header
+      name: X-API-KEY
+    OAuth2:
+      type: oauth2
+      description: OAuth2 Bearer token
+      flows:
+        clientCredentials:
+          scopes:
+            account_information.read: account information - read
+            account_information.write: account information - write
+            account_information.delete: account information - delete
+            company_policies.read: company policies - read
+            company_policies.write: company policies - write
+            company_policies.delete: company policies - delete
+            company_insights.read: company insights - read
+            users.read: users - read
+            users.write: users - write
+            users.delete: users - delete
+            assets.read: assets - read
+            assets.write: assets - write
+            assets.delete: assets - delete
+            sales_data.read: sales data - read
+            sales_data.write: sales data - write
+            sales_data.delete: sales data - delete
+            attachments.read: attachments - read
+            attachments.write: attachments - write
+            attachments.delete: attachments - delete
+            quick_tasks.read: quick tasks - read
+            quick_tasks.write: quick tasks - write
+            quick_tasks.delete: quick tasks - delete
+            publishers.read: publishers - read
+            publishers.write: publishers - write
+            publishers.delete: publishers - delete
+            chat.read: chat - read
+            chat.write: chat - write
+            chat.delete: chat - delete
+            jobs.read: jobs - read
+            jobs.write: jobs - write
+            jobs.delete: jobs - delete
+            schedule.read: schedule - read
+            schedule.write: schedule - write
+            schedule.delete: schedule - delete
+            daily_note.read: daily note - read
+            daily_note.write: daily note - write
+            daily_note.delete: daily note - delete
+            time_clock.read: time clock - read
+            time_clock.write: time clock - write
+            time_clock.delete: time clock - delete
+            nfc.read: nfc - read
+            nfc.write: nfc - write
+            nfc.delete: nfc - delete
+            time_off.read: time off - read
+            time_off.write: time off - write
+            time_off.delete: time off - delete
+            pay_rates.read: pay rates - read
+            pay_rates.write: pay rates - write
+            pay_rates.delete: pay rates - delete
+            forms.read: forms - read
+            forms.write: forms - write
+            forms.delete: forms - delete
+            onboarding.read: onboarding - read
+            onboarding.write: onboarding - write
+            onboarding.delete: onboarding - delete
+            settings.read: settings - read
+            settings.write: settings - write
+            settings.delete: settings - delete
+            company_checklist.read: company checklist - read
+            company_checklist.write: company checklist - write
+            recognitions.read: recognitions - read
+            celebrations.read: celebrations - read
+          tokenUrl: /oauth/v1/token
+    HTTPBasic:
+      type: http
+      description: Use client_id as Username and client_secret as Password
+      scheme: basic

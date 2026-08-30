@@ -1,0 +1,314 @@
+openapi: 3.2.0
+info:
+  title: Connecteam API documentation Sales:Sales V1:Sales Locations API
+  version: v1
+servers:
+- url: https://api.connecteam.com/
+tags:
+- name: Sales:Sales V1:Sales Locations
+paths:
+  /sales/v1/locations:
+    get:
+      tags:
+      - Sales:Sales V1:Sales Locations
+      summary: Get locations
+      description: Retrieve a list of locations associated with the account
+      operationId: get_locations_sales_v1_locations_get
+      security:
+      - APIKeyHeader: []
+      - OAuth2:
+        - sales_data.read
+      parameters:
+      - name: locationIds
+        in: query
+        required: false
+        schema:
+          title: Locationids
+          description: List of location IDs to filter by
+          type: array
+          items:
+            type: integer
+        description: List of location IDs to filter by
+      - name: locationNames
+        in: query
+        required: false
+        schema:
+          title: Locationnames
+          description: List of location names to filter by
+          type: array
+          items:
+            type: string
+        description: List of location names to filter by
+      - name: isActive
+        in: query
+        required: false
+        schema:
+          title: Isactive
+          description: Filter by active status
+          type: boolean
+        description: Filter by active status
+      - name: limit
+        in: query
+        required: false
+        schema:
+          title: Limit
+          description: The maximum number of results to display per page
+          default: 100
+          minimum: 1
+          maximum: 1000
+          type: integer
+        description: The maximum number of results to display per page
+      - name: offset
+        in: query
+        required: false
+        schema:
+          title: Offset
+          description: The resource offset of the last successfully read resource will be returned as the paging.offset JSON property of a paginated response containing more results
+          default: 0
+          minimum: 0
+          type: integer
+        description: The resource offset of the last successfully read resource will be returned as the paging.offset JSON property of a paginated response containing more results
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIResponse_LocationsGetResponse_'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    post:
+      tags:
+      - Sales:Sales V1:Sales Locations
+      summary: Create location
+      description: Create a new location entity, which can be used to sync sales data with third-party systems. Location can represent a physical branch, store or facility.
+      operationId: create_location_sales_v1_locations_post
+      security:
+      - APIKeyHeader: []
+      - OAuth2:
+        - sales_data.write
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              title: Request
+              allOf:
+              - $ref: '#/components/schemas/LocationRequest'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIResponse_LocationResponse_'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+components:
+  schemas:
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    APIResponse_LocationsGetResponse_:
+      properties:
+        requestId:
+          type: string
+          title: Requestid
+        data:
+          $ref: '#/components/schemas/LocationsGetResponse'
+      type: object
+      required:
+      - data
+      title: APIResponse[LocationsGetResponse]
+    LocationRequest:
+      properties:
+        name:
+          type: string
+          title: Name
+          description: The location name
+        isActive:
+          type: boolean
+          title: Isactive
+          description: Indicates whether the location is active upon creation
+          default: true
+      type: object
+      required:
+      - name
+      title: LocationRequest
+    LocationsGetResponse:
+      properties:
+        locations:
+          items:
+            $ref: '#/components/schemas/Location'
+          type: array
+          title: Locations
+          description: List of locations
+      type: object
+      required:
+      - locations
+      title: LocationsGetResponse
+    LocationResponse:
+      properties:
+        id:
+          type: integer
+          title: Id
+          description: Unique identifier for the location
+        name:
+          type: string
+          title: Name
+          description: The location name
+        isActive:
+          type: boolean
+          title: Isactive
+          description: Indicates whether the location is active
+      type: object
+      required:
+      - id
+      - name
+      - isActive
+      title: LocationResponse
+    Location:
+      properties:
+        id:
+          type: integer
+          title: Id
+          description: Unique identifier for the location
+        name:
+          type: string
+          title: Name
+          description: The location name
+        isActive:
+          type: boolean
+          title: Isactive
+          description: Indicates whether the location is active
+      type: object
+      required:
+      - id
+      - name
+      - isActive
+      title: Location
+    APIResponse_LocationResponse_:
+      properties:
+        requestId:
+          type: string
+          title: Requestid
+        data:
+          $ref: '#/components/schemas/LocationResponse'
+      type: object
+      required:
+      - data
+      title: APIResponse[LocationResponse]
+  securitySchemes:
+    APIKeyHeader:
+      type: apiKey
+      description: The Api key of the company given by Connecteam
+      in: header
+      name: X-API-KEY
+    OAuth2:
+      type: oauth2
+      description: OAuth2 Bearer token
+      flows:
+        clientCredentials:
+          scopes:
+            account_information.read: account information - read
+            account_information.write: account information - write
+            account_information.delete: account information - delete
+            company_policies.read: company policies - read
+            company_policies.write: company policies - write
+            company_policies.delete: company policies - delete
+            company_insights.read: company insights - read
+            users.read: users - read
+            users.write: users - write
+            users.delete: users - delete
+            assets.read: assets - read
+            assets.write: assets - write
+            assets.delete: assets - delete
+            sales_data.read: sales data - read
+            sales_data.write: sales data - write
+            sales_data.delete: sales data - delete
+            attachments.read: attachments - read
+            attachments.write: attachments - write
+            attachments.delete: attachments - delete
+            quick_tasks.read: quick tasks - read
+            quick_tasks.write: quick tasks - write
+            quick_tasks.delete: quick tasks - delete
+            publishers.read: publishers - read
+            publishers.write: publishers - write
+            publishers.delete: publishers - delete
+            chat.read: chat - read
+            chat.write: chat - write
+            chat.delete: chat - delete
+            jobs.read: jobs - read
+            jobs.write: jobs - write
+            jobs.delete: jobs - delete
+            schedule.read: schedule - read
+            schedule.write: schedule - write
+            schedule.delete: schedule - delete
+            daily_note.read: daily note - read
+            daily_note.write: daily note - write
+            daily_note.delete: daily note - delete
+            time_clock.read: time clock - read
+            time_clock.write: time clock - write
+            time_clock.delete: time clock - delete
+            nfc.read: nfc - read
+            nfc.write: nfc - write
+            nfc.delete: nfc - delete
+            time_off.read: time off - read
+            time_off.write: time off - write
+            time_off.delete: time off - delete
+            pay_rates.read: pay rates - read
+            pay_rates.write: pay rates - write
+            pay_rates.delete: pay rates - delete
+            forms.read: forms - read
+            forms.write: forms - write
+            forms.delete: forms - delete
+            onboarding.read: onboarding - read
+            onboarding.write: onboarding - write
+            onboarding.delete: onboarding - delete
+            settings.read: settings - read
+            settings.write: settings - write
+            settings.delete: settings - delete
+            company_checklist.read: company checklist - read
+            company_checklist.write: company checklist - write
+            recognitions.read: recognitions - read
+            celebrations.read: celebrations - read
+          tokenUrl: /oauth/v1/token
+    HTTPBasic:
+      type: http
+      description: Use client_id as Username and client_secret as Password
+      scheme: basic

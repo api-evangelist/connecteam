@@ -1,0 +1,581 @@
+openapi: 3.2.0
+info:
+  title: Connecteam API documentation Time Clock:v1:TimeClocks:TimeClock:Get timesheet totals API
+  version: v1
+servers:
+- url: https://api.connecteam.com/
+tags:
+- name: Time Clock:v1:TimeClocks:TimeClock:Get timesheet totals
+paths:
+  /time-clock/v1/time-clocks/{timeClockId}/timesheet:
+    get:
+      tags:
+      - Time Clock:v1:TimeClocks:TimeClock:Get timesheet totals
+      summary: Get timesheet totals
+      description: Retrieves detailed work records for each employee within a specified date range. This endpoint is designed to support payroll processing by providing total worked hours, categorized by pay rules and resource (if applied in the account settings). Ideal for integrating with external payroll systems to ensure accurate information. The pay rate will be presented in case it is defined within the account. If an automated unpaid break is applied, it will  be deducted from the total hours value. In order to retrieve approved paid time-off (PTO) and manual break information, please use the Get time activities endpoint. Hours will be presented in decimal format. The time period is limited to 45 days.
+      operationId: get_timesheet_total_hours_time_clock_v1_time_clocks__timeClockId__timesheet_get
+      security:
+      - APIKeyHeader: []
+      - OAuth2:
+        - time_clock.read
+      parameters:
+      - name: timeClockId
+        in: path
+        required: true
+        schema:
+          title: Timeclockid
+          description: The unique identifier of the time clock
+          type: integer
+        description: The unique identifier of the time clock
+      - name: startDate
+        in: query
+        required: true
+        schema:
+          title: Startdate
+          description: "The start of the reporting period, in ISO 8601 format (YYYY-MM-DD). The filter includes all records from 00:00:00 on the specified date.\n            Example: A startDate of 2025-01-01 includes data starting from 2025-01-01T00:00:00"
+          type: string
+        description: "The start of the reporting period, in ISO 8601 format (YYYY-MM-DD). The filter includes all records from 00:00:00 on the specified date.\n            Example: A startDate of 2025-01-01 includes data starting from 2025-01-01T00:00:00"
+      - name: endDate
+        in: query
+        required: true
+        schema:
+          title: Enddate
+          description: "The end of the reporting period, in ISO 8601 format (YYYY-MM-DD). The filter includes all records up to 23:59:59 on the specified date.\n            Example: An endDate of 2025-01-01 includes data up to 2025-01-01T23:59:59. The end date must be no more than 45 days after the start date. If there is an ongoing overnight shift that continues past the end date, the hours of the overnight  will only be included if it has been configured in the time clock settings."
+          type: string
+        description: "The end of the reporting period, in ISO 8601 format (YYYY-MM-DD). The filter includes all records up to 23:59:59 on the specified date.\n            Example: An endDate of 2025-01-01 includes data up to 2025-01-01T23:59:59. The end date must be no more than 45 days after the start date. If there is an ongoing overnight shift that continues past the end date, the hours of the overnight  will only be included if it has been configured in the time clock settings."
+      - name: userIds
+        in: query
+        required: false
+        schema:
+          title: Userids
+          description: List of user IDs to filter the results. Only time entries associated with these users will be included. If a user has no recorded time entries within the specified date range, they will be excluded from the results.
+          type: array
+          items:
+            type: integer
+            minimum: 1
+        description: List of user IDs to filter the results. Only time entries associated with these users will be included. If a user has no recorded time entries within the specified date range, they will be excluded from the results.
+      - name: groupIds
+        in: query
+        required: false
+        schema:
+          title: Groupids
+          description: List of cohort/group IDs to filter the results. Only time entries associated with users in these cohorts will be included.
+          type: array
+          items:
+            type: string
+        description: List of cohort/group IDs to filter the results. Only time entries associated with users in these cohorts will be included.
+      - name: jobIds
+        in: query
+        required: false
+        schema:
+          title: Jobids
+          description: List of job IDs to filter the results. Currently supports only parent job IDs and regular job IDs. If a parent job ID is provided, only sub-jobs that have actual recorded hours will be included in the response.
+          type: array
+          items:
+            type: string
+        description: List of job IDs to filter the results. Currently supports only parent job IDs and regular job IDs. If a parent job ID is provided, only sub-jobs that have actual recorded hours will be included in the response.
+      - name: isApproved
+        in: query
+        required: false
+        schema:
+          title: Isapproved
+          description: Filter by approval status. If not provided, returns all records (approved and unapproved). Set to true for approved only, false for unapproved only.
+          type: boolean
+        description: Filter by approval status. If not provided, returns all records (approved and unapproved). Set to true for approved only, false for unapproved only.
+      - name: isSubmitted
+        in: query
+        required: false
+        schema:
+          title: Issubmitted
+          description: Filter by submission status. If not provided, returns all records (submitted and unsubmitted). Set to true for submitted only, false for unsubmitted only.
+          type: boolean
+        description: Filter by submission status. If not provided, returns all records (submitted and unsubmitted). Set to true for submitted only, false for unsubmitted only.
+      - name: isLocked
+        in: query
+        required: false
+        schema:
+          title: Islocked
+          description: Filter by lock status. If not provided, returns all records (locked and unlocked). Set to true for locked only, false for unlocked only.
+          type: boolean
+        description: Filter by lock status. If not provided, returns all records (locked and unlocked). Set to true for locked only, false for unlocked only.
+      - name: includePlanVsActual
+        in: query
+        required: false
+        schema:
+          title: Includeplanvsactual
+          description: When false (default), Plan vs Actual fields are omitted from the response and scheduled shifts are not fetched. When true, each daily record includes a dailyScheduledDetails object with dailyScheduledHours, dailyScheduledDifferenceHours, dailyScheduledShifts, and shifts (planned shift ids) comparing planned schedule hours to actual worked hours. Does not require Plan vs Actual to be enabled in time clock settings.
+          default: false
+          type: boolean
+        description: When false (default), Plan vs Actual fields are omitted from the response and scheduled shifts are not fetched. When true, each daily record includes a dailyScheduledDetails object with dailyScheduledHours, dailyScheduledDifferenceHours, dailyScheduledShifts, and shifts (planned shift ids) comparing planned schedule hours to actual worked hours. Does not require Plan vs Actual to be enabled in time clock settings.
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIResponse_TimesheetTotalHoursGetResponse_'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+components:
+  schemas:
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    ShiftEntryResponse:
+      properties:
+        timeActivityId:
+          type: string
+          title: Timeactivityid
+          description: The unique identifier of the time activity
+        start:
+          allOf:
+          - $ref: '#/components/schemas/StartTimeResponse'
+          title: Start
+          description: The start time of the shift
+        end:
+          allOf:
+          - $ref: '#/components/schemas/EndTimeResponse'
+          title: End
+          description: The end time of the shift
+        basePayRate:
+          type: number
+          title: Basepayrate
+          description: The base pay rate for the shift
+        resources:
+          items:
+            $ref: '#/components/schemas/ResourceResponse'
+          type: array
+          title: Resources
+          description: The resources assigned to this entry
+      type: object
+      required:
+      - timeActivityId
+      - start
+      - end
+      - resources
+      title: ShiftEntryResponse
+    StartTimeResponse:
+      properties:
+        timestamp:
+          type: integer
+          minimum: 1.0
+          title: Timestamp
+          description: The start time of the shift
+        timezone:
+          type: string
+          title: Timezone
+          description: The timezone of the shift
+        locationData:
+          allOf:
+          - $ref: '#/components/schemas/GpsData'
+          title: Locationdata
+          description: The location data
+        source:
+          allOf:
+          - $ref: '#/components/schemas/PunchSourceResponse'
+          title: Source
+          description: Describes the origin from which the punch was created
+      type: object
+      title: StartTimeResponse
+    PunchSourceType:
+      type: string
+      enum:
+      - autoClockOut
+      - nfc
+      - mobile
+      - pc
+      - kiosk
+      - api
+      - admin
+      title: PunchSourceType
+      description: An enumeration.
+    ScheduledShiftDetailResponse:
+      properties:
+        id:
+          type: string
+          title: Id
+          description: The unique identifier of the planned/scheduled shift
+      type: object
+      required:
+      - id
+      title: ScheduledShiftDetailResponse
+    EndTimeResponse:
+      properties:
+        timestamp:
+          type: integer
+          minimum: 1.0
+          title: Timestamp
+          description: The end time of the shift
+        timezone:
+          type: string
+          title: Timezone
+          description: The timezone of the shift
+        locationData:
+          allOf:
+          - $ref: '#/components/schemas/GpsData'
+          title: Locationdata
+          description: The location data
+        source:
+          allOf:
+          - $ref: '#/components/schemas/PunchSourceResponse'
+          title: Source
+          description: Describes the origin from which the punch was created
+      type: object
+      title: EndTimeResponse
+    PayRuleResponse:
+      properties:
+        id:
+          type: string
+          title: Id
+          description: The unique identifier of the pay rule
+        code:
+          type: string
+          title: Code
+          description: The code of the pay rule
+        type:
+          type: string
+          title: Type
+          description: The type of the pay rule
+      type: object
+      required:
+      - id
+      - code
+      - type
+      title: PayRuleResponse
+    DailyScheduledDetailsResponse:
+      properties:
+        dailyScheduledHours:
+          type: number
+          title: Dailyscheduledhours
+          description: Total planned/scheduled hours for the day
+        dailyScheduledDifferenceHours:
+          type: number
+          title: Dailyscheduleddifferencehours
+          description: Difference between timesheet paid hours and planned hours for the day
+        dailyScheduledShifts:
+          type: integer
+          title: Dailyscheduledshifts
+          description: Number of planned/scheduled shifts for the day
+        shifts:
+          items:
+            $ref: '#/components/schemas/ScheduledShiftDetailResponse'
+          type: array
+          title: Shifts
+          description: Planned/scheduled shift details for the day. Currently includes only the shift id.
+      type: object
+      required:
+      - dailyScheduledHours
+      - dailyScheduledDifferenceHours
+      - dailyScheduledShifts
+      - shifts
+      title: DailyScheduledDetailsResponse
+    PunchSourceResponse:
+      properties:
+        id:
+          type: string
+          title: Id
+          description: Unique identifier of the source (for NFC or geofence-based sources)
+        type:
+          allOf:
+          - $ref: '#/components/schemas/PunchSourceType'
+          description: Indicates how the punch was performed
+        mode:
+          allOf:
+          - $ref: '#/components/schemas/AutoClockOutModeType'
+          description: For autoClockOut type, indicates the reason for the auto clock out (e.g., dailyLimit, geofenceExit)
+        name:
+          type: string
+          title: Name
+          description: Human-readable name of the source (for NFC or geofence-based sources)
+      type: object
+      required:
+      - type
+      title: PunchSourceResponse
+    TimesheetTotalHoursGetResponse:
+      properties:
+        startDate:
+          type: string
+          title: Startdate
+          description: The start date of the reporting period
+        endDate:
+          type: string
+          title: Enddate
+          description: The end date of the reporting period
+        users:
+          items:
+            $ref: '#/components/schemas/UserHoursSummaryResponse'
+          type: array
+          title: Users
+          description: The users and their hour summaries
+      type: object
+      required:
+      - startDate
+      - endDate
+      - users
+      title: TimesheetTotalHoursGetResponse
+    DailyRecordResponse:
+      properties:
+        date:
+          type: string
+          title: Date
+          description: The date of the record in ISO 8601 format (YYYY-MM-DD)
+        dailyTotalHours:
+          type: number
+          title: Dailytotalhours
+          description: The total hours for the day
+        dailyTotalWorkHours:
+          type: number
+          title: Dailytotalworkhours
+          description: The total work hours for the day
+        dailyTotalPaidBreakHours:
+          type: number
+          title: Dailytotalpaidbreakhours
+          description: The total paid break hours for the day
+        dailyTotalUnpaidBreakHours:
+          type: number
+          title: Dailytotalunpaidbreakhours
+          description: The total unpaid break hours for the day
+        isApproved:
+          type: boolean
+          title: Isapproved
+          description: Indicates whether the daily record is approved
+        isSubmitted:
+          type: boolean
+          title: Issubmitted
+          description: Indicates whether the daily record is submitted
+        isLocked:
+          type: boolean
+          title: Islocked
+          description: Indicates whether the daily record is locked
+        payItems:
+          items:
+            $ref: '#/components/schemas/PayItemResponse'
+          type: array
+          title: Payitems
+          description: The aggregated pay items for the entire day
+        records:
+          items:
+            $ref: '#/components/schemas/ShiftEntryResponse'
+          type: array
+          title: Records
+          description: The hour entries for this date
+        dailyScheduledDetails:
+          allOf:
+          - $ref: '#/components/schemas/DailyScheduledDetailsResponse'
+          title: Dailyscheduleddetails
+          description: Plan vs Actual scheduled details for the day. Present only when includePlanVsActual=true.
+      type: object
+      required:
+      - date
+      - dailyTotalHours
+      - dailyTotalWorkHours
+      - dailyTotalPaidBreakHours
+      - dailyTotalUnpaidBreakHours
+      - isApproved
+      - isSubmitted
+      - isLocked
+      - payItems
+      - records
+      title: DailyRecordResponse
+    PayItemResponse:
+      properties:
+        hours:
+          type: number
+          title: Hours
+          description: The number of hours worked
+        payRule:
+          allOf:
+          - $ref: '#/components/schemas/PayRuleResponse'
+          title: Payrule
+          description: The pay rule information
+        actualPayRate:
+          type: number
+          title: Actualpayrate
+          description: The actual pay rate applied
+        totalPay:
+          type: number
+          title: Totalpay
+          description: The total pay for the shift
+      type: object
+      required:
+      - hours
+      - payRule
+      title: PayItemResponse
+    GpsData:
+      properties:
+        address:
+          type: string
+          title: Address
+          description: The address associated with the GPS data.
+        longitude:
+          type: number
+          title: Longitude
+          description: The longitude coordinate.
+        latitude:
+          type: number
+          title: Latitude
+          description: The latitude coordinate.
+      type: object
+      title: GpsData
+    ResourceResponse:
+      properties:
+        resourceId:
+          type: string
+          title: Resourceid
+          description: The unique identifier of the resource/job
+        subResourceId:
+          type: string
+          title: Subresourceid
+          description: The unique identifier of the sub resource/job
+      type: object
+      title: ResourceResponse
+    AutoClockOutModeType:
+      type: string
+      enum:
+      - dailyLimit
+      - hourLimit
+      - schedulerShiftEnded
+      - geofenceExit
+      - disabledGps
+      - disabledGpsPermission
+      title: AutoClockOutModeType
+      description: An enumeration.
+    UserHoursSummaryResponse:
+      properties:
+        userId:
+          type: integer
+          minimum: 1.0
+          title: Userid
+          description: The unique identifier of the user
+        dailyRecords:
+          items:
+            $ref: '#/components/schemas/DailyRecordResponse'
+          type: array
+          title: Dailyrecords
+          description: The daily breakdown of hours
+      type: object
+      required:
+      - userId
+      - dailyRecords
+      title: UserHoursSummaryResponse
+    APIResponse_TimesheetTotalHoursGetResponse_:
+      properties:
+        requestId:
+          type: string
+          title: Requestid
+        data:
+          $ref: '#/components/schemas/TimesheetTotalHoursGetResponse'
+      type: object
+      required:
+      - data
+      title: APIResponse[TimesheetTotalHoursGetResponse]
+  securitySchemes:
+    APIKeyHeader:
+      type: apiKey
+      description: The Api key of the company given by Connecteam
+      in: header
+      name: X-API-KEY
+    OAuth2:
+      type: oauth2
+      description: OAuth2 Bearer token
+      flows:
+        clientCredentials:
+          scopes:
+            account_information.read: account information - read
+            account_information.write: account information - write
+            account_information.delete: account information - delete
+            company_policies.read: company policies - read
+            company_policies.write: company policies - write
+            company_policies.delete: company policies - delete
+            company_insights.read: company insights - read
+            users.read: users - read
+            users.write: users - write
+            users.delete: users - delete
+            assets.read: assets - read
+            assets.write: assets - write
+            assets.delete: assets - delete
+            sales_data.read: sales data - read
+            sales_data.write: sales data - write
+            sales_data.delete: sales data - delete
+            attachments.read: attachments - read
+            attachments.write: attachments - write
+            attachments.delete: attachments - delete
+            quick_tasks.read: quick tasks - read
+            quick_tasks.write: quick tasks - write
+            quick_tasks.delete: quick tasks - delete
+            publishers.read: publishers - read
+            publishers.write: publishers - write
+            publishers.delete: publishers - delete
+            chat.read: chat - read
+            chat.write: chat - write
+            chat.delete: chat - delete
+            jobs.read: jobs - read
+            jobs.write: jobs - write
+            jobs.delete: jobs - delete
+            schedule.read: schedule - read
+            schedule.write: schedule - write
+            schedule.delete: schedule - delete
+            daily_note.read: daily note - read
+            daily_note.write: daily note - write
+            daily_note.delete: daily note - delete
+            time_clock.read: time clock - read
+            time_clock.write: time clock - write
+            time_clock.delete: time clock - delete
+            nfc.read: nfc - read
+            nfc.write: nfc - write
+            nfc.delete: nfc - delete
+            time_off.read: time off - read
+            time_off.write: time off - write
+            time_off.delete: time off - delete
+            pay_rates.read: pay rates - read
+            pay_rates.write: pay rates - write
+            pay_rates.delete: pay rates - delete
+            forms.read: forms - read
+            forms.write: forms - write
+            forms.delete: forms - delete
+            onboarding.read: onboarding - read
+            onboarding.write: onboarding - write
+            onboarding.delete: onboarding - delete
+            settings.read: settings - read
+            settings.write: settings - write
+            settings.delete: settings - delete
+            company_checklist.read: company checklist - read
+            company_checklist.write: company checklist - write
+            recognitions.read: recognitions - read
+            celebrations.read: celebrations - read
+          tokenUrl: /oauth/v1/token
+    HTTPBasic:
+      type: http
+      description: Use client_id as Username and client_secret as Password
+      scheme: basic

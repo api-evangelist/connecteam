@@ -1,0 +1,302 @@
+openapi: 3.2.0
+info:
+  title: Connecteam API documentation Schedule:v2:Schedulers:Unavailabilities (V2):Unavailabilities API
+  version: v1
+servers:
+- url: https://api.connecteam.com/
+tags:
+- name: Schedule:v2:Schedulers:Unavailabilities (V2):Unavailabilities
+paths:
+  /scheduler/v2/schedulers/user-unavailability:
+    get:
+      tags:
+      - Schedule:v2:Schedulers:Unavailabilities (V2):Unavailabilities
+      summary: Get user unavailabilities
+      description: Retrieve a list of user unavailabilities, approved time-off requests and assigned shifts
+      operationId: get_unavailabilities_scheduler_v2_schedulers_user_unavailability_get
+      security:
+      - APIKeyHeader: []
+      - OAuth2:
+        - schedule.read
+      parameters:
+      - name: userId
+        in: query
+        required: true
+        schema:
+          type: integer
+          description: The unique identifier of the user
+          title: Userid
+        description: The unique identifier of the user
+      - name: startTime
+        in: query
+        required: true
+        schema:
+          type: integer
+          description: The start time to filter by in Unix format (in seconds)
+          title: Starttime
+        description: The start time to filter by in Unix format (in seconds)
+      - name: endTime
+        in: query
+        required: true
+        schema:
+          type: integer
+          description: The end time to filter by in Unix format (in seconds)
+          title: Endtime
+        description: The end time to filter by in Unix format (in seconds)
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIResponseV2_GetUnavailabilitiesResponse_'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+components:
+  schemas:
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    AbsenceType:
+      type: string
+      enum:
+      - unavailability
+      - timeOff
+      title: AbsenceType
+    UserUnavailabilityItem:
+      properties:
+        userId:
+          type: integer
+          minimum: 1.0
+          title: Userid
+          description: The unique identifier of the user
+        unavailabilities:
+          items:
+            $ref: '#/components/schemas/SingleAbsence'
+          type: array
+          title: Unavailabilities
+          description: List of approved unavailabilities
+        shifts:
+          items:
+            $ref: '#/components/schemas/SingleShift'
+          type: array
+          title: Shifts
+          description: List of assigned shifts
+      type: object
+      required:
+      - userId
+      - unavailabilities
+      - shifts
+      title: UserUnavailabilityItem
+    TimestampWithTimezone:
+      properties:
+        timestamp:
+          type: integer
+          minimum: 1.0
+          title: Timestamp
+          description: The timestamp in Unix format (in seconds)
+        timezone:
+          type: string
+          title: Timezone
+          description: The timezone in Tz format (e.g. America/New_York)
+      type: object
+      required:
+      - timestamp
+      - timezone
+      title: TimestampWithTimezone
+    APIResponseV2_GetUnavailabilitiesResponse_:
+      properties:
+        requestId:
+          type: string
+          title: Requestid
+        data:
+          $ref: '#/components/schemas/GetUnavailabilitiesResponse'
+      type: object
+      required:
+      - data
+      title: APIResponseV2[GetUnavailabilitiesResponse]
+    SingleAbsence:
+      properties:
+        id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Id
+          description: The unique identifier of the unavailability
+        type:
+          $ref: '#/components/schemas/AbsenceType'
+          description: The type of the unavailability
+        startTime:
+          $ref: '#/components/schemas/TimestampWithTimezone'
+          description: The start time of the unavailability
+        endTime:
+          $ref: '#/components/schemas/TimestampWithTimezone'
+          description: The end time of the unavailability
+        note:
+          type: string
+          title: Note
+          description: The note of the unavailability
+        policyName:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Policyname
+          description: The name of the policy (applicable only when unavailability type is timeOff)
+        instanceId:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Instanceid
+          description: The schedule id of the unavailability (applicable only when unavailability type is unavailability)
+      type: object
+      required:
+      - type
+      - startTime
+      - endTime
+      - note
+      title: SingleAbsence
+    SingleShift:
+      properties:
+        id:
+          type: string
+          title: Id
+          description: The unique identifier of the shift
+        startTime:
+          $ref: '#/components/schemas/TimestampWithTimezone'
+          description: The start time of the shift
+        endTime:
+          $ref: '#/components/schemas/TimestampWithTimezone'
+          description: The end time of the shift
+        instanceId:
+          type: integer
+          title: Instanceid
+          description: The unique identifier of the schedule instance
+      type: object
+      required:
+      - id
+      - startTime
+      - endTime
+      - instanceId
+      title: SingleShift
+    GetUnavailabilitiesResponse:
+      properties:
+        userUnavailabilities:
+          items:
+            $ref: '#/components/schemas/UserUnavailabilityItem'
+          type: array
+          title: Userunavailabilities
+          description: List of users with unavailabilities
+      type: object
+      required:
+      - userUnavailabilities
+      title: GetUnavailabilitiesResponse
+  securitySchemes:
+    APIKeyHeader:
+      type: apiKey
+      description: The Api key of the company given by Connecteam
+      in: header
+      name: X-API-KEY
+    OAuth2:
+      type: oauth2
+      description: OAuth2 Bearer token
+      flows:
+        clientCredentials:
+          scopes:
+            account_information.read: account information - read
+            account_information.write: account information - write
+            account_information.delete: account information - delete
+            company_policies.read: company policies - read
+            company_policies.write: company policies - write
+            company_policies.delete: company policies - delete
+            company_insights.read: company insights - read
+            users.read: users - read
+            users.write: users - write
+            users.delete: users - delete
+            assets.read: assets - read
+            assets.write: assets - write
+            assets.delete: assets - delete
+            sales_data.read: sales data - read
+            sales_data.write: sales data - write
+            sales_data.delete: sales data - delete
+            attachments.read: attachments - read
+            attachments.write: attachments - write
+            attachments.delete: attachments - delete
+            quick_tasks.read: quick tasks - read
+            quick_tasks.write: quick tasks - write
+            quick_tasks.delete: quick tasks - delete
+            publishers.read: publishers - read
+            publishers.write: publishers - write
+            publishers.delete: publishers - delete
+            chat.read: chat - read
+            chat.write: chat - write
+            chat.delete: chat - delete
+            jobs.read: jobs - read
+            jobs.write: jobs - write
+            jobs.delete: jobs - delete
+            schedule.read: schedule - read
+            schedule.write: schedule - write
+            schedule.delete: schedule - delete
+            daily_note.read: daily note - read
+            daily_note.write: daily note - write
+            daily_note.delete: daily note - delete
+            time_clock.read: time clock - read
+            time_clock.write: time clock - write
+            time_clock.delete: time clock - delete
+            nfc.read: nfc - read
+            nfc.write: nfc - write
+            nfc.delete: nfc - delete
+            time_off.read: time off - read
+            time_off.write: time off - write
+            time_off.delete: time off - delete
+            pay_rates.read: pay rates - read
+            pay_rates.write: pay rates - write
+            pay_rates.delete: pay rates - delete
+            forms.read: forms - read
+            forms.write: forms - write
+            forms.delete: forms - delete
+            onboarding.read: onboarding - read
+            onboarding.write: onboarding - write
+            onboarding.delete: onboarding - delete
+            settings.read: settings - read
+            settings.write: settings - write
+            settings.delete: settings - delete
+            company_checklist.read: company checklist - read
+            company_checklist.write: company checklist - write
+            recognitions.read: recognitions - read
+            celebrations.read: celebrations - read
+          tokenUrl: /oauth/v1/token
+    HTTPBasic:
+      type: http
+      description: Use client_id as Username and client_secret as Password
+      scheme: basic

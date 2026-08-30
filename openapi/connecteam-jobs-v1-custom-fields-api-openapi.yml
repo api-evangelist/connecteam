@@ -1,0 +1,487 @@
+openapi: 3.2.0
+info:
+  title: Connecteam API documentation Jobs:v1:Custom Fields API
+  version: v1
+servers:
+- url: https://api.connecteam.com/
+tags:
+- name: Jobs:v1:Custom Fields
+paths:
+  /jobs/v1/custom-fields:
+    get:
+      tags:
+      - Jobs:v1:Custom Fields
+      summary: Get resource custom fields
+      description: Retrieves all resource custom fields associated with the account. Optionally, filter the results by custom field IDs, names, or types.
+      operationId: get_resource_custom_fields_jobs_v1_custom_fields_get
+      security:
+      - APIKeyHeader: []
+      - OAuth2:
+        - jobs.read
+      parameters:
+      - name: customFieldIds
+        in: query
+        required: false
+        schema:
+          title: Customfieldids
+          description: Custom field ids to filter by
+          type: array
+          items:
+            type: integer
+        description: Custom field ids to filter by
+      - name: categoryIds
+        in: query
+        required: false
+        schema:
+          title: Categoryids
+          description: Custom field category ids to filter by
+          type: array
+          items:
+            type: integer
+        description: Custom field category ids to filter by
+      - name: customFieldTypes
+        in: query
+        required: false
+        schema:
+          description: Custom field types to filter by
+          type: array
+          items:
+            $ref: '#/components/schemas/ResourceCustomFields'
+        description: Custom field types to filter by
+      - name: customFieldNames
+        in: query
+        required: false
+        schema:
+          title: Customfieldnames
+          description: Custom field names to filter by
+          type: array
+          items:
+            type: string
+        description: Custom field names to filter by
+      - name: limit
+        in: query
+        required: false
+        schema:
+          title: Limit
+          description: The maximum number of results to display per page
+          default: 10
+          minimum: 1
+          maximum: 500
+          type: integer
+        description: The maximum number of results to display per page
+      - name: offset
+        in: query
+        required: false
+        schema:
+          title: Offset
+          description: The resource offset of the last successfully read resource will be returned as the paging.offset JSON property of a paginated response containing more results
+          default: 0
+          minimum: 0
+          type: integer
+        description: The resource offset of the last successfully read resource will be returned as the paging.offset JSON property of a paginated response containing more results
+      - name: sort
+        in: query
+        required: false
+        schema:
+          description: Sort key
+          allOf:
+          - $ref: '#/components/schemas/ResourceCustomFieldsSortExternal'
+        description: Sort key
+      - name: order
+        in: query
+        required: false
+        schema:
+          description: Sort order, set only if sort key is set
+          default: asc
+          allOf:
+          - $ref: '#/components/schemas/SortOrder'
+        description: Sort order, set only if sort key is set
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedBaseResponse_GetResourceCustomFieldsSettingsResponse_'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+components:
+  schemas:
+    DropdownCustomFieldOption:
+      properties:
+        id:
+          type: integer
+          title: Id
+          description: The id of this option
+        value:
+          type: string
+          title: Value
+          description: The name of this option
+        isDisabled:
+          type: boolean
+          title: Isdisabled
+          description: Indicates if this option is disabled
+          default: false
+        isDeleted:
+          type: boolean
+          title: Isdeleted
+          description: 'Indicates if this option is deleted
+
+            (this will still be returned in case someone already chose this option so you can see the value).'
+          default: false
+      type: object
+      required:
+      - id
+      - value
+      title: DropdownCustomFieldOption
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    UserCustomFields:
+      type: string
+      enum:
+      - email
+      - date
+      - phone
+      - number
+      - str
+      - dropdown
+      - file
+      - directManager
+      - birthday
+      - link
+      - location
+      title: UserCustomFields
+    ResourceCustomFields:
+      type: string
+      enum:
+      - str
+      - phone
+      - dropdown
+      title: ResourceCustomFields
+      description: An enumeration.
+    ResourceCustomFieldsSortExternal:
+      type: string
+      enum:
+      - name
+      - type
+      title: ResourceCustomFieldsSortExternal
+      description: An enumeration.
+    PagingResponseModel:
+      properties:
+        offset:
+          type: integer
+          minimum: 0.0
+          title: Offset
+          description: The resource offset of the last successfully read resource will be returned as the paging.offset JSON property of a paginated response containing more results
+        total:
+          type: integer
+          minimum: 0.0
+          title: Total
+          description: Total number of resources matching the request, ignoring pagination. Use this to retrieve the full count without paginating through every page. Only populated by endpoints that compute it.
+      type: object
+      required:
+      - offset
+      title: PagingResponseModel
+    PaginatedBaseResponse_GetResourceCustomFieldsSettingsResponse_:
+      properties:
+        requestId:
+          type: string
+          title: Requestid
+        data:
+          $ref: '#/components/schemas/GetResourceCustomFieldsSettingsResponse'
+        paging:
+          $ref: '#/components/schemas/PagingResponseModel'
+      type: object
+      required:
+      - data
+      - paging
+      title: PaginatedBaseResponse[GetResourceCustomFieldsSettingsResponse]
+    DropdownResourceCustomFieldSettingsResponse:
+      properties:
+        id:
+          type: integer
+          title: Id
+          description: The resource custom field id
+        name:
+          type: string
+          maxLength: 100
+          title: Name
+          description: The name of the custom field
+        isRequired:
+          type: boolean
+          title: Isrequired
+          description: Indicates whether the custom field is required
+        categoryId:
+          type: integer
+          title: Categoryid
+          description: The unique identifier of the custom field category
+        isVisibleToAllAdmins:
+          type: boolean
+          title: Isvisibletoalladmins
+          description: Indicates whether the custom field is visible to all admins
+        viewAccessAdminIds:
+          items:
+            type: integer
+            minimum: 1.0
+          type: array
+          title: Viewaccessadminids
+          description: 'A list of unique identifiers of the admins who will be granted access to view this custom field, owners can always see all custom fields.
+
+            Applicable only to custom fields that are not visible to all admins.'
+        isEditableForAllAdmins:
+          type: boolean
+          title: Iseditableforalladmins
+          description: Indicates whether the custom field is editable by all admins
+        editAccessAdminIds:
+          items:
+            type: integer
+            minimum: 1.0
+          type: array
+          title: Editaccessadminids
+          description: 'A list of unique identifiers of the admins who will be granted access to edit this custom field, owners can always edit all custom fields.
+
+            Applicable only to custom fields that are not editable by all admins.'
+        isVisibleToUsers:
+          type: boolean
+          title: Isvisibletousers
+          description: Indicates whether the custom field is visible to users
+        isEditableForUsers:
+          type: boolean
+          title: Iseditableforusers
+          description: 'Indicates whether the custom field is editable by users.
+
+            Applicable only to custom fields that are visible to users.'
+        isMultiSelect:
+          type: boolean
+          title: Ismultiselect
+          description: 'Indicates whether multiple selections are allowed in the dropdown.
+
+            Applicable only to custom fields configured as dropdown types.'
+        dropdownOptions:
+          items:
+            $ref: '#/components/schemas/DropdownCustomFieldOption'
+          type: array
+          title: Dropdownoptions
+          description: 'The options available for selection in the dropdown field.
+
+            Applicable only to custom fields configured as dropdown types.'
+        type:
+          type: string
+          enum:
+          - dropdown
+          title: Type
+          description: 'The type of the custom field: Text, Phone number, Dropdown.'
+          default: dropdown
+      type: object
+      required:
+      - name
+      - isRequired
+      - isVisibleToAllAdmins
+      - isEditableForAllAdmins
+      - isVisibleToUsers
+      - isEditableForUsers
+      - isMultiSelect
+      - dropdownOptions
+      - id
+      title: DropdownResourceCustomFieldSettingsResponse
+    ResourceCustomFieldSettingsResponse:
+      properties:
+        id:
+          type: integer
+          title: Id
+          description: The resource custom field id
+        name:
+          type: string
+          maxLength: 100
+          title: Name
+          description: The name of the custom field
+        isRequired:
+          type: boolean
+          title: Isrequired
+          description: Indicates whether the custom field is required
+        categoryId:
+          type: integer
+          title: Categoryid
+          description: The unique identifier of the custom field category
+        isVisibleToAllAdmins:
+          type: boolean
+          title: Isvisibletoalladmins
+          description: Indicates whether the custom field is visible to all admins
+        viewAccessAdminIds:
+          items:
+            type: integer
+            minimum: 1.0
+          type: array
+          title: Viewaccessadminids
+          description: 'A list of unique identifiers of the admins who will be granted access to view this custom field, owners can always see all custom fields.
+
+            Applicable only to custom fields that are not visible to all admins.'
+        isEditableForAllAdmins:
+          type: boolean
+          title: Iseditableforalladmins
+          description: Indicates whether the custom field is editable by all admins
+        editAccessAdminIds:
+          items:
+            type: integer
+            minimum: 1.0
+          type: array
+          title: Editaccessadminids
+          description: 'A list of unique identifiers of the admins who will be granted access to edit this custom field, owners can always edit all custom fields.
+
+            Applicable only to custom fields that are not editable by all admins.'
+        isVisibleToUsers:
+          type: boolean
+          title: Isvisibletousers
+          description: Indicates whether the custom field is visible to users
+        isEditableForUsers:
+          type: boolean
+          title: Iseditableforusers
+          description: 'Indicates whether the custom field is editable by users.
+
+            Applicable only to custom fields that are visible to users.'
+        type:
+          allOf:
+          - $ref: '#/components/schemas/UserCustomFields'
+          description: 'The type of the custom field: Text, Phone number, Dropdown.'
+      type: object
+      required:
+      - name
+      - isRequired
+      - isVisibleToAllAdmins
+      - isEditableForAllAdmins
+      - isVisibleToUsers
+      - isEditableForUsers
+      - id
+      - type
+      title: ResourceCustomFieldSettingsResponse
+    GetResourceCustomFieldsSettingsResponse:
+      properties:
+        customFields:
+          items:
+            anyOf:
+            - $ref: '#/components/schemas/DropdownResourceCustomFieldSettingsResponse'
+            - $ref: '#/components/schemas/ResourceCustomFieldSettingsResponse'
+          type: array
+          title: Customfields
+          description: The resource custom fields.
+      type: object
+      required:
+      - customFields
+      title: GetResourceCustomFieldsSettingsResponse
+    SortOrder:
+      type: string
+      enum:
+      - asc
+      - desc
+      title: SortOrder
+  securitySchemes:
+    APIKeyHeader:
+      type: apiKey
+      description: The Api key of the company given by Connecteam
+      in: header
+      name: X-API-KEY
+    OAuth2:
+      type: oauth2
+      description: OAuth2 Bearer token
+      flows:
+        clientCredentials:
+          scopes:
+            account_information.read: account information - read
+            account_information.write: account information - write
+            account_information.delete: account information - delete
+            company_policies.read: company policies - read
+            company_policies.write: company policies - write
+            company_policies.delete: company policies - delete
+            company_insights.read: company insights - read
+            users.read: users - read
+            users.write: users - write
+            users.delete: users - delete
+            assets.read: assets - read
+            assets.write: assets - write
+            assets.delete: assets - delete
+            sales_data.read: sales data - read
+            sales_data.write: sales data - write
+            sales_data.delete: sales data - delete
+            attachments.read: attachments - read
+            attachments.write: attachments - write
+            attachments.delete: attachments - delete
+            quick_tasks.read: quick tasks - read
+            quick_tasks.write: quick tasks - write
+            quick_tasks.delete: quick tasks - delete
+            publishers.read: publishers - read
+            publishers.write: publishers - write
+            publishers.delete: publishers - delete
+            chat.read: chat - read
+            chat.write: chat - write
+            chat.delete: chat - delete
+            jobs.read: jobs - read
+            jobs.write: jobs - write
+            jobs.delete: jobs - delete
+            schedule.read: schedule - read
+            schedule.write: schedule - write
+            schedule.delete: schedule - delete
+            daily_note.read: daily note - read
+            daily_note.write: daily note - write
+            daily_note.delete: daily note - delete
+            time_clock.read: time clock - read
+            time_clock.write: time clock - write
+            time_clock.delete: time clock - delete
+            nfc.read: nfc - read
+            nfc.write: nfc - write
+            nfc.delete: nfc - delete
+            time_off.read: time off - read
+            time_off.write: time off - write
+            time_off.delete: time off - delete
+            pay_rates.read: pay rates - read
+            pay_rates.write: pay rates - write
+            pay_rates.delete: pay rates - delete
+            forms.read: forms - read
+            forms.write: forms - write
+            forms.delete: forms - delete
+            onboarding.read: onboarding - read
+            onboarding.write: onboarding - write
+            onboarding.delete: onboarding - delete
+            settings.read: settings - read
+            settings.write: settings - write
+            settings.delete: settings - delete
+            company_checklist.read: company checklist - read
+            company_checklist.write: company checklist - write
+            recognitions.read: recognitions - read
+            celebrations.read: celebrations - read
+          tokenUrl: /oauth/v1/token
+    HTTPBasic:
+      type: http
+      description: Use client_id as Username and client_secret as Password
+      scheme: basic

@@ -1,0 +1,217 @@
+openapi: 3.2.0
+info:
+  title: Connecteam API documentation Assets:v1:Asset API
+  version: v1
+servers:
+- url: https://api.connecteam.com/
+tags:
+- name: Assets:v1:Asset
+paths:
+  /assets/v1/asset/{assetId}:
+    get:
+      tags:
+      - Assets:v1:Asset
+      summary: Get asset metadata
+      description: Retrieve all metadata associated with a specified asset.
+      operationId: get_metadata_per_asset_assets_v1_asset__assetId__get
+      security:
+      - APIKeyHeader: []
+      - OAuth2:
+        - assets.read
+      parameters:
+      - name: assetId
+        in: path
+        required: true
+        schema:
+          title: Assetid
+          description: The unique identifier of the asset.
+          type: integer
+        description: The unique identifier of the asset.
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIResponse_AssetResponse_'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+components:
+  schemas:
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    AssetAssignments:
+      properties:
+        userIds:
+          items:
+            type: integer
+          type: array
+          title: Userids
+          description: The unique identifiers of the assigned users to the asset
+        smartGroups:
+          items:
+            type: string
+          type: array
+          title: Smartgroups
+          description: The unique identifiers of the assigned smart groups to the asset
+      type: object
+      required:
+      - userIds
+      - smartGroups
+      title: AssetAssignments
+    AssetPermissions:
+      properties:
+        userId:
+          type: integer
+          title: Userid
+          description: The unique identifiers who have permissions to the asset
+        deepPermission:
+          additionalProperties:
+            type: boolean
+          type: object
+          title: Deeppermission
+          description: Granular per-feature permissions for this user on this asset. Keys depend on the feature (e.g. shift scheduler exposes view, add_and_edit_shifts, publish_shifts, edit_settings). Omitted entirely for assets whose feature has no granular permissions. Owners always receive a full-access object (every flag = true).
+      type: object
+      required:
+      - userId
+      title: AssetPermissions
+    AssetResponse:
+      properties:
+        permissions:
+          items:
+            $ref: '#/components/schemas/AssetPermissions'
+          type: array
+          title: Permissions
+          description: The details of user IDs with access permissions to the asset.
+          default: []
+        assignments:
+          allOf:
+          - $ref: '#/components/schemas/AssetAssignments'
+          title: Assignments
+          description: The details of the assignments of the asset
+      type: object
+      required:
+      - assignments
+      title: AssetResponse
+    APIResponse_AssetResponse_:
+      properties:
+        requestId:
+          type: string
+          title: Requestid
+        data:
+          $ref: '#/components/schemas/AssetResponse'
+      type: object
+      required:
+      - data
+      title: APIResponse[AssetResponse]
+  securitySchemes:
+    APIKeyHeader:
+      type: apiKey
+      description: The Api key of the company given by Connecteam
+      in: header
+      name: X-API-KEY
+    OAuth2:
+      type: oauth2
+      description: OAuth2 Bearer token
+      flows:
+        clientCredentials:
+          scopes:
+            account_information.read: account information - read
+            account_information.write: account information - write
+            account_information.delete: account information - delete
+            company_policies.read: company policies - read
+            company_policies.write: company policies - write
+            company_policies.delete: company policies - delete
+            company_insights.read: company insights - read
+            users.read: users - read
+            users.write: users - write
+            users.delete: users - delete
+            assets.read: assets - read
+            assets.write: assets - write
+            assets.delete: assets - delete
+            sales_data.read: sales data - read
+            sales_data.write: sales data - write
+            sales_data.delete: sales data - delete
+            attachments.read: attachments - read
+            attachments.write: attachments - write
+            attachments.delete: attachments - delete
+            quick_tasks.read: quick tasks - read
+            quick_tasks.write: quick tasks - write
+            quick_tasks.delete: quick tasks - delete
+            publishers.read: publishers - read
+            publishers.write: publishers - write
+            publishers.delete: publishers - delete
+            chat.read: chat - read
+            chat.write: chat - write
+            chat.delete: chat - delete
+            jobs.read: jobs - read
+            jobs.write: jobs - write
+            jobs.delete: jobs - delete
+            schedule.read: schedule - read
+            schedule.write: schedule - write
+            schedule.delete: schedule - delete
+            daily_note.read: daily note - read
+            daily_note.write: daily note - write
+            daily_note.delete: daily note - delete
+            time_clock.read: time clock - read
+            time_clock.write: time clock - write
+            time_clock.delete: time clock - delete
+            nfc.read: nfc - read
+            nfc.write: nfc - write
+            nfc.delete: nfc - delete
+            time_off.read: time off - read
+            time_off.write: time off - write
+            time_off.delete: time off - delete
+            pay_rates.read: pay rates - read
+            pay_rates.write: pay rates - write
+            pay_rates.delete: pay rates - delete
+            forms.read: forms - read
+            forms.write: forms - write
+            forms.delete: forms - delete
+            onboarding.read: onboarding - read
+            onboarding.write: onboarding - write
+            onboarding.delete: onboarding - delete
+            settings.read: settings - read
+            settings.write: settings - write
+            settings.delete: settings - delete
+            company_checklist.read: company checklist - read
+            company_checklist.write: company checklist - write
+            recognitions.read: recognitions - read
+            celebrations.read: celebrations - read
+          tokenUrl: /oauth/v1/token
+    HTTPBasic:
+      type: http
+      description: Use client_id as Username and client_secret as Password
+      scheme: basic

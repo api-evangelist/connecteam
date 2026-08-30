@@ -1,0 +1,242 @@
+openapi: 3.2.0
+info:
+  title: Connecteam API documentation Sales:Sales V1:Sales Locations:Sales Daily API
+  version: v1
+servers:
+- url: https://api.connecteam.com/
+tags:
+- name: Sales:Sales V1:Sales Locations:Sales Daily
+paths:
+  /sales/v1/locations/{locationId}/daily-sales:
+    put:
+      tags:
+      - Sales:Sales V1:Sales Locations:Sales Daily
+      summary: Set projected sales
+      description: Set projected sales for a single location for one or more days in a single request. Each item in updates specifies a date and projectedSales value; each date may appear only once. This replaces the projected total for that day and does not modify totalSales. To record or change actual (totalSales) values, use the Create transactions endpoint. Location IDs are available from the Get locations endpoint.
+      operationId: update_projected_sales_sales_v1_locations__locationId__daily_sales_put
+      security:
+      - APIKeyHeader: []
+      - OAuth2:
+        - sales_data.write
+      parameters:
+      - name: locationId
+        in: path
+        required: true
+        schema:
+          title: Locationid
+          description: Unique identifier of the location (from the Get locations endpoint).
+          type: integer
+        description: Unique identifier of the location (from the Get locations endpoint).
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              title: Request
+              allOf:
+              - $ref: '#/components/schemas/ProjectedSalesUpdateRequest'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIResponse_ProjectedSalesUpdateResponse_'
+        '400':
+          description: Invalid parameters (e.g. location not found, duplicate dates in updates).
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+components:
+  schemas:
+    ProjectedSalesUpdateRequest:
+      properties:
+        updates:
+          items:
+            $ref: '#/components/schemas/ProjectedSalesUpdateItem'
+          type: array
+          minItems: 1
+          title: Updates
+          description: List of projected sales updates for this location. Minimum one item. Each date may appear only once in the request.
+      type: object
+      required:
+      - updates
+      title: ProjectedSalesUpdateRequest
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    DailySalesEntry:
+      properties:
+        date:
+          type: string
+          title: Date
+          description: Calendar date for the entry, in ISO 8601 format (YYYY-MM-DD).
+        locationId:
+          type: integer
+          title: Locationid
+          description: Unique identifier of the location (from the Get locations endpoint).
+        totalSales:
+          type: number
+          title: Totalsales
+          description: Total sales for the day, aggregated from transactions. May be null when no transactions exist for that day. To change this value, use the Create transactions endpoint.
+        projectedSales:
+          type: number
+          title: Projectedsales
+          description: Projected sales target for the day. Set via Set projected sales. May be null if not set.
+      type: object
+      required:
+      - date
+      - locationId
+      title: DailySalesEntry
+    ProjectedSalesUpdateResponse:
+      properties:
+        daysAffected:
+          type: integer
+          title: Daysaffected
+          description: Number of days successfully updated in this request.
+        updatedDays:
+          items:
+            $ref: '#/components/schemas/DailySalesEntry'
+          type: array
+          title: Updateddays
+          description: List of daily sales entries after the update, one per date in the request.
+      type: object
+      required:
+      - daysAffected
+      - updatedDays
+      title: ProjectedSalesUpdateResponse
+    APIResponse_ProjectedSalesUpdateResponse_:
+      properties:
+        requestId:
+          type: string
+          title: Requestid
+        data:
+          $ref: '#/components/schemas/ProjectedSalesUpdateResponse'
+      type: object
+      required:
+      - data
+      title: APIResponse[ProjectedSalesUpdateResponse]
+    ProjectedSalesUpdateItem:
+      properties:
+        date:
+          type: string
+          title: Date
+          description: Calendar date to update, in ISO 8601 format (YYYY-MM-DD).
+        projectedSales:
+          type: number
+          title: Projectedsales
+          description: Projected sales total for the day. Replaces any existing projected value for that date.
+      type: object
+      required:
+      - date
+      - projectedSales
+      title: ProjectedSalesUpdateItem
+  securitySchemes:
+    APIKeyHeader:
+      type: apiKey
+      description: The Api key of the company given by Connecteam
+      in: header
+      name: X-API-KEY
+    OAuth2:
+      type: oauth2
+      description: OAuth2 Bearer token
+      flows:
+        clientCredentials:
+          scopes:
+            account_information.read: account information - read
+            account_information.write: account information - write
+            account_information.delete: account information - delete
+            company_policies.read: company policies - read
+            company_policies.write: company policies - write
+            company_policies.delete: company policies - delete
+            company_insights.read: company insights - read
+            users.read: users - read
+            users.write: users - write
+            users.delete: users - delete
+            assets.read: assets - read
+            assets.write: assets - write
+            assets.delete: assets - delete
+            sales_data.read: sales data - read
+            sales_data.write: sales data - write
+            sales_data.delete: sales data - delete
+            attachments.read: attachments - read
+            attachments.write: attachments - write
+            attachments.delete: attachments - delete
+            quick_tasks.read: quick tasks - read
+            quick_tasks.write: quick tasks - write
+            quick_tasks.delete: quick tasks - delete
+            publishers.read: publishers - read
+            publishers.write: publishers - write
+            publishers.delete: publishers - delete
+            chat.read: chat - read
+            chat.write: chat - write
+            chat.delete: chat - delete
+            jobs.read: jobs - read
+            jobs.write: jobs - write
+            jobs.delete: jobs - delete
+            schedule.read: schedule - read
+            schedule.write: schedule - write
+            schedule.delete: schedule - delete
+            daily_note.read: daily note - read
+            daily_note.write: daily note - write
+            daily_note.delete: daily note - delete
+            time_clock.read: time clock - read
+            time_clock.write: time clock - write
+            time_clock.delete: time clock - delete
+            nfc.read: nfc - read
+            nfc.write: nfc - write
+            nfc.delete: nfc - delete
+            time_off.read: time off - read
+            time_off.write: time off - write
+            time_off.delete: time off - delete
+            pay_rates.read: pay rates - read
+            pay_rates.write: pay rates - write
+            pay_rates.delete: pay rates - delete
+            forms.read: forms - read
+            forms.write: forms - write
+            forms.delete: forms - delete
+            onboarding.read: onboarding - read
+            onboarding.write: onboarding - write
+            onboarding.delete: onboarding - delete
+            settings.read: settings - read
+            settings.write: settings - write
+            settings.delete: settings - delete
+            company_checklist.read: company checklist - read
+            company_checklist.write: company checklist - write
+            recognitions.read: recognitions - read
+            celebrations.read: celebrations - read
+          tokenUrl: /oauth/v1/token
+    HTTPBasic:
+      type: http
+      description: Use client_id as Username and client_secret as Password
+      scheme: basic

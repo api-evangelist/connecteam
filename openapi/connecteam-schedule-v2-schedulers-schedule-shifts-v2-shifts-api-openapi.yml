@@ -1,0 +1,1520 @@
+openapi: 3.2.0
+info:
+  title: Connecteam API documentation Schedule:v2:Schedulers:Schedule:Shifts (V2):Shifts API
+  version: v1
+servers:
+- url: https://api.connecteam.com/
+tags:
+- name: Schedule:v2:Schedulers:Schedule:Shifts (V2):Shifts
+paths:
+  /scheduler/v2/schedulers/{schedulerId}/shifts:
+    get:
+      tags:
+      - Schedule:v2:Schedulers:Schedule:Shifts (V2):Shifts
+      summary: Get shifts
+      description: Retrieve a list of shifts under a specific schedule
+      operationId: get_shifts_scheduler_v2_schedulers__schedulerId__shifts_get
+      security:
+      - APIKeyHeader: []
+      - OAuth2:
+        - schedule.read
+      parameters:
+      - name: schedulerId
+        in: path
+        required: true
+        schema:
+          type: integer
+          description: The unique identifier of the schedule
+          title: Schedulerid
+        description: The unique identifier of the schedule
+      - name: startTime
+        in: query
+        required: true
+        schema:
+          type: integer
+          description: The start time to filter by in Unix format (in seconds)
+          title: Starttime
+        description: The start time to filter by in Unix format (in seconds)
+      - name: endTime
+        in: query
+        required: true
+        schema:
+          type: integer
+          description: The end time to filter by in Unix format (in seconds)
+          title: Endtime
+        description: The end time to filter by in Unix format (in seconds)
+      - name: isOpenShift
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          description: Filter shifts that are open shifts
+          title: Isopenshift
+        description: Filter shifts that are open shifts
+      - name: isPublished
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          description: Filter shifts that are published
+          title: Ispublished
+        description: Filter shifts that are published
+      - name: isRequireAdminApproval
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          description: Filter shifts that require admin approval
+          title: Isrequireadminapproval
+        description: Filter shifts that require admin approval
+      - name: jobId
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: array
+            items:
+              type: string
+          - type: 'null'
+          description: List of job IDs
+          title: Jobid
+        description: List of job IDs
+      - name: assignedUserIds
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: array
+            items:
+              type: integer
+              minimum: 1
+              description: Integer with minimum value of 1
+          - type: 'null'
+          description: List of user IDs
+          title: Assigneduserids
+        description: List of user IDs
+      - name: shiftId
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: array
+            items:
+              type: string
+          - type: 'null'
+          description: List of shift IDs
+          title: Shiftid
+        description: List of shift IDs
+      - name: title
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          description: Title of the shift
+          title: Title
+        description: Title of the shift
+      - name: sort
+        in: query
+        required: false
+        schema:
+          $ref: '#/components/schemas/ShiftsSortKeysExternal'
+          description: Sort key
+          default: created_at
+        description: Sort key
+      - name: order
+        in: query
+        required: false
+        schema:
+          $ref: '#/components/schemas/SortOrder'
+          description: Sort order, set only if sort key is set
+          default: asc
+        description: Sort order, set only if sort key is set
+      - name: limit
+        in: query
+        required: false
+        schema:
+          type: integer
+          maximum: 500
+          minimum: 1
+          description: The maximum number of results to display per page
+          default: 10
+          title: Limit
+        description: The maximum number of results to display per page
+      - name: offset
+        in: query
+        required: false
+        schema:
+          type: integer
+          minimum: 0
+          description: The resource offset of the last successfully read resource will be returned as the paging.offset JSON property of a paginated response containing more results
+          default: 0
+          title: Offset
+        description: The resource offset of the last successfully read resource will be returned as the paging.offset JSON property of a paginated response containing more results
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedBaseResponseV2_ShiftBulkResponse_'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    post:
+      tags:
+      - Schedule:v2:Schedulers:Schedule:Shifts (V2):Shifts
+      summary: Create shifts
+      description: Create single or multiple shifts under a specific schedule
+      operationId: create_shifts_scheduler_v2_schedulers__schedulerId__shifts_post
+      security:
+      - APIKeyHeader: []
+      - OAuth2:
+        - schedule.write
+      parameters:
+      - name: schedulerId
+        in: path
+        required: true
+        schema:
+          type: integer
+          description: The unique identifier of the schedule
+          title: Schedulerid
+        description: The unique identifier of the schedule
+      - name: notifyUsers
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          description: Indicates whether to send a notification to the users assigned to the shifts. This applies only to shifts that are published.
+          default: true
+          title: Notifyusers
+        description: Indicates whether to send a notification to the users assigned to the shifts. This applies only to shifts that are published.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/ShiftCreateRequest'
+              max_items: 500
+              title: Shifts
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIResponseV2_ShiftBulkResponse_'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    delete:
+      tags:
+      - Schedule:v2:Schedulers:Schedule:Shifts (V2):Shifts
+      summary: Delete shifts
+      description: Delete single or multiple shifts in a specified schedule
+      operationId: delete_shifts_by_ids_scheduler_v2_schedulers__schedulerId__shifts_delete
+      security:
+      - APIKeyHeader: []
+      - OAuth2:
+        - schedule.delete
+      parameters:
+      - name: schedulerId
+        in: path
+        required: true
+        schema:
+          type: integer
+          description: The unique identifier of the schedule
+          title: Schedulerid
+        description: The unique identifier of the schedule
+      - name: notifyUsers
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          description: Indicates whether to send a notification to the users assigned to the shifts. This applies only to shifts that are published.
+          default: true
+          title: Notifyusers
+        description: Indicates whether to send a notification to the users assigned to the shifts. This applies only to shifts that are published.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ShiftBulkDeleteRequest'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIResponseV2_ShiftBulkDeleteResponse_'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    put:
+      tags:
+      - Schedule:v2:Schedulers:Schedule:Shifts (V2):Shifts
+      summary: Update shifts
+      description: Update single or multiple shifts under a specific schedule
+      operationId: update_shifts_scheduler_v2_schedulers__schedulerId__shifts_put
+      security:
+      - APIKeyHeader: []
+      - OAuth2:
+        - schedule.write
+      parameters:
+      - name: schedulerId
+        in: path
+        required: true
+        schema:
+          type: integer
+          description: The unique identifier of the schedule
+          title: Schedulerid
+        description: The unique identifier of the schedule
+      - name: notifyUsers
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          description: Indicates whether to send a notification to the users assigned to the shifts. This applies only to shifts that are published.
+          default: true
+          title: Notifyusers
+        description: Indicates whether to send a notification to the users assigned to the shifts. This applies only to shifts that are published.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/ShiftUpdateRequest'
+              title: Shifts
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIResponseV2_ShiftUpdateBulkResponse_'
+        '400':
+          description: Invalid shift update request. For targeted V2 Vision base/group edits, assignedUserIds must be provided when isEditForAllUsers is explicitly false.
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /scheduler/v2/schedulers/{schedulerId}/shifts/{shiftId}:
+    get:
+      tags:
+      - Schedule:v2:Schedulers:Schedule:Shifts (V2):Shifts
+      summary: Get shift
+      description: Retrieve single shift information by its unique ID
+      operationId: get_shift_by_id_scheduler_v2_schedulers__schedulerId__shifts__shiftId__get
+      security:
+      - APIKeyHeader: []
+      - OAuth2:
+        - schedule.read
+      parameters:
+      - name: shiftId
+        in: path
+        required: true
+        schema:
+          type: string
+          description: The unique identifier of the shift
+          title: Shiftid
+        description: The unique identifier of the shift
+      - name: schedulerId
+        in: path
+        required: true
+        schema:
+          type: integer
+          description: The unique identifier of the schedule
+          title: Schedulerid
+        description: The unique identifier of the schedule
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIResponseV2_ShiftResponse_'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    delete:
+      tags:
+      - Schedule:v2:Schedulers:Schedule:Shifts (V2):Shifts
+      summary: Delete shift
+      description: Delete a single shift by its unique ID
+      operationId: delete_shift_by_id_scheduler_v2_schedulers__schedulerId__shifts__shiftId__delete
+      security:
+      - APIKeyHeader: []
+      - OAuth2:
+        - schedule.delete
+      parameters:
+      - name: shiftId
+        in: path
+        required: true
+        schema:
+          type: string
+          description: The ID of the shift to delete
+          title: Shiftid
+        description: The ID of the shift to delete
+      - name: schedulerId
+        in: path
+        required: true
+        schema:
+          type: integer
+          description: The unique identifier of the schedule
+          title: Schedulerid
+        description: The unique identifier of the schedule
+      - name: notifyUsers
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          description: Indicates whether to send a notification to the users assigned to the shifts. This applies only to shifts that are published.
+          default: true
+          title: Notifyusers
+        description: Indicates whether to send a notification to the users assigned to the shifts. This applies only to shifts that are published.
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIResponseV2_ShiftDeleteResponse_'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+components:
+  schemas:
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    ShiftLayerInput:
+      properties:
+        id:
+          type: string
+          title: Id
+          description: The unique identifier of the shift layer
+        value:
+          $ref: '#/components/schemas/ShiftLayerInstanceInput'
+          description: The value of the shift layer
+      type: object
+      required:
+      - id
+      - value
+      title: ShiftLayerInput
+    ShiftDeleteResponse:
+      properties:
+        shiftId:
+          type: string
+          title: Shiftid
+          description: The ID of the deleted shift
+      type: object
+      required:
+      - shiftId
+      title: ShiftDeleteResponse
+    ShiftUpdateRequest:
+      properties:
+        shiftId:
+          type: string
+          title: Shiftid
+          description: The unique identifier of the shift
+        startTime:
+          anyOf:
+          - type: integer
+            minimum: 1.0
+            description: Integer with minimum value of 1
+          - type: 'null'
+          title: Starttime
+          description: The start time of the shift in Unix format (in seconds)
+        endTime:
+          anyOf:
+          - type: integer
+            minimum: 1.0
+            description: Integer with minimum value of 1
+          - type: 'null'
+          title: Endtime
+          description: The end time of the shift in Unix format (in seconds)
+        isOpenShift:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          title: Isopenshift
+          description: Indicates whether the shift is an open shift. Creates only with 1 open spot
+        timezone:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Timezone
+          description: The timezone in Tz format (e.g. America/New_York)
+        title:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Title
+          description: The title of the shift
+        isPublished:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          title: Ispublished
+          description: Indicates whether the shift is published
+        jobId:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Jobid
+          description: The ID of the associated job
+        locationData:
+          anyOf:
+          - $ref: '#/components/schemas/LocationDataAPI'
+          - type: 'null'
+          description: The location data for the shift
+        isRequireAdminApproval:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          title: Isrequireadminapproval
+          description: Indicates whether admin approval is required for the shift. Can only be set if the shift is an open shift
+        assignedUserIds:
+          anyOf:
+          - items:
+              type: integer
+              minimum: 1.0
+              description: Integer with minimum value of 1
+            type: array
+          - type: 'null'
+          title: Assigneduserids
+          description: The list of assigned user IDs for the shift. Required for V2 Vision targeted base/group edits when isEditForAllUsers is explicitly false. When vision is enabled, multiple user IDs can be specified. Otherwise, only one user ID can be specified.
+        notes:
+          anyOf:
+          - items:
+              $ref: '#/components/schemas/HTMLNoteData'
+            type: array
+          - type: 'null'
+          title: Notes
+          description: Additional notes for the shift
+        breaks:
+          anyOf:
+          - items:
+              $ref: '#/components/schemas/ShiftUpdateBreakDataApi'
+            type: array
+          - type: 'null'
+          title: Breaks
+          description: The list of breaks for the shift
+        isEditForAllUsers:
+          type: boolean
+          title: Iseditforallusers
+          description: Indicates whether the update should be applied to all users assigned to the shift
+          default: false
+        color:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Color
+          description: 'The color associated with the shift. Should be one of the following colors: [''#4B7AC5'', ''#801A1A'', ''#AE2121'', ''#DC7A7A'', ''#B0712E'', ''#D4985A'', ''#E4B37F'', ''#AE8E2D'', ''#CBA73A'', ''#D9B443'', ''#487037'', ''#6F9B5C'', ''#91B282'', ''#365C64'', ''#5687B3'', ''#7C9BA2'', ''#3968BB'', ''#85A6DA'', ''#225A8C'', ''#548CBE'', ''#81A8CC'', ''#4E3F75'', ''#604E8E'', ''#8679AA'', ''#983D73'', ''#A43778'', ''#D178AD'', ''#6B2E4C'', ''#925071'', ''#B57D9A'', ''#3a3a3a'', ''#616161'', ''#969696'']'
+        openSpots:
+          anyOf:
+          - type: integer
+            minimum: 0.0
+            description: Integer with minimum value of 0
+          - type: 'null'
+          title: Openspots
+          description: The number of open spots for the shift. Can only be set for open shifts.
+        customFields:
+          anyOf:
+          - items:
+              $ref: '#/components/schemas/BaseCustomFieldV2'
+            type: array
+          - type: 'null'
+          title: Customfields
+          description: Custom field values for the shift
+      type: object
+      required:
+      - shiftId
+      title: ShiftUpdateRequest
+    ShiftLayerOutput:
+      properties:
+        id:
+          type: string
+          title: Id
+          description: The unique identifier of the shift layer
+        title:
+          type: string
+          title: Title
+          description: The name of the shift layer
+        value:
+          $ref: '#/components/schemas/ShiftLayerInstanceOutput'
+          description: The value of the shift layer
+      type: object
+      required:
+      - id
+      - title
+      - value
+      title: ShiftLayerOutput
+    ShiftBulkDeleteResponse:
+      properties:
+        shiftsIds:
+          items:
+            type: string
+          type: array
+          title: Shiftsids
+          description: The IDs of the deleted shifts
+      type: object
+      required:
+      - shiftsIds
+      title: ShiftBulkDeleteResponse
+    StatusDataCreate:
+      properties:
+        note:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Note
+          description: The note of the status
+        gps:
+          anyOf:
+          - $ref: '#/components/schemas/GpsDataV2'
+          - type: 'null'
+          description: The GPS data of the status
+        shouldOverridePreviousStatuses:
+          type: boolean
+          title: Shouldoverridepreviousstatuses
+          description: Indicates whether to override previous statuses
+          default: true
+      type: object
+      title: StatusDataCreate
+    ShiftDetailsInput:
+      properties:
+        shiftLayers:
+          items:
+            $ref: '#/components/schemas/ShiftLayerInput'
+          type: array
+          title: Shiftlayers
+          description: The various layers of information associated with the shift
+        shiftSource:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Shiftsource
+          description: The source of the shift
+      type: object
+      title: ShiftDetailsInput
+    v2__features__shiftscheduler__external_api__v1__schedulers__scheduler__shifts__models__shift_response__ShiftResponse:
+      properties:
+        id:
+          type: string
+          title: Id
+          description: The ID of the shift
+        color:
+          type: string
+          title: Color
+          description: The color of the shift
+        assignedUserIds:
+          items:
+            type: integer
+            minimum: 1.0
+            description: Integer with minimum value of 1
+          type: array
+          title: Assigneduserids
+          description: The IDs of the assigned users
+        startTime:
+          type: integer
+          minimum: 1.0
+          title: Starttime
+          description: The start time of the shift
+        endTime:
+          type: integer
+          minimum: 1.0
+          title: Endtime
+          description: The end time of the shift
+        timezone:
+          type: string
+          title: Timezone
+          description: The timezone of the shift
+        isOpenShift:
+          type: boolean
+          title: Isopenshift
+          description: Whether the shift is an open shift
+        title:
+          type: string
+          title: Title
+          description: The title of the shift
+        jobId:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Jobid
+          description: The ID of the job
+        locationData:
+          anyOf:
+          - $ref: '#/components/schemas/LocationDataAPI'
+          - type: 'null'
+          description: The location data
+        isPublished:
+          type: boolean
+          title: Ispublished
+          description: Whether the shift is published
+        isRequireAdminApproval:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          title: Isrequireadminapproval
+          description: Whether the shift requires admin approval
+        updateTime:
+          anyOf:
+          - type: integer
+            minimum: 1.0
+            description: Integer with minimum value of 1
+          - type: 'null'
+          title: Updatetime
+          description: The update time of the shift
+        creationTime:
+          anyOf:
+          - type: integer
+            minimum: 1.0
+            description: Integer with minimum value of 1
+          - type: 'null'
+          title: Creationtime
+          description: The creation time of the shift
+        createdBy:
+          anyOf:
+          - type: integer
+            minimum: 1.0
+            description: Integer with minimum value of 1
+          - type: 'null'
+          title: Createdby
+          description: The user ID of the admin who created the shift. If the shift was created via API, the user ID will be the owner of the authentication key
+        openSpots:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Openspots
+          description: The number of open spots
+        notes:
+          items:
+            anyOf:
+            - $ref: '#/components/schemas/HTMLNoteDataOut'
+            - $ref: '#/components/schemas/AlbumNoteDataOut'
+            - $ref: '#/components/schemas/FileNoteDataOut'
+          type: array
+          title: Notes
+          description: The notes of the shift
+        statuses:
+          items:
+            $ref: '#/components/schemas/StatusData'
+          type: array
+          title: Statuses
+          description: The statuses of the shift
+        breaks:
+          items:
+            $ref: '#/components/schemas/ShiftBreakDataApi'
+          type: array
+          title: Breaks
+          description: The breaks of the shift
+        shiftDetails:
+          $ref: '#/components/schemas/ShiftDetailsOutput'
+          description: The additional details on the shift, if applicable
+        customFields:
+          items:
+            $ref: '#/components/schemas/CustomFieldResponseV2'
+          type: array
+          title: Customfields
+          description: The shift's custom fields
+      type: object
+      required:
+      - id
+      - color
+      - startTime
+      - endTime
+      - timezone
+      - isOpenShift
+      - title
+      - isPublished
+      - shiftDetails
+      title: ShiftResponse
+    ShiftCreateRequest:
+      properties:
+        startTime:
+          type: integer
+          minimum: 1.0
+          title: Starttime
+          description: The start time of the shift in Unix format (in seconds)
+        endTime:
+          type: integer
+          minimum: 1.0
+          title: Endtime
+          description: The end time of the shift in Unix format (in seconds)
+        isOpenShift:
+          type: boolean
+          title: Isopenshift
+          description: Indicates whether the shift is an open shift. Creates only with 1 open spot
+          default: false
+        openSpots:
+          anyOf:
+          - type: integer
+            minimum: 0.0
+            description: Integer with minimum value of 0
+          - type: 'null'
+          title: Openspots
+          description: The number of open spots for the shift. Can only be set for open shifts.
+        timezone:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Timezone
+          description: The timezone of the shift in Tz format (e.g. America/New_York). If not specified, it uses the timezone configured in the app settings
+        title:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Title
+          description: The title of the shift, If this field remains empty, the jobId field must be specified.
+        isPublished:
+          type: boolean
+          title: Ispublished
+          description: Indicates whether the shift is published
+          default: false
+        jobId:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Jobid
+          description: The ID of the associated job
+        locationData:
+          anyOf:
+          - $ref: '#/components/schemas/LocationDataAPI'
+          - type: 'null'
+          description: The location data for the shift
+        isRequireAdminApproval:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          title: Isrequireadminapproval
+          description: Indicates whether admin approval is required for claiming the shift. Can only be set if the shift is an open shift
+        assignedUserIds:
+          items:
+            type: integer
+            minimum: 1.0
+            description: Integer with minimum value of 1
+          type: array
+          title: Assigneduserids
+          description: The list of assigned user IDs for the shift. When vision is enabled, multiple user IDs can be specified. Otherwise, only one user ID can be specified. If the shift is open, this list should remain empty.
+        notes:
+          items:
+            $ref: '#/components/schemas/HTMLNoteData'
+          type: array
+          title: Notes
+          description: Additional notes for the shift
+        statuses:
+          items:
+            $ref: '#/components/schemas/StatusDataCreate'
+          type: array
+          title: Statuses
+          description: The list of statuses associated with the shift
+        breaks:
+          items:
+            $ref: '#/components/schemas/ShiftCreateBreakDataApi'
+          type: array
+          title: Breaks
+          description: A list of breaks to create for the shift
+        color:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Color
+          description: 'The color associated with the shift, defaults to the color of the job linked to the shift. If a specific color is provided, it will override the default job color. Defaults to #4B7AC5. Should be one of the following colors: [''#4B7AC5'', ''#801A1A'', ''#AE2121'', ''#DC7A7A'', ''#B0712E'', ''#D4985A'', ''#E4B37F'', ''#AE8E2D'', ''#CBA73A'', ''#D9B443'', ''#487037'', ''#6F9B5C'', ''#91B282'', ''#365C64'', ''#5687B3'', ''#7C9BA2'', ''#3968BB'', ''#85A6DA'', ''#225A8C'', ''#548CBE'', ''#81A8CC'', ''#4E3F75'', ''#604E8E'', ''#8679AA'', ''#983D73'', ''#A43778'', ''#D178AD'', ''#6B2E4C'', ''#925071'', ''#B57D9A'', ''#3a3a3a'', ''#616161'', ''#969696'']'
+        shiftDetails:
+          anyOf:
+          - $ref: '#/components/schemas/ShiftDetailsInput'
+          - type: 'null'
+          description: The additional details on the shift, if applicable.
+        customFields:
+          items:
+            $ref: '#/components/schemas/BaseCustomFieldV2'
+          type: array
+          title: Customfields
+          description: Custom field values for the shift
+      type: object
+      required:
+      - startTime
+      - endTime
+      title: ShiftCreateRequest
+    HTMLNoteDataOut:
+      properties:
+        type:
+          type: string
+          title: Type
+          description: HTML note type
+          default: html
+        html:
+          type: string
+          title: Html
+          description: The HTML content of the note
+      type: object
+      required:
+      - html
+      title: HTMLNoteDataOut
+    APIResponseV2_ShiftUpdateBulkResponse_:
+      properties:
+        requestId:
+          type: string
+          title: Requestid
+        data:
+          $ref: '#/components/schemas/ShiftUpdateBulkResponse'
+      type: object
+      required:
+      - data
+      title: APIResponseV2[ShiftUpdateBulkResponse]
+    APIResponseV2_ShiftBulkDeleteResponse_:
+      properties:
+        requestId:
+          type: string
+          title: Requestid
+        data:
+          $ref: '#/components/schemas/ShiftBulkDeleteResponse'
+      type: object
+      required:
+      - data
+      title: APIResponseV2[ShiftBulkDeleteResponse]
+    ShiftLayerInstanceOutput:
+      properties:
+        id:
+          type: string
+          title: Id
+          description: The unique identifier of the value
+        displayName:
+          type: string
+          title: Displayname
+          description: The name of the value
+      type: object
+      required:
+      - id
+      - displayName
+      title: ShiftLayerInstanceOutput
+    ShiftBulkDeleteRequest:
+      properties:
+        shiftsIds:
+          items:
+            type: string
+          type: array
+          maxItems: 20
+          title: Shiftsids
+          description: The unique identifiers of the shifts to delete
+      type: object
+      required:
+      - shiftsIds
+      title: ShiftBulkDeleteRequest
+    PaginatedBaseResponseV2_ShiftBulkResponse_:
+      properties:
+        requestId:
+          type: string
+          title: Requestid
+        data:
+          $ref: '#/components/schemas/ShiftBulkResponse'
+        paging:
+          $ref: '#/components/schemas/PagingResponseModelV2'
+      type: object
+      required:
+      - data
+      - paging
+      title: PaginatedBaseResponseV2[ShiftBulkResponse]
+    ShiftCreateBreakDataApi:
+      properties:
+        name:
+          type: string
+          title: Name
+          description: The name of the break.
+        type:
+          $ref: '#/components/schemas/ShiftBreakTypeAPI'
+          description: The type of the break (paid/unpaid)
+        startTime:
+          anyOf:
+          - type: integer
+            minimum: 0.0
+            description: Integer with minimum value of 0
+          - type: 'null'
+          title: Starttime
+          description: The time the break starts, counted in minutes from the beginning of the day
+        duration:
+          type: integer
+          minimum: 0.0
+          title: Duration
+          description: The time the break lasts in minutes
+      type: object
+      required:
+      - name
+      - type
+      - duration
+      title: ShiftCreateBreakDataApi
+    ShiftUpdateBreakDataApi:
+      properties:
+        id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Id
+          description: The unique identifier of the break. If this field is left empty, a new break will be created
+        name:
+          type: string
+          title: Name
+          description: The name of the break.
+        type:
+          $ref: '#/components/schemas/ShiftBreakTypeAPI'
+          description: The type of the break (paid/unpaid)
+        startTime:
+          anyOf:
+          - type: integer
+            minimum: 0.0
+            description: Integer with minimum value of 0
+          - type: 'null'
+          title: Starttime
+          description: The time the break starts, counted in minutes from the beginning of the day
+        duration:
+          type: integer
+          minimum: 0.0
+          title: Duration
+          description: The time the break lasts in minutes
+      type: object
+      required:
+      - name
+      - type
+      - duration
+      title: ShiftUpdateBreakDataApi
+    ShiftLayerInstanceInput:
+      properties:
+        id:
+          type: string
+          title: Id
+          description: The unique identifier of the value
+      type: object
+      required:
+      - id
+      title: ShiftLayerInstanceInput
+    AlbumNoteDataOut:
+      properties:
+        type:
+          type: string
+          title: Type
+          description: Album note type
+          default: album
+        album:
+          items:
+            $ref: '#/components/schemas/ImageNoteDataOut'
+          type: array
+          title: Album
+          description: The list of images in the album
+      type: object
+      required:
+      - album
+      title: AlbumNoteDataOut
+    StatusTypesAPI:
+      type: string
+      enum:
+      - accepted
+      - checked_in
+      - completed
+      - rejected
+      - claimed
+      - claim_requested
+      - unclaimed
+      - unclaim_requested
+      - cancel_claim_request
+      - reset
+      title: StatusTypesAPI
+    APIResponseV2_ShiftDeleteResponse_:
+      properties:
+        requestId:
+          type: string
+          title: Requestid
+        data:
+          $ref: '#/components/schemas/ShiftDeleteResponse'
+      type: object
+      required:
+      - data
+      title: APIResponseV2[ShiftDeleteResponse]
+    GpsDataV2:
+      properties:
+        address:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Address
+          description: The address associated with the GPS data.
+        longitude:
+          anyOf:
+          - type: number
+            maximum: 180.0
+            minimum: -180.0
+            description: The longitude coordinate.
+          - type: 'null'
+          title: Longitude
+          description: The longitude coordinate.
+        latitude:
+          anyOf:
+          - type: number
+            maximum: 90.0
+            minimum: -90.0
+            description: The latitude coordinate.
+          - type: 'null'
+          title: Latitude
+          description: The latitude coordinate.
+      type: object
+      title: GpsDataV2
+    BaseCustomFieldV2:
+      properties:
+        customFieldId:
+          type: integer
+          minimum: 1.0
+          title: Customfieldid
+          description: The custom field unique id
+        value:
+          title: Value
+          description: 'The value of the custom field. Our real-time API documentation experience does not support custom fields of the dropdown type.To update dropdown fields value(s), pass an array of objects with the IDs of the selected dropdown values (e.g., [{id: 1}, {id: 2}]).'
+      type: object
+      required:
+      - customFieldId
+      - value
+      title: BaseCustomFieldV2
+    UserCustomFields:
+      type: string
+      enum:
+      - email
+      - date
+      - phone
+      - number
+      - str
+      - dropdown
+      - file
+      - directManager
+      - birthday
+      - link
+      - location
+      title: UserCustomFields
+    PagingResponseModelV2:
+      properties:
+        offset:
+          type: integer
+          minimum: 0.0
+          title: Offset
+          description: The resource offset of the last successfully read resource will be returned as the paging.offset JSON property of a paginated response containing more results
+        total:
+          anyOf:
+          - type: integer
+            minimum: 0.0
+          - type: 'null'
+          title: Total
+          description: Total number of resources matching the request, ignoring pagination. Use this to retrieve the full count without paginating through every page. Only populated by endpoints that compute it.
+      type: object
+      required:
+      - offset
+      title: PagingResponseModelV2
+    APIResponseV2_ShiftResponse_:
+      properties:
+        requestId:
+          type: string
+          title: Requestid
+        data:
+          $ref: '#/components/schemas/v2__features__shiftscheduler__external_api__v1__schedulers__scheduler__shifts__models__shift_response__ShiftResponse'
+      type: object
+      required:
+      - data
+      title: APIResponseV2[ShiftResponse]
+    StatusData:
+      properties:
+        statusId:
+          type: string
+          title: Statusid
+          description: The ID of the status
+        status:
+          $ref: '#/components/schemas/StatusTypesAPI'
+          description: 'The status of the shift, valid values:
+
+            accepted, checked_in, completed, rejected, claimed, claim_requested, unclaimed, unclaim_requested, cancel_claim_request, reset'
+        note:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Note
+          description: The note of the status
+        attachments:
+          anyOf:
+          - items:
+              type: string
+            type: array
+          - type: 'null'
+          title: Attachments
+          description: The attachments of the status
+        creationTime:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Creationtime
+          description: The creation time of the status
+        updateTime:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Updatetime
+          description: The update time of the status
+        creatingUserId:
+          type: integer
+          title: Creatinguserid
+          description: The ID of the user who created the status
+        modifyingUserId:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Modifyinguserid
+          description: The ID of the user who modified the status
+        gps:
+          anyOf:
+          - $ref: '#/components/schemas/GpsDataV2'
+          - type: 'null'
+          description: The GPS data of the status
+        assignedUserId:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Assigneduserid
+          description: The ID of the user assigned to the status
+      type: object
+      required:
+      - statusId
+      - status
+      - creatingUserId
+      title: StatusData
+    ImageNoteDataOut:
+      properties:
+        url:
+          type: string
+          title: Url
+          description: The url of the file to upload
+      type: object
+      required:
+      - url
+      title: ImageNoteDataOut
+    CustomFieldResponseV2:
+      properties:
+        customFieldId:
+          type: integer
+          minimum: 1.0
+          title: Customfieldid
+          description: The custom field unique id
+        value:
+          title: Value
+          description: The custom field value
+        type:
+          $ref: '#/components/schemas/UserCustomFields'
+          description: The custom field type
+        name:
+          type: string
+          title: Name
+          description: The custom field name
+      type: object
+      required:
+      - customFieldId
+      - value
+      - type
+      - name
+      title: CustomFieldResponseV2
+    ShiftBreakTypeAPI:
+      type: string
+      enum:
+      - paid
+      - unpaid
+      title: ShiftBreakTypeAPI
+    APIResponseV2_ShiftBulkResponse_:
+      properties:
+        requestId:
+          type: string
+          title: Requestid
+        data:
+          $ref: '#/components/schemas/ShiftBulkResponse'
+      type: object
+      required:
+      - data
+      title: APIResponseV2[ShiftBulkResponse]
+    SortOrder:
+      type: string
+      enum:
+      - asc
+      - desc
+      title: SortOrder
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    ShiftBulkResponse:
+      properties:
+        shifts:
+          items:
+            $ref: '#/components/schemas/v2__features__shiftscheduler__external_api__v1__schedulers__scheduler__shifts__models__shift_response__ShiftResponse'
+          type: array
+          title: Shifts
+          description: The shifts
+      type: object
+      required:
+      - shifts
+      title: ShiftBulkResponse
+    ShiftUpdateBulkResponse:
+      properties:
+        shifts:
+          items:
+            $ref: '#/components/schemas/v2__features__shiftscheduler__external_api__v1__schedulers__scheduler__shifts__models__shift_response__ShiftResponse'
+          type: array
+          title: Shifts
+          description: The shifts
+        deletedShiftIds:
+          items:
+            type: string
+          type: array
+          title: Deletedshiftids
+          description: The IDs of the shifts that were deleted during the update operation
+        createdShifts:
+          items:
+            $ref: '#/components/schemas/v2__features__shiftscheduler__external_api__v1__schedulers__scheduler__shifts__models__shift_response__ShiftResponse'
+          type: array
+          title: Createdshifts
+          description: The shifts that were created during the update operation
+      type: object
+      required:
+      - shifts
+      title: ShiftUpdateBulkResponse
+    LocationDataAPI:
+      properties:
+        isReferencedToJob:
+          type: boolean
+          title: Isreferencedtojob
+          description: Indicates whether the location is referenced to a job. can only be true if job id isn't empty
+        gps:
+          anyOf:
+          - $ref: '#/components/schemas/GpsDataV2'
+          - type: 'null'
+          description: GPS data associated with the location.
+      type: object
+      required:
+      - isReferencedToJob
+      title: LocationDataAPI
+    ShiftBreakDataApi:
+      properties:
+        id:
+          type: string
+          title: Id
+          description: The id of the break
+        name:
+          type: string
+          title: Name
+          description: The name of the break.
+        type:
+          $ref: '#/components/schemas/ShiftBreakTypeAPI'
+          description: The type of the break (paid/unpaid)
+        startTime:
+          anyOf:
+          - type: integer
+            minimum: 0.0
+            description: Integer with minimum value of 0
+          - type: 'null'
+          title: Starttime
+          description: The time the break starts, counted in minutes from the beginning of the day
+        duration:
+          type: integer
+          minimum: 0.0
+          title: Duration
+          description: The time the break lasts in minutes
+      type: object
+      required:
+      - id
+      - name
+      - type
+      - duration
+      title: ShiftBreakDataApi
+    ShiftDetailsOutput:
+      properties:
+        shiftLayers:
+          items:
+            $ref: '#/components/schemas/ShiftLayerOutput'
+          type: array
+          title: Shiftlayers
+          description: The various layers of information associated with the shift
+        shiftSource:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Shiftsource
+          description: The source of the shift
+      type: object
+      title: ShiftDetailsOutput
+    HTMLNoteData:
+      properties:
+        html:
+          type: string
+          title: Html
+          description: The HTML content of the note
+      type: object
+      required:
+      - html
+      title: HTMLNoteData
+    FileNoteDataOut:
+      properties:
+        url:
+          type: string
+          title: Url
+          description: The url of the file to upload
+        type:
+          type: string
+          title: Type
+          description: URL note type
+          default: file
+        name:
+          type: string
+          title: Name
+          description: The name of the file
+      type: object
+      required:
+      - url
+      - name
+      title: FileNoteDataOut
+    ShiftsSortKeysExternal:
+      type: string
+      enum:
+      - created_at
+      - updated_at
+      title: ShiftsSortKeysExternal
+  securitySchemes:
+    APIKeyHeader:
+      type: apiKey
+      description: The Api key of the company given by Connecteam
+      in: header
+      name: X-API-KEY
+    OAuth2:
+      type: oauth2
+      description: OAuth2 Bearer token
+      flows:
+        clientCredentials:
+          scopes:
+            account_information.read: account information - read
+            account_information.write: account information - write
+            account_information.delete: account information - delete
+            company_policies.read: company policies - read
+            company_policies.write: company policies - write
+            company_policies.delete: company policies - delete
+            company_insights.read: company insights - read
+            users.read: users - read
+            users.write: users - write
+            users.delete: users - delete
+            assets.read: assets - read
+            assets.write: assets - write
+            assets.delete: assets - delete
+            sales_data.read: sales data - read
+            sales_data.write: sales data - write
+            sales_data.delete: sales data - delete
+            attachments.read: attachments - read
+            attachments.write: attachments - write
+            attachments.delete: attachments - delete
+            quick_tasks.read: quick tasks - read
+            quick_tasks.write: quick tasks - write
+            quick_tasks.delete: quick tasks - delete
+            publishers.read: publishers - read
+            publishers.write: publishers - write
+            publishers.delete: publishers - delete
+            chat.read: chat - read
+            chat.write: chat - write
+            chat.delete: chat - delete
+            jobs.read: jobs - read
+            jobs.write: jobs - write
+            jobs.delete: jobs - delete
+            schedule.read: schedule - read
+            schedule.write: schedule - write
+            schedule.delete: schedule - delete
+            daily_note.read: daily note - read
+            daily_note.write: daily note - write
+            daily_note.delete: daily note - delete
+            time_clock.read: time clock - read
+            time_clock.write: time clock - write
+            time_clock.delete: time clock - delete
+            nfc.read: nfc - read
+            nfc.write: nfc - write
+            nfc.delete: nfc - delete
+            time_off.read: time off - read
+            time_off.write: time off - write
+            time_off.delete: time off - delete
+            pay_rates.read: pay rates - read
+            pay_rates.write: pay rates - write
+            pay_rates.delete: pay rates - delete
+            forms.read: forms - read
+            forms.write: forms - write
+            forms.delete: forms - delete
+            onboarding.read: onboarding - read
+            onboarding.write: onboarding - write
+            onboarding.delete: onboarding - delete
+            settings.read: settings - read
+            settings.write: settings - write
+            settings.delete: settings - delete
+            company_checklist.read: company checklist - read
+            company_checklist.write: company checklist - write
+            recognitions.read: recognitions - read
+            celebrations.read: celebrations - read
+          tokenUrl: /oauth/v1/token
+    HTTPBasic:
+      type: http
+      description: Use client_id as Username and client_secret as Password
+      scheme: basic

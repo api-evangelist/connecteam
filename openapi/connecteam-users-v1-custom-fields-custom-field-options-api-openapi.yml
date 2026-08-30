@@ -1,0 +1,443 @@
+openapi: 3.2.0
+info:
+  title: Connecteam API documentation Users:v1:Custom Fields:Custom Field options API
+  version: v1
+servers:
+- url: https://api.connecteam.com/
+tags:
+- name: Users:v1:Custom Fields:Custom Field options
+paths:
+  /users/v1/custom-fields/{customFieldId}/options:
+    get:
+      tags:
+      - Users:v1:Custom Fields:Custom Field options
+      summary: Get custom field options
+      description: Retrieve a list of all dropdown value options under a specified custom field
+      operationId: get_custom_field_options_users_v1_custom_fields__customFieldId__options_get
+      security:
+      - APIKeyHeader: []
+      - OAuth2:
+        - users.read
+      parameters:
+      - name: customFieldId
+        in: path
+        required: true
+        schema:
+          title: Customfieldid
+          description: The unique identifier of the custom field
+          type: integer
+        description: The unique identifier of the custom field
+      - name: limit
+        in: query
+        required: false
+        schema:
+          title: Limit
+          description: The maximum number of results to display per page
+          default: 10
+          minimum: 1
+          maximum: 100
+          type: integer
+        description: The maximum number of results to display per page
+      - name: offset
+        in: query
+        required: false
+        schema:
+          title: Offset
+          description: The resource offset of the last successfully read resource will be returned as the paging.offset JSON property of a paginated response containing more results
+          default: 0
+          minimum: 0
+          type: integer
+        description: The resource offset of the last successfully read resource will be returned as the paging.offset JSON property of a paginated response containing more results
+      - name: isDisabled
+        in: query
+        required: false
+        schema:
+          title: Isdisabled
+          description: Parameter specifying the if to filter only for disabled options.
+          type: boolean
+        description: Parameter specifying the if to filter only for disabled options.
+      - name: isDeleted
+        in: query
+        required: false
+        schema:
+          title: Isdeleted
+          description: Parameter specifying the if to filter only for deleted options.
+          default: false
+          type: boolean
+        description: Parameter specifying the if to filter only for deleted options.
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedBaseResponse_CustomFieldOptionsResponse_'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    post:
+      tags:
+      - Users:v1:Custom Fields:Custom Field options
+      summary: Create custom field option
+      description: Add new option for a specified custom field.The option will be added to the existing ones and will not overwrite them.Currently supports dropdown custom fields options.
+      operationId: create_custom_field_option_users_v1_custom_fields__customFieldId__options_post
+      security:
+      - APIKeyHeader: []
+      - OAuth2:
+        - users.write
+      parameters:
+      - name: customFieldId
+        in: path
+        required: true
+        schema:
+          title: Customfieldid
+          description: The unique identifier of the custom field
+          type: integer
+        description: The unique identifier of the custom field
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              title: Option Request
+              allOf:
+              - $ref: '#/components/schemas/CreateDropdownCustomFieldOption'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIResponse_DropdownCustomFieldOptionResponse_'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /users/v1/custom-fields/{customFieldId}/options/{optionId}:
+    put:
+      tags:
+      - Users:v1:Custom Fields:Custom Field options
+      summary: Update custom field option
+      description: Update the value for an option under a specified custom field
+      operationId: edit_custom_field_option_users_v1_custom_fields__customFieldId__options__optionId__put
+      security:
+      - APIKeyHeader: []
+      - OAuth2:
+        - users.write
+      parameters:
+      - name: optionId
+        in: path
+        required: true
+        schema:
+          title: Optionid
+          description: The unique identifier of the option to update
+          type: integer
+        description: The unique identifier of the option to update
+      - name: customFieldId
+        in: path
+        required: true
+        schema:
+          title: Customfieldid
+          description: The unique identifier of the custom field
+          type: integer
+        description: The unique identifier of the custom field
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              title: Option Request
+              allOf:
+              - $ref: '#/components/schemas/EditSingleDropdownCustomFieldOption'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIResponse_DropdownCustomFieldOptionResponse_'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    delete:
+      tags:
+      - Users:v1:Custom Fields:Custom Field options
+      summary: Delete custom field option
+      description: Delete the value for an option under a specified custom field
+      operationId: delete_custom_field_option_users_v1_custom_fields__customFieldId__options__optionId__delete
+      security:
+      - APIKeyHeader: []
+      - OAuth2:
+        - users.delete
+      parameters:
+      - name: optionId
+        in: path
+        required: true
+        schema:
+          title: Optionid
+          description: The unique identifier of the option to delete
+          type: integer
+        description: The unique identifier of the option to delete
+      - name: customFieldId
+        in: path
+        required: true
+        schema:
+          title: Customfieldid
+          description: The unique identifier of the custom field
+          type: integer
+        description: The unique identifier of the custom field
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIResponse_BaseResponse_'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+components:
+  schemas:
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    CreateDropdownCustomFieldOption:
+      properties:
+        value:
+          type: string
+          title: Value
+          description: The value to be added as the option
+        isDisabled:
+          type: boolean
+          title: Isdisabled
+          description: Indicates if this option is disabled
+          default: false
+      type: object
+      required:
+      - value
+      title: CreateDropdownCustomFieldOption
+    EditSingleDropdownCustomFieldOption:
+      properties:
+        value:
+          type: string
+          title: Value
+          description: The value to be added as the option
+        isDisabled:
+          type: boolean
+          title: Isdisabled
+          description: Indicates if this option is disabled
+          default: false
+      type: object
+      title: EditSingleDropdownCustomFieldOption
+    DropdownCustomFieldOptionResponse:
+      properties:
+        id:
+          type: integer
+          title: Id
+          description: The id of this option
+        value:
+          type: string
+          title: Value
+          description: The name of this option
+        isDisabled:
+          type: boolean
+          title: Isdisabled
+          description: Indicates if this option is disabled
+          default: false
+        isDeleted:
+          type: boolean
+          title: Isdeleted
+          description: 'Indicates if this option is deleted
+
+            (this will still be returned in case someone already chose this option so you can see the value).'
+          default: false
+      type: object
+      required:
+      - id
+      - value
+      title: DropdownCustomFieldOptionResponse
+    APIResponse_DropdownCustomFieldOptionResponse_:
+      properties:
+        requestId:
+          type: string
+          title: Requestid
+        data:
+          $ref: '#/components/schemas/DropdownCustomFieldOptionResponse'
+      type: object
+      required:
+      - data
+      title: APIResponse[DropdownCustomFieldOptionResponse]
+    APIResponse_BaseResponse_:
+      properties:
+        requestId:
+          type: string
+          title: Requestid
+        data:
+          $ref: '#/components/schemas/BaseResponse'
+      type: object
+      required:
+      - data
+      title: APIResponse[BaseResponse]
+    CustomFieldOptionsResponse:
+      properties:
+        options:
+          items:
+            $ref: '#/components/schemas/DropdownCustomFieldOptionResponse'
+          type: array
+          title: Options
+          description: The custom field options
+      type: object
+      required:
+      - options
+      title: CustomFieldOptionsResponse
+    PaginatedBaseResponse_CustomFieldOptionsResponse_:
+      properties:
+        requestId:
+          type: string
+          title: Requestid
+        data:
+          $ref: '#/components/schemas/CustomFieldOptionsResponse'
+        paging:
+          $ref: '#/components/schemas/PagingResponseModel'
+      type: object
+      required:
+      - data
+      - paging
+      title: PaginatedBaseResponse[CustomFieldOptionsResponse]
+    PagingResponseModel:
+      properties:
+        offset:
+          type: integer
+          minimum: 0.0
+          title: Offset
+          description: The resource offset of the last successfully read resource will be returned as the paging.offset JSON property of a paginated response containing more results
+        total:
+          type: integer
+          minimum: 0.0
+          title: Total
+          description: Total number of resources matching the request, ignoring pagination. Use this to retrieve the full count without paginating through every page. Only populated by endpoints that compute it.
+      type: object
+      required:
+      - offset
+      title: PagingResponseModel
+    BaseResponse:
+      properties: {}
+      type: object
+      title: BaseResponse
+  securitySchemes:
+    APIKeyHeader:
+      type: apiKey
+      description: The Api key of the company given by Connecteam
+      in: header
+      name: X-API-KEY
+    OAuth2:
+      type: oauth2
+      description: OAuth2 Bearer token
+      flows:
+        clientCredentials:
+          scopes:
+            account_information.read: account information - read
+            account_information.write: account information - write
+            account_information.delete: account information - delete
+            company_policies.read: company policies - read
+            company_policies.write: company policies - write
+            company_policies.delete: company policies - delete
+            company_insights.read: company insights - read
+            users.read: users - read
+            users.write: users - write
+            users.delete: users - delete
+            assets.read: assets - read
+            assets.write: assets - write
+            assets.delete: assets - delete
+            sales_data.read: sales data - read
+            sales_data.write: sales data - write
+            sales_data.delete: sales data - delete
+            attachments.read: attachments - read
+            attachments.write: attachments - write
+            attachments.delete: attachments - delete
+            quick_tasks.read: quick tasks - read
+            quick_tasks.write: quick tasks - write
+            quick_tasks.delete: quick tasks - delete
+            publishers.read: publishers - read
+            publishers.write: publishers - write
+            publishers.delete: publishers - delete
+            chat.read: chat - read
+            chat.write: chat - write
+            chat.delete: chat - delete
+            jobs.read: jobs - read
+            jobs.write: jobs - write
+            jobs.delete: jobs - delete
+            schedule.read: schedule - read
+            schedule.write: schedule - write
+            schedule.delete: schedule - delete
+            daily_note.read: daily note - read
+            daily_note.write: daily note - write
+            daily_note.delete: daily note - delete
+            time_clock.read: time clock - read
+            time_clock.write: time clock - write
+            time_clock.delete: time clock - delete
+            nfc.read: nfc - read
+            nfc.write: nfc - write
+            nfc.delete: nfc - delete
+            time_off.read: time off - read
+            time_off.write: time off - write
+            time_off.delete: time off - delete
+            pay_rates.read: pay rates - read
+            pay_rates.write: pay rates - write
+            pay_rates.delete: pay rates - delete
+            forms.read: forms - read
+            forms.write: forms - write
+            forms.delete: forms - delete
+            onboarding.read: onboarding - read
+            onboarding.write: onboarding - write
+            onboarding.delete: onboarding - delete
+            settings.read: settings - read
+            settings.write: settings - write
+            settings.delete: settings - delete
+            company_checklist.read: company checklist - read
+            company_checklist.write: company checklist - write
+            recognitions.read: recognitions - read
+            celebrations.read: celebrations - read
+          tokenUrl: /oauth/v1/token
+    HTTPBasic:
+      type: http
+      description: Use client_id as Username and client_secret as Password
+      scheme: basic

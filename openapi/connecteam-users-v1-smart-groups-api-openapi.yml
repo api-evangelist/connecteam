@@ -1,0 +1,533 @@
+openapi: 3.2.0
+info:
+  title: Connecteam API documentation Users:v1:Smart Groups API
+  version: v1
+servers:
+- url: https://api.connecteam.com/
+tags:
+- name: Users:v1:Smart Groups
+paths:
+  /users/v1/smart-groups:
+    get:
+      tags:
+      - Users:v1:Smart Groups
+      summary: Get smart groups
+      description: Retrieves a list of smart groups associated with the account.
+      operationId: get_smart_groups_users_v1_smart_groups_get
+      security:
+      - APIKeyHeader: []
+      - OAuth2:
+        - users.read
+      parameters:
+      - name: id
+        in: query
+        required: false
+        schema:
+          title: Id
+          description: The unique identifier of the smart group.
+          type: integer
+        description: The unique identifier of the smart group.
+      - name: name
+        in: query
+        required: false
+        schema:
+          title: Name
+          description: The name of the smart group to filter by.
+          type: string
+        description: The name of the smart group to filter by.
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIResponse_GetSmartGroupsResponse_'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    post:
+      tags:
+      - Users:v1:Smart Groups
+      summary: Create smart group
+      description: Create a new smart group under a specified segment. The smart group settings are currently based only on dropdown custom field type (support for additional field types will be added in the future). The created group is dynamic, meaning any new or existing users who meet the selected value criteria will be automatically added to the smart group.
+      operationId: create_smart_group_users_v1_smart_groups_post
+      security:
+      - APIKeyHeader: []
+      - OAuth2:
+        - users.write
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              title: Request
+              allOf:
+              - $ref: '#/components/schemas/SmartGroupCreateRequest'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIResponse_SmartGroupCreateResponse_'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /users/v1/smart-groups/{smartGroupId}:
+    put:
+      tags:
+      - Users:v1:Smart Groups
+      summary: Update smart group
+      description: Update an existing smart group by its unique identifier. Any changes to the applied filters will override the current settings and may result in changes to the users associated with the smart group.
+      operationId: update_smart_group_users_v1_smart_groups__smartGroupId__put
+      security:
+      - APIKeyHeader: []
+      - OAuth2:
+        - users.write
+      parameters:
+      - name: smartGroupId
+        in: path
+        required: true
+        schema:
+          title: Smartgroupid
+          description: The unique identifier of the smart group to update
+          type: integer
+        description: The unique identifier of the smart group to update
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              title: Request
+              allOf:
+              - $ref: '#/components/schemas/SmartGroupUpdateRequest'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIResponse_SmartGroupUpdateResponse_'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    delete:
+      tags:
+      - Users:v1:Smart Groups
+      summary: Delete smart group
+      description: Delete existing smart group by its unique identifier
+      operationId: delete_smart_group_users_v1_smart_groups__smartGroupId__delete
+      security:
+      - APIKeyHeader: []
+      - OAuth2:
+        - users.delete
+      parameters:
+      - name: smartGroupId
+        in: path
+        required: true
+        schema:
+          title: Smartgroupid
+          description: The unique identifier of the smart group to update
+          type: integer
+        description: The unique identifier of the smart group to update
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIResponse_BaseResponse_'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+components:
+  schemas:
+    SmartGroupCreateResponse:
+      properties:
+        id:
+          type: integer
+          minimum: 1.0
+          title: Id
+          description: The unique identifier of the smart group
+        name:
+          type: string
+          title: Name
+          description: The name of the smart group
+        description:
+          type: string
+          title: Description
+          description: The description of the smart group
+        groupSegmentId:
+          type: integer
+          title: Groupsegmentid
+          description: The ID of the group segment this smart group belongs to
+        numberOfUsers:
+          type: integer
+          title: Numberofusers
+          description: The total number of users in the group (excluding admins)
+        isAutomaticallyCreated:
+          type: boolean
+          title: Isautomaticallycreated
+          description: 'Whether this smart group is automatically created and system-managed: generated from a dropdown custom field that has its ''create a group per option'' setting turned on. Automatically created groups cannot be edited or deleted directly — their name and membership are owned by the field and its options. Change them by editing the source custom field instead.'
+          default: false
+        adminUserIds:
+          items:
+            type: integer
+          type: array
+          title: Adminuserids
+          description: User IDs of admins who can administer this group — every active owner plus every manager with an explicit per-cohort authorization. Populated only when the request includes the internal include_admin_user_ids flag; otherwise null.
+      type: object
+      required:
+      - id
+      - name
+      - groupSegmentId
+      - numberOfUsers
+      title: SmartGroupCreateResponse
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    APIResponse_GetSmartGroupsResponse_:
+      properties:
+        requestId:
+          type: string
+          title: Requestid
+        data:
+          $ref: '#/components/schemas/GetSmartGroupsResponse'
+      type: object
+      required:
+      - data
+      title: APIResponse[GetSmartGroupsResponse]
+    SmartGroupFilters:
+      properties:
+        operator:
+          allOf:
+          - $ref: '#/components/schemas/SmartGroupFilterOperator'
+          description: Select whether to use the 'and' or 'or' operator to determine how matching criteria are applied.
+          default: and
+        dropdownFilters:
+          items:
+            $ref: '#/components/schemas/DropdownFilter'
+          type: array
+          title: Dropdownfilters
+          description: Dropdown custom field filters
+      type: object
+      title: SmartGroupFilters
+    SmartGroupUpdateResponse:
+      properties:
+        id:
+          type: integer
+          minimum: 1.0
+          title: Id
+          description: The unique identifier of the smart group
+        name:
+          type: string
+          title: Name
+          description: The name of the smart group
+        description:
+          type: string
+          title: Description
+          description: The description of the smart group
+        groupSegmentId:
+          type: integer
+          title: Groupsegmentid
+          description: The ID of the group segment this smart group belongs to
+        numberOfUsers:
+          type: integer
+          title: Numberofusers
+          description: The total number of users in the group (excluding admins)
+        isAutomaticallyCreated:
+          type: boolean
+          title: Isautomaticallycreated
+          description: 'Whether this smart group is automatically created and system-managed: generated from a dropdown custom field that has its ''create a group per option'' setting turned on. Automatically created groups cannot be edited or deleted directly — their name and membership are owned by the field and its options. Change them by editing the source custom field instead.'
+          default: false
+        adminUserIds:
+          items:
+            type: integer
+          type: array
+          title: Adminuserids
+          description: User IDs of admins who can administer this group — every active owner plus every manager with an explicit per-cohort authorization. Populated only when the request includes the internal include_admin_user_ids flag; otherwise null.
+      type: object
+      required:
+      - id
+      - name
+      - groupSegmentId
+      - numberOfUsers
+      title: SmartGroupUpdateResponse
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    APIResponse_SmartGroupCreateResponse_:
+      properties:
+        requestId:
+          type: string
+          title: Requestid
+        data:
+          $ref: '#/components/schemas/SmartGroupCreateResponse'
+      type: object
+      required:
+      - data
+      title: APIResponse[SmartGroupCreateResponse]
+    DropdownFilter:
+      properties:
+        fieldId:
+          type: integer
+          title: Fieldid
+          description: The ID of the custom field to filter by
+        optionIds:
+          items:
+            type: integer
+          type: array
+          title: Optionids
+          description: List of dropdown option IDs to match
+      type: object
+      required:
+      - fieldId
+      - optionIds
+      title: DropdownFilter
+    SmartGroupUpdateRequest:
+      properties:
+        name:
+          type: string
+          title: Name
+          description: The name of the smart group
+        description:
+          type: string
+          title: Description
+          description: Description of the smart group
+        groupSegmentId:
+          type: integer
+          title: Groupsegmentid
+          description: The ID of the group segment this smart group belongs to
+        filters:
+          allOf:
+          - $ref: '#/components/schemas/SmartGroupFilters'
+          title: Filters
+          description: Filters to apply to the smart group
+      type: object
+      title: SmartGroupUpdateRequest
+    SmartGroup:
+      properties:
+        id:
+          type: integer
+          minimum: 1.0
+          title: Id
+          description: The unique identifier of the smart group
+        name:
+          type: string
+          title: Name
+          description: The name of the smart group
+        description:
+          type: string
+          title: Description
+          description: The description of the smart group
+        groupSegmentId:
+          type: integer
+          title: Groupsegmentid
+          description: The ID of the group segment this smart group belongs to
+        numberOfUsers:
+          type: integer
+          title: Numberofusers
+          description: The total number of users in the group (excluding admins)
+        isAutomaticallyCreated:
+          type: boolean
+          title: Isautomaticallycreated
+          description: 'Whether this smart group is automatically created and system-managed: generated from a dropdown custom field that has its ''create a group per option'' setting turned on. Automatically created groups cannot be edited or deleted directly — their name and membership are owned by the field and its options. Change them by editing the source custom field instead.'
+          default: false
+        adminUserIds:
+          items:
+            type: integer
+          type: array
+          title: Adminuserids
+          description: User IDs of admins who can administer this group — every active owner plus every manager with an explicit per-cohort authorization. Populated only when the request includes the internal include_admin_user_ids flag; otherwise null.
+      type: object
+      required:
+      - id
+      - name
+      - groupSegmentId
+      - numberOfUsers
+      title: SmartGroup
+    APIResponse_BaseResponse_:
+      properties:
+        requestId:
+          type: string
+          title: Requestid
+        data:
+          $ref: '#/components/schemas/BaseResponse'
+      type: object
+      required:
+      - data
+      title: APIResponse[BaseResponse]
+    APIResponse_SmartGroupUpdateResponse_:
+      properties:
+        requestId:
+          type: string
+          title: Requestid
+        data:
+          $ref: '#/components/schemas/SmartGroupUpdateResponse'
+      type: object
+      required:
+      - data
+      title: APIResponse[SmartGroupUpdateResponse]
+    SmartGroupCreateRequest:
+      properties:
+        name:
+          type: string
+          title: Name
+          description: The name of the smart group
+        description:
+          type: string
+          title: Description
+          description: Description of the smart group
+        groupSegmentId:
+          type: integer
+          title: Groupsegmentid
+          description: The ID of the group segment this smart group belongs to
+        filters:
+          allOf:
+          - $ref: '#/components/schemas/SmartGroupFilters'
+          title: Filters
+          description: Filters to apply to the smart group
+      type: object
+      required:
+      - name
+      - groupSegmentId
+      - filters
+      title: SmartGroupCreateRequest
+    GetSmartGroupsResponse:
+      properties:
+        groups:
+          items:
+            $ref: '#/components/schemas/SmartGroup'
+          type: array
+          title: Groups
+          description: 'The smart groups '
+      type: object
+      required:
+      - groups
+      title: GetSmartGroupsResponse
+    SmartGroupFilterOperator:
+      type: string
+      enum:
+      - and
+      - or
+      title: SmartGroupFilterOperator
+      description: An enumeration.
+    BaseResponse:
+      properties: {}
+      type: object
+      title: BaseResponse
+  securitySchemes:
+    APIKeyHeader:
+      type: apiKey
+      description: The Api key of the company given by Connecteam
+      in: header
+      name: X-API-KEY
+    OAuth2:
+      type: oauth2
+      description: OAuth2 Bearer token
+      flows:
+        clientCredentials:
+          scopes:
+            account_information.read: account information - read
+            account_information.write: account information - write
+            account_information.delete: account information - delete
+            company_policies.read: company policies - read
+            company_policies.write: company policies - write
+            company_policies.delete: company policies - delete
+            company_insights.read: company insights - read
+            users.read: users - read
+            users.write: users - write
+            users.delete: users - delete
+            assets.read: assets - read
+            assets.write: assets - write
+            assets.delete: assets - delete
+            sales_data.read: sales data - read
+            sales_data.write: sales data - write
+            sales_data.delete: sales data - delete
+            attachments.read: attachments - read
+            attachments.write: attachments - write
+            attachments.delete: attachments - delete
+            quick_tasks.read: quick tasks - read
+            quick_tasks.write: quick tasks - write
+            quick_tasks.delete: quick tasks - delete
+            publishers.read: publishers - read
+            publishers.write: publishers - write
+            publishers.delete: publishers - delete
+            chat.read: chat - read
+            chat.write: chat - write
+            chat.delete: chat - delete
+            jobs.read: jobs - read
+            jobs.write: jobs - write
+            jobs.delete: jobs - delete
+            schedule.read: schedule - read
+            schedule.write: schedule - write
+            schedule.delete: schedule - delete
+            daily_note.read: daily note - read
+            daily_note.write: daily note - write
+            daily_note.delete: daily note - delete
+            time_clock.read: time clock - read
+            time_clock.write: time clock - write
+            time_clock.delete: time clock - delete
+            nfc.read: nfc - read
+            nfc.write: nfc - write
+            nfc.delete: nfc - delete
+            time_off.read: time off - read
+            time_off.write: time off - write
+            time_off.delete: time off - delete
+            pay_rates.read: pay rates - read
+            pay_rates.write: pay rates - write
+            pay_rates.delete: pay rates - delete
+            forms.read: forms - read
+            forms.write: forms - write
+            forms.delete: forms - delete
+            onboarding.read: onboarding - read
+            onboarding.write: onboarding - write
+            onboarding.delete: onboarding - delete
+            settings.read: settings - read
+            settings.write: settings - write
+            settings.delete: settings - delete
+            company_checklist.read: company checklist - read
+            company_checklist.write: company checklist - write
+            recognitions.read: recognitions - read
+            celebrations.read: celebrations - read
+          tokenUrl: /oauth/v1/token
+    HTTPBasic:
+      type: http
+      description: Use client_id as Username and client_secret as Password
+      scheme: basic

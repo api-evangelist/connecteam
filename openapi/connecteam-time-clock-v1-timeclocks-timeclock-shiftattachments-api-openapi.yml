@@ -1,0 +1,276 @@
+openapi: 3.2.0
+info:
+  title: Connecteam API documentation Time Clock:v1:TimeClocks:TimeClock:ShiftAttachments API
+  version: v1
+servers:
+- url: https://api.connecteam.com/
+tags:
+- name: Time Clock:v1:TimeClocks:TimeClock:ShiftAttachments
+paths:
+  /time-clock/v1/time-clocks/{timeClockId}/shift-attachments:
+    get:
+      tags:
+      - Time Clock:v1:TimeClocks:TimeClock:ShiftAttachments
+      summary: Get shift attachments
+      description: Get shift attachments of a time clock
+      operationId: get_shift_attachments_time_clock_v1_time_clocks__timeClockId__shift_attachments_get
+      security:
+      - APIKeyHeader: []
+      - OAuth2:
+        - time_clock.read
+      parameters:
+      - name: timeClockId
+        in: path
+        required: true
+        schema:
+          title: Timeclockid
+          description: The unique identifier of the time clock
+          type: integer
+        description: The unique identifier of the time clock
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIResponse_ShiftAttachmentsGetResponse_'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+components:
+  schemas:
+    ShiftAttachmentsGetResponse:
+      properties:
+        shiftAttachments:
+          items:
+            anyOf:
+            - $ref: '#/components/schemas/ShiftAttachmentDropDownListSettingsResponse'
+            - $ref: '#/components/schemas/ShiftAttachmentSettingsResponse'
+          type: array
+          title: Shiftattachments
+          description: The shift attachments
+      type: object
+      required:
+      - shiftAttachments
+      title: ShiftAttachmentsGetResponse
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    ShiftAttachmentType:
+      type: string
+      enum:
+      - freeText
+      - dropdownList
+      - number
+      - image
+      - file
+      - signature
+      title: ShiftAttachmentType
+      description: An enumeration.
+    APIResponse_ShiftAttachmentsGetResponse_:
+      properties:
+        requestId:
+          type: string
+          title: Requestid
+        data:
+          $ref: '#/components/schemas/ShiftAttachmentsGetResponse'
+      type: object
+      required:
+      - data
+      title: APIResponse[ShiftAttachmentsGetResponse]
+    ShiftAttachmentDropDownListSettingsResponse:
+      properties:
+        id:
+          type: string
+          title: Id
+          description: The ID of the shift attachment
+        type:
+          allOf:
+          - $ref: '#/components/schemas/ShiftAttachmentType'
+          description: The type of the shift attachment
+        name:
+          type: string
+          title: Name
+          description: The name of the shift attachment
+        isRequired:
+          type: boolean
+          title: Isrequired
+          description: Whether the shift attachment is required
+        isEnabled:
+          type: boolean
+          title: Isenabled
+          description: Whether the shift attachment is enabled
+        items:
+          items:
+            $ref: '#/components/schemas/ShiftAttachmentDropDownListItemSettingsResponse'
+          type: array
+          title: Items
+          description: The dropdown list items
+      type: object
+      required:
+      - id
+      - type
+      - name
+      - isRequired
+      - isEnabled
+      - items
+      title: ShiftAttachmentDropDownListSettingsResponse
+    ShiftAttachmentDropDownListItemSettingsResponse:
+      properties:
+        id:
+          type: string
+          title: Id
+          description: The ID of the dropdown list item
+        name:
+          type: string
+          title: Name
+          description: The name of the dropdown list item
+        isEnabled:
+          type: boolean
+          title: Isenabled
+          description: Whether the dropdown list item is enabled
+      type: object
+      required:
+      - id
+      - name
+      - isEnabled
+      title: ShiftAttachmentDropDownListItemSettingsResponse
+    ShiftAttachmentSettingsResponse:
+      properties:
+        id:
+          type: string
+          title: Id
+          description: The ID of the shift attachment
+        type:
+          allOf:
+          - $ref: '#/components/schemas/ShiftAttachmentType'
+          description: The type of the shift attachment
+        name:
+          type: string
+          title: Name
+          description: The name of the shift attachment
+        isRequired:
+          type: boolean
+          title: Isrequired
+          description: Whether the shift attachment is required
+        isEnabled:
+          type: boolean
+          title: Isenabled
+          description: Whether the shift attachment is enabled
+      type: object
+      required:
+      - id
+      - type
+      - name
+      - isRequired
+      - isEnabled
+      title: ShiftAttachmentSettingsResponse
+  securitySchemes:
+    APIKeyHeader:
+      type: apiKey
+      description: The Api key of the company given by Connecteam
+      in: header
+      name: X-API-KEY
+    OAuth2:
+      type: oauth2
+      description: OAuth2 Bearer token
+      flows:
+        clientCredentials:
+          scopes:
+            account_information.read: account information - read
+            account_information.write: account information - write
+            account_information.delete: account information - delete
+            company_policies.read: company policies - read
+            company_policies.write: company policies - write
+            company_policies.delete: company policies - delete
+            company_insights.read: company insights - read
+            users.read: users - read
+            users.write: users - write
+            users.delete: users - delete
+            assets.read: assets - read
+            assets.write: assets - write
+            assets.delete: assets - delete
+            sales_data.read: sales data - read
+            sales_data.write: sales data - write
+            sales_data.delete: sales data - delete
+            attachments.read: attachments - read
+            attachments.write: attachments - write
+            attachments.delete: attachments - delete
+            quick_tasks.read: quick tasks - read
+            quick_tasks.write: quick tasks - write
+            quick_tasks.delete: quick tasks - delete
+            publishers.read: publishers - read
+            publishers.write: publishers - write
+            publishers.delete: publishers - delete
+            chat.read: chat - read
+            chat.write: chat - write
+            chat.delete: chat - delete
+            jobs.read: jobs - read
+            jobs.write: jobs - write
+            jobs.delete: jobs - delete
+            schedule.read: schedule - read
+            schedule.write: schedule - write
+            schedule.delete: schedule - delete
+            daily_note.read: daily note - read
+            daily_note.write: daily note - write
+            daily_note.delete: daily note - delete
+            time_clock.read: time clock - read
+            time_clock.write: time clock - write
+            time_clock.delete: time clock - delete
+            nfc.read: nfc - read
+            nfc.write: nfc - write
+            nfc.delete: nfc - delete
+            time_off.read: time off - read
+            time_off.write: time off - write
+            time_off.delete: time off - delete
+            pay_rates.read: pay rates - read
+            pay_rates.write: pay rates - write
+            pay_rates.delete: pay rates - delete
+            forms.read: forms - read
+            forms.write: forms - write
+            forms.delete: forms - delete
+            onboarding.read: onboarding - read
+            onboarding.write: onboarding - write
+            onboarding.delete: onboarding - delete
+            settings.read: settings - read
+            settings.write: settings - write
+            settings.delete: settings - delete
+            company_checklist.read: company checklist - read
+            company_checklist.write: company checklist - write
+            recognitions.read: recognitions - read
+            celebrations.read: celebrations - read
+          tokenUrl: /oauth/v1/token
+    HTTPBasic:
+      type: http
+      description: Use client_id as Username and client_secret as Password
+      scheme: basic

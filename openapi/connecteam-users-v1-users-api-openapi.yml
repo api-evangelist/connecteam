@@ -1,0 +1,851 @@
+openapi: 3.2.0
+info:
+  title: Connecteam API documentation Users:v1:Users API
+  version: v1
+servers:
+- url: https://api.connecteam.com/
+tags:
+- name: Users:v1:Users
+paths:
+  /users/v1/users:
+    get:
+      tags:
+      - Users:v1:Users
+      summary: Get users
+      description: Retrieves a list of all users associated with the account. Optionally, filter by user ID to receive specific user information
+      operationId: get_users_users_v1_users_get
+      security:
+      - APIKeyHeader: []
+      - OAuth2:
+        - users.read
+      parameters:
+      - name: limit
+        in: query
+        required: false
+        schema:
+          title: Limit
+          description: The maximum number of results to display per page
+          default: 10
+          minimum: 1
+          maximum: 500
+          type: integer
+        description: The maximum number of results to display per page
+      - name: offset
+        in: query
+        required: false
+        schema:
+          title: Offset
+          description: The resource offset of the last successfully read resource will be returned as the paging.offset JSON property of a paginated response containing more results
+          default: 0
+          minimum: 0
+          type: integer
+        description: The resource offset of the last successfully read resource will be returned as the paging.offset JSON property of a paginated response containing more results
+      - name: sort
+        in: query
+        required: false
+        schema:
+          description: Sort key
+          allOf:
+          - $ref: '#/components/schemas/UsersSortKeysExternal'
+        description: Sort key
+      - name: order
+        in: query
+        required: false
+        schema:
+          description: Sort order, set only if sort key is set
+          default: asc
+          allOf:
+          - $ref: '#/components/schemas/SortOrder'
+        description: Sort order, set only if sort key is set
+      - name: userIds
+        in: query
+        required: false
+        schema:
+          title: Userids
+          description: List of user IDs for filtering.
+          type: array
+          items:
+            type: integer
+            minimum: 1
+        description: List of user IDs for filtering.
+      - name: userStatus
+        in: query
+        required: false
+        schema:
+          description: Filter users by status. Default is active.
+          default: active
+          allOf:
+          - $ref: '#/components/schemas/UserStatus'
+        description: Filter users by status. Default is active.
+      - name: fullNames
+        in: query
+        required: false
+        schema:
+          title: Fullnames
+          description: List of full names to filter by. Specify the exact first and last name with a space between them as shown in the platform (ignore capitalization).
+          type: array
+          items:
+            type: string
+        description: List of full names to filter by. Specify the exact first and last name with a space between them as shown in the platform (ignore capitalization).
+      - name: phoneNumbers
+        in: query
+        required: false
+        schema:
+          title: Phonenumbers
+          description: List of phone numbers to filter by (in format +<country code><phone number>).
+          type: array
+          items:
+            type: string
+        description: List of phone numbers to filter by (in format +<country code><phone number>).
+      - name: emailAddresses
+        in: query
+        required: false
+        schema:
+          title: Emailaddresses
+          description: List of email addresses to filter by (in format test@test.com).
+          type: array
+          items:
+            type: string
+        description: List of email addresses to filter by (in format test@test.com).
+      - name: createdAt
+        in: query
+        required: false
+        schema:
+          title: Createdat
+          description: Parameter specifying the date in Unix format (in seconds). Only users created after this date will be included in the results.
+          minimum: 1
+          type: integer
+        description: Parameter specifying the date in Unix format (in seconds). Only users created after this date will be included in the results.
+      - name: modifiedAt
+        in: query
+        required: false
+        schema:
+          title: Modifiedat
+          description: Parameter specifying the date in in Unix format (in seconds). Only users with fields updated after this date will be included in the results.
+          minimum: 1
+          type: integer
+        description: Parameter specifying the date in in Unix format (in seconds). Only users with fields updated after this date will be included in the results.
+      - name: lastLogin
+        in: query
+        required: false
+        schema:
+          title: Lastlogin
+          description: Parameter specifying the date in in Unix format (in seconds). Only users who's logged in after this date will be included in the results.
+          minimum: 1
+          type: integer
+        description: Parameter specifying the date in in Unix format (in seconds). Only users who's logged in after this date will be included in the results.
+      - name: archivedAt
+        in: query
+        required: false
+        schema:
+          title: Archivedat
+          description: Parameter specifying the date in Unix format (in seconds). Only users archived after this date will be included in the results.
+          minimum: 1
+          type: integer
+        description: Parameter specifying the date in Unix format (in seconds). Only users archived after this date will be included in the results.
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedBaseResponse_UsersResponse_'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    post:
+      tags:
+      - Users:v1:Users
+      summary: Create users
+      description: Create individual or multiple users associated with the account using the provided details.
+      operationId: create_users_users_v1_users_post
+      security:
+      - APIKeyHeader: []
+      - OAuth2:
+        - users.write
+      parameters:
+      - name: sendActivation
+        in: query
+        required: false
+        schema:
+          title: Sendactivation
+          description: Optional flag to send activation sms.
+          default: false
+          type: boolean
+        description: Optional flag to send activation sms.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              title: Users
+              description: List of users to create.
+              maxItems: 25
+              type: array
+              items:
+                $ref: '#/components/schemas/UserCreateRequest'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIResponse_CreateUsersResponse_'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    delete:
+      tags:
+      - Users:v1:Users
+      summary: Archive users
+      description: Archive or permanently delete individual or multiple users associated with the account by their unique userID. In case of deletion, it will permanently delete the users from the system and cannot be undone.
+      operationId: archive_users_users_v1_users_delete
+      security:
+      - APIKeyHeader: []
+      - OAuth2:
+        - users.delete
+      parameters:
+      - name: deletionType
+        in: query
+        required: false
+        schema:
+          description: Determines whether to archive the users or permanently delete the users from the account. Permanent deletion is limited to 25 users per request.
+          default: archive
+          allOf:
+          - $ref: '#/components/schemas/DeletionType'
+        description: Determines whether to archive the users or permanently delete the users from the account. Permanent deletion is limited to 25 users per request.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: integer
+                minimum: 1
+                description: Integer with minimum value of 1
+              title: Userids
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIResponse_ArchiveUsersResponse_'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    put:
+      tags:
+      - Users:v1:Users
+      summary: Update users
+      description: Update individual or multiple users associated with the account using the provided details. You can specify updates either by their phone number or unique userID.
+      operationId: edit_users_users_v1_users_put
+      security:
+      - APIKeyHeader: []
+      - OAuth2:
+        - users.write
+      parameters:
+      - name: editUsersByPhone
+        in: query
+        required: false
+        schema:
+          title: Editusersbyphone
+          description: Optional flag to edit users by phone (default by user id).
+          default: false
+          type: boolean
+        description: Optional flag to edit users by phone (default by user id).
+      - name: includeSmartGroupIds
+        in: query
+        required: false
+        schema:
+          title: Includesmartgroupids
+          description: Indicates whether to include smart group IDs in the response body for the updated user(s). Please note that setting this value to true may increase the request time significantly.
+          default: true
+          type: boolean
+        description: Indicates whether to include smart group IDs in the response body for the updated user(s). Please note that setting this value to true may increase the request time significantly.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              title: Users
+              description: List of users to edit.
+              maxItems: 25
+              type: array
+              items:
+                $ref: '#/components/schemas/UserEditRequest'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIResponse_EditUsersResponse_'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /users/v1/users/{userId}:
+    delete:
+      tags:
+      - Users:v1:Users
+      summary: Delete user
+      description: Delete or archive user associated with the account. In case of deletion, it will permanently delete the user from the system and cannot be undone.
+      operationId: delete_user_users_v1_users__userId__delete
+      security:
+      - APIKeyHeader: []
+      - OAuth2:
+        - users.delete
+      parameters:
+      - name: userId
+        in: path
+        required: true
+        schema:
+          title: Userid
+          description: The ID of the user to archive or delete
+          minimum: 1
+          type: integer
+        description: The ID of the user to archive or delete
+      - name: deletionType
+        in: query
+        required: false
+        schema:
+          description: Determines whether to archive the user or permanently delete the user from the account.
+          default: archive
+          allOf:
+          - $ref: '#/components/schemas/DeletionType'
+        description: Determines whether to archive the user or permanently delete the user from the account.
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIResponse_ArchiveUsersResponse_'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+components:
+  schemas:
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    DeletionType:
+      type: string
+      enum:
+      - archive
+      - delete
+      title: DeletionType
+      description: Deletion type for user deletion endpoint
+    UserStatus:
+      type: string
+      enum:
+      - active
+      - archived
+      - all
+      title: UserStatus
+      description: An enumeration.
+    APIResponse_EditUsersResponse_:
+      properties:
+        requestId:
+          type: string
+          title: Requestid
+        data:
+          $ref: '#/components/schemas/EditUsersResponse'
+      type: object
+      required:
+      - data
+      title: APIResponse[EditUsersResponse]
+    UsersResponse:
+      properties:
+        users:
+          items:
+            $ref: '#/components/schemas/User'
+          type: array
+          title: Users
+          description: The users.
+      type: object
+      required:
+      - users
+      title: UsersResponse
+    UserEditRequest:
+      properties:
+        firstName:
+          type: string
+          maxLength: 100
+          title: Firstname
+          description: The user's first name
+        lastName:
+          type: string
+          maxLength: 100
+          title: Lastname
+          description: The user's last name
+        phoneNumber:
+          type: string
+          title: Phonenumber
+          description: The user's phone number
+        userType:
+          allOf:
+          - $ref: '#/components/schemas/UserType'
+          description: The type of the user is 'user' by default. To promote a user to 'admin', first create the user and then use the users/v1/admins endpoint to send an invite by mail. On edit (PUT /users), only 'manager' <-> 'owner' transitions are supported via this field; transitions that cross the user/manager boundary are rejected with 400 and must go through the /admins endpoint.
+        email:
+          type: string
+          title: Email
+          description: The user's email (mandatory for managers and owners)
+        customFields:
+          items:
+            $ref: '#/components/schemas/BaseCustomField'
+          type: array
+          title: Customfields
+          description: The user's custom fields
+          default: []
+        isArchived:
+          type: boolean
+          title: Isarchived
+          description: The user status.Note that restoring a user is not applicable with the editUserByPhone field (you must provide the user ID).
+        userId:
+          type: integer
+          minimum: 1.0
+          title: Userid
+          description: The user's unique id
+        profilePictureFileId:
+          type: string
+          title: Profilepicturefileid
+          description: The file ID obtained from the upload attachment endpoint (POST /attachments/v1/files/generate-upload-url) with featureType set to 'users'. Send an empty string to remove the current profile picture.
+      type: object
+      title: UserEditRequest
+    CreateUsersResponse:
+      properties:
+        results:
+          items:
+            $ref: '#/components/schemas/User'
+          type: array
+          title: Results
+          description: The created users.
+      type: object
+      required:
+      - results
+      title: CreateUsersResponse
+    APIResponse_CreateUsersResponse_:
+      properties:
+        requestId:
+          type: string
+          title: Requestid
+        data:
+          $ref: '#/components/schemas/CreateUsersResponse'
+      type: object
+      required:
+      - data
+      title: APIResponse[CreateUsersResponse]
+    PagingResponseModel:
+      properties:
+        offset:
+          type: integer
+          minimum: 0.0
+          title: Offset
+          description: The resource offset of the last successfully read resource will be returned as the paging.offset JSON property of a paginated response containing more results
+        total:
+          type: integer
+          minimum: 0.0
+          title: Total
+          description: Total number of resources matching the request, ignoring pagination. Use this to retrieve the full count without paginating through every page. Only populated by endpoints that compute it.
+      type: object
+      required:
+      - offset
+      title: PagingResponseModel
+    UsersSortKeysExternal:
+      enum:
+      - created_at
+      title: UsersSortKeysExternal
+      description: An enumeration.
+    UserType:
+      type: string
+      enum:
+      - user
+      - manager
+      - owner
+      title: UserType
+      description: An enumeration.
+    User:
+      properties:
+        firstName:
+          type: string
+          title: Firstname
+          description: The user's first name
+        lastName:
+          type: string
+          title: Lastname
+          description: The user's last name
+        phoneNumber:
+          type: string
+          title: Phonenumber
+          description: The user's phone number
+        userType:
+          allOf:
+          - $ref: '#/components/schemas/UserType'
+          description: The type of the user is 'user' by default. To promote a user to 'admin', first create the user and then use the users/v1/admins endpoint to send an invite by mail. On edit (PUT /users), only 'manager' <-> 'owner' transitions are supported via this field; transitions that cross the user/manager boundary are rejected with 400 and must go through the /admins endpoint.
+        email:
+          type: string
+          title: Email
+          description: The user's email (mandatory for managers and owners)
+        customFields:
+          items:
+            $ref: '#/components/schemas/CustomFieldResponse'
+          type: array
+          title: Customfields
+          description: The user's custom fields
+          default: []
+        isArchived:
+          type: boolean
+          title: Isarchived
+          description: The user's archived status
+          default: false
+        userId:
+          type: integer
+          minimum: 1.0
+          title: Userid
+          description: The user's unique id
+        kioskCode:
+          type: string
+          title: Kioskcode
+          description: The code for the user to access the kiosk app
+        createdAt:
+          type: integer
+          minimum: 1.0
+          title: Createdat
+          description: The timestamp when the user was first created in the system
+        modifiedAt:
+          type: integer
+          minimum: 1.0
+          title: Modifiedat
+          description: The timestamp of the most recent change to any user field
+        archivedAt:
+          type: integer
+          minimum: 1.0
+          title: Archivedat
+          description: The timestamp when the user was archived in the system
+        lastLogin:
+          type: integer
+          title: Lastlogin
+          description: The last login timestamp of the user in the system
+          default: 0
+        smartGroupsIds:
+          items:
+            type: integer
+            minimum: 1.0
+          type: array
+          title: Smartgroupsids
+          description: The user's smart groups he is a member of
+        invitedToBeManager:
+          type: boolean
+          title: Invitedtobemanager
+          description: Is the user invited to be a manager
+        profilePictureUrl:
+          type: string
+          title: Profilepictureurl
+          description: The URL of the user's profile picture. null if no profile picture is set.
+        mobileDevice:
+          type: string
+          title: Mobiledevice
+          description: Mobile device model reported by the Connecteam app at the user's last mobile login (e.g. 'iPhone15,3', 'SM-G991B'). null if the user has never logged in from the mobile app.
+        osVersion:
+          type: string
+          title: Osversion
+          description: Mobile operating-system version reported by the Connecteam app (e.g. 'iOS 17.4', 'Android 14'). null if the user has never logged in from the mobile app.
+        appVersion:
+          type: string
+          title: Appversion
+          description: Connecteam mobile app version installed on the user's device (e.g. '8.12.3'). null if the user has never logged in from the mobile app.
+        mobileDeviceId:
+          type: string
+          title: Mobiledeviceid
+          description: Unique identifier of the user's mobile device, as reported by the Connecteam app. null if the user has never logged in from the mobile app.
+      type: object
+      required:
+      - firstName
+      - lastName
+      - phoneNumber
+      - userType
+      - userId
+      title: User
+    UserCustomFields:
+      type: string
+      enum:
+      - email
+      - date
+      - phone
+      - number
+      - str
+      - dropdown
+      - file
+      - directManager
+      - birthday
+      - link
+      - location
+      title: UserCustomFields
+    UserCreateRequest:
+      properties:
+        firstName:
+          type: string
+          maxLength: 100
+          title: Firstname
+          description: The user's first name
+        lastName:
+          type: string
+          maxLength: 100
+          title: Lastname
+          description: The user's last name
+        phoneNumber:
+          type: string
+          title: Phonenumber
+          description: The user's phone number
+        userType:
+          allOf:
+          - $ref: '#/components/schemas/UserType'
+          description: The type of the user is 'user' by default. To promote a user to 'admin', first create the user and then use the users/v1/admins endpoint to send an invite by mail. On edit (PUT /users), only 'manager' <-> 'owner' transitions are supported via this field; transitions that cross the user/manager boundary are rejected with 400 and must go through the /admins endpoint.
+        email:
+          type: string
+          title: Email
+          description: The user's email (mandatory for managers and owners)
+        customFields:
+          items:
+            $ref: '#/components/schemas/BaseCustomField'
+          type: array
+          title: Customfields
+          description: The user's custom fields
+          default: []
+        isArchived:
+          type: boolean
+          title: Isarchived
+          description: The user's archived status
+          default: false
+        profilePictureFileId:
+          type: string
+          title: Profilepicturefileid
+          description: 'The file ID obtained from the upload attachment endpoint (POST /attachments/v1/files/generate-upload-url) with featureType set to ''users''. The file must be finalized via the complete-upload endpoint before use. Supported image formats: JPEG, PNG, BMP, TIFF, WEBP, AVIF.'
+      type: object
+      required:
+      - firstName
+      - lastName
+      - phoneNumber
+      - userType
+      title: UserCreateRequest
+    SortOrder:
+      type: string
+      enum:
+      - asc
+      - desc
+      title: SortOrder
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    CustomFieldResponse:
+      properties:
+        customFieldId:
+          type: integer
+          minimum: 1.0
+          title: Customfieldid
+          description: The custom field unique id
+        value:
+          title: Value
+          description: 'The value of the custom field. Our real-time API documentation experience does not support custom fields of the dropdown type.To update dropdown fields value(s), pass an array of objects with the IDs of the selected dropdown values (e.g., [{id: 1}, {id: 2}]).'
+        type:
+          allOf:
+          - $ref: '#/components/schemas/UserCustomFields'
+          description: The custom field type
+        name:
+          type: string
+          title: Name
+          description: The custom field name
+      type: object
+      required:
+      - customFieldId
+      - value
+      - type
+      - name
+      title: CustomFieldResponse
+    PaginatedBaseResponse_UsersResponse_:
+      properties:
+        requestId:
+          type: string
+          title: Requestid
+        data:
+          $ref: '#/components/schemas/UsersResponse'
+        paging:
+          $ref: '#/components/schemas/PagingResponseModel'
+      type: object
+      required:
+      - data
+      - paging
+      title: PaginatedBaseResponse[UsersResponse]
+    APIResponse_ArchiveUsersResponse_:
+      properties:
+        requestId:
+          type: string
+          title: Requestid
+        data:
+          $ref: '#/components/schemas/ArchiveUsersResponse'
+      type: object
+      required:
+      - data
+      title: APIResponse[ArchiveUsersResponse]
+    ArchiveUsersResponse:
+      properties:
+        success:
+          type: boolean
+          title: Success
+          description: Whether the users were deleted successfully.
+      type: object
+      required:
+      - success
+      title: ArchiveUsersResponse
+    EditUsersResponse:
+      properties:
+        count:
+          type: integer
+          title: Count
+          description: The number of users edited.
+        users:
+          items:
+            $ref: '#/components/schemas/User'
+          type: array
+          title: Users
+          description: The edited users.
+      type: object
+      required:
+      - count
+      - users
+      title: EditUsersResponse
+    BaseCustomField:
+      properties:
+        customFieldId:
+          type: integer
+          minimum: 1.0
+          title: Customfieldid
+          description: The custom field unique id
+        value:
+          title: Value
+          description: 'The value of the custom field. Our real-time API documentation experience does not support custom fields of the dropdown type.To update dropdown fields value(s), pass an array of objects with the IDs of the selected dropdown values (e.g., [{id: 1}, {id: 2}]).'
+      type: object
+      required:
+      - customFieldId
+      - value
+      title: BaseCustomField
+  securitySchemes:
+    APIKeyHeader:
+      type: apiKey
+      description: The Api key of the company given by Connecteam
+      in: header
+      name: X-API-KEY
+    OAuth2:
+      type: oauth2
+      description: OAuth2 Bearer token
+      flows:
+        clientCredentials:
+          scopes:
+            account_information.read: account information - read
+            account_information.write: account information - write
+            account_information.delete: account information - delete
+            company_policies.read: company policies - read
+            company_policies.write: company policies - write
+            company_policies.delete: company policies - delete
+            company_insights.read: company insights - read
+            users.read: users - read
+            users.write: users - write
+            users.delete: users - delete
+            assets.read: assets - read
+            assets.write: assets - write
+            assets.delete: assets - delete
+            sales_data.read: sales data - read
+            sales_data.write: sales data - write
+            sales_data.delete: sales data - delete
+            attachments.read: attachments - read
+            attachments.write: attachments - write
+            attachments.delete: attachments - delete
+            quick_tasks.read: quick tasks - read
+            quick_tasks.write: quick tasks - write
+            quick_tasks.delete: quick tasks - delete
+            publishers.read: publishers - read
+            publishers.write: publishers - write
+            publishers.delete: publishers - delete
+            chat.read: chat - read
+            chat.write: chat - write
+            chat.delete: chat - delete
+            jobs.read: jobs - read
+            jobs.write: jobs - write
+            jobs.delete: jobs - delete
+            schedule.read: schedule - read
+            schedule.write: schedule - write
+            schedule.delete: schedule - delete
+            daily_note.read: daily note - read
+            daily_note.write: daily note - write
+            daily_note.delete: daily note - delete
+            time_clock.read: time clock - read
+            time_clock.write: time clock - write
+            time_clock.delete: time clock - delete
+            nfc.read: nfc - read
+            nfc.write: nfc - write
+            nfc.delete: nfc - delete
+            time_off.read: time off - read
+            time_off.write: time off - write
+            time_off.delete: time off - delete
+            pay_rates.read: pay rates - read
+            pay_rates.write: pay rates - write
+            pay_rates.delete: pay rates - delete
+            forms.read: forms - read
+            forms.write: forms - write
+            forms.delete: forms - delete
+            onboarding.read: onboarding - read
+            onboarding.write: onboarding - write
+            onboarding.delete: onboarding - delete
+            settings.read: settings - read
+            settings.write: settings - write
+            settings.delete: settings - delete
+            company_checklist.read: company checklist - read
+            company_checklist.write: company checklist - write
+            recognitions.read: recognitions - read
+            celebrations.read: celebrations - read
+          tokenUrl: /oauth/v1/token
+    HTTPBasic:
+      type: http
+      description: Use client_id as Username and client_secret as Password
+      scheme: basic

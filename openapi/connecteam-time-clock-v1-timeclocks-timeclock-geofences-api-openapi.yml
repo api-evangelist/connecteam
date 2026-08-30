@@ -1,0 +1,488 @@
+openapi: 3.2.0
+info:
+  title: Connecteam API documentation Time Clock:v1:TimeClocks:TimeClock:GeoFences API
+  version: v1
+servers:
+- url: https://api.connecteam.com/
+tags:
+- name: Time Clock:v1:TimeClocks:TimeClock:GeoFences
+paths:
+  /time-clock/v1/time-clocks/{timeClockId}/geofences:
+    post:
+      tags:
+      - Time Clock:v1:TimeClocks:TimeClock:GeoFences
+      summary: Create geofences
+      description: Create new geofences site under a specified time clock. The geofence can be associated with multiple job IDs that are assigned to the time clock only
+      operationId: create_geofences_time_clock_v1_time_clocks__timeClockId__geofences_post
+      security:
+      - APIKeyHeader: []
+      - OAuth2:
+        - time_clock.write
+      parameters:
+      - name: timeClockId
+        in: path
+        required: true
+        schema:
+          title: Timeclockid
+          description: The unique identifier of the time clock
+          type: integer
+        description: The unique identifier of the time clock
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              title: Geofences Body
+              description: Request model for create geofences
+              allOf:
+              - $ref: '#/components/schemas/GeoFencesCreateRequest'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIResponse_GeoFencesCreatedResponse_'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    get:
+      tags:
+      - Time Clock:v1:TimeClocks:TimeClock:GeoFences
+      summary: Get geofences
+      description: Get all geofences for a specified time clock
+      operationId: get_geofences_time_clock_v1_time_clocks__timeClockId__geofences_get
+      security:
+      - APIKeyHeader: []
+      - OAuth2:
+        - time_clock.read
+      parameters:
+      - name: timeClockId
+        in: path
+        required: true
+        schema:
+          title: Timeclockid
+          description: The unique identifier of the time clock
+          type: integer
+        description: The unique identifier of the time clock
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIResponse_GeoFencesGetResponse_'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /time-clock/v1/time-clocks/{timeClockId}/geofences/{fenceId}:
+    get:
+      tags:
+      - Time Clock:v1:TimeClocks:TimeClock:GeoFences
+      summary: Get geofence
+      description: Get a geofence site under a specified time clock
+      operationId: get_geofence_time_clock_v1_time_clocks__timeClockId__geofences__fenceId__get
+      security:
+      - APIKeyHeader: []
+      - OAuth2:
+        - time_clock.read
+      parameters:
+      - name: fenceId
+        in: path
+        required: true
+        schema:
+          title: Fenceid
+          description: The ID of the geofence to get
+          type: string
+        description: The ID of the geofence to get
+      - name: timeClockId
+        in: path
+        required: true
+        schema:
+          title: Timeclockid
+          description: The unique identifier of the time clock
+          type: integer
+        description: The unique identifier of the time clock
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIResponse_GeoFenceWithFenceIdEntity_'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    delete:
+      tags:
+      - Time Clock:v1:TimeClocks:TimeClock:GeoFences
+      summary: Delete geofence
+      description: Delete a geofence site under a specified time clock
+      operationId: delete_geo_fence_time_clock_v1_time_clocks__timeClockId__geofences__fenceId__delete
+      security:
+      - APIKeyHeader: []
+      - OAuth2:
+        - time_clock.delete
+      parameters:
+      - name: fenceId
+        in: path
+        required: true
+        schema:
+          title: Fenceid
+          description: The ID of the geofence to delete
+          type: string
+        description: The ID of the geofence to delete
+      - name: timeClockId
+        in: path
+        required: true
+        schema:
+          title: Timeclockid
+          description: The unique identifier of the time clock
+          type: integer
+        description: The unique identifier of the time clock
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIResponse_BaseResponse_'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+components:
+  schemas:
+    APIResponse_GeoFencesCreatedResponse_:
+      properties:
+        requestId:
+          type: string
+          title: Requestid
+        data:
+          $ref: '#/components/schemas/GeoFencesCreatedResponse'
+      type: object
+      required:
+      - data
+      title: APIResponse[GeoFencesCreatedResponse]
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    GeoFenceEntity:
+      properties:
+        name:
+          type: string
+          minLength: 1
+          title: Name
+          description: The name of the geofence
+        isEnabled:
+          type: boolean
+          title: Isenabled
+          description: Indicates whether the geofence is enabled upon creation
+          default: true
+        fenceSize:
+          type: integer
+          maximum: 1524.0
+          minimum: 75.0
+          title: Fencesize
+          description: The radius size (in meters) of the geofence. Must be a value between 75-1524 meters
+        jobIds:
+          items:
+            type: string
+          type: array
+          maxItems: 100
+          title: Jobids
+          description: List of job IDs to apply the geofence. If the job contains sub-jobs, pass only the parent job ID. If jobs are not required in the account settings, pass an empty array.(It is empty by default)
+        onGeofenceExitAction:
+          allOf:
+          - $ref: '#/components/schemas/ExitGeofenceAction'
+          description: Determines the action to be made when a clocked in user exits a geofenced area.
+          default: noAction
+        location:
+          allOf:
+          - $ref: '#/components/schemas/GpsLocation'
+          title: Location
+          description: The location of the geo fence
+      type: object
+      required:
+      - name
+      - location
+      title: GeoFenceEntity
+    ExitGeofenceAction:
+      type: string
+      enum:
+      - noAction
+      - sendNotification
+      - autoClockOut
+      title: ExitGeofenceAction
+      description: An enumeration.
+    GeoFenceCreatedEntity:
+      properties:
+        fenceId:
+          type: string
+          title: Fenceid
+          description: Geo fence resource ID
+        name:
+          type: string
+          title: Name
+          description: Geo fence name
+      type: object
+      required:
+      - fenceId
+      - name
+      title: GeoFenceCreatedEntity
+    GeoFenceWithFenceIdEntity:
+      properties:
+        id:
+          type: string
+          title: Id
+          description: The unique identifier of the geofence
+        name:
+          type: string
+          minLength: 1
+          title: Name
+          description: The name of the geofence
+        isEnabled:
+          type: boolean
+          title: Isenabled
+          description: Indicates whether the geofence is enabled upon creation
+          default: true
+        fenceSize:
+          type: integer
+          maximum: 1524.0
+          minimum: 75.0
+          title: Fencesize
+          description: The radius size (in meters) of the geofence. Must be a value between 75-1524 meters
+        jobIds:
+          items:
+            type: string
+          type: array
+          maxItems: 100
+          title: Jobids
+          description: List of job IDs to apply the geofence. If the job contains sub-jobs, pass only the parent job ID. If jobs are not required in the account settings, pass an empty array.(It is empty by default)
+        onGeofenceExitAction:
+          allOf:
+          - $ref: '#/components/schemas/ExitGeofenceAction'
+          description: Determines the action to be made when a clocked in user exits a geofenced area.
+          default: noAction
+        location:
+          allOf:
+          - $ref: '#/components/schemas/GpsLocation'
+          title: Location
+          description: The location of the geo fence
+      type: object
+      required:
+      - id
+      - name
+      - location
+      title: GeoFenceWithFenceIdEntity
+    APIResponse_BaseResponse_:
+      properties:
+        requestId:
+          type: string
+          title: Requestid
+        data:
+          $ref: '#/components/schemas/BaseResponse'
+      type: object
+      required:
+      - data
+      title: APIResponse[BaseResponse]
+    GeoFencesGetResponse:
+      properties:
+        geofences:
+          items:
+            $ref: '#/components/schemas/GeoFenceWithFenceIdEntity'
+          type: array
+          title: Geofences
+          description: Geofences list
+      type: object
+      required:
+      - geofences
+      title: GeoFencesGetResponse
+    GeoFencesCreateRequest:
+      properties:
+        geofences:
+          items:
+            $ref: '#/components/schemas/GeoFenceEntity'
+          type: array
+          maxItems: 1000
+          title: Geofences
+          description: List of geo fences to create
+      type: object
+      required:
+      - geofences
+      title: GeoFencesCreateRequest
+    APIResponse_GeoFencesGetResponse_:
+      properties:
+        requestId:
+          type: string
+          title: Requestid
+        data:
+          $ref: '#/components/schemas/GeoFencesGetResponse'
+      type: object
+      required:
+      - data
+      title: APIResponse[GeoFencesGetResponse]
+    GpsLocation:
+      properties:
+        address:
+          type: string
+          title: Address
+          description: address
+        latitude:
+          type: string
+          title: Latitude
+          description: latitude, number format
+        longitude:
+          type: string
+          title: Longitude
+          description: longitude, number format
+      type: object
+      required:
+      - address
+      - latitude
+      - longitude
+      title: GpsLocation
+    BaseResponse:
+      properties: {}
+      type: object
+      title: BaseResponse
+    APIResponse_GeoFenceWithFenceIdEntity_:
+      properties:
+        requestId:
+          type: string
+          title: Requestid
+        data:
+          $ref: '#/components/schemas/GeoFenceWithFenceIdEntity'
+      type: object
+      required:
+      - data
+      title: APIResponse[GeoFenceWithFenceIdEntity]
+    GeoFencesCreatedResponse:
+      properties:
+        geofences:
+          items:
+            $ref: '#/components/schemas/GeoFenceCreatedEntity'
+          type: array
+          title: Geofences
+          description: Geofences list
+      type: object
+      required:
+      - geofences
+      title: GeoFencesCreatedResponse
+  securitySchemes:
+    APIKeyHeader:
+      type: apiKey
+      description: The Api key of the company given by Connecteam
+      in: header
+      name: X-API-KEY
+    OAuth2:
+      type: oauth2
+      description: OAuth2 Bearer token
+      flows:
+        clientCredentials:
+          scopes:
+            account_information.read: account information - read
+            account_information.write: account information - write
+            account_information.delete: account information - delete
+            company_policies.read: company policies - read
+            company_policies.write: company policies - write
+            company_policies.delete: company policies - delete
+            company_insights.read: company insights - read
+            users.read: users - read
+            users.write: users - write
+            users.delete: users - delete
+            assets.read: assets - read
+            assets.write: assets - write
+            assets.delete: assets - delete
+            sales_data.read: sales data - read
+            sales_data.write: sales data - write
+            sales_data.delete: sales data - delete
+            attachments.read: attachments - read
+            attachments.write: attachments - write
+            attachments.delete: attachments - delete
+            quick_tasks.read: quick tasks - read
+            quick_tasks.write: quick tasks - write
+            quick_tasks.delete: quick tasks - delete
+            publishers.read: publishers - read
+            publishers.write: publishers - write
+            publishers.delete: publishers - delete
+            chat.read: chat - read
+            chat.write: chat - write
+            chat.delete: chat - delete
+            jobs.read: jobs - read
+            jobs.write: jobs - write
+            jobs.delete: jobs - delete
+            schedule.read: schedule - read
+            schedule.write: schedule - write
+            schedule.delete: schedule - delete
+            daily_note.read: daily note - read
+            daily_note.write: daily note - write
+            daily_note.delete: daily note - delete
+            time_clock.read: time clock - read
+            time_clock.write: time clock - write
+            time_clock.delete: time clock - delete
+            nfc.read: nfc - read
+            nfc.write: nfc - write
+            nfc.delete: nfc - delete
+            time_off.read: time off - read
+            time_off.write: time off - write
+            time_off.delete: time off - delete
+            pay_rates.read: pay rates - read
+            pay_rates.write: pay rates - write
+            pay_rates.delete: pay rates - delete
+            forms.read: forms - read
+            forms.write: forms - write
+            forms.delete: forms - delete
+            onboarding.read: onboarding - read
+            onboarding.write: onboarding - write
+            onboarding.delete: onboarding - delete
+            settings.read: settings - read
+            settings.write: settings - write
+            settings.delete: settings - delete
+            company_checklist.read: company checklist - read
+            company_checklist.write: company checklist - write
+            recognitions.read: recognitions - read
+            celebrations.read: celebrations - read
+          tokenUrl: /oauth/v1/token
+    HTTPBasic:
+      type: http
+      description: Use client_id as Username and client_secret as Password
+      scheme: basic

@@ -1,0 +1,342 @@
+openapi: 3.2.0
+info:
+  title: Connecteam API documentation Time Off:v1:Balances API
+  version: v1
+servers:
+- url: https://api.connecteam.com/
+tags:
+- name: Time Off:v1:Balances
+paths:
+  /time-off/v1/policy-types/{policyTypeId}/balances:
+    get:
+      tags:
+      - Time Off:v1:Balances
+      summary: Get user balances
+      description: Retrieve a list of user time-off balances within a policy type
+      operationId: get_balances_time_off_v1_policy_types__policyTypeId__balances_get
+      security:
+      - APIKeyHeader: []
+      - OAuth2:
+        - time_off.read
+      parameters:
+      - name: policyTypeId
+        in: path
+        required: true
+        schema:
+          title: Policytypeid
+          description: Policy type id
+          type: string
+        description: Policy type id
+      - name: userIds
+        in: query
+        required: false
+        schema:
+          title: Userids
+          description: List of user ids
+          type: array
+          items:
+            type: integer
+            minimum: 1
+        description: List of user ids
+      - name: limit
+        in: query
+        required: false
+        schema:
+          title: Limit
+          description: The maximum number of results to display per page
+          default: 10
+          minimum: 1
+          maximum: 100
+          type: integer
+        description: The maximum number of results to display per page
+      - name: offset
+        in: query
+        required: false
+        schema:
+          title: Offset
+          description: The resource offset of the last successfully read resource will be returned as the paging.offset JSON property of a paginated response containing more results
+          default: 0
+          minimum: 0
+          type: integer
+        description: The resource offset of the last successfully read resource will be returned as the paging.offset JSON property of a paginated response containing more results
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedBaseResponse_TimeOffGetUserBalancesResponse_'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /time-off/v1/policy-types/{policyTypeId}/balances/{userId}:
+    put:
+      tags:
+      - Time Off:v1:Balances
+      summary: Update user balance
+      description: Update user time-off balance within a policy type
+      operationId: put_user_balance_time_off_v1_policy_types__policyTypeId__balances__userId__put
+      security:
+      - APIKeyHeader: []
+      - OAuth2:
+        - time_off.write
+      parameters:
+      - name: policyTypeId
+        in: path
+        required: true
+        schema:
+          title: Policytypeid
+          description: Policy type id
+          type: string
+        description: Policy type id
+      - name: userId
+        in: path
+        required: true
+        schema:
+          title: Userid
+          description: The ID of the user to update balance
+          minimum: 1
+          type: integer
+        description: The ID of the user to update balance
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              title: Request
+              description: The balance to update to
+              allOf:
+              - $ref: '#/components/schemas/TimeOffUpdateUserBalanceRequest'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIResponse_TimeOffPutUserBalanceResponse_'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+components:
+  schemas:
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    PolicyUnitsEnum:
+      type: string
+      enum:
+      - hours
+      - days
+      title: PolicyUnitsEnum
+      description: An enumeration.
+    TimeOffPutUserBalanceResponse:
+      properties:
+        balance:
+          allOf:
+          - $ref: '#/components/schemas/TimeOffUserBalance'
+          title: Balance
+          description: The updated user balance
+      type: object
+      required:
+      - balance
+      title: TimeOffPutUserBalanceResponse
+    TimeOffGetUserBalancesResponse:
+      properties:
+        balances:
+          items:
+            $ref: '#/components/schemas/TimeOffUserBalance'
+          type: array
+          title: Balances
+          description: List of user balances of the policy type
+      type: object
+      required:
+      - balances
+      title: TimeOffGetUserBalancesResponse
+    TimeOffUpdateUserBalanceRequest:
+      properties:
+        balance:
+          type: number
+          title: Balance
+          description: The balance to update to
+      type: object
+      required:
+      - balance
+      title: TimeOffUpdateUserBalanceRequest
+    APIResponse_TimeOffPutUserBalanceResponse_:
+      properties:
+        requestId:
+          type: string
+          title: Requestid
+        data:
+          $ref: '#/components/schemas/TimeOffPutUserBalanceResponse'
+      type: object
+      required:
+      - data
+      title: APIResponse[TimeOffPutUserBalanceResponse]
+    PaginatedBaseResponse_TimeOffGetUserBalancesResponse_:
+      properties:
+        requestId:
+          type: string
+          title: Requestid
+        data:
+          $ref: '#/components/schemas/TimeOffGetUserBalancesResponse'
+        paging:
+          $ref: '#/components/schemas/PagingResponseModel'
+      type: object
+      required:
+      - data
+      - paging
+      title: PaginatedBaseResponse[TimeOffGetUserBalancesResponse]
+    PagingResponseModel:
+      properties:
+        offset:
+          type: integer
+          minimum: 0.0
+          title: Offset
+          description: The resource offset of the last successfully read resource will be returned as the paging.offset JSON property of a paginated response containing more results
+        total:
+          type: integer
+          minimum: 0.0
+          title: Total
+          description: Total number of resources matching the request, ignoring pagination. Use this to retrieve the full count without paginating through every page. Only populated by endpoints that compute it.
+      type: object
+      required:
+      - offset
+      title: PagingResponseModel
+    TimeOffUserBalance:
+      properties:
+        userId:
+          type: integer
+          title: Userid
+          description: The user id
+        units:
+          allOf:
+          - $ref: '#/components/schemas/PolicyUnitsEnum'
+          description: The user balance units
+        balance:
+          type: number
+          title: Balance
+          description: The remaining user balance
+        policyId:
+          type: string
+          title: Policyid
+          description: The id of the policy this balance belongs to
+      type: object
+      required:
+      - userId
+      - units
+      - balance
+      - policyId
+      title: TimeOffUserBalance
+  securitySchemes:
+    APIKeyHeader:
+      type: apiKey
+      description: The Api key of the company given by Connecteam
+      in: header
+      name: X-API-KEY
+    OAuth2:
+      type: oauth2
+      description: OAuth2 Bearer token
+      flows:
+        clientCredentials:
+          scopes:
+            account_information.read: account information - read
+            account_information.write: account information - write
+            account_information.delete: account information - delete
+            company_policies.read: company policies - read
+            company_policies.write: company policies - write
+            company_policies.delete: company policies - delete
+            company_insights.read: company insights - read
+            users.read: users - read
+            users.write: users - write
+            users.delete: users - delete
+            assets.read: assets - read
+            assets.write: assets - write
+            assets.delete: assets - delete
+            sales_data.read: sales data - read
+            sales_data.write: sales data - write
+            sales_data.delete: sales data - delete
+            attachments.read: attachments - read
+            attachments.write: attachments - write
+            attachments.delete: attachments - delete
+            quick_tasks.read: quick tasks - read
+            quick_tasks.write: quick tasks - write
+            quick_tasks.delete: quick tasks - delete
+            publishers.read: publishers - read
+            publishers.write: publishers - write
+            publishers.delete: publishers - delete
+            chat.read: chat - read
+            chat.write: chat - write
+            chat.delete: chat - delete
+            jobs.read: jobs - read
+            jobs.write: jobs - write
+            jobs.delete: jobs - delete
+            schedule.read: schedule - read
+            schedule.write: schedule - write
+            schedule.delete: schedule - delete
+            daily_note.read: daily note - read
+            daily_note.write: daily note - write
+            daily_note.delete: daily note - delete
+            time_clock.read: time clock - read
+            time_clock.write: time clock - write
+            time_clock.delete: time clock - delete
+            nfc.read: nfc - read
+            nfc.write: nfc - write
+            nfc.delete: nfc - delete
+            time_off.read: time off - read
+            time_off.write: time off - write
+            time_off.delete: time off - delete
+            pay_rates.read: pay rates - read
+            pay_rates.write: pay rates - write
+            pay_rates.delete: pay rates - delete
+            forms.read: forms - read
+            forms.write: forms - write
+            forms.delete: forms - delete
+            onboarding.read: onboarding - read
+            onboarding.write: onboarding - write
+            onboarding.delete: onboarding - delete
+            settings.read: settings - read
+            settings.write: settings - write
+            settings.delete: settings - delete
+            company_checklist.read: company checklist - read
+            company_checklist.write: company checklist - write
+            recognitions.read: recognitions - read
+            celebrations.read: celebrations - read
+          tokenUrl: /oauth/v1/token
+    HTTPBasic:
+      type: http
+      description: Use client_id as Username and client_secret as Password
+      scheme: basic

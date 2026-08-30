@@ -1,0 +1,415 @@
+openapi: 3.2.0
+info:
+  title: Connecteam API documentation Attachments:v1:Files API
+  version: v1
+servers:
+- url: https://api.connecteam.com/
+tags:
+- name: Attachments:v1:Files
+paths:
+  /attachments/v1/files/generate-upload-url:
+    post:
+      tags:
+      - Attachments:v1:Files
+      summary: Generate upload url
+      description: Generates a pre-signed URL that can be used to securely upload an attachment to the cloud. The pre-signed URL ensures temporary access for the upload (300 seconds), and it will be associated with a specific feature within the application.
+      operationId: generate_upload_url_attachments_v1_files_generate_upload_url_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              allOf:
+              - $ref: '#/components/schemas/FileURLCreateRequest'
+              title: Request Upload Url
+              description: Create data for new file upload URL
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIResponse_FileURLResponse_'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+      - APIKeyHeader: []
+      - OAuth2:
+        - attachments.write
+  /attachments/v1/files/complete-upload/{fileId}:
+    put:
+      tags:
+      - Attachments:v1:Files
+      summary: Finalize upload
+      description: Finalizes the upload process for the attachment identified by the fileId. It confirms and registers the uploaded file, ensuring it is properly associated with the relevant feature.
+      operationId: finalize_upload_attachments_v1_files_complete_upload__fileId__put
+      security:
+      - APIKeyHeader: []
+      - OAuth2:
+        - attachments.write
+      parameters:
+      - name: fileId
+        in: path
+        required: true
+        schema:
+          title: Fileid
+          description: The unique identifier for the uploaded filetype
+          type: string
+        description: The unique identifier for the uploaded filetype
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIResponse_FileCompleteUploadResponse_'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /attachments/v1/files/{fileId}:
+    get:
+      tags:
+      - Attachments:v1:Files
+      summary: Get file metadata
+      description: Retrieve detailed information about a previously uploaded attachment identified by the fileId. The response includes its metadata, and the status of the upload process.
+      operationId: get_file_url_attachments_v1_files__fileId__get
+      security:
+      - APIKeyHeader: []
+      - OAuth2:
+        - attachments.read
+      parameters:
+      - name: fileId
+        in: path
+        required: true
+        schema:
+          title: Fileid
+          description: The unique identifier for the uploaded filetype
+          type: string
+        description: The unique identifier for the uploaded filetype
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIResponse_GetFileURLResponse_'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /attachments/v1/files/download-url:
+    post:
+      tags:
+      - Attachments:v1:Files
+      summary: Generate download URL
+      description: Generates a time limited URL for downloading a file.
+      operationId: generate_download_url_attachments_v1_files_download_url_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              allOf:
+              - $ref: '#/components/schemas/FileDownloadURLRequest'
+              title: Request Body
+              description: Request data for generating download URL
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIResponse_FileDownloadURLResponse_'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      deprecated: true
+      security:
+      - APIKeyHeader: []
+      - OAuth2:
+        - attachments.read
+components:
+  schemas:
+    APIResponse_FileCompleteUploadResponse_:
+      properties:
+        requestId:
+          type: string
+          title: Requestid
+        data:
+          $ref: '#/components/schemas/FileCompleteUploadResponse'
+      type: object
+      required:
+      - data
+      title: APIResponse[FileCompleteUploadResponse]
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    FileURLCreateRequest:
+      properties:
+        fileName:
+          type: string
+          title: Filename
+          description: The name of the attachment you want to upload
+        fileTypeHint:
+          type: string
+          title: Filetypehint
+          description: The MIME type or format of the attachment (e.g. image/jpeg, application/pdf)
+        featureType:
+          allOf:
+          - $ref: '#/components/schemas/AttachmentsFeatureTypeEnum'
+          description: The specific feature or context where the attachment will be linked
+      type: object
+      required:
+      - fileName
+      - featureType
+      title: FileURLCreateRequest
+    FileCompleteUploadResponse:
+      properties:
+        fileId:
+          type: string
+          title: Fileid
+          description: The unique identifier for the file
+      type: object
+      required:
+      - fileId
+      title: FileCompleteUploadResponse
+    FileURLResponse:
+      properties:
+        fileId:
+          type: string
+          title: Fileid
+          description: The unique identifier for the file
+        uploadFileUrl:
+          type: string
+          maxLength: 65536
+          minLength: 1
+          format: uri
+          title: Uploadfileurl
+          description: The pre-signed URL for uploading the file to the cloud storage
+      type: object
+      required:
+      - fileId
+      - uploadFileUrl
+      title: FileURLResponse
+    FileDownloadURLRequest:
+      properties:
+        fileUrl:
+          type: string
+          title: Fileurl
+          description: The full URL of the file to generate a download URL for
+        expirationInSeconds:
+          type: integer
+          maximum: 86400.0
+          minimum: 5.0
+          title: Expirationinseconds
+          description: 'The expiration time of the URL in seconds (min: 5, max: 86400 / 24 hours)'
+          default: 3600
+      type: object
+      required:
+      - fileUrl
+      title: FileDownloadURLRequest
+    APIResponse_GetFileURLResponse_:
+      properties:
+        requestId:
+          type: string
+          title: Requestid
+        data:
+          $ref: '#/components/schemas/GetFileURLResponse'
+      type: object
+      required:
+      - data
+      title: APIResponse[GetFileURLResponse]
+    APIResponse_FileURLResponse_:
+      properties:
+        requestId:
+          type: string
+          title: Requestid
+        data:
+          $ref: '#/components/schemas/FileURLResponse'
+      type: object
+      required:
+      - data
+      title: APIResponse[FileURLResponse]
+    AttachmentsFeatureTypeEnum:
+      type: string
+      enum:
+      - chat
+      - shiftscheduler
+      - users
+      - quicktasks
+      title: AttachmentsFeatureTypeEnum
+      description: An enumeration.
+    GetFileURLResponse:
+      properties:
+        fileId:
+          type: string
+          title: Fileid
+          description: The unique identifier for the file
+        fileUrl:
+          type: string
+          maxLength: 65536
+          minLength: 1
+          format: uri
+          title: Fileurl
+          description: The file URL
+        uploadCompleted:
+          type: boolean
+          title: Uploadcompleted
+          description: Indicates whether the upload process for the file has been successfully completed
+        fileType:
+          type: string
+          title: Filetype
+          description: The MIME type or format of the file
+        featureType:
+          type: string
+          title: Featuretype
+          description: Feature type
+      type: object
+      required:
+      - fileId
+      - uploadCompleted
+      - fileType
+      - featureType
+      title: GetFileURLResponse
+    APIResponse_FileDownloadURLResponse_:
+      properties:
+        requestId:
+          type: string
+          title: Requestid
+        data:
+          $ref: '#/components/schemas/FileDownloadURLResponse'
+      type: object
+      required:
+      - data
+      title: APIResponse[FileDownloadURLResponse]
+    FileDownloadURLResponse:
+      properties:
+        url:
+          type: string
+          title: Url
+          description: The URL for downloading the file.
+        expiresInSeconds:
+          type: integer
+          title: Expiresinseconds
+          description: The expiration time of the URL in seconds
+      type: object
+      required:
+      - url
+      - expiresInSeconds
+      title: FileDownloadURLResponse
+  securitySchemes:
+    APIKeyHeader:
+      type: apiKey
+      description: The Api key of the company given by Connecteam
+      in: header
+      name: X-API-KEY
+    OAuth2:
+      type: oauth2
+      description: OAuth2 Bearer token
+      flows:
+        clientCredentials:
+          scopes:
+            account_information.read: account information - read
+            account_information.write: account information - write
+            account_information.delete: account information - delete
+            company_policies.read: company policies - read
+            company_policies.write: company policies - write
+            company_policies.delete: company policies - delete
+            company_insights.read: company insights - read
+            users.read: users - read
+            users.write: users - write
+            users.delete: users - delete
+            assets.read: assets - read
+            assets.write: assets - write
+            assets.delete: assets - delete
+            sales_data.read: sales data - read
+            sales_data.write: sales data - write
+            sales_data.delete: sales data - delete
+            attachments.read: attachments - read
+            attachments.write: attachments - write
+            attachments.delete: attachments - delete
+            quick_tasks.read: quick tasks - read
+            quick_tasks.write: quick tasks - write
+            quick_tasks.delete: quick tasks - delete
+            publishers.read: publishers - read
+            publishers.write: publishers - write
+            publishers.delete: publishers - delete
+            chat.read: chat - read
+            chat.write: chat - write
+            chat.delete: chat - delete
+            jobs.read: jobs - read
+            jobs.write: jobs - write
+            jobs.delete: jobs - delete
+            schedule.read: schedule - read
+            schedule.write: schedule - write
+            schedule.delete: schedule - delete
+            daily_note.read: daily note - read
+            daily_note.write: daily note - write
+            daily_note.delete: daily note - delete
+            time_clock.read: time clock - read
+            time_clock.write: time clock - write
+            time_clock.delete: time clock - delete
+            nfc.read: nfc - read
+            nfc.write: nfc - write
+            nfc.delete: nfc - delete
+            time_off.read: time off - read
+            time_off.write: time off - write
+            time_off.delete: time off - delete
+            pay_rates.read: pay rates - read
+            pay_rates.write: pay rates - write
+            pay_rates.delete: pay rates - delete
+            forms.read: forms - read
+            forms.write: forms - write
+            forms.delete: forms - delete
+            onboarding.read: onboarding - read
+            onboarding.write: onboarding - write
+            onboarding.delete: onboarding - delete
+            settings.read: settings - read
+            settings.write: settings - write
+            settings.delete: settings - delete
+            company_checklist.read: company checklist - read
+            company_checklist.write: company checklist - write
+            recognitions.read: recognitions - read
+            celebrations.read: celebrations - read
+          tokenUrl: /oauth/v1/token
+    HTTPBasic:
+      type: http
+      description: Use client_id as Username and client_secret as Password
+      scheme: basic

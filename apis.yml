@@ -354,6 +354,8 @@ apis:
   humanURL: https://developer.connecteam.com/
   baseURL: https://api.connecteam.com
   tags:
+  - Authentication
+  tags_raw:
   - OAuth
   properties:
   - type: OpenAPI
@@ -687,7 +689,8 @@ apis:
     2 operation(s) for schedule:v2:schedulers:schedule:shift auto assign (v2):shift auto assign.
   humanURL: https://developer.connecteam.com/
   baseURL: https://api.connecteam.com
-  tags:
+  tags: []
+  tags_raw:
   - Schedule:v2:Schedulers:Schedule:Shift Auto Assign (V2):Shift Auto Assign
   properties:
   - type: OpenAPI
@@ -728,7 +731,8 @@ apis:
     for schedule:v2:schedulers:unavailabilities (v2):unavailabilities.
   humanURL: https://developer.connecteam.com/
   baseURL: https://api.connecteam.com
-  tags:
+  tags: []
+  tags_raw:
   - Schedule:v2:Schedulers:Unavailabilities (V2):Unavailabilities
   properties:
   - type: OpenAPI
@@ -978,7 +982,8 @@ apis:
     for time clock:v1:timeclocks:timeclock:manualbreaks:manualbreakclockin.
   humanURL: https://developer.connecteam.com/
   baseURL: https://api.connecteam.com
-  tags:
+  tags: []
+  tags_raw:
   - Time Clock:v1:TimeClocks:TimeClock:ManualBreaks:ManualBreakClockIn
   properties:
   - type: OpenAPI
@@ -1000,7 +1005,8 @@ apis:
     for time clock:v1:timeclocks:timeclock:manualbreaks:manualbreakclockout.
   humanURL: https://developer.connecteam.com/
   baseURL: https://api.connecteam.com
-  tags:
+  tags: []
+  tags_raw:
   - Time Clock:v1:TimeClocks:TimeClock:ManualBreaks:ManualBreakClockOut
   properties:
   - type: OpenAPI

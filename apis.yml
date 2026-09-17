@@ -121,7 +121,8 @@ apis:
     url: mcp/connecteam-tool-crosswalk.yml
 - aid: connecteam:connecteam-breadcrumbs-breadcrumbs-api
   name: Connecteam Breadcrumbs:Breadcrumbs API
-  description: The Breadcrumbs:Breadcrumbs API from Connecteam — 3 operation(s) for breadcrumbs:breadcrumbs.
+  description: >-
+    The Breadcrumbs:Breadcrumbs API from Connecteam — 3 operation(s) for breadcrumbs:breadcrumbs.
   humanURL: https://developer.connecteam.com/
   baseURL: https://api.connecteam.com
   tags:
@@ -139,7 +140,8 @@ apis:
     url: mcp/connecteam-tool-crosswalk.yml
 - aid: connecteam:connecteam-chat-v1-conversations-api
   name: Connecteam Chat:v1:Conversations API
-  description: The Chat:v1:Conversations API from Connecteam — 3 operation(s) for chat:v1:conversations.
+  description: >-
+    The Chat:v1:Conversations API from Connecteam — 3 operation(s) for chat:v1:conversations.
   humanURL: https://developer.connecteam.com/
   baseURL: https://api.connecteam.com
   tags:
@@ -157,8 +159,8 @@ apis:
     url: mcp/connecteam-tool-crosswalk.yml
 - aid: connecteam:connecteam-company-policies-v1-payruleassignment-api
   name: Connecteam Company Policies:v1:PayRuleAssignment API
-  description: The Company Policies:v1:PayRuleAssignment API from Connecteam — 1 operation(s) for company
-    policies:v1:payruleassignment.
+  description: >-
+    The Company Policies:v1:PayRuleAssignment API from Connecteam — 1 operation(s) for company policies:v1:payruleassignment.
   humanURL: https://developer.connecteam.com/
   baseURL: https://api.connecteam.com
   tags:
@@ -176,8 +178,8 @@ apis:
     url: mcp/connecteam-tool-crosswalk.yml
 - aid: connecteam:connecteam-company-policies-v1-payrulepolicies-api
   name: Connecteam Company Policies:v1:PayRulePolicies API
-  description: The Company Policies:v1:PayRulePolicies API from Connecteam — 1 operation(s) for company
-    policies:v1:payrulepolicies.
+  description: >-
+    The Company Policies:v1:PayRulePolicies API from Connecteam — 1 operation(s) for company policies:v1:payrulepolicies.
   humanURL: https://developer.connecteam.com/
   baseURL: https://api.connecteam.com
   tags:
@@ -195,8 +197,8 @@ apis:
     url: mcp/connecteam-tool-crosswalk.yml
 - aid: connecteam:connecteam-connecteam-api-documentation-api
   name: Connecteam API Documentation API
-  description: The Connecteam API Documentation API from Connecteam — 0 operation(s) for connecteam api
-    documentation.
+  description: >-
+    The Connecteam API Documentation API from Connecteam — 0 operation(s) for connecteam api documentation.
   humanURL: https://developer.connecteam.com/
   baseURL: https://api.connecteam.com
   tags:
@@ -214,7 +216,8 @@ apis:
     url: mcp/connecteam-tool-crosswalk.yml
 - aid: connecteam:connecteam-dailynote-v1-dailynote-api
   name: Connecteam Daily Note:v1:Daily Note API
-  description: The DailyNote:v1:DailyNote API from Connecteam — 1 operation(s) for dailynote:v1:dailynote.
+  description: >-
+    The DailyNote:v1:DailyNote API from Connecteam — 1 operation(s) for dailynote:v1:dailynote.
   humanURL: https://developer.connecteam.com/
   baseURL: https://api.connecteam.com
   tags:
@@ -232,7 +235,8 @@ apis:
     url: mcp/connecteam-tool-crosswalk.yml
 - aid: connecteam:connecteam-dailynote-v1-dailynotes-api
   name: Connecteam Daily Note:v1:Daily Notes API
-  description: The DailyNote:v1:DailyNotes API from Connecteam — 1 operation(s) for dailynote:v1:dailynotes.
+  description: >-
+    The DailyNote:v1:DailyNotes API from Connecteam — 1 operation(s) for dailynote:v1:dailynotes.
   humanURL: https://developer.connecteam.com/
   baseURL: https://api.connecteam.com
   tags:
@@ -250,7 +254,8 @@ apis:
     url: mcp/connecteam-tool-crosswalk.yml
 - aid: connecteam:connecteam-forms-v1-form-submissions-api
   name: Connecteam Forms:v1:Form Submissions API
-  description: The Forms:v1:Form Submissions API from Connecteam — 2 operation(s) for forms:v1:form submissions.
+  description: >-
+    The Forms:v1:Form Submissions API from Connecteam — 2 operation(s) for forms:v1:form submissions.
   humanURL: https://developer.connecteam.com/
   baseURL: https://api.connecteam.com
   tags:
@@ -304,7 +309,8 @@ apis:
     url: mcp/connecteam-tool-crosswalk.yml
 - aid: connecteam:connecteam-jobs-v1-custom-fields-api
   name: Connecteam Jobs:v1:Custom Fields API
-  description: The Jobs:v1:Custom Fields API from Connecteam — 1 operation(s) for jobs:v1:custom fields.
+  description: >-
+    The Jobs:v1:Custom Fields API from Connecteam — 1 operation(s) for jobs:v1:custom fields.
   humanURL: https://developer.connecteam.com/
   baseURL: https://api.connecteam.com
   tags:
@@ -356,29 +362,10 @@ apis:
     url: asyncapi/connecteam-events-webhooks.yml
   - type: ToolCrosswalk
     url: mcp/connecteam-tool-crosswalk.yml
-- aid: connecteam:connecteam-oauth-api
-  name: Connecteam O Auth API
-  description: The OAuth API from Connecteam — 1 operation(s) for oauth.
-  humanURL: https://developer.connecteam.com/
-  baseURL: https://api.connecteam.com
-  tags:
-  - Authentication
-  tags_raw:
-  - OAuth
-  properties:
-  - type: OpenAPI
-    url: openapi/connecteam-oauth-api-openapi.yml
-  - type: Documentation
-    url: https://developer.connecteam.com/docs/introduction-1
-  - type: APIReference
-    url: https://developer.connecteam.com/reference/
-  - type: Webhooks
-    url: asyncapi/connecteam-events-webhooks.yml
-  - type: ToolCrosswalk
-    url: mcp/connecteam-tool-crosswalk.yml
 - aid: connecteam:connecteam-onboarding-v1-onboarding-assignments-api
   name: Connecteam Onboarding:v1:Onboarding:Assignments API
-  description: The Onboarding:v1:Onboarding:Assignments API from Connecteam — 1 operation(s) for onboarding:v1:onboarding:assignments.
+  description: >-
+    The Onboarding:v1:Onboarding:Assignments API from Connecteam — 1 operation(s) for onboarding:v1:onboarding:assignments.
   humanURL: https://developer.connecteam.com/
   baseURL: https://api.connecteam.com
   tags:
@@ -396,7 +383,8 @@ apis:
     url: mcp/connecteam-tool-crosswalk.yml
 - aid: connecteam:connecteam-onboarding-v1-onboarding-packs-api
   name: Connecteam Onboarding:v1:Onboarding:Packs API
-  description: The Onboarding:v1:Onboarding:Packs API from Connecteam — 1 operation(s) for onboarding:v1:onboarding:packs.
+  description: >-
+    The Onboarding:v1:Onboarding:Packs API from Connecteam — 1 operation(s) for onboarding:v1:onboarding:packs.
   humanURL: https://developer.connecteam.com/
   baseURL: https://api.connecteam.com
   tags:
@@ -414,8 +402,8 @@ apis:
     url: mcp/connecteam-tool-crosswalk.yml
 - aid: connecteam:connecteam-pay-rates-v1-pay-rates-v1-payrates-api
   name: Connecteam Pay Rates:v1:Pay Rates:v1:PayRates API
-  description: The Pay Rates:v1:Pay Rates:v1:PayRates API from Connecteam — 2 operation(s) for pay rates:v1:pay
-    rates:v1:payrates.
+  description: >-
+    The Pay Rates:v1:Pay Rates:v1:PayRates API from Connecteam — 2 operation(s) for pay rates:v1:pay rates:v1:payrates.
   humanURL: https://developer.connecteam.com/
   baseURL: https://api.connecteam.com
   tags:
@@ -433,7 +421,8 @@ apis:
     url: mcp/connecteam-tool-crosswalk.yml
 - aid: connecteam:connecteam-publishers-v1-publishers-api
   name: Connecteam Publishers:v1:Publishers API
-  description: The Publishers:v1:Publishers API from Connecteam — 1 operation(s) for publishers:v1:publishers.
+  description: >-
+    The Publishers:v1:Publishers API from Connecteam — 1 operation(s) for publishers:v1:publishers.
   humanURL: https://developer.connecteam.com/
   baseURL: https://api.connecteam.com
   tags:
@@ -451,8 +440,8 @@ apis:
     url: mcp/connecteam-tool-crosswalk.yml
 - aid: connecteam:connecteam-sales-sales-v1-sales-daily-api
   name: Connecteam Sales:Sales V1:Sales Daily API
-  description: The Sales:Sales V1:Sales Daily API from Connecteam — 1 operation(s) for sales:sales v1:sales
-    daily.
+  description: >-
+    The Sales:Sales V1:Sales Daily API from Connecteam — 1 operation(s) for sales:sales v1:sales daily.
   humanURL: https://developer.connecteam.com/
   baseURL: https://api.connecteam.com
   tags:
@@ -470,8 +459,8 @@ apis:
     url: mcp/connecteam-tool-crosswalk.yml
 - aid: connecteam:connecteam-sales-sales-v1-sales-locations-api
   name: Connecteam Sales:Sales V1:Sales Locations API
-  description: The Sales:Sales V1:Sales Locations API from Connecteam — 1 operation(s) for sales:sales
-    v1:sales locations.
+  description: >-
+    The Sales:Sales V1:Sales Locations API from Connecteam — 1 operation(s) for sales:sales v1:sales locations.
   humanURL: https://developer.connecteam.com/
   baseURL: https://api.connecteam.com
   tags:
@@ -489,8 +478,9 @@ apis:
     url: mcp/connecteam-tool-crosswalk.yml
 - aid: connecteam:connecteam-sales-sales-v1-sales-locations-sales-daily-api
   name: Connecteam Sales:Sales V1:Sales Locations:Sales Daily API
-  description: The Sales:Sales V1:Sales Locations:Sales Daily API from Connecteam — 1 operation(s) for
-    sales:sales v1:sales locations:sales daily.
+  description: >-
+    The Sales:Sales V1:Sales Locations:Sales Daily API from Connecteam — 1 operation(s) for sales:sales
+    v1:sales locations:sales daily.
   humanURL: https://developer.connecteam.com/
   baseURL: https://api.connecteam.com
   tags:
@@ -508,8 +498,9 @@ apis:
     url: mcp/connecteam-tool-crosswalk.yml
 - aid: connecteam:connecteam-sales-sales-v1-sales-transactions-api
   name: Connecteam Sales:Sales V1:Sales Transactions API
-  description: The Sales:Sales V1:Sales Transactions API from Connecteam — 2 operation(s) for sales:sales
-    v1:sales transactions.
+  description: >-
+    The Sales:Sales V1:Sales Transactions API from Connecteam — 2 operation(s) for sales:sales v1:sales
+    transactions.
   humanURL: https://developer.connecteam.com/
   baseURL: https://api.connecteam.com
   tags:
@@ -527,7 +518,8 @@ apis:
     url: mcp/connecteam-tool-crosswalk.yml
 - aid: connecteam:connecteam-schedule-v1-schedulers-api
   name: Connecteam Schedule:v1:Schedulers API
-  description: The Schedule:v1:Schedulers API from Connecteam — 1 operation(s) for schedule:v1:schedulers.
+  description: >-
+    The Schedule:v1:Schedulers API from Connecteam — 1 operation(s) for schedule:v1:schedulers.
   humanURL: https://developer.connecteam.com/
   baseURL: https://api.connecteam.com
   tags:
@@ -545,7 +537,8 @@ apis:
     url: mcp/connecteam-tool-crosswalk.yml
 - aid: connecteam:connecteam-schedule-v1-schedulers-schedule-schedule-unavailabilities-api
   name: Connecteam Schedule:v1:Schedulers:Schedule:Schedule Unavailabilities API
-  description: The Schedule:v1:Schedulers:Schedule:Schedule Unavailabilities API from Connecteam — 1 operation(s)
+  description: >-
+    The Schedule:v1:Schedulers:Schedule:Schedule Unavailabilities API from Connecteam — 1 operation(s)
     for schedule:v1:schedulers:schedule:schedule unavailabilities.
   humanURL: https://developer.connecteam.com/
   baseURL: https://api.connecteam.com
@@ -553,7 +546,8 @@ apis:
   - Schedule:v1:Schedulers:Schedule:Schedule Unavailabilities
   properties:
   - type: OpenAPI
-    url: openapi/connecteam-schedule-v1-schedulers-schedule-schedule-unavailabilities-api-openapi.yml
+    url: >-
+      openapi/connecteam-schedule-v1-schedulers-schedule-schedule-unavailabilities-api-openapi.yml
   - type: Documentation
     url: https://developer.connecteam.com/docs/introduction-1
   - type: APIReference
@@ -564,15 +558,17 @@ apis:
     url: mcp/connecteam-tool-crosswalk.yml
 - aid: connecteam:connecteam-schedule-v1-schedulers-schedule-schedule-unavailability-api
   name: Connecteam Schedule:v1:Schedulers:Schedule:Schedule Unavailability API
-  description: The Schedule:v1:Schedulers:Schedule:Schedule Unavailability API from Connecteam — 2 operation(s)
-    for schedule:v1:schedulers:schedule:schedule unavailability.
+  description: >-
+    The Schedule:v1:Schedulers:Schedule:Schedule Unavailability API from Connecteam — 2 operation(s) for
+    schedule:v1:schedulers:schedule:schedule unavailability.
   humanURL: https://developer.connecteam.com/
   baseURL: https://api.connecteam.com
   tags:
   - Schedule:v1:Schedulers:Schedule:Schedule Unavailability
   properties:
   - type: OpenAPI
-    url: openapi/connecteam-schedule-v1-schedulers-schedule-schedule-unavailability-api-openapi.yml
+    url: >-
+      openapi/connecteam-schedule-v1-schedulers-schedule-schedule-unavailability-api-openapi.yml
   - type: Documentation
     url: https://developer.connecteam.com/docs/introduction-1
   - type: APIReference
@@ -583,8 +579,9 @@ apis:
     url: mcp/connecteam-tool-crosswalk.yml
 - aid: connecteam:connecteam-schedule-v1-schedulers-schedule-shift-auto-assign-api
   name: Connecteam Schedule:v1:Schedulers:Schedule:Shift Auto Assign API
-  description: The Schedule:v1:Schedulers:Schedule:Shift Auto Assign API from Connecteam — 2 operation(s)
-    for schedule:v1:schedulers:schedule:shift auto assign.
+  description: >-
+    The Schedule:v1:Schedulers:Schedule:Shift Auto Assign API from Connecteam — 2 operation(s) for schedule:v1:schedulers:schedule:shift
+    auto assign.
   humanURL: https://developer.connecteam.com/
   baseURL: https://api.connecteam.com
   tags:
@@ -602,8 +599,9 @@ apis:
     url: mcp/connecteam-tool-crosswalk.yml
 - aid: connecteam:connecteam-schedule-v1-schedulers-schedule-shift-custom-fields-api
   name: Connecteam Schedule:v1:Schedulers:Schedule:Shift Custom Fields API
-  description: The Schedule:v1:Schedulers:Schedule:Shift Custom Fields API from Connecteam — 1 operation(s)
-    for schedule:v1:schedulers:schedule:shift custom fields.
+  description: >-
+    The Schedule:v1:Schedulers:Schedule:Shift Custom Fields API from Connecteam — 1 operation(s) for schedule:v1:schedulers:schedule:shift
+    custom fields.
   humanURL: https://developer.connecteam.com/
   baseURL: https://api.connecteam.com
   tags:
@@ -621,8 +619,9 @@ apis:
     url: mcp/connecteam-tool-crosswalk.yml
 - aid: connecteam:connecteam-schedule-v1-schedulers-schedule-shift-layers-api
   name: Connecteam Schedule:v1:Schedulers:Schedule:Shift layers API
-  description: The Schedule:v1:Schedulers:Schedule:Shift layers API from Connecteam — 2 operation(s) for
-    schedule:v1:schedulers:schedule:shift layers.
+  description: >-
+    The Schedule:v1:Schedulers:Schedule:Shift layers API from Connecteam — 2 operation(s) for schedule:v1:schedulers:schedule:shift
+    layers.
   humanURL: https://developer.connecteam.com/
   baseURL: https://api.connecteam.com
   tags:
@@ -640,8 +639,8 @@ apis:
     url: mcp/connecteam-tool-crosswalk.yml
 - aid: connecteam:connecteam-schedule-v1-schedulers-schedule-shifts-shifts-api
   name: Connecteam Schedule:v1:Schedulers:Schedule:Shifts:Shifts API
-  description: The Schedule:v1:Schedulers:Schedule:Shifts:Shifts API from Connecteam — 2 operation(s)
-    for schedule:v1:schedulers:schedule:shifts:shifts.
+  description: >-
+    The Schedule:v1:Schedulers:Schedule:Shifts:Shifts API from Connecteam — 2 operation(s) for schedule:v1:schedulers:schedule:shifts:shifts.
   humanURL: https://developer.connecteam.com/
   baseURL: https://api.connecteam.com
   tags:
@@ -659,7 +658,8 @@ apis:
     url: mcp/connecteam-tool-crosswalk.yml
 - aid: connecteam:connecteam-schedule-v1-schedulers-unavailabilities-api
   name: Connecteam Schedule:v1:Schedulers:Unavailabilities API
-  description: The Schedule:v1:Schedulers:Unavailabilities API from Connecteam — 1 operation(s) for schedule:v1:schedulers:unavailabilities.
+  description: >-
+    The Schedule:v1:Schedulers:Unavailabilities API from Connecteam — 1 operation(s) for schedule:v1:schedulers:unavailabilities.
   humanURL: https://developer.connecteam.com/
   baseURL: https://api.connecteam.com
   tags:
@@ -675,10 +675,12 @@ apis:
     url: asyncapi/connecteam-events-webhooks.yml
   - type: ToolCrosswalk
     url: mcp/connecteam-tool-crosswalk.yml
-- aid: connecteam:connecteam-schedule-v2-schedulers-schedule-shift-auto-assign-v2-shift-auto-assign-api
+- aid: >-
+    connecteam:connecteam-schedule-v2-schedulers-schedule-shift-auto-assign-v2-shift-auto-assign-api
   name: Connecteam Schedule:v2:Schedulers:Schedule:Shift Auto Assign (V2):Shift Auto Assign API
-  description: The Schedule:v2:Schedulers:Schedule:Shift Auto Assign (V2):Shift Auto Assign API from Connecteam
-    — 2 operation(s) for schedule:v2:schedulers:schedule:shift auto assign (v2):shift auto assign.
+  description: >-
+    The Schedule:v2:Schedulers:Schedule:Shift Auto Assign (V2):Shift Auto Assign API from Connecteam —
+    2 operation(s) for schedule:v2:schedulers:schedule:shift auto assign (v2):shift auto assign.
   humanURL: https://developer.connecteam.com/
   baseURL: https://api.connecteam.com
   tags: []
@@ -686,7 +688,8 @@ apis:
   - Schedule:v2:Schedulers:Schedule:Shift Auto Assign (V2):Shift Auto Assign
   properties:
   - type: OpenAPI
-    url: openapi/connecteam-schedule-v2-schedulers-schedule-shift-auto-assign-v2-shift-auto-assign-api-openapi.yml
+    url: >-
+      openapi/connecteam-schedule-v2-schedulers-schedule-shift-auto-assign-v2-shift-auto-assign-api-openapi.yml
   - type: Documentation
     url: https://developer.connecteam.com/docs/introduction-1
   - type: APIReference
@@ -697,8 +700,9 @@ apis:
     url: mcp/connecteam-tool-crosswalk.yml
 - aid: connecteam:connecteam-schedule-v2-schedulers-schedule-shifts-v2-shifts-api
   name: Connecteam Schedule:v2:Schedulers:Schedule:Shifts (V2):Shifts API
-  description: The Schedule:v2:Schedulers:Schedule:Shifts (V2):Shifts API from Connecteam — 2 operation(s)
-    for schedule:v2:schedulers:schedule:shifts (v2):shifts.
+  description: >-
+    The Schedule:v2:Schedulers:Schedule:Shifts (V2):Shifts API from Connecteam — 2 operation(s) for schedule:v2:schedulers:schedule:shifts
+    (v2):shifts.
   humanURL: https://developer.connecteam.com/
   baseURL: https://api.connecteam.com
   tags:
@@ -716,8 +720,9 @@ apis:
     url: mcp/connecteam-tool-crosswalk.yml
 - aid: connecteam:connecteam-schedule-v2-schedulers-unavailabilities-v2-unavailabilities-api
   name: Connecteam Schedule:v2:Schedulers:Unavailabilities (V2):Unavailabilities API
-  description: The Schedule:v2:Schedulers:Unavailabilities (V2):Unavailabilities API from Connecteam —
-    1 operation(s) for schedule:v2:schedulers:unavailabilities (v2):unavailabilities.
+  description: >-
+    The Schedule:v2:Schedulers:Unavailabilities (V2):Unavailabilities API from Connecteam — 1 operation(s)
+    for schedule:v2:schedulers:unavailabilities (v2):unavailabilities.
   humanURL: https://developer.connecteam.com/
   baseURL: https://api.connecteam.com
   tags: []
@@ -725,7 +730,8 @@ apis:
   - Schedule:v2:Schedulers:Unavailabilities (V2):Unavailabilities
   properties:
   - type: OpenAPI
-    url: openapi/connecteam-schedule-v2-schedulers-unavailabilities-v2-unavailabilities-api-openapi.yml
+    url: >-
+      openapi/connecteam-schedule-v2-schedulers-unavailabilities-v2-unavailabilities-api-openapi.yml
   - type: Documentation
     url: https://developer.connecteam.com/docs/introduction-1
   - type: APIReference
@@ -754,7 +760,8 @@ apis:
     url: mcp/connecteam-tool-crosswalk.yml
 - aid: connecteam:connecteam-tasks-v1-subtasks-tasks-taskboards-api
   name: Connecteam Tasks:v1:Sub Tasks:Tasks:Task Boards API
-  description: The Tasks:v1:SubTasks:Tasks:TaskBoards API from Connecteam — 2 operation(s) for tasks:v1:subtasks:tasks:taskboards.
+  description: >-
+    The Tasks:v1:SubTasks:Tasks:TaskBoards API from Connecteam — 2 operation(s) for tasks:v1:subtasks:tasks:taskboards.
   humanURL: https://developer.connecteam.com/
   baseURL: https://api.connecteam.com
   tags:
@@ -808,7 +815,8 @@ apis:
     url: mcp/connecteam-tool-crosswalk.yml
 - aid: connecteam:connecteam-tasks-v1-tasks-tasksboards-api
   name: Connecteam Tasks:v1:Tasks:Tasks Boards API
-  description: The Tasks:v1:Tasks:TasksBoards API from Connecteam — 2 operation(s) for tasks:v1:tasks:tasksboards.
+  description: >-
+    The Tasks:v1:Tasks:TasksBoards API from Connecteam — 2 operation(s) for tasks:v1:tasks:tasksboards.
   humanURL: https://developer.connecteam.com/
   baseURL: https://api.connecteam.com
   tags:
@@ -826,7 +834,8 @@ apis:
     url: mcp/connecteam-tool-crosswalk.yml
 - aid: connecteam:connecteam-time-clock-v1-timeclocks-api
   name: Connecteam Time Clock:v1:TimeClocks API
-  description: The Time Clock:v1:TimeClocks API from Connecteam — 1 operation(s) for time clock:v1:timeclocks.
+  description: >-
+    The Time Clock:v1:TimeClocks API from Connecteam — 1 operation(s) for time clock:v1:timeclocks.
   humanURL: https://developer.connecteam.com/
   baseURL: https://api.connecteam.com
   tags:
@@ -844,8 +853,8 @@ apis:
     url: mcp/connecteam-tool-crosswalk.yml
 - aid: connecteam:connecteam-time-clock-v1-timeclocks-timeclock-clockin-api
   name: Connecteam Time Clock:v1:TimeClocks:TimeClock:ClockIn API
-  description: The Time Clock:v1:TimeClocks:TimeClock:ClockIn API from Connecteam — 1 operation(s) for
-    time clock:v1:timeclocks:timeclock:clockin.
+  description: >-
+    The Time Clock:v1:TimeClocks:TimeClock:ClockIn API from Connecteam — 1 operation(s) for time clock:v1:timeclocks:timeclock:clockin.
   humanURL: https://developer.connecteam.com/
   baseURL: https://api.connecteam.com
   tags:
@@ -863,8 +872,8 @@ apis:
     url: mcp/connecteam-tool-crosswalk.yml
 - aid: connecteam:connecteam-time-clock-v1-timeclocks-timeclock-clockout-api
   name: Connecteam Time Clock:v1:TimeClocks:TimeClock:ClockOut API
-  description: The Time Clock:v1:TimeClocks:TimeClock:ClockOut API from Connecteam — 1 operation(s) for
-    time clock:v1:timeclocks:timeclock:clockout.
+  description: >-
+    The Time Clock:v1:TimeClocks:TimeClock:ClockOut API from Connecteam — 1 operation(s) for time clock:v1:timeclocks:timeclock:clockout.
   humanURL: https://developer.connecteam.com/
   baseURL: https://api.connecteam.com
   tags:
@@ -882,8 +891,8 @@ apis:
     url: mcp/connecteam-tool-crosswalk.yml
 - aid: connecteam:connecteam-time-clock-v1-timeclocks-timeclock-geofences-api
   name: Connecteam Time Clock:v1:TimeClocks:TimeClock:GeoFences API
-  description: The Time Clock:v1:TimeClocks:TimeClock:GeoFences API from Connecteam — 2 operation(s) for
-    time clock:v1:timeclocks:timeclock:geofences.
+  description: >-
+    The Time Clock:v1:TimeClocks:TimeClock:GeoFences API from Connecteam — 2 operation(s) for time clock:v1:timeclocks:timeclock:geofences.
   humanURL: https://developer.connecteam.com/
   baseURL: https://api.connecteam.com
   tags:
@@ -901,15 +910,17 @@ apis:
     url: mcp/connecteam-tool-crosswalk.yml
 - aid: connecteam:connecteam-time-clock-v1-timeclocks-timeclock-get-timesheet-totals-api
   name: Connecteam Time Clock:v1:TimeClocks:TimeClock:Get timesheet totals API
-  description: The Time Clock:v1:TimeClocks:TimeClock:Get timesheet totals API from Connecteam — 1 operation(s)
-    for time clock:v1:timeclocks:timeclock:get timesheet totals.
+  description: >-
+    The Time Clock:v1:TimeClocks:TimeClock:Get timesheet totals API from Connecteam — 1 operation(s) for
+    time clock:v1:timeclocks:timeclock:get timesheet totals.
   humanURL: https://developer.connecteam.com/
   baseURL: https://api.connecteam.com
   tags:
   - Time Clock:v1:TimeClocks:TimeClock:Get timesheet totals
   properties:
   - type: OpenAPI
-    url: openapi/connecteam-time-clock-v1-timeclocks-timeclock-get-timesheet-totals-api-openapi.yml
+    url: >-
+      openapi/connecteam-time-clock-v1-timeclocks-timeclock-get-timesheet-totals-api-openapi.yml
   - type: Documentation
     url: https://developer.connecteam.com/docs/introduction-1
   - type: APIReference
@@ -920,8 +931,8 @@ apis:
     url: mcp/connecteam-tool-crosswalk.yml
 - aid: connecteam:connecteam-time-clock-v1-timeclocks-timeclock-lockdays-api
   name: Connecteam Time Clock:v1:TimeClocks:TimeClock:LockDays API
-  description: The Time Clock:v1:TimeClocks:TimeClock:LockDays API from Connecteam — 1 operation(s) for
-    time clock:v1:timeclocks:timeclock:lockdays.
+  description: >-
+    The Time Clock:v1:TimeClocks:TimeClock:LockDays API from Connecteam — 1 operation(s) for time clock:v1:timeclocks:timeclock:lockdays.
   humanURL: https://developer.connecteam.com/
   baseURL: https://api.connecteam.com
   tags:
@@ -939,8 +950,9 @@ apis:
     url: mcp/connecteam-tool-crosswalk.yml
 - aid: connecteam:connecteam-time-clock-v1-timeclocks-timeclock-manualbreaks-api
   name: Connecteam Time Clock:v1:TimeClocks:TimeClock:ManualBreaks API
-  description: The Time Clock:v1:TimeClocks:TimeClock:ManualBreaks API from Connecteam — 1 operation(s)
-    for time clock:v1:timeclocks:timeclock:manualbreaks.
+  description: >-
+    The Time Clock:v1:TimeClocks:TimeClock:ManualBreaks API from Connecteam — 1 operation(s) for time
+    clock:v1:timeclocks:timeclock:manualbreaks.
   humanURL: https://developer.connecteam.com/
   baseURL: https://api.connecteam.com
   tags:
@@ -956,10 +968,12 @@ apis:
     url: asyncapi/connecteam-events-webhooks.yml
   - type: ToolCrosswalk
     url: mcp/connecteam-tool-crosswalk.yml
-- aid: connecteam:connecteam-time-clock-v1-timeclocks-timeclock-manualbreaks-manualbreakclockin-api
+- aid: >-
+    connecteam:connecteam-time-clock-v1-timeclocks-timeclock-manualbreaks-manualbreakclockin-api
   name: Connecteam Time Clock:v1:TimeClocks:TimeClock:ManualBreaks:ManualBreakClockIn API
-  description: The Time Clock:v1:TimeClocks:TimeClock:ManualBreaks:ManualBreakClockIn API from Connecteam
-    — 1 operation(s) for time clock:v1:timeclocks:timeclock:manualbreaks:manualbreakclockin.
+  description: >-
+    The Time Clock:v1:TimeClocks:TimeClock:ManualBreaks:ManualBreakClockIn API from Connecteam — 1 operation(s)
+    for time clock:v1:timeclocks:timeclock:manualbreaks:manualbreakclockin.
   humanURL: https://developer.connecteam.com/
   baseURL: https://api.connecteam.com
   tags: []
@@ -967,7 +981,8 @@ apis:
   - Time Clock:v1:TimeClocks:TimeClock:ManualBreaks:ManualBreakClockIn
   properties:
   - type: OpenAPI
-    url: openapi/connecteam-time-clock-v1-timeclocks-timeclock-manualbreaks-manualbreakclockin-api-openapi.yml
+    url: >-
+      openapi/connecteam-time-clock-v1-timeclocks-timeclock-manualbreaks-manualbreakclockin-api-openapi.yml
   - type: Documentation
     url: https://developer.connecteam.com/docs/introduction-1
   - type: APIReference
@@ -976,10 +991,12 @@ apis:
     url: asyncapi/connecteam-events-webhooks.yml
   - type: ToolCrosswalk
     url: mcp/connecteam-tool-crosswalk.yml
-- aid: connecteam:connecteam-time-clock-v1-timeclocks-timeclock-manualbreaks-manualbreakclockout-api
+- aid: >-
+    connecteam:connecteam-time-clock-v1-timeclocks-timeclock-manualbreaks-manualbreakclockout-api
   name: Connecteam Time Clock:v1:TimeClocks:TimeClock:ManualBreaks:ManualBreakClockOut API
-  description: The Time Clock:v1:TimeClocks:TimeClock:ManualBreaks:ManualBreakClockOut API from Connecteam
-    — 1 operation(s) for time clock:v1:timeclocks:timeclock:manualbreaks:manualbreakclockout.
+  description: >-
+    The Time Clock:v1:TimeClocks:TimeClock:ManualBreaks:ManualBreakClockOut API from Connecteam — 1 operation(s)
+    for time clock:v1:timeclocks:timeclock:manualbreaks:manualbreakclockout.
   humanURL: https://developer.connecteam.com/
   baseURL: https://api.connecteam.com
   tags: []
@@ -987,7 +1004,8 @@ apis:
   - Time Clock:v1:TimeClocks:TimeClock:ManualBreaks:ManualBreakClockOut
   properties:
   - type: OpenAPI
-    url: openapi/connecteam-time-clock-v1-timeclocks-timeclock-manualbreaks-manualbreakclockout-api-openapi.yml
+    url: >-
+      openapi/connecteam-time-clock-v1-timeclocks-timeclock-manualbreaks-manualbreakclockout-api-openapi.yml
   - type: Documentation
     url: https://developer.connecteam.com/docs/introduction-1
   - type: APIReference
@@ -998,8 +1016,9 @@ apis:
     url: mcp/connecteam-tool-crosswalk.yml
 - aid: connecteam:connecteam-time-clock-v1-timeclocks-timeclock-shiftattachments-api
   name: Connecteam Time Clock:v1:TimeClocks:TimeClock:ShiftAttachments API
-  description: The Time Clock:v1:TimeClocks:TimeClock:ShiftAttachments API from Connecteam — 1 operation(s)
-    for time clock:v1:timeclocks:timeclock:shiftattachments.
+  description: >-
+    The Time Clock:v1:TimeClocks:TimeClock:ShiftAttachments API from Connecteam — 1 operation(s) for time
+    clock:v1:timeclocks:timeclock:shiftattachments.
   humanURL: https://developer.connecteam.com/
   baseURL: https://api.connecteam.com
   tags:
@@ -1017,8 +1036,9 @@ apis:
     url: mcp/connecteam-tool-crosswalk.yml
 - aid: connecteam:connecteam-time-clock-v1-timeclocks-timeclock-timeactivities-api
   name: Connecteam Time Clock:v1:TimeClocks:TimeClock:TimeActivities API
-  description: The Time Clock:v1:TimeClocks:TimeClock:TimeActivities API from Connecteam — 2 operation(s)
-    for time clock:v1:timeclocks:timeclock:timeactivities.
+  description: >-
+    The Time Clock:v1:TimeClocks:TimeClock:TimeActivities API from Connecteam — 2 operation(s) for time
+    clock:v1:timeclocks:timeclock:timeactivities.
   humanURL: https://developer.connecteam.com/
   baseURL: https://api.connecteam.com
   tags:
@@ -1054,7 +1074,8 @@ apis:
     url: mcp/connecteam-tool-crosswalk.yml
 - aid: connecteam:connecteam-time-off-v1-policyassignment-api
   name: Connecteam Time Off:v1:PolicyAssignment API
-  description: The Time Off:v1:PolicyAssignment API from Connecteam — 1 operation(s) for time off:v1:policyassignment.
+  description: >-
+    The Time Off:v1:PolicyAssignment API from Connecteam — 1 operation(s) for time off:v1:policyassignment.
   humanURL: https://developer.connecteam.com/
   baseURL: https://api.connecteam.com
   tags:
@@ -1072,7 +1093,8 @@ apis:
     url: mcp/connecteam-tool-crosswalk.yml
 - aid: connecteam:connecteam-time-off-v1-policytypes-api
   name: Connecteam Time Off:v1:PolicyTypes API
-  description: The Time Off:v1:PolicyTypes API from Connecteam — 1 operation(s) for time off:v1:policytypes.
+  description: >-
+    The Time Off:v1:PolicyTypes API from Connecteam — 1 operation(s) for time off:v1:policytypes.
   humanURL: https://developer.connecteam.com/
   baseURL: https://api.connecteam.com
   tags:
@@ -1090,7 +1112,8 @@ apis:
     url: mcp/connecteam-tool-crosswalk.yml
 - aid: connecteam:connecteam-time-off-v1-timeoffrequests-api
   name: Connecteam Time Off:v1:TimeOffRequests API
-  description: The Time Off:v1:TimeOffRequests API from Connecteam — 2 operation(s) for time off:v1:timeoffrequests.
+  description: >-
+    The Time Off:v1:TimeOffRequests API from Connecteam — 2 operation(s) for time off:v1:timeoffrequests.
   humanURL: https://developer.connecteam.com/
   baseURL: https://api.connecteam.com
   tags:
@@ -1144,8 +1167,9 @@ apis:
     url: mcp/connecteam-tool-crosswalk.yml
 - aid: connecteam:connecteam-users-v1-custom-field-categories-api
   name: Connecteam Users:v1:Custom Field Categories API
-  description: The Users:v1:Custom Field Categories API from Connecteam — 1 operation(s) for users:v1:custom
-    field categories.
+  description: >-
+    The Users:v1:Custom Field Categories API from Connecteam — 1 operation(s) for users:v1:custom field
+    categories.
   humanURL: https://developer.connecteam.com/
   baseURL: https://api.connecteam.com
   tags:
@@ -1163,7 +1187,8 @@ apis:
     url: mcp/connecteam-tool-crosswalk.yml
 - aid: connecteam:connecteam-users-v1-custom-fields-api
   name: Connecteam Users:v1:Custom Fields API
-  description: The Users:v1:Custom Fields API from Connecteam — 1 operation(s) for users:v1:custom fields.
+  description: >-
+    The Users:v1:Custom Fields API from Connecteam — 1 operation(s) for users:v1:custom fields.
   humanURL: https://developer.connecteam.com/
   baseURL: https://api.connecteam.com
   tags:
@@ -1181,8 +1206,9 @@ apis:
     url: mcp/connecteam-tool-crosswalk.yml
 - aid: connecteam:connecteam-users-v1-custom-fields-custom-field-options-api
   name: Connecteam Users:v1:Custom Fields:Custom Field options API
-  description: The Users:v1:Custom Fields:Custom Field options API from Connecteam — 2 operation(s) for
-    users:v1:custom fields:custom field options.
+  description: >-
+    The Users:v1:Custom Fields:Custom Field options API from Connecteam — 2 operation(s) for users:v1:custom
+    fields:custom field options.
   humanURL: https://developer.connecteam.com/
   baseURL: https://api.connecteam.com
   tags:
@@ -1236,8 +1262,9 @@ apis:
     url: mcp/connecteam-tool-crosswalk.yml
 - aid: connecteam:connecteam-users-v1-pending-request-users-api
   name: Connecteam Users:v1:Pending Request Users API
-  description: The Users:v1:Pending Request Users API from Connecteam — 3 operation(s) for users:v1:pending
-    request users.
+  description: >-
+    The Users:v1:Pending Request Users API from Connecteam — 3 operation(s) for users:v1:pending request
+    users.
   humanURL: https://developer.connecteam.com/
   baseURL: https://api.connecteam.com
   tags:
@@ -1273,7 +1300,8 @@ apis:
     url: mcp/connecteam-tool-crosswalk.yml
 - aid: connecteam:connecteam-users-v1-performance-indicators-api
   name: Connecteam Users:v1:Performance Indicators API
-  description: The Users:v1:Performance Indicators API from Connecteam — 1 operation(s) for users:v1:performance
+  description: >-
+    The Users:v1:Performance Indicators API from Connecteam — 1 operation(s) for users:v1:performance
     indicators.
   humanURL: https://developer.connecteam.com/
   baseURL: https://api.connecteam.com
@@ -1292,8 +1320,8 @@ apis:
     url: mcp/connecteam-tool-crosswalk.yml
 - aid: connecteam:connecteam-users-v1-smart-group-segments-api
   name: Connecteam Users:v1:Smart Group Segments API
-  description: The Users:v1:Smart Group Segments API from Connecteam — 1 operation(s) for users:v1:smart
-    group segments.
+  description: >-
+    The Users:v1:Smart Group Segments API from Connecteam — 1 operation(s) for users:v1:smart group segments.
   humanURL: https://developer.connecteam.com/
   baseURL: https://api.connecteam.com
   tags:
@@ -1311,7 +1339,8 @@ apis:
     url: mcp/connecteam-tool-crosswalk.yml
 - aid: connecteam:connecteam-users-v1-smart-groups-api
   name: Connecteam Users:v1:Smart Groups API
-  description: The Users:v1:Smart Groups API from Connecteam — 2 operation(s) for users:v1:smart groups.
+  description: >-
+    The Users:v1:Smart Groups API from Connecteam — 2 operation(s) for users:v1:smart groups.
   humanURL: https://developer.connecteam.com/
   baseURL: https://api.connecteam.com
   tags:
@@ -1337,6 +1366,24 @@ apis:
   properties:
   - type: OpenAPI
     url: openapi/connecteam-users-v1-users-api-openapi.yml
+  - type: Documentation
+    url: https://developer.connecteam.com/docs/introduction-1
+  - type: APIReference
+    url: https://developer.connecteam.com/reference/
+  - type: Webhooks
+    url: asyncapi/connecteam-events-webhooks.yml
+  - type: ToolCrosswalk
+    url: mcp/connecteam-tool-crosswalk.yml
+- aid: connecteam:connecteam-oauth-api
+  name: Connecteam O Auth API
+  description: The OAuth API from Connecteam — 1 operation(s) for oauth.
+  humanURL: https://developer.connecteam.com/
+  baseURL: https://api.connecteam.com
+  tags:
+  - OAuth
+  properties:
+  - type: OpenAPI
+    url: openapi/connecteam-oauth-api-openapi.yml
   - type: Documentation
     url: https://developer.connecteam.com/docs/introduction-1
   - type: APIReference

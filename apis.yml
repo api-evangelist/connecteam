@@ -1380,6 +1380,8 @@ apis:
   humanURL: https://developer.connecteam.com/
   baseURL: https://api.connecteam.com
   tags:
+  - Authentication
+  tags_raw:
   - OAuth
   properties:
   - type: OpenAPI

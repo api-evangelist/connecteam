@@ -1,6 +1,6 @@
 openapi: 3.2.0
 info:
-  title: Connecteam API documentation Time Clock:v1:TimeClocks:TimeClock:ShiftAttachments API
+  title: Connecteam API documentation Time…
   version: v1
 servers:
 - url: https://api.connecteam.com/
@@ -42,20 +42,6 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
-    ShiftAttachmentsGetResponse:
-      properties:
-        shiftAttachments:
-          items:
-            anyOf:
-            - $ref: '#/components/schemas/ShiftAttachmentDropDownListSettingsResponse'
-            - $ref: '#/components/schemas/ShiftAttachmentSettingsResponse'
-          type: array
-          title: Shiftattachments
-          description: The shift attachments
-      type: object
-      required:
-      - shiftAttachments
-      title: ShiftAttachmentsGetResponse
     HTTPValidationError:
       properties:
         detail:
@@ -65,6 +51,37 @@ components:
           title: Detail
       type: object
       title: HTTPValidationError
+    ShiftAttachmentDropDownListItemSettingsResponse:
+      properties:
+        id:
+          type: string
+          title: Id
+          description: The ID of the dropdown list item
+        name:
+          type: string
+          title: Name
+          description: The name of the dropdown list item
+        isEnabled:
+          type: boolean
+          title: Isenabled
+          description: Whether the dropdown list item is enabled
+      type: object
+      required:
+      - id
+      - name
+      - isEnabled
+      title: ShiftAttachmentDropDownListItemSettingsResponse
+    APIResponse_ShiftAttachmentsGetResponse_:
+      properties:
+        requestId:
+          type: string
+          title: Requestid
+        data:
+          $ref: '#/components/schemas/ShiftAttachmentsGetResponse'
+      type: object
+      required:
+      - data
+      title: APIResponse[ShiftAttachmentsGetResponse]
     ValidationError:
       properties:
         loc:
@@ -86,6 +103,20 @@ components:
       - msg
       - type
       title: ValidationError
+    ShiftAttachmentsGetResponse:
+      properties:
+        shiftAttachments:
+          items:
+            anyOf:
+            - $ref: '#/components/schemas/ShiftAttachmentDropDownListSettingsResponse'
+            - $ref: '#/components/schemas/ShiftAttachmentSettingsResponse'
+          type: array
+          title: Shiftattachments
+          description: The shift attachments
+      type: object
+      required:
+      - shiftAttachments
+      title: ShiftAttachmentsGetResponse
     ShiftAttachmentType:
       type: string
       enum:
@@ -97,17 +128,6 @@ components:
       - signature
       title: ShiftAttachmentType
       description: An enumeration.
-    APIResponse_ShiftAttachmentsGetResponse_:
-      properties:
-        requestId:
-          type: string
-          title: Requestid
-        data:
-          $ref: '#/components/schemas/ShiftAttachmentsGetResponse'
-      type: object
-      required:
-      - data
-      title: APIResponse[ShiftAttachmentsGetResponse]
     ShiftAttachmentDropDownListSettingsResponse:
       properties:
         id:
@@ -145,26 +165,6 @@ components:
       - isEnabled
       - items
       title: ShiftAttachmentDropDownListSettingsResponse
-    ShiftAttachmentDropDownListItemSettingsResponse:
-      properties:
-        id:
-          type: string
-          title: Id
-          description: The ID of the dropdown list item
-        name:
-          type: string
-          title: Name
-          description: The name of the dropdown list item
-        isEnabled:
-          type: boolean
-          title: Isenabled
-          description: Whether the dropdown list item is enabled
-      type: object
-      required:
-      - id
-      - name
-      - isEnabled
-      title: ShiftAttachmentDropDownListItemSettingsResponse
     ShiftAttachmentSettingsResponse:
       properties:
         id:

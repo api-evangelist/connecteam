@@ -1,6 +1,6 @@
 openapi: 3.2.0
 info:
-  title: Connecteam API documentation Schedule:v1:Schedulers:Schedule:Shift Auto Assign API
+  title: Connecteam API documentation Schedule:v1:Schedulers:Schedule…
   version: v1
 servers:
 - url: https://api.connecteam.com/
@@ -89,16 +89,6 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
-    AutoAssignResponse:
-      properties:
-        autoAssignRequestId:
-          type: string
-          title: Autoassignrequestid
-          description: The unique identifier of the auto assign request
-      type: object
-      required:
-      - autoAssignRequestId
-      title: AutoAssignResponse
     HTTPValidationError:
       properties:
         detail:
@@ -129,38 +119,6 @@ components:
       - msg
       - type
       title: ValidationError
-    AutoAssignStatusResponse:
-      properties:
-        autoAssignRequestId:
-          type: string
-          title: Autoassignrequestid
-          description: The unique identifier of the auto assign request
-        status:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Status
-          description: The status of the request
-        assignedShiftIds:
-          anyOf:
-          - items:
-              type: string
-            type: array
-          - type: 'null'
-          title: Assignedshiftids
-          description: List of shift IDs that were successfully assigned
-        unassignedShiftIds:
-          anyOf:
-          - items:
-              type: string
-            type: array
-          - type: 'null'
-          title: Unassignedshiftids
-          description: List of shift IDs that were not successfully assigned
-      type: object
-      required:
-      - autoAssignRequestId
-      title: AutoAssignStatusResponse
     APIResponseV2_AutoAssignStatusResponse_:
       properties:
         requestId:
@@ -172,6 +130,27 @@ components:
       required:
       - data
       title: APIResponseV2[AutoAssignStatusResponse]
+    APIResponseV2_AutoAssignResponse_:
+      properties:
+        requestId:
+          type: string
+          title: Requestid
+        data:
+          $ref: '#/components/schemas/AutoAssignResponse'
+      type: object
+      required:
+      - data
+      title: APIResponseV2[AutoAssignResponse]
+    AutoAssignResponse:
+      properties:
+        autoAssignRequestId:
+          type: string
+          title: Autoassignrequestid
+          description: The unique identifier of the auto assign request
+      type: object
+      required:
+      - autoAssignRequestId
+      title: AutoAssignResponse
     AutoAssignRequest:
       properties:
         shiftsIds:
@@ -212,17 +191,38 @@ components:
       required:
       - shiftsIds
       title: AutoAssignRequest
-    APIResponseV2_AutoAssignResponse_:
+    AutoAssignStatusResponse:
       properties:
-        requestId:
+        autoAssignRequestId:
           type: string
-          title: Requestid
-        data:
-          $ref: '#/components/schemas/AutoAssignResponse'
+          title: Autoassignrequestid
+          description: The unique identifier of the auto assign request
+        status:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Status
+          description: The status of the request
+        assignedShiftIds:
+          anyOf:
+          - items:
+              type: string
+            type: array
+          - type: 'null'
+          title: Assignedshiftids
+          description: List of shift IDs that were successfully assigned
+        unassignedShiftIds:
+          anyOf:
+          - items:
+              type: string
+            type: array
+          - type: 'null'
+          title: Unassignedshiftids
+          description: List of shift IDs that were not successfully assigned
       type: object
       required:
-      - data
-      title: APIResponseV2[AutoAssignResponse]
+      - autoAssignRequestId
+      title: AutoAssignStatusResponse
   securitySchemes:
     APIKeyHeader:
       type: apiKey

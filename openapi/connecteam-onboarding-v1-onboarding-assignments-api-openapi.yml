@@ -1,6 +1,6 @@
 openapi: 3.2.0
 info:
-  title: Connecteam API documentation Onboarding:v1:Onboarding:Assignments API
+  title: Connecteam API documentation Onboarding:v1:Onboarding:Assign…
   version: v1
 servers:
 - url: https://api.connecteam.com/
@@ -91,6 +91,34 @@ components:
           title: Detail
       type: object
       title: HTTPValidationError
+    AssignmentsCreateResponse:
+      properties: {}
+      type: object
+      title: AssignmentsCreateResponse
+    AssignmentsCreateRequest:
+      properties:
+        userIds:
+          items:
+            type: integer
+            minimum: 1.0
+          type: array
+          title: Userids
+          description: 'List of user IDs to assign (max: 500)'
+      type: object
+      required:
+      - userIds
+      title: AssignmentsCreateRequest
+    APIResponse_AssignmentsCreateResponse_:
+      properties:
+        requestId:
+          type: string
+          title: Requestid
+        data:
+          $ref: '#/components/schemas/AssignmentsCreateResponse'
+      type: object
+      required:
+      - data
+      title: APIResponse[AssignmentsCreateResponse]
     ValidationError:
       properties:
         loc:
@@ -112,10 +140,24 @@ components:
       - msg
       - type
       title: ValidationError
-    AssignmentsCreateResponse:
-      properties: {}
+    OnboardingStatus:
+      enum:
+      - in_progress
+      - completed
+      title: OnboardingStatus
+      description: An enumeration.
+    AssignmentsGetResponse:
+      properties:
+        assignments:
+          items:
+            $ref: '#/components/schemas/AssignmentResponse'
+          type: array
+          title: Assignments
+          description: List of pack assignments
       type: object
-      title: AssignmentsCreateResponse
+      required:
+      - assignments
+      title: AssignmentsGetResponse
     AssignmentResponse:
       properties:
         id:
@@ -141,25 +183,6 @@ components:
       - status
       - isWaitingApproval
       title: AssignmentResponse
-    AssignmentsCreateRequest:
-      properties:
-        userIds:
-          items:
-            type: integer
-            minimum: 1.0
-          type: array
-          title: Userids
-          description: 'List of user IDs to assign (max: 500)'
-      type: object
-      required:
-      - userIds
-      title: AssignmentsCreateRequest
-    OnboardingStatus:
-      enum:
-      - in_progress
-      - completed
-      title: OnboardingStatus
-      description: An enumeration.
     APIResponse_AssignmentsGetResponse_:
       properties:
         requestId:
@@ -171,29 +194,6 @@ components:
       required:
       - data
       title: APIResponse[AssignmentsGetResponse]
-    AssignmentsGetResponse:
-      properties:
-        assignments:
-          items:
-            $ref: '#/components/schemas/AssignmentResponse'
-          type: array
-          title: Assignments
-          description: List of pack assignments
-      type: object
-      required:
-      - assignments
-      title: AssignmentsGetResponse
-    APIResponse_AssignmentsCreateResponse_:
-      properties:
-        requestId:
-          type: string
-          title: Requestid
-        data:
-          $ref: '#/components/schemas/AssignmentsCreateResponse'
-      type: object
-      required:
-      - data
-      title: APIResponse[AssignmentsCreateResponse]
   securitySchemes:
     APIKeyHeader:
       type: apiKey

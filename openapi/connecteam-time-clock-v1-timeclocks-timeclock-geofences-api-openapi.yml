@@ -1,6 +1,6 @@
 openapi: 3.2.0
 info:
-  title: Connecteam API documentation Time Clock:v1:TimeClocks:TimeClock:GeoFences API
+  title: Connecteam API documentation Time…
   version: v1
 servers:
 - url: https://api.connecteam.com/
@@ -164,17 +164,18 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
-    APIResponse_GeoFencesCreatedResponse_:
+    GeoFencesCreatedResponse:
       properties:
-        requestId:
-          type: string
-          title: Requestid
-        data:
-          $ref: '#/components/schemas/GeoFencesCreatedResponse'
+        geofences:
+          items:
+            $ref: '#/components/schemas/GeoFenceCreatedEntity'
+          type: array
+          title: Geofences
+          description: Geofences list
       type: object
       required:
-      - data
-      title: APIResponse[GeoFencesCreatedResponse]
+      - geofences
+      title: GeoFencesCreatedResponse
     HTTPValidationError:
       properties:
         detail:
@@ -184,90 +185,6 @@ components:
           title: Detail
       type: object
       title: HTTPValidationError
-    ValidationError:
-      properties:
-        loc:
-          items:
-            anyOf:
-            - type: string
-            - type: integer
-          type: array
-          title: Location
-        msg:
-          type: string
-          title: Message
-        type:
-          type: string
-          title: Error Type
-      type: object
-      required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
-    GeoFenceEntity:
-      properties:
-        name:
-          type: string
-          minLength: 1
-          title: Name
-          description: The name of the geofence
-        isEnabled:
-          type: boolean
-          title: Isenabled
-          description: Indicates whether the geofence is enabled upon creation
-          default: true
-        fenceSize:
-          type: integer
-          maximum: 1524.0
-          minimum: 75.0
-          title: Fencesize
-          description: The radius size (in meters) of the geofence. Must be a value between 75-1524 meters
-        jobIds:
-          items:
-            type: string
-          type: array
-          maxItems: 100
-          title: Jobids
-          description: List of job IDs to apply the geofence. If the job contains sub-jobs, pass only the parent job ID. If jobs are not required in the account settings, pass an empty array.(It is empty by default)
-        onGeofenceExitAction:
-          allOf:
-          - $ref: '#/components/schemas/ExitGeofenceAction'
-          description: Determines the action to be made when a clocked in user exits a geofenced area.
-          default: noAction
-        location:
-          allOf:
-          - $ref: '#/components/schemas/GpsLocation'
-          title: Location
-          description: The location of the geo fence
-      type: object
-      required:
-      - name
-      - location
-      title: GeoFenceEntity
-    ExitGeofenceAction:
-      type: string
-      enum:
-      - noAction
-      - sendNotification
-      - autoClockOut
-      title: ExitGeofenceAction
-      description: An enumeration.
-    GeoFenceCreatedEntity:
-      properties:
-        fenceId:
-          type: string
-          title: Fenceid
-          description: Geo fence resource ID
-        name:
-          type: string
-          title: Name
-          description: Geo fence name
-      type: object
-      required:
-      - fenceId
-      - name
-      title: GeoFenceCreatedEntity
     GeoFenceWithFenceIdEntity:
       properties:
         id:
@@ -313,29 +230,6 @@ components:
       - name
       - location
       title: GeoFenceWithFenceIdEntity
-    APIResponse_BaseResponse_:
-      properties:
-        requestId:
-          type: string
-          title: Requestid
-        data:
-          $ref: '#/components/schemas/BaseResponse'
-      type: object
-      required:
-      - data
-      title: APIResponse[BaseResponse]
-    GeoFencesGetResponse:
-      properties:
-        geofences:
-          items:
-            $ref: '#/components/schemas/GeoFenceWithFenceIdEntity'
-          type: array
-          title: Geofences
-          description: Geofences list
-      type: object
-      required:
-      - geofences
-      title: GeoFencesGetResponse
     GeoFencesCreateRequest:
       properties:
         geofences:
@@ -349,6 +243,32 @@ components:
       required:
       - geofences
       title: GeoFencesCreateRequest
+    APIResponse_GeoFenceWithFenceIdEntity_:
+      properties:
+        requestId:
+          type: string
+          title: Requestid
+        data:
+          $ref: '#/components/schemas/GeoFenceWithFenceIdEntity'
+      type: object
+      required:
+      - data
+      title: APIResponse[GeoFenceWithFenceIdEntity]
+    GeoFenceCreatedEntity:
+      properties:
+        fenceId:
+          type: string
+          title: Fenceid
+          description: Geo fence resource ID
+        name:
+          type: string
+          title: Name
+          description: Geo fence name
+      type: object
+      required:
+      - fenceId
+      - name
+      title: GeoFenceCreatedEntity
     APIResponse_GeoFencesGetResponse_:
       properties:
         requestId:
@@ -360,6 +280,47 @@ components:
       required:
       - data
       title: APIResponse[GeoFencesGetResponse]
+    GeoFencesGetResponse:
+      properties:
+        geofences:
+          items:
+            $ref: '#/components/schemas/GeoFenceWithFenceIdEntity'
+          type: array
+          title: Geofences
+          description: Geofences list
+      type: object
+      required:
+      - geofences
+      title: GeoFencesGetResponse
+    ExitGeofenceAction:
+      type: string
+      enum:
+      - noAction
+      - sendNotification
+      - autoClockOut
+      title: ExitGeofenceAction
+      description: An enumeration.
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
     GpsLocation:
       properties:
         address:
@@ -384,29 +345,68 @@ components:
       properties: {}
       type: object
       title: BaseResponse
-    APIResponse_GeoFenceWithFenceIdEntity_:
+    APIResponse_BaseResponse_:
       properties:
         requestId:
           type: string
           title: Requestid
         data:
-          $ref: '#/components/schemas/GeoFenceWithFenceIdEntity'
+          $ref: '#/components/schemas/BaseResponse'
       type: object
       required:
       - data
-      title: APIResponse[GeoFenceWithFenceIdEntity]
-    GeoFencesCreatedResponse:
+      title: APIResponse[BaseResponse]
+    GeoFenceEntity:
       properties:
-        geofences:
+        name:
+          type: string
+          minLength: 1
+          title: Name
+          description: The name of the geofence
+        isEnabled:
+          type: boolean
+          title: Isenabled
+          description: Indicates whether the geofence is enabled upon creation
+          default: true
+        fenceSize:
+          type: integer
+          maximum: 1524.0
+          minimum: 75.0
+          title: Fencesize
+          description: The radius size (in meters) of the geofence. Must be a value between 75-1524 meters
+        jobIds:
           items:
-            $ref: '#/components/schemas/GeoFenceCreatedEntity'
+            type: string
           type: array
-          title: Geofences
-          description: Geofences list
+          maxItems: 100
+          title: Jobids
+          description: List of job IDs to apply the geofence. If the job contains sub-jobs, pass only the parent job ID. If jobs are not required in the account settings, pass an empty array.(It is empty by default)
+        onGeofenceExitAction:
+          allOf:
+          - $ref: '#/components/schemas/ExitGeofenceAction'
+          description: Determines the action to be made when a clocked in user exits a geofenced area.
+          default: noAction
+        location:
+          allOf:
+          - $ref: '#/components/schemas/GpsLocation'
+          title: Location
+          description: The location of the geo fence
       type: object
       required:
-      - geofences
-      title: GeoFencesCreatedResponse
+      - name
+      - location
+      title: GeoFenceEntity
+    APIResponse_GeoFencesCreatedResponse_:
+      properties:
+        requestId:
+          type: string
+          title: Requestid
+        data:
+          $ref: '#/components/schemas/GeoFencesCreatedResponse'
+      type: object
+      required:
+      - data
+      title: APIResponse[GeoFencesCreatedResponse]
   securitySchemes:
     APIKeyHeader:
       type: apiKey

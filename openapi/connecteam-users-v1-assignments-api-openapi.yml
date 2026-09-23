@@ -60,6 +60,17 @@ components:
           title: Detail
       type: object
       title: HTTPValidationError
+    APIResponse_AssignmentsResponse_:
+      properties:
+        requestId:
+          type: string
+          title: Requestid
+        data:
+          $ref: '#/components/schemas/AssignmentsResponse'
+      type: object
+      required:
+      - data
+      title: APIResponse[AssignmentsResponse]
     ValidationError:
       properties:
         loc:
@@ -81,21 +92,6 @@ components:
       - msg
       - type
       title: ValidationError
-    AssetInstance:
-      properties:
-        id:
-          type: integer
-          title: Id
-          description: Asset id
-        type:
-          type: string
-          title: Type
-          description: Asset type
-      type: object
-      required:
-      - type
-      - id
-      title: AssetInstance
     LpidWithCoursesDisplayName:
       type: string
       enum:
@@ -115,17 +111,21 @@ components:
       - timeOff
       title: LpidWithCoursesDisplayName
       description: An enumeration.
-    APIResponse_AssignmentsResponse_:
+    AssetInstance:
       properties:
-        requestId:
+        id:
+          type: integer
+          title: Id
+          description: Asset id
+        type:
           type: string
-          title: Requestid
-        data:
-          $ref: '#/components/schemas/AssignmentsResponse'
+          title: Type
+          description: Asset type
       type: object
       required:
-      - data
-      title: APIResponse[AssignmentsResponse]
+      - type
+      - id
+      title: AssetInstance
     SmartGroupInstance:
       properties:
         id:

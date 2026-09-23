@@ -33,6 +33,15 @@ paths:
         - schedule.read
 components:
   schemas:
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
     APIResponseV2_SchedulersResponse_:
       properties:
         requestId:
@@ -44,15 +53,6 @@ components:
       required:
       - data
       title: APIResponseV2[SchedulersResponse]
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
     ValidationError:
       properties:
         loc:
@@ -74,6 +74,18 @@ components:
       - msg
       - type
       title: ValidationError
+    SchedulersResponse:
+      properties:
+        schedulers:
+          items:
+            $ref: '#/components/schemas/SchedulerResponse'
+          type: array
+          title: Schedulers
+          description: The schedules
+      type: object
+      required:
+      - schedulers
+      title: SchedulersResponse
     SchedulerResponse:
       properties:
         schedulerId:
@@ -100,18 +112,6 @@ components:
       - isArchived
       - timezone
       title: SchedulerResponse
-    SchedulersResponse:
-      properties:
-        schedulers:
-          items:
-            $ref: '#/components/schemas/SchedulerResponse'
-          type: array
-          title: Schedulers
-          description: The schedules
-      type: object
-      required:
-      - schedulers
-      title: SchedulersResponse
   securitySchemes:
     APIKeyHeader:
       type: apiKey

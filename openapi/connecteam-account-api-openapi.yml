@@ -33,41 +33,6 @@ paths:
         - account_information.read
 components:
   schemas:
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
-    MeResponse:
-      properties:
-        companyName:
-          type: string
-          title: Companyname
-          description: The name of the company
-        companyId:
-          type: string
-          title: Companyid
-          description: The unique identifier of the company
-      type: object
-      required:
-      - companyName
-      - companyId
-      title: MeResponse
-    APIResponseV2_MeResponse_:
-      properties:
-        requestId:
-          type: string
-          title: Requestid
-        data:
-          $ref: '#/components/schemas/MeResponse'
-      type: object
-      required:
-      - data
-      title: APIResponseV2[MeResponse]
     ValidationError:
       properties:
         loc:
@@ -89,6 +54,41 @@ components:
       - msg
       - type
       title: ValidationError
+    MeResponse:
+      properties:
+        companyName:
+          type: string
+          title: Companyname
+          description: The name of the company
+        companyId:
+          type: string
+          title: Companyid
+          description: The unique identifier of the company
+      type: object
+      required:
+      - companyName
+      - companyId
+      title: MeResponse
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    APIResponseV2_MeResponse_:
+      properties:
+        requestId:
+          type: string
+          title: Requestid
+        data:
+          $ref: '#/components/schemas/MeResponse'
+      type: object
+      required:
+      - data
+      title: APIResponseV2[MeResponse]
   securitySchemes:
     APIKeyHeader:
       type: apiKey

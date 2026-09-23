@@ -113,52 +113,6 @@ components:
           title: Detail
       type: object
       title: HTTPValidationError
-    ValidationError:
-      properties:
-        loc:
-          items:
-            anyOf:
-            - type: string
-            - type: integer
-          type: array
-          title: Location
-        msg:
-          type: string
-          title: Message
-        type:
-          type: string
-          title: Error Type
-      type: object
-      required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
-    BreadcrumbsReportStatusResponse:
-      properties:
-        status:
-          type: string
-          title: Status
-          description: 'Task status: in_queue, in_progress, completed, error, or canceled'
-        errorMsg:
-          type: string
-          title: Errormsg
-          description: Error message when status is error
-      type: object
-      required:
-      - status
-      title: BreadcrumbsReportStatusResponse
-    BreadcrumbsReportRequest:
-      properties:
-        date:
-          type: string
-          format: date
-          title: Date
-          description: Date for which to generate breadcrumbs report (YYYY-MM-DD)
-      type: object
-      required:
-      - date
-      title: BreadcrumbsReportRequest
     APIResponse_BreadcrumbsReportStatusResponse_:
       properties:
         requestId:
@@ -181,6 +135,52 @@ components:
       required:
       - data
       title: APIResponse[BreadcrumbsReportResponse]
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    BreadcrumbsReportRequest:
+      properties:
+        date:
+          type: string
+          format: date
+          title: Date
+          description: Date for which to generate breadcrumbs report (YYYY-MM-DD)
+      type: object
+      required:
+      - date
+      title: BreadcrumbsReportRequest
+    BreadcrumbsReportStatusResponse:
+      properties:
+        status:
+          type: string
+          title: Status
+          description: 'Task status: in_queue, in_progress, completed, error, or canceled'
+        errorMsg:
+          type: string
+          title: Errormsg
+          description: Error message when status is error
+      type: object
+      required:
+      - status
+      title: BreadcrumbsReportStatusResponse
     BreadcrumbsReportResponse:
       properties:
         fileId:

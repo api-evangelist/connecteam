@@ -1,6 +1,6 @@
 openapi: 3.2.0
 info:
-  title: Connecteam API documentation Time Clock:v1:TimeClocks:TimeClock:ClockOut API
+  title: Connecteam API documentation Time…
   version: v1
 servers:
 - url: https://api.connecteam.com/
@@ -50,6 +50,137 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    PunchSourceResponse:
+      properties:
+        id:
+          type: string
+          title: Id
+          description: Unique identifier of the source (for NFC or geofence-based sources)
+        type:
+          allOf:
+          - $ref: '#/components/schemas/PunchSourceType'
+          description: Indicates how the punch was performed
+        mode:
+          allOf:
+          - $ref: '#/components/schemas/AutoClockOutModeType'
+          description: For autoClockOut type, indicates the reason for the auto clock out (e.g., dailyLimit, geofenceExit)
+        name:
+          type: string
+          title: Name
+          description: Human-readable name of the source (for NFC or geofence-based sources)
+      type: object
+      required:
+      - type
+      title: PunchSourceResponse
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    APIResponse_ClockOutResponse_:
+      properties:
+        requestId:
+          type: string
+          title: Requestid
+        data:
+          $ref: '#/components/schemas/ClockOutResponse'
+      type: object
+      required:
+      - data
+      title: APIResponse[ClockOutResponse]
+    GpsData:
+      properties:
+        address:
+          type: string
+          title: Address
+          description: The address associated with the GPS data.
+        longitude:
+          type: number
+          title: Longitude
+          description: The longitude coordinate.
+        latitude:
+          type: number
+          title: Latitude
+          description: The latitude coordinate.
+      type: object
+      title: GpsData
+    ClockOutResponse:
+      properties:
+        shift:
+          allOf:
+          - $ref: '#/components/schemas/v2__features__punchclock__external_api__v1__time_clocks__models__shift_response__ShiftResponse'
+          title: Shift
+          description: The created shift
+      type: object
+      required:
+      - shift
+      title: ClockOutResponse
+    AutoClockOutModeType:
+      type: string
+      enum:
+      - dailyLimit
+      - hourLimit
+      - schedulerShiftEnded
+      - geofenceExit
+      - disabledGps
+      - disabledGpsPermission
+      title: AutoClockOutModeType
+      description: An enumeration.
+    TimeActivityTimePointResponse:
+      properties:
+        timestamp:
+          type: integer
+          minimum: 1.0
+          title: Timestamp
+          description: The timestamp in Unix format (in seconds)
+        timezone:
+          type: string
+          title: Timezone
+          description: The timezone in Tz format (e.g. America/New_York)
+        locationData:
+          allOf:
+          - $ref: '#/components/schemas/GpsData'
+          title: Locationdata
+          description: The location data
+        geofenceId:
+          type: string
+          title: Geofenceid
+          description: The ID of the geofence the user was inside when this punch was recorded. None if the punch was outside any configured geofence.
+        source:
+          allOf:
+          - $ref: '#/components/schemas/PunchSourceResponse'
+          title: Source
+          description: Describes the origin from which the punch was created
+      type: object
+      required:
+      - timestamp
+      - timezone
+      title: TimeActivityTimePointResponse
     ClockOutRequest:
       properties:
         userId:
@@ -74,81 +205,6 @@ components:
       required:
       - userId
       title: ClockOutRequest
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
-    ValidationError:
-      properties:
-        loc:
-          items:
-            anyOf:
-            - type: string
-            - type: integer
-          type: array
-          title: Location
-        msg:
-          type: string
-          title: Message
-        type:
-          type: string
-          title: Error Type
-      type: object
-      required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
-    PunchSourceType:
-      type: string
-      enum:
-      - autoClockOut
-      - nfc
-      - mobile
-      - pc
-      - kiosk
-      - api
-      - admin
-      title: PunchSourceType
-      description: An enumeration.
-    PunchSourceResponse:
-      properties:
-        id:
-          type: string
-          title: Id
-          description: Unique identifier of the source (for NFC or geofence-based sources)
-        type:
-          allOf:
-          - $ref: '#/components/schemas/PunchSourceType'
-          description: Indicates how the punch was performed
-        mode:
-          allOf:
-          - $ref: '#/components/schemas/AutoClockOutModeType'
-          description: For autoClockOut type, indicates the reason for the auto clock out (e.g., dailyLimit, geofenceExit)
-        name:
-          type: string
-          title: Name
-          description: Human-readable name of the source (for NFC or geofence-based sources)
-      type: object
-      required:
-      - type
-      title: PunchSourceResponse
-    APIResponse_ClockOutResponse_:
-      properties:
-        requestId:
-          type: string
-          title: Requestid
-        data:
-          $ref: '#/components/schemas/ClockOutResponse'
-      type: object
-      required:
-      - data
-      title: APIResponse[ClockOutResponse]
     v2__features__punchclock__external_api__v1__time_clocks__models__shift_response__ShiftResponse:
       properties:
         id:
@@ -201,74 +257,18 @@ components:
       - start
       - userId
       title: ShiftResponse
-    GpsData:
-      properties:
-        address:
-          type: string
-          title: Address
-          description: The address associated with the GPS data.
-        longitude:
-          type: number
-          title: Longitude
-          description: The longitude coordinate.
-        latitude:
-          type: number
-          title: Latitude
-          description: The latitude coordinate.
-      type: object
-      title: GpsData
-    AutoClockOutModeType:
+    PunchSourceType:
       type: string
       enum:
-      - dailyLimit
-      - hourLimit
-      - schedulerShiftEnded
-      - geofenceExit
-      - disabledGps
-      - disabledGpsPermission
-      title: AutoClockOutModeType
+      - autoClockOut
+      - nfc
+      - mobile
+      - pc
+      - kiosk
+      - api
+      - admin
+      title: PunchSourceType
       description: An enumeration.
-    ClockOutResponse:
-      properties:
-        shift:
-          allOf:
-          - $ref: '#/components/schemas/v2__features__punchclock__external_api__v1__time_clocks__models__shift_response__ShiftResponse'
-          title: Shift
-          description: The created shift
-      type: object
-      required:
-      - shift
-      title: ClockOutResponse
-    TimeActivityTimePointResponse:
-      properties:
-        timestamp:
-          type: integer
-          minimum: 1.0
-          title: Timestamp
-          description: The timestamp in Unix format (in seconds)
-        timezone:
-          type: string
-          title: Timezone
-          description: The timezone in Tz format (e.g. America/New_York)
-        locationData:
-          allOf:
-          - $ref: '#/components/schemas/GpsData'
-          title: Locationdata
-          description: The location data
-        geofenceId:
-          type: string
-          title: Geofenceid
-          description: The ID of the geofence the user was inside when this punch was recorded. None if the punch was outside any configured geofence.
-        source:
-          allOf:
-          - $ref: '#/components/schemas/PunchSourceResponse'
-          title: Source
-          description: Describes the origin from which the punch was created
-      type: object
-      required:
-      - timestamp
-      - timezone
-      title: TimeActivityTimePointResponse
   securitySchemes:
     APIKeyHeader:
       type: apiKey

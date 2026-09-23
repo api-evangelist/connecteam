@@ -1,6 +1,6 @@
 openapi: 3.2.0
 info:
-  title: Connecteam API documentation Onboarding:v1:Onboarding:Packs API
+  title: Connecteam API documentation Onboarding:v1:Onboarding:Packs…
   version: v1
 servers:
 - url: https://api.connecteam.com/
@@ -42,18 +42,6 @@ components:
           title: Detail
       type: object
       title: HTTPValidationError
-    PacksListResponse:
-      properties:
-        packs:
-          items:
-            $ref: '#/components/schemas/PackResponse'
-          type: array
-          title: Packs
-          description: List of onboarding packs
-      type: object
-      required:
-      - packs
-      title: PacksListResponse
     PackResponse:
       properties:
         id:
@@ -110,6 +98,18 @@ components:
       required:
       - data
       title: APIResponse[PacksListResponse]
+    PacksListResponse:
+      properties:
+        packs:
+          items:
+            $ref: '#/components/schemas/PackResponse'
+          type: array
+          title: Packs
+          description: List of onboarding packs
+      type: object
+      required:
+      - packs
+      title: PacksListResponse
   securitySchemes:
     APIKeyHeader:
       type: apiKey

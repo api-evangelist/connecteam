@@ -1,6 +1,6 @@
 openapi: 3.2.0
 info:
-  title: Connecteam API documentation Schedule:v1:Schedulers:Schedule:Shift layers API
+  title: Connecteam API documentation Schedule:v1:Schedulers:Schedule…
   version: v1
 servers:
 - url: https://api.connecteam.com/
@@ -104,6 +104,30 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
+    PaginatedBaseResponseV2_GetSchedulerShiftLayerValuesResponse_:
+      properties:
+        requestId:
+          type: string
+          title: Requestid
+        data:
+          $ref: '#/components/schemas/GetSchedulerShiftLayerValuesResponse'
+        paging:
+          $ref: '#/components/schemas/PagingResponseModelV2'
+      type: object
+      required:
+      - data
+      - paging
+      title: PaginatedBaseResponseV2[GetSchedulerShiftLayerValuesResponse]
+    GetSchedulerShiftLayersResponse:
+      properties:
+        shiftLayers:
+          items:
+            $ref: '#/components/schemas/SchedulerShiftLayerOutput'
+          type: array
+          title: Shiftlayers
+          description: The various layers of information associated with shifts in this schedule
+      type: object
+      title: GetSchedulerShiftLayersResponse
     HTTPValidationError:
       properties:
         detail:
@@ -113,6 +137,59 @@ components:
           title: Detail
       type: object
       title: HTTPValidationError
+    SchedulerShiftLayerOutput:
+      properties:
+        id:
+          type: string
+          title: Id
+          description: The unique identifier of the shift layer
+        title:
+          type: string
+          title: Title
+          description: The name of the shift layer
+      type: object
+      required:
+      - id
+      - title
+      title: SchedulerShiftLayerOutput
+    APIResponseV2_GetSchedulerShiftLayersResponse_:
+      properties:
+        requestId:
+          type: string
+          title: Requestid
+        data:
+          $ref: '#/components/schemas/GetSchedulerShiftLayersResponse'
+      type: object
+      required:
+      - data
+      title: APIResponseV2[GetSchedulerShiftLayersResponse]
+    SchedulerShiftLayerValueOutput:
+      properties:
+        id:
+          type: string
+          title: Id
+          description: The unique identifier of the shift layer instance
+        displayName:
+          type: string
+          title: Displayname
+          description: The display name of the shift layer instance
+      type: object
+      required:
+      - id
+      - displayName
+      title: SchedulerShiftLayerValueOutput
+    GetSchedulerShiftLayerValuesResponse:
+      properties:
+        values:
+          items:
+            $ref: '#/components/schemas/SchedulerShiftLayerValueOutput'
+          type: array
+          title: Values
+          description: The values associated to the shift layer
+      type: object
+      required:
+      - values
+      title: GetSchedulerShiftLayerValuesResponse
     ValidationError:
       properties:
         loc:
@@ -134,31 +211,6 @@ components:
       - msg
       - type
       title: ValidationError
-    GetSchedulerShiftLayersResponse:
-      properties:
-        shiftLayers:
-          items:
-            $ref: '#/components/schemas/SchedulerShiftLayerOutput'
-          type: array
-          title: Shiftlayers
-          description: The various layers of information associated with shifts in this schedule
-      type: object
-      title: GetSchedulerShiftLayersResponse
-    SchedulerShiftLayerOutput:
-      properties:
-        id:
-          type: string
-          title: Id
-          description: The unique identifier of the shift layer
-        title:
-          type: string
-          title: Title
-          description: The name of the shift layer
-      type: object
-      required:
-      - id
-      - title
-      title: SchedulerShiftLayerOutput
     PagingResponseModelV2:
       properties:
         offset:
@@ -177,58 +229,6 @@ components:
       required:
       - offset
       title: PagingResponseModelV2
-    SchedulerShiftLayerValueOutput:
-      properties:
-        id:
-          type: string
-          title: Id
-          description: The unique identifier of the shift layer instance
-        displayName:
-          type: string
-          title: Displayname
-          description: The display name of the shift layer instance
-      type: object
-      required:
-      - id
-      - displayName
-      title: SchedulerShiftLayerValueOutput
-    APIResponseV2_GetSchedulerShiftLayersResponse_:
-      properties:
-        requestId:
-          type: string
-          title: Requestid
-        data:
-          $ref: '#/components/schemas/GetSchedulerShiftLayersResponse'
-      type: object
-      required:
-      - data
-      title: APIResponseV2[GetSchedulerShiftLayersResponse]
-    GetSchedulerShiftLayerValuesResponse:
-      properties:
-        values:
-          items:
-            $ref: '#/components/schemas/SchedulerShiftLayerValueOutput'
-          type: array
-          title: Values
-          description: The values associated to the shift layer
-      type: object
-      required:
-      - values
-      title: GetSchedulerShiftLayerValuesResponse
-    PaginatedBaseResponseV2_GetSchedulerShiftLayerValuesResponse_:
-      properties:
-        requestId:
-          type: string
-          title: Requestid
-        data:
-          $ref: '#/components/schemas/GetSchedulerShiftLayerValuesResponse'
-        paging:
-          $ref: '#/components/schemas/PagingResponseModelV2'
-      type: object
-      required:
-      - data
-      - paging
-      title: PaginatedBaseResponseV2[GetSchedulerShiftLayerValuesResponse]
   securitySchemes:
     APIKeyHeader:
       type: apiKey

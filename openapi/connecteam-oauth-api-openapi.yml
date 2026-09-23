@@ -42,15 +42,6 @@ paths:
       - HTTPBasic: []
 components:
   schemas:
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
     OAuthTokenResponse:
       properties:
         access_token:
@@ -80,21 +71,15 @@ components:
       description: 'OAuth2 token response following RFC 6749.
 
         Overrides alias_generator to keep snake_case field names (not camelCase).'
-    Body_oauth_token_docs_oauth_v1_token_post:
+    HTTPValidationError:
       properties:
-        grant_type:
-          type: string
-          title: Grant Type
-          description: OAuth 2.0 grant type (must be 'client_credentials')
-          default: client_credentials
-        scope:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Scope
-          description: Space-separated list of requested scopes
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
       type: object
-      title: Body_oauth_token_docs_oauth_v1_token_post
+      title: HTTPValidationError
     ValidationError:
       properties:
         loc:
@@ -116,6 +101,21 @@ components:
       - msg
       - type
       title: ValidationError
+    Body_oauth_token_docs_oauth_v1_token_post:
+      properties:
+        grant_type:
+          type: string
+          title: Grant Type
+          description: OAuth 2.0 grant type (must be 'client_credentials')
+          default: client_credentials
+        scope:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Scope
+          description: Space-separated list of requested scopes
+      type: object
+      title: Body_oauth_token_docs_oauth_v1_token_post
   securitySchemes:
     APIKeyHeader:
       type: apiKey

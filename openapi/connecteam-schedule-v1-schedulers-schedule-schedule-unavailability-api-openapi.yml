@@ -1,6 +1,6 @@
 openapi: 3.2.0
 info:
-  title: Connecteam API documentation Schedule:v1:Schedulers:Schedule:Schedule Unavailability API
+  title: Connecteam API documentation Schedule:v1:Schedulers:Schedule…
   version: v1
 servers:
 - url: https://api.connecteam.com/
@@ -147,38 +147,10 @@ components:
           title: Detail
       type: object
       title: HTTPValidationError
-    ValidationError:
-      properties:
-        loc:
-          items:
-            anyOf:
-            - type: string
-            - type: integer
-          type: array
-          title: Location
-        msg:
-          type: string
-          title: Message
-        type:
-          type: string
-          title: Error Type
+    UnavailabilityDeleteResponse:
+      properties: {}
       type: object
-      required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
-    APIResponseV2_UnavailabilityDeleteResponse_:
-      properties:
-        requestId:
-          type: string
-          title: Requestid
-        data:
-          $ref: '#/components/schemas/UnavailabilityDeleteResponse'
-      type: object
-      required:
-      - data
-      title: APIResponseV2[UnavailabilityDeleteResponse]
+      title: UnavailabilityDeleteResponse
     UnavailabilityCreateRequest:
       properties:
         userId:
@@ -224,6 +196,27 @@ components:
       - isAllDay
       - unavailabilityDate
       title: UnavailabilityCreateRequest
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
     APIResponseV2_UnavailabilityCreateResponse_:
       properties:
         requestId:
@@ -235,10 +228,17 @@ components:
       required:
       - data
       title: APIResponseV2[UnavailabilityCreateResponse]
-    UnavailabilityDeleteResponse:
-      properties: {}
+    APIResponseV2_UnavailabilityDeleteResponse_:
+      properties:
+        requestId:
+          type: string
+          title: Requestid
+        data:
+          $ref: '#/components/schemas/UnavailabilityDeleteResponse'
       type: object
-      title: UnavailabilityDeleteResponse
+      required:
+      - data
+      title: APIResponseV2[UnavailabilityDeleteResponse]
   securitySchemes:
     APIKeyHeader:
       type: apiKey

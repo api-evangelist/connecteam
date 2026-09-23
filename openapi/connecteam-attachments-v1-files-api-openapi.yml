@@ -140,17 +140,6 @@ paths:
         - attachments.read
 components:
   schemas:
-    APIResponse_FileCompleteUploadResponse_:
-      properties:
-        requestId:
-          type: string
-          title: Requestid
-        data:
-          $ref: '#/components/schemas/FileCompleteUploadResponse'
-      type: object
-      required:
-      - data
-      title: APIResponse[FileCompleteUploadResponse]
     HTTPValidationError:
       properties:
         detail:
@@ -160,56 +149,6 @@ components:
           title: Detail
       type: object
       title: HTTPValidationError
-    ValidationError:
-      properties:
-        loc:
-          items:
-            anyOf:
-            - type: string
-            - type: integer
-          type: array
-          title: Location
-        msg:
-          type: string
-          title: Message
-        type:
-          type: string
-          title: Error Type
-      type: object
-      required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
-    FileURLCreateRequest:
-      properties:
-        fileName:
-          type: string
-          title: Filename
-          description: The name of the attachment you want to upload
-        fileTypeHint:
-          type: string
-          title: Filetypehint
-          description: The MIME type or format of the attachment (e.g. image/jpeg, application/pdf)
-        featureType:
-          allOf:
-          - $ref: '#/components/schemas/AttachmentsFeatureTypeEnum'
-          description: The specific feature or context where the attachment will be linked
-      type: object
-      required:
-      - fileName
-      - featureType
-      title: FileURLCreateRequest
-    FileCompleteUploadResponse:
-      properties:
-        fileId:
-          type: string
-          title: Fileid
-          description: The unique identifier for the file
-      type: object
-      required:
-      - fileId
-      title: FileCompleteUploadResponse
     FileURLResponse:
       properties:
         fileId:
@@ -228,54 +167,6 @@ components:
       - fileId
       - uploadFileUrl
       title: FileURLResponse
-    FileDownloadURLRequest:
-      properties:
-        fileUrl:
-          type: string
-          title: Fileurl
-          description: The full URL of the file to generate a download URL for
-        expirationInSeconds:
-          type: integer
-          maximum: 86400.0
-          minimum: 5.0
-          title: Expirationinseconds
-          description: 'The expiration time of the URL in seconds (min: 5, max: 86400 / 24 hours)'
-          default: 3600
-      type: object
-      required:
-      - fileUrl
-      title: FileDownloadURLRequest
-    APIResponse_GetFileURLResponse_:
-      properties:
-        requestId:
-          type: string
-          title: Requestid
-        data:
-          $ref: '#/components/schemas/GetFileURLResponse'
-      type: object
-      required:
-      - data
-      title: APIResponse[GetFileURLResponse]
-    APIResponse_FileURLResponse_:
-      properties:
-        requestId:
-          type: string
-          title: Requestid
-        data:
-          $ref: '#/components/schemas/FileURLResponse'
-      type: object
-      required:
-      - data
-      title: APIResponse[FileURLResponse]
-    AttachmentsFeatureTypeEnum:
-      type: string
-      enum:
-      - chat
-      - shiftscheduler
-      - users
-      - quicktasks
-      title: AttachmentsFeatureTypeEnum
-      description: An enumeration.
     GetFileURLResponse:
       properties:
         fileId:
@@ -308,17 +199,34 @@ components:
       - fileType
       - featureType
       title: GetFileURLResponse
-    APIResponse_FileDownloadURLResponse_:
+    APIResponse_FileCompleteUploadResponse_:
       properties:
         requestId:
           type: string
           title: Requestid
         data:
-          $ref: '#/components/schemas/FileDownloadURLResponse'
+          $ref: '#/components/schemas/FileCompleteUploadResponse'
       type: object
       required:
       - data
-      title: APIResponse[FileDownloadURLResponse]
+      title: APIResponse[FileCompleteUploadResponse]
+    FileDownloadURLRequest:
+      properties:
+        fileUrl:
+          type: string
+          title: Fileurl
+          description: The full URL of the file to generate a download URL for
+        expirationInSeconds:
+          type: integer
+          maximum: 86400.0
+          minimum: 5.0
+          title: Expirationinseconds
+          description: 'The expiration time of the URL in seconds (min: 5, max: 86400 / 24 hours)'
+          default: 3600
+      type: object
+      required:
+      - fileUrl
+      title: FileDownloadURLRequest
     FileDownloadURLResponse:
       properties:
         url:
@@ -334,6 +242,98 @@ components:
       - url
       - expiresInSeconds
       title: FileDownloadURLResponse
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    AttachmentsFeatureTypeEnum:
+      type: string
+      enum:
+      - chat
+      - shiftscheduler
+      - users
+      - quicktasks
+      title: AttachmentsFeatureTypeEnum
+      description: An enumeration.
+    FileCompleteUploadResponse:
+      properties:
+        fileId:
+          type: string
+          title: Fileid
+          description: The unique identifier for the file
+      type: object
+      required:
+      - fileId
+      title: FileCompleteUploadResponse
+    APIResponse_FileURLResponse_:
+      properties:
+        requestId:
+          type: string
+          title: Requestid
+        data:
+          $ref: '#/components/schemas/FileURLResponse'
+      type: object
+      required:
+      - data
+      title: APIResponse[FileURLResponse]
+    APIResponse_FileDownloadURLResponse_:
+      properties:
+        requestId:
+          type: string
+          title: Requestid
+        data:
+          $ref: '#/components/schemas/FileDownloadURLResponse'
+      type: object
+      required:
+      - data
+      title: APIResponse[FileDownloadURLResponse]
+    APIResponse_GetFileURLResponse_:
+      properties:
+        requestId:
+          type: string
+          title: Requestid
+        data:
+          $ref: '#/components/schemas/GetFileURLResponse'
+      type: object
+      required:
+      - data
+      title: APIResponse[GetFileURLResponse]
+    FileURLCreateRequest:
+      properties:
+        fileName:
+          type: string
+          title: Filename
+          description: The name of the attachment you want to upload
+        fileTypeHint:
+          type: string
+          title: Filetypehint
+          description: The MIME type or format of the attachment (e.g. image/jpeg, application/pdf)
+        featureType:
+          allOf:
+          - $ref: '#/components/schemas/AttachmentsFeatureTypeEnum'
+          description: The specific feature or context where the attachment will be linked
+      type: object
+      required:
+      - fileName
+      - featureType
+      title: FileURLCreateRequest
   securitySchemes:
     APIKeyHeader:
       type: apiKey

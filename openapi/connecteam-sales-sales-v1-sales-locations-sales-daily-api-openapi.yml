@@ -1,6 +1,6 @@
 openapi: 3.2.0
 info:
-  title: Connecteam API documentation Sales:Sales V1:Sales Locations:Sales Daily API
+  title: Connecteam API documentation Sales:Sales V1:Sales…
   version: v1
 servers:
 - url: https://api.connecteam.com/
@@ -52,6 +52,15 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
     ProjectedSalesUpdateRequest:
       properties:
         updates:
@@ -65,15 +74,23 @@ components:
       required:
       - updates
       title: ProjectedSalesUpdateRequest
-    HTTPValidationError:
+    ProjectedSalesUpdateResponse:
       properties:
-        detail:
+        daysAffected:
+          type: integer
+          title: Daysaffected
+          description: Number of days successfully updated in this request.
+        updatedDays:
           items:
-            $ref: '#/components/schemas/ValidationError'
+            $ref: '#/components/schemas/DailySalesEntry'
           type: array
-          title: Detail
+          title: Updateddays
+          description: List of daily sales entries after the update, one per date in the request.
       type: object
-      title: HTTPValidationError
+      required:
+      - daysAffected
+      - updatedDays
+      title: ProjectedSalesUpdateResponse
     ValidationError:
       properties:
         loc:
@@ -95,46 +112,6 @@ components:
       - msg
       - type
       title: ValidationError
-    DailySalesEntry:
-      properties:
-        date:
-          type: string
-          title: Date
-          description: Calendar date for the entry, in ISO 8601 format (YYYY-MM-DD).
-        locationId:
-          type: integer
-          title: Locationid
-          description: Unique identifier of the location (from the Get locations endpoint).
-        totalSales:
-          type: number
-          title: Totalsales
-          description: Total sales for the day, aggregated from transactions. May be null when no transactions exist for that day. To change this value, use the Create transactions endpoint.
-        projectedSales:
-          type: number
-          title: Projectedsales
-          description: Projected sales target for the day. Set via Set projected sales. May be null if not set.
-      type: object
-      required:
-      - date
-      - locationId
-      title: DailySalesEntry
-    ProjectedSalesUpdateResponse:
-      properties:
-        daysAffected:
-          type: integer
-          title: Daysaffected
-          description: Number of days successfully updated in this request.
-        updatedDays:
-          items:
-            $ref: '#/components/schemas/DailySalesEntry'
-          type: array
-          title: Updateddays
-          description: List of daily sales entries after the update, one per date in the request.
-      type: object
-      required:
-      - daysAffected
-      - updatedDays
-      title: ProjectedSalesUpdateResponse
     APIResponse_ProjectedSalesUpdateResponse_:
       properties:
         requestId:
@@ -161,6 +138,29 @@ components:
       - date
       - projectedSales
       title: ProjectedSalesUpdateItem
+    DailySalesEntry:
+      properties:
+        date:
+          type: string
+          title: Date
+          description: Calendar date for the entry, in ISO 8601 format (YYYY-MM-DD).
+        locationId:
+          type: integer
+          title: Locationid
+          description: Unique identifier of the location (from the Get locations endpoint).
+        totalSales:
+          type: number
+          title: Totalsales
+          description: Total sales for the day, aggregated from transactions. May be null when no transactions exist for that day. To change this value, use the Create transactions endpoint.
+        projectedSales:
+          type: number
+          title: Projectedsales
+          description: Projected sales target for the day. Set via Set projected sales. May be null if not set.
+      type: object
+      required:
+      - date
+      - locationId
+      title: DailySalesEntry
   securitySchemes:
     APIKeyHeader:
       type: apiKey

@@ -1,6 +1,6 @@
 openapi: 3.2.0
 info:
-  title: Connecteam API documentation Schedule:v2:Schedulers:Unavailabilities (V2):Unavailabilities API
+  title: Connecteam API documentation Schedule:v2:Schedulers:Unavaila…
   version: v1
 servers:
 - url: https://api.connecteam.com/
@@ -67,33 +67,18 @@ components:
           title: Detail
       type: object
       title: HTTPValidationError
-    ValidationError:
+    GetUnavailabilitiesResponse:
       properties:
-        loc:
+        userUnavailabilities:
           items:
-            anyOf:
-            - type: string
-            - type: integer
+            $ref: '#/components/schemas/UserUnavailabilityItem'
           type: array
-          title: Location
-        msg:
-          type: string
-          title: Message
-        type:
-          type: string
-          title: Error Type
+          title: Userunavailabilities
+          description: List of users with unavailabilities
       type: object
       required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
-    AbsenceType:
-      type: string
-      enum:
-      - unavailability
-      - timeOff
-      title: AbsenceType
+      - userUnavailabilities
+      title: GetUnavailabilitiesResponse
     UserUnavailabilityItem:
       properties:
         userId:
@@ -119,6 +104,38 @@ components:
       - unavailabilities
       - shifts
       title: UserUnavailabilityItem
+    APIResponseV2_GetUnavailabilitiesResponse_:
+      properties:
+        requestId:
+          type: string
+          title: Requestid
+        data:
+          $ref: '#/components/schemas/GetUnavailabilitiesResponse'
+      type: object
+      required:
+      - data
+      title: APIResponseV2[GetUnavailabilitiesResponse]
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
     TimestampWithTimezone:
       properties:
         timestamp:
@@ -135,17 +152,35 @@ components:
       - timestamp
       - timezone
       title: TimestampWithTimezone
-    APIResponseV2_GetUnavailabilitiesResponse_:
+    AbsenceType:
+      type: string
+      enum:
+      - unavailability
+      - timeOff
+      title: AbsenceType
+    SingleShift:
       properties:
-        requestId:
+        id:
           type: string
-          title: Requestid
-        data:
-          $ref: '#/components/schemas/GetUnavailabilitiesResponse'
+          title: Id
+          description: The unique identifier of the shift
+        startTime:
+          $ref: '#/components/schemas/TimestampWithTimezone'
+          description: The start time of the shift
+        endTime:
+          $ref: '#/components/schemas/TimestampWithTimezone'
+          description: The end time of the shift
+        instanceId:
+          type: integer
+          title: Instanceid
+          description: The unique identifier of the schedule instance
       type: object
       required:
-      - data
-      title: APIResponseV2[GetUnavailabilitiesResponse]
+      - id
+      - startTime
+      - endTime
+      - instanceId
+      title: SingleShift
     SingleAbsence:
       properties:
         id:
@@ -186,41 +221,6 @@ components:
       - endTime
       - note
       title: SingleAbsence
-    SingleShift:
-      properties:
-        id:
-          type: string
-          title: Id
-          description: The unique identifier of the shift
-        startTime:
-          $ref: '#/components/schemas/TimestampWithTimezone'
-          description: The start time of the shift
-        endTime:
-          $ref: '#/components/schemas/TimestampWithTimezone'
-          description: The end time of the shift
-        instanceId:
-          type: integer
-          title: Instanceid
-          description: The unique identifier of the schedule instance
-      type: object
-      required:
-      - id
-      - startTime
-      - endTime
-      - instanceId
-      title: SingleShift
-    GetUnavailabilitiesResponse:
-      properties:
-        userUnavailabilities:
-          items:
-            $ref: '#/components/schemas/UserUnavailabilityItem'
-          type: array
-          title: Userunavailabilities
-          description: List of users with unavailabilities
-      type: object
-      required:
-      - userUnavailabilities
-      title: GetUnavailabilitiesResponse
   securitySchemes:
     APIKeyHeader:
       type: apiKey

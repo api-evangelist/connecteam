@@ -1,6 +1,6 @@
 openapi: 3.2.0
 info:
-  title: Connecteam API documentation Schedule:v1:Schedulers:Schedule:Shift Custom Fields API
+  title: Connecteam API documentation Schedule:v1:Schedulers:Schedule…
   version: v1
 servers:
 - url: https://api.connecteam.com/
@@ -63,6 +63,21 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    ShiftCustomFields:
+      type: string
+      enum:
+      - str
+      - dropdown
+      title: ShiftCustomFields
     ShiftCustomFieldSettingsResponse:
       properties:
         id:
@@ -82,36 +97,20 @@ components:
       - name
       - type
       title: ShiftCustomFieldSettingsResponse
-    HTTPValidationError:
+    PaginatedBaseResponseV2_GetShiftCustomFieldsSettingsResponse_:
       properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
-    ValidationError:
-      properties:
-        loc:
-          items:
-            anyOf:
-            - type: string
-            - type: integer
-          type: array
-          title: Location
-        msg:
+        requestId:
           type: string
-          title: Message
-        type:
-          type: string
-          title: Error Type
+          title: Requestid
+        data:
+          $ref: '#/components/schemas/GetShiftCustomFieldsSettingsResponse'
+        paging:
+          $ref: '#/components/schemas/PagingResponseModelV2'
       type: object
       required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
+      - data
+      - paging
+      title: PaginatedBaseResponseV2[GetShiftCustomFieldsSettingsResponse]
     GetShiftCustomFieldsSettingsResponse:
       properties:
         customFields:
@@ -144,6 +143,27 @@ components:
       required:
       - offset
       title: PagingResponseModelV2
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
     DropdownShiftCustomFieldSettingsResponse:
       properties:
         id:
@@ -175,26 +195,6 @@ components:
       - id
       - name
       title: DropdownShiftCustomFieldSettingsResponse
-    ShiftCustomFields:
-      type: string
-      enum:
-      - str
-      - dropdown
-      title: ShiftCustomFields
-    PaginatedBaseResponseV2_GetShiftCustomFieldsSettingsResponse_:
-      properties:
-        requestId:
-          type: string
-          title: Requestid
-        data:
-          $ref: '#/components/schemas/GetShiftCustomFieldsSettingsResponse'
-        paging:
-          $ref: '#/components/schemas/PagingResponseModelV2'
-      type: object
-      required:
-      - data
-      - paging
-      title: PaginatedBaseResponseV2[GetShiftCustomFieldsSettingsResponse]
     ? v2__features__shiftscheduler__external_api__v1__schedulers__scheduler__custom_fields__models__shift_custom_field_settings_response__DropdownOptionResponse
     : properties:
         id:

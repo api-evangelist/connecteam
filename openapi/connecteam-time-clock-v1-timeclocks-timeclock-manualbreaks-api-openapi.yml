@@ -1,6 +1,6 @@
 openapi: 3.2.0
 info:
-  title: Connecteam API documentation Time Clock:v1:TimeClocks:TimeClock:ManualBreaks API
+  title: Connecteam API documentation Time…
   version: v1
 servers:
 - url: https://api.connecteam.com/
@@ -51,6 +51,17 @@ components:
           title: Detail
       type: object
       title: HTTPValidationError
+    APIResponse_ManualBreaksGetResponse_:
+      properties:
+        requestId:
+          type: string
+          title: Requestid
+        data:
+          $ref: '#/components/schemas/ManualBreaksGetResponse'
+      type: object
+      required:
+      - data
+      title: APIResponse[ManualBreaksGetResponse]
     ValidationError:
       properties:
         loc:
@@ -72,6 +83,23 @@ components:
       - msg
       - type
       title: ValidationError
+    ManualBreaksGetResponse:
+      properties:
+        manualBreaks:
+          items:
+            $ref: '#/components/schemas/ManualBreakResponse'
+          type: array
+          title: Manualbreaks
+          description: The manual breaks
+        areManualBreaksEnabled:
+          type: boolean
+          title: Aremanualbreaksenabled
+          description: Whether manual breaks are enabled
+      type: object
+      required:
+      - manualBreaks
+      - areManualBreaksEnabled
+      title: ManualBreaksGetResponse
     ManualBreakResponse:
       properties:
         id:
@@ -97,34 +125,6 @@ components:
       - isPaid
       - duration
       title: ManualBreakResponse
-    APIResponse_ManualBreaksGetResponse_:
-      properties:
-        requestId:
-          type: string
-          title: Requestid
-        data:
-          $ref: '#/components/schemas/ManualBreaksGetResponse'
-      type: object
-      required:
-      - data
-      title: APIResponse[ManualBreaksGetResponse]
-    ManualBreaksGetResponse:
-      properties:
-        manualBreaks:
-          items:
-            $ref: '#/components/schemas/ManualBreakResponse'
-          type: array
-          title: Manualbreaks
-          description: The manual breaks
-        areManualBreaksEnabled:
-          type: boolean
-          title: Aremanualbreaksenabled
-          description: Whether manual breaks are enabled
-      type: object
-      required:
-      - manualBreaks
-      - areManualBreaksEnabled
-      title: ManualBreaksGetResponse
   securitySchemes:
     APIKeyHeader:
       type: apiKey

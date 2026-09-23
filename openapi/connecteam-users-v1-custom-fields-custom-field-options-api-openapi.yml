@@ -1,6 +1,6 @@
 openapi: 3.2.0
 info:
-  title: Connecteam API documentation Users:v1:Custom Fields:Custom Field options API
+  title: Connecteam API documentation Users:v1:Custom Fields:Custom…
   version: v1
 servers:
 - url: https://api.connecteam.com/
@@ -209,64 +209,6 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
-    ValidationError:
-      properties:
-        loc:
-          items:
-            anyOf:
-            - type: string
-            - type: integer
-          type: array
-          title: Location
-        msg:
-          type: string
-          title: Message
-        type:
-          type: string
-          title: Error Type
-      type: object
-      required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
-    CreateDropdownCustomFieldOption:
-      properties:
-        value:
-          type: string
-          title: Value
-          description: The value to be added as the option
-        isDisabled:
-          type: boolean
-          title: Isdisabled
-          description: Indicates if this option is disabled
-          default: false
-      type: object
-      required:
-      - value
-      title: CreateDropdownCustomFieldOption
-    EditSingleDropdownCustomFieldOption:
-      properties:
-        value:
-          type: string
-          title: Value
-          description: The value to be added as the option
-        isDisabled:
-          type: boolean
-          title: Isdisabled
-          description: Indicates if this option is disabled
-          default: false
-      type: object
-      title: EditSingleDropdownCustomFieldOption
     DropdownCustomFieldOptionResponse:
       properties:
         id:
@@ -294,40 +236,15 @@ components:
       - id
       - value
       title: DropdownCustomFieldOptionResponse
-    APIResponse_DropdownCustomFieldOptionResponse_:
+    HTTPValidationError:
       properties:
-        requestId:
-          type: string
-          title: Requestid
-        data:
-          $ref: '#/components/schemas/DropdownCustomFieldOptionResponse'
-      type: object
-      required:
-      - data
-      title: APIResponse[DropdownCustomFieldOptionResponse]
-    APIResponse_BaseResponse_:
-      properties:
-        requestId:
-          type: string
-          title: Requestid
-        data:
-          $ref: '#/components/schemas/BaseResponse'
-      type: object
-      required:
-      - data
-      title: APIResponse[BaseResponse]
-    CustomFieldOptionsResponse:
-      properties:
-        options:
+        detail:
           items:
-            $ref: '#/components/schemas/DropdownCustomFieldOptionResponse'
+            $ref: '#/components/schemas/ValidationError'
           type: array
-          title: Options
-          description: The custom field options
+          title: Detail
       type: object
-      required:
-      - options
-      title: CustomFieldOptionsResponse
+      title: HTTPValidationError
     PaginatedBaseResponse_CustomFieldOptionsResponse_:
       properties:
         requestId:
@@ -342,6 +259,54 @@ components:
       - data
       - paging
       title: PaginatedBaseResponse[CustomFieldOptionsResponse]
+    CreateDropdownCustomFieldOption:
+      properties:
+        value:
+          type: string
+          title: Value
+          description: The value to be added as the option
+        isDisabled:
+          type: boolean
+          title: Isdisabled
+          description: Indicates if this option is disabled
+          default: false
+      type: object
+      required:
+      - value
+      title: CreateDropdownCustomFieldOption
+    CustomFieldOptionsResponse:
+      properties:
+        options:
+          items:
+            $ref: '#/components/schemas/DropdownCustomFieldOptionResponse'
+          type: array
+          title: Options
+          description: The custom field options
+      type: object
+      required:
+      - options
+      title: CustomFieldOptionsResponse
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
     PagingResponseModel:
       properties:
         offset:
@@ -358,10 +323,45 @@ components:
       required:
       - offset
       title: PagingResponseModel
+    APIResponse_DropdownCustomFieldOptionResponse_:
+      properties:
+        requestId:
+          type: string
+          title: Requestid
+        data:
+          $ref: '#/components/schemas/DropdownCustomFieldOptionResponse'
+      type: object
+      required:
+      - data
+      title: APIResponse[DropdownCustomFieldOptionResponse]
+    EditSingleDropdownCustomFieldOption:
+      properties:
+        value:
+          type: string
+          title: Value
+          description: The value to be added as the option
+        isDisabled:
+          type: boolean
+          title: Isdisabled
+          description: Indicates if this option is disabled
+          default: false
+      type: object
+      title: EditSingleDropdownCustomFieldOption
     BaseResponse:
       properties: {}
       type: object
       title: BaseResponse
+    APIResponse_BaseResponse_:
+      properties:
+        requestId:
+          type: string
+          title: Requestid
+        data:
+          $ref: '#/components/schemas/BaseResponse'
+      type: object
+      required:
+      - data
+      title: APIResponse[BaseResponse]
   securitySchemes:
     APIKeyHeader:
       type: apiKey

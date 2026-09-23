@@ -1,6 +1,6 @@
 openapi: 3.2.0
 info:
-  title: Connecteam API documentation Company Policies:v1:PayRulePolicies API
+  title: Connecteam API documentation Company…
   version: v1
 servers:
 - url: https://api.connecteam.com/
@@ -42,6 +42,32 @@ components:
           title: Detail
       type: object
       title: HTTPValidationError
+    APIResponse_PayRulePoliciesResponse_:
+      properties:
+        requestId:
+          type: string
+          title: Requestid
+        data:
+          $ref: '#/components/schemas/PayRulePoliciesResponse'
+      type: object
+      required:
+      - data
+      title: APIResponse[PayRulePoliciesResponse]
+    PayRulePolicy:
+      properties:
+        id:
+          type: integer
+          title: Id
+          description: The pay rule policy id
+        name:
+          type: string
+          title: Name
+          description: The pay rule policy name
+      type: object
+      required:
+      - id
+      - name
+      title: PayRulePolicy
     ValidationError:
       properties:
         loc:
@@ -63,17 +89,6 @@ components:
       - msg
       - type
       title: ValidationError
-    APIResponse_PayRulePoliciesResponse_:
-      properties:
-        requestId:
-          type: string
-          title: Requestid
-        data:
-          $ref: '#/components/schemas/PayRulePoliciesResponse'
-      type: object
-      required:
-      - data
-      title: APIResponse[PayRulePoliciesResponse]
     PayRulePoliciesResponse:
       properties:
         payRulesPolicies:
@@ -86,21 +101,6 @@ components:
       required:
       - payRulesPolicies
       title: PayRulePoliciesResponse
-    PayRulePolicy:
-      properties:
-        id:
-          type: integer
-          title: Id
-          description: The pay rule policy id
-        name:
-          type: string
-          title: Name
-          description: The pay rule policy name
-      type: object
-      required:
-      - id
-      - name
-      title: PayRulePolicy
   securitySchemes:
     APIKeyHeader:
       type: apiKey

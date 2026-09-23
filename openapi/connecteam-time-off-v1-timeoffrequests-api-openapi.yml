@@ -170,6 +170,154 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    PolicyUnitsEnum:
+      type: string
+      enum:
+      - hours
+      - days
+      title: PolicyUnitsEnum
+      description: An enumeration.
+    APIResponse_TimeOffRequestUpdateResponse_:
+      properties:
+        requestId:
+          type: string
+          title: Requestid
+        data:
+          $ref: '#/components/schemas/TimeOffRequestUpdateResponse'
+      type: object
+      required:
+      - data
+      title: APIResponse[TimeOffRequestUpdateResponse]
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    TimeOffRequestsListResponse:
+      properties:
+        requests:
+          items:
+            $ref: '#/components/schemas/TimeOffRequestCreateResponse'
+          type: array
+          title: Requests
+          description: List of time-off requests matching the filters.
+      type: object
+      required:
+      - requests
+      title: TimeOffRequestsListResponse
+    TimeOffRequestDuration:
+      properties:
+        units:
+          allOf:
+          - $ref: '#/components/schemas/PolicyUnitsEnum'
+          description: 'The unit the amount is expressed in, matching the policy type: hours or days.'
+        amount:
+          type: number
+          title: Amount
+          description: Amount of time deducted from balance for this request, expressed in the policy units. For all-day requests this reflects the policy work schedule per calendar day, not the start/end time span. This is the value stored when the request was approved.
+      type: object
+      required:
+      - units
+      - amount
+      title: TimeOffRequestDuration
+    TimeOffRequestUpdateResponse:
+      properties:
+        id:
+          type: string
+          title: Id
+          description: The unique identifier of the time off request
+        timeClockId:
+          type: integer
+          title: Timeclockid
+          description: The unique identifier of the time clock where the time off will be presented in the timesheet
+        userId:
+          type: integer
+          title: Userid
+          description: The user id
+        isAllDay:
+          type: boolean
+          title: Isallday
+          description: Indicates whether the time off is for the entire day
+        startDate:
+          type: string
+          title: Startdate
+          description: The start date of the time off
+        endDate:
+          type: string
+          title: Enddate
+          description: The end date of the time off
+        startTime:
+          type: string
+          title: Starttime
+          description: The start time of the time off
+        endTime:
+          type: string
+          title: Endtime
+          description: The end time of the time off
+        timezone:
+          type: string
+          title: Timezone
+          description: The timezone of the time off
+        status:
+          type: string
+          enum:
+          - approved
+          - pending
+          - denied
+          title: Status
+          description: The status of the time off
+        managerNote:
+          type: string
+          title: Managernote
+          description: The manager note of the time off
+      type: object
+      required:
+      - id
+      - userId
+      - isAllDay
+      - startDate
+      - endDate
+      - startTime
+      - endTime
+      - timezone
+      - status
+      title: TimeOffRequestUpdateResponse
+    APIResponse_TimeOffRequestCreateResponse_:
+      properties:
+        requestId:
+          type: string
+          title: Requestid
+        data:
+          $ref: '#/components/schemas/TimeOffRequestCreateResponse'
+      type: object
+      required:
+      - data
+      title: APIResponse[TimeOffRequestCreateResponse]
     TimeOffRequestCreateResponse:
       properties:
         id:
@@ -248,205 +396,6 @@ components:
       - timezone
       - status
       title: TimeOffRequestCreateResponse
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
-    PolicyUnitsEnum:
-      type: string
-      enum:
-      - hours
-      - days
-      title: PolicyUnitsEnum
-      description: An enumeration.
-    PaginatedBaseResponse_TimeOffRequestsListResponse_:
-      properties:
-        requestId:
-          type: string
-          title: Requestid
-        data:
-          $ref: '#/components/schemas/TimeOffRequestsListResponse'
-        paging:
-          $ref: '#/components/schemas/PagingResponseModel'
-      type: object
-      required:
-      - data
-      - paging
-      title: PaginatedBaseResponse[TimeOffRequestsListResponse]
-    ValidationError:
-      properties:
-        loc:
-          items:
-            anyOf:
-            - type: string
-            - type: integer
-          type: array
-          title: Location
-        msg:
-          type: string
-          title: Message
-        type:
-          type: string
-          title: Error Type
-      type: object
-      required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
-    TimeOffRequestDuration:
-      properties:
-        units:
-          allOf:
-          - $ref: '#/components/schemas/PolicyUnitsEnum'
-          description: 'The unit the amount is expressed in, matching the policy type: hours or days.'
-        amount:
-          type: number
-          title: Amount
-          description: Amount of time deducted from balance for this request, expressed in the policy units. For all-day requests this reflects the policy work schedule per calendar day, not the start/end time span. This is the value stored when the request was approved.
-      type: object
-      required:
-      - units
-      - amount
-      title: TimeOffRequestDuration
-    TimeOffRequestUpdateResponse:
-      properties:
-        id:
-          type: string
-          title: Id
-          description: The unique identifier of the time off request
-        timeClockId:
-          type: integer
-          title: Timeclockid
-          description: The unique identifier of the time clock where the time off will be presented in the timesheet
-        userId:
-          type: integer
-          title: Userid
-          description: The user id
-        isAllDay:
-          type: boolean
-          title: Isallday
-          description: Indicates whether the time off is for the entire day
-        startDate:
-          type: string
-          title: Startdate
-          description: The start date of the time off
-        endDate:
-          type: string
-          title: Enddate
-          description: The end date of the time off
-        startTime:
-          type: string
-          title: Starttime
-          description: The start time of the time off
-        endTime:
-          type: string
-          title: Endtime
-          description: The end time of the time off
-        timezone:
-          type: string
-          title: Timezone
-          description: The timezone of the time off
-        status:
-          type: string
-          enum:
-          - approved
-          - pending
-          - denied
-          title: Status
-          description: The status of the time off
-        managerNote:
-          type: string
-          title: Managernote
-          description: The manager note of the time off
-      type: object
-      required:
-      - id
-      - userId
-      - isAllDay
-      - startDate
-      - endDate
-      - startTime
-      - endTime
-      - timezone
-      - status
-      title: TimeOffRequestUpdateResponse
-    TimeOffRequestUpdateRequest:
-      properties:
-        timeClockId:
-          type: integer
-          title: Timeclockid
-          description: The unique identifier of the time clock where the time off will be presented in the timesheet
-        isAllDay:
-          type: boolean
-          title: Isallday
-          description: Specifies the type of the time period. If set to false, start and end time fields must be specified.
-        startDate:
-          type: string
-          title: Startdate
-          description: The start date of the time off in ISO format (YYYY-MM-DD)
-        endDate:
-          type: string
-          title: Enddate
-          description: The end time of the time off in ISO format (YYYY-MM-DD). End date must be similar to Start date if isAllDay set to false.
-        startTime:
-          type: string
-          title: Starttime
-          description: The start time of the time off in ISO format (HH:MM:SS). This field is required if isAllDay set to false.
-        endTime:
-          type: string
-          title: Endtime
-          description: The end time of the time off in ISO format (HH:MM:SS). This field is required if isAllDay set to false.
-        timezone:
-          type: string
-          title: Timezone
-          description: The timezone in Tz format (e.g. America/New_York)
-        status:
-          type: string
-          enum:
-          - approved
-          - pending
-          - denied
-          title: Status
-          description: The status of the time off request.
-        managerNote:
-          type: string
-          title: Managernote
-          description: Manager note providing additional details
-        isAdjustForDayLightSaving:
-          type: boolean
-          title: Isadjustfordaylightsaving
-          description: Specifies if the time given should offset the daylight savings time change if the time falls exactly on the daylight savings time change. Set to true only if the time coincides with the rollback hour, otherwise, it should remain false.
-      additionalProperties: false
-      type: object
-      title: TimeOffRequestUpdateRequest
-    APIResponse_TimeOffRequestUpdateResponse_:
-      properties:
-        requestId:
-          type: string
-          title: Requestid
-        data:
-          $ref: '#/components/schemas/TimeOffRequestUpdateResponse'
-      type: object
-      required:
-      - data
-      title: APIResponse[TimeOffRequestUpdateResponse]
-    APIResponse_TimeOffRequestCreateResponse_:
-      properties:
-        requestId:
-          type: string
-          title: Requestid
-        data:
-          $ref: '#/components/schemas/TimeOffRequestCreateResponse'
-      type: object
-      required:
-      - data
-      title: APIResponse[TimeOffRequestCreateResponse]
     TimeOffRequestCreateRequest:
       properties:
         timeClockId:
@@ -535,18 +484,69 @@ components:
       required:
       - offset
       title: PagingResponseModel
-    TimeOffRequestsListResponse:
+    TimeOffRequestUpdateRequest:
       properties:
-        requests:
-          items:
-            $ref: '#/components/schemas/TimeOffRequestCreateResponse'
-          type: array
-          title: Requests
-          description: List of time-off requests matching the filters.
+        timeClockId:
+          type: integer
+          title: Timeclockid
+          description: The unique identifier of the time clock where the time off will be presented in the timesheet
+        isAllDay:
+          type: boolean
+          title: Isallday
+          description: Specifies the type of the time period. If set to false, start and end time fields must be specified.
+        startDate:
+          type: string
+          title: Startdate
+          description: The start date of the time off in ISO format (YYYY-MM-DD)
+        endDate:
+          type: string
+          title: Enddate
+          description: The end time of the time off in ISO format (YYYY-MM-DD). End date must be similar to Start date if isAllDay set to false.
+        startTime:
+          type: string
+          title: Starttime
+          description: The start time of the time off in ISO format (HH:MM:SS). This field is required if isAllDay set to false.
+        endTime:
+          type: string
+          title: Endtime
+          description: The end time of the time off in ISO format (HH:MM:SS). This field is required if isAllDay set to false.
+        timezone:
+          type: string
+          title: Timezone
+          description: The timezone in Tz format (e.g. America/New_York)
+        status:
+          type: string
+          enum:
+          - approved
+          - pending
+          - denied
+          title: Status
+          description: The status of the time off request.
+        managerNote:
+          type: string
+          title: Managernote
+          description: Manager note providing additional details
+        isAdjustForDayLightSaving:
+          type: boolean
+          title: Isadjustfordaylightsaving
+          description: Specifies if the time given should offset the daylight savings time change if the time falls exactly on the daylight savings time change. Set to true only if the time coincides with the rollback hour, otherwise, it should remain false.
+      additionalProperties: false
+      type: object
+      title: TimeOffRequestUpdateRequest
+    PaginatedBaseResponse_TimeOffRequestsListResponse_:
+      properties:
+        requestId:
+          type: string
+          title: Requestid
+        data:
+          $ref: '#/components/schemas/TimeOffRequestsListResponse'
+        paging:
+          $ref: '#/components/schemas/PagingResponseModel'
       type: object
       required:
-      - requests
-      title: TimeOffRequestsListResponse
+      - data
+      - paging
+      title: PaginatedBaseResponse[TimeOffRequestsListResponse]
   securitySchemes:
     APIKeyHeader:
       type: apiKey

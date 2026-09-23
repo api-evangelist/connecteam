@@ -50,17 +50,6 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
-    APIResponse_PayslipCreateResponse_:
-      properties:
-        requestId:
-          type: string
-          title: Requestid
-        data:
-          $ref: '#/components/schemas/PayslipCreateResponse'
-      type: object
-      required:
-      - data
-      title: APIResponse[PayslipCreateResponse]
     HTTPValidationError:
       properties:
         detail:
@@ -91,6 +80,17 @@ components:
       - endDate
       title: PayslipCreateRequest
       description: Request model for creating a payslip
+    APIResponse_PayslipCreateResponse_:
+      properties:
+        requestId:
+          type: string
+          title: Requestid
+        data:
+          $ref: '#/components/schemas/PayslipCreateResponse'
+      type: object
+      required:
+      - data
+      title: APIResponse[PayslipCreateResponse]
     ValidationError:
       properties:
         loc:

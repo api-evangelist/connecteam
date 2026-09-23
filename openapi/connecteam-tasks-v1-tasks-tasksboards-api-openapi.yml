@@ -230,46 +230,280 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
-    ValidationError:
+    TasksResponse:
       properties:
-        loc:
+        tasks:
           items:
-            anyOf:
-            - type: string
-            - type: integer
+            $ref: '#/components/schemas/ResponseTask'
           type: array
-          title: Location
-        msg:
-          type: string
-          title: Message
-        type:
-          type: string
-          title: Error Type
+          title: Tasks
+          description: List of tasks
       type: object
       required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
-    HTMLDescription:
+      - tasks
+      title: TasksResponse
+    TaskType:
+      type: string
+      enum:
+      - oneTime
+      - recurring
+      title: TaskType
+      description: An enumeration.
+    APIResponse_UpdateTaskResponse_:
       properties:
-        type:
+        requestId:
           type: string
-          title: Type
-          description: HTML note type
-          default: html
-        html:
-          type: string
-          title: Html
-          description: The HTML content of the task
+          title: Requestid
+        data:
+          $ref: '#/components/schemas/UpdateTaskResponse'
       type: object
       required:
-      - html
-      title: HTMLDescription
+      - data
+      title: APIResponse[UpdateTaskResponse]
+    TaskDescription:
+      properties:
+        content:
+          type: string
+          title: Content
+          description: The content of the description. Must be in UTF-8 format.
+        attachments:
+          items:
+            $ref: '#/components/schemas/TaskAttachment'
+          type: array
+          title: Attachments
+          description: Optional list of attachments for the task description.
+      type: object
+      required:
+      - content
+      title: TaskDescription
+    UpdateTaskRequest:
+      properties:
+        userIds:
+          items:
+            type: integer
+            minimum: 1.0
+          type: array
+          title: Userids
+          description: List of user IDs to assign the task to. If more than one user ID is specified, it will be treated as a group task. To assign the task to multiple users individually, separate the requests. If this field remains empty the status field must be 'draft' and not archived.
+        status:
+          allOf:
+          - $ref: '#/components/schemas/TaskStatus'
+          description: The status of the task
+        title:
+          type: string
+          title: Title
+          description: The title of the task
+        startTime:
+          type: integer
+          title: Starttime
+          description: The start time of the task in Unix format (in seconds)
+        dueDate:
+          type: integer
+          title: Duedate
+          description: The due date of the task in Unix format (in seconds)
+        labelIds:
+          items:
+            type: string
+          type: array
+          title: Labelids
+          description: List of labels IDs associated with the task
+        type:
+          allOf:
+          - $ref: '#/components/schemas/TaskType'
+          description: The type of the task. Currently set to 'oneTime' by default.
+          default: oneTime
+        isArchived:
+          type: boolean
+          title: Isarchived
+          description: Indicates if the task is archived
+          default: false
+        subTasks:
+          items:
+            $ref: '#/components/schemas/SubTaskRequest'
+          type: array
+          title: Subtasks
+          description: List of subtasks associated with the task
+        description:
+          allOf:
+          - $ref: '#/components/schemas/TaskDescription'
+          title: Description
+          description: Specifies additional description on the task
+      type: object
+      required:
+      - userIds
+      - status
+      - title
+      title: UpdateTaskRequest
+    CreateTaskResponse:
+      properties:
+        id:
+          type: string
+          title: Id
+          description: The ID of the task
+        userIds:
+          items:
+            type: integer
+            minimum: 1.0
+          type: array
+          title: Userids
+          description: List of user IDs to assign the task to. If more than one user ID is specified, it will be treated as a group task. To assign the task to multiple users individually, separate the requests. If this field remains empty the status field must be 'draft' and not archived.
+        status:
+          allOf:
+          - $ref: '#/components/schemas/TaskStatus'
+          description: The status of the task
+        title:
+          type: string
+          title: Title
+          description: The title of the task
+        startTime:
+          type: integer
+          title: Starttime
+          description: The start time of the task in Unix format (in seconds)
+        dueDate:
+          type: integer
+          title: Duedate
+          description: The due date of the task in Unix format (in seconds)
+        labelIds:
+          items:
+            type: string
+          type: array
+          title: Labelids
+          description: List of labels IDs associated with the task
+        type:
+          allOf:
+          - $ref: '#/components/schemas/TaskType'
+          description: The type of the task. Currently set to 'oneTime' by default.
+          default: oneTime
+        isArchived:
+          type: boolean
+          title: Isarchived
+          description: Indicates if the task is archived
+          default: false
+        subTasks:
+          items:
+            $ref: '#/components/schemas/SubTaskResponse'
+          type: array
+          title: Subtasks
+          description: List of subtasks associated with the task
+        description:
+          allOf:
+          - $ref: '#/components/schemas/TaskDescription'
+          title: Description
+          description: Specifies additional description on the task
+      type: object
+      required:
+      - userIds
+      - status
+      - title
+      - id
+      title: CreateTaskResponse
+    CreateTaskRequest:
+      properties:
+        userIds:
+          items:
+            type: integer
+            minimum: 1.0
+          type: array
+          title: Userids
+          description: List of user IDs to assign the task to. If more than one user ID is specified, it will be treated as a group task. To assign the task to multiple users individually, separate the requests. If this field remains empty the status field must be 'draft' and not archived.
+        status:
+          allOf:
+          - $ref: '#/components/schemas/TaskStatus'
+          description: The status of the task
+        title:
+          type: string
+          title: Title
+          description: The title of the task
+        startTime:
+          type: integer
+          title: Starttime
+          description: The start time of the task in Unix format (in seconds)
+        dueDate:
+          type: integer
+          title: Duedate
+          description: The due date of the task in Unix format (in seconds)
+        labelIds:
+          items:
+            type: string
+          type: array
+          title: Labelids
+          description: List of labels IDs associated with the task
+        type:
+          allOf:
+          - $ref: '#/components/schemas/TaskType'
+          description: The type of the task. Currently set to 'oneTime' by default.
+          default: oneTime
+        isArchived:
+          type: boolean
+          title: Isarchived
+          description: Indicates if the task is archived
+          default: false
+        subTasks:
+          items:
+            $ref: '#/components/schemas/SubTaskRequest'
+          type: array
+          title: Subtasks
+          description: List of subtasks associated with the task
+        description:
+          allOf:
+          - $ref: '#/components/schemas/TaskDescription'
+          title: Description
+          description: Specifies additional description on the task
+      type: object
+      required:
+      - userIds
+      - status
+      - title
+      title: CreateTaskRequest
     DeleteTaskResponse:
       properties: {}
       type: object
       title: DeleteTaskResponse
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    TaskStatusFilter:
+      type: string
+      enum:
+      - draft
+      - published
+      - completed
+      - all
+      title: TaskStatusFilter
+      description: An enumeration.
+    APIResponse_DeleteTaskResponse_:
+      properties:
+        requestId:
+          type: string
+          title: Requestid
+        data:
+          $ref: '#/components/schemas/DeleteTaskResponse'
+      type: object
+      required:
+      - data
+      title: APIResponse[DeleteTaskResponse]
+    PagingResponseModel:
+      properties:
+        offset:
+          type: integer
+          minimum: 0.0
+          title: Offset
+          description: The resource offset of the last successfully read resource will be returned as the paging.offset JSON property of a paginated response containing more results
+        total:
+          type: integer
+          minimum: 0.0
+          title: Total
+          description: Total number of resources matching the request, ignoring pagination. Use this to retrieve the full count without paginating through every page. Only populated by endpoints that compute it.
+      type: object
+      required:
+      - offset
+      title: PagingResponseModel
     UpdateTaskResponse:
       properties:
         id:
@@ -334,191 +568,6 @@ components:
       - id
       title: UpdateTaskResponse
       description: Response model for updating an existing task
-    TaskStatusFilter:
-      type: string
-      enum:
-      - draft
-      - published
-      - completed
-      - all
-      title: TaskStatusFilter
-      description: An enumeration.
-    TasksResponse:
-      properties:
-        tasks:
-          items:
-            $ref: '#/components/schemas/ResponseTask'
-          type: array
-          title: Tasks
-          description: List of tasks
-      type: object
-      required:
-      - tasks
-      title: TasksResponse
-    TaskDescription:
-      properties:
-        content:
-          type: string
-          title: Content
-          description: The content of the description. Must be in UTF-8 format.
-        attachments:
-          items:
-            $ref: '#/components/schemas/TaskAttachment'
-          type: array
-          title: Attachments
-          description: Optional list of attachments for the task description.
-      type: object
-      required:
-      - content
-      title: TaskDescription
-    CreateTaskRequest:
-      properties:
-        userIds:
-          items:
-            type: integer
-            minimum: 1.0
-          type: array
-          title: Userids
-          description: List of user IDs to assign the task to. If more than one user ID is specified, it will be treated as a group task. To assign the task to multiple users individually, separate the requests. If this field remains empty the status field must be 'draft' and not archived.
-        status:
-          allOf:
-          - $ref: '#/components/schemas/TaskStatus'
-          description: The status of the task
-        title:
-          type: string
-          title: Title
-          description: The title of the task
-        startTime:
-          type: integer
-          title: Starttime
-          description: The start time of the task in Unix format (in seconds)
-        dueDate:
-          type: integer
-          title: Duedate
-          description: The due date of the task in Unix format (in seconds)
-        labelIds:
-          items:
-            type: string
-          type: array
-          title: Labelids
-          description: List of labels IDs associated with the task
-        type:
-          allOf:
-          - $ref: '#/components/schemas/TaskType'
-          description: The type of the task. Currently set to 'oneTime' by default.
-          default: oneTime
-        isArchived:
-          type: boolean
-          title: Isarchived
-          description: Indicates if the task is archived
-          default: false
-        subTasks:
-          items:
-            $ref: '#/components/schemas/SubTaskRequest'
-          type: array
-          title: Subtasks
-          description: List of subtasks associated with the task
-        description:
-          allOf:
-          - $ref: '#/components/schemas/TaskDescription'
-          title: Description
-          description: Specifies additional description on the task
-      type: object
-      required:
-      - userIds
-      - status
-      - title
-      title: CreateTaskRequest
-    APIResponse_UpdateTaskResponse_:
-      properties:
-        requestId:
-          type: string
-          title: Requestid
-        data:
-          $ref: '#/components/schemas/UpdateTaskResponse'
-      type: object
-      required:
-      - data
-      title: APIResponse[UpdateTaskResponse]
-    PagingResponseModel:
-      properties:
-        offset:
-          type: integer
-          minimum: 0.0
-          title: Offset
-          description: The resource offset of the last successfully read resource will be returned as the paging.offset JSON property of a paginated response containing more results
-        total:
-          type: integer
-          minimum: 0.0
-          title: Total
-          description: Total number of resources matching the request, ignoring pagination. Use this to retrieve the full count without paginating through every page. Only populated by endpoints that compute it.
-      type: object
-      required:
-      - offset
-      title: PagingResponseModel
-    CreateTaskResponse:
-      properties:
-        id:
-          type: string
-          title: Id
-          description: The ID of the task
-        userIds:
-          items:
-            type: integer
-            minimum: 1.0
-          type: array
-          title: Userids
-          description: List of user IDs to assign the task to. If more than one user ID is specified, it will be treated as a group task. To assign the task to multiple users individually, separate the requests. If this field remains empty the status field must be 'draft' and not archived.
-        status:
-          allOf:
-          - $ref: '#/components/schemas/TaskStatus'
-          description: The status of the task
-        title:
-          type: string
-          title: Title
-          description: The title of the task
-        startTime:
-          type: integer
-          title: Starttime
-          description: The start time of the task in Unix format (in seconds)
-        dueDate:
-          type: integer
-          title: Duedate
-          description: The due date of the task in Unix format (in seconds)
-        labelIds:
-          items:
-            type: string
-          type: array
-          title: Labelids
-          description: List of labels IDs associated with the task
-        type:
-          allOf:
-          - $ref: '#/components/schemas/TaskType'
-          description: The type of the task. Currently set to 'oneTime' by default.
-          default: oneTime
-        isArchived:
-          type: boolean
-          title: Isarchived
-          description: Indicates if the task is archived
-          default: false
-        subTasks:
-          items:
-            $ref: '#/components/schemas/SubTaskResponse'
-          type: array
-          title: Subtasks
-          description: List of subtasks associated with the task
-        description:
-          allOf:
-          - $ref: '#/components/schemas/TaskDescription'
-          title: Description
-          description: Specifies additional description on the task
-      type: object
-      required:
-      - userIds
-      - status
-      - title
-      - id
-      title: CreateTaskResponse
     APIResponse_CreateTaskResponse_:
       properties:
         requestId:
@@ -530,6 +579,44 @@ components:
       required:
       - data
       title: APIResponse[CreateTaskResponse]
+    HTMLDescription:
+      properties:
+        type:
+          type: string
+          title: Type
+          description: HTML note type
+          default: html
+        html:
+          type: string
+          title: Html
+          description: The HTML content of the task
+      type: object
+      required:
+      - html
+      title: HTMLDescription
+    SubTaskRequest:
+      properties:
+        title:
+          type: string
+          title: Title
+          description: The title of the subtask
+        isCompleted:
+          type: boolean
+          title: Iscompleted
+          description: Whether the subtask is completed
+          default: false
+      type: object
+      required:
+      - title
+      title: SubTaskRequest
+    TaskStatus:
+      type: string
+      enum:
+      - draft
+      - published
+      - completed
+      title: TaskStatus
+      description: An enumeration.
     SubTaskResponse:
       properties:
         id:
@@ -550,6 +637,41 @@ components:
       - title
       - isCompleted
       title: SubTaskResponse
+    PaginatedBaseResponse_TasksResponse_:
+      properties:
+        requestId:
+          type: string
+          title: Requestid
+        data:
+          $ref: '#/components/schemas/TasksResponse'
+        paging:
+          $ref: '#/components/schemas/PagingResponseModel'
+      type: object
+      required:
+      - data
+      - paging
+      title: PaginatedBaseResponse[TasksResponse]
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
     ResponseTask:
       properties:
         id:
@@ -617,120 +739,6 @@ components:
       - description
       title: ResponseTask
       description: Response model for task data that includes the task ID
-    SubTaskRequest:
-      properties:
-        title:
-          type: string
-          title: Title
-          description: The title of the subtask
-        isCompleted:
-          type: boolean
-          title: Iscompleted
-          description: Whether the subtask is completed
-          default: false
-      type: object
-      required:
-      - title
-      title: SubTaskRequest
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
-    APIResponse_DeleteTaskResponse_:
-      properties:
-        requestId:
-          type: string
-          title: Requestid
-        data:
-          $ref: '#/components/schemas/DeleteTaskResponse'
-      type: object
-      required:
-      - data
-      title: APIResponse[DeleteTaskResponse]
-    UpdateTaskRequest:
-      properties:
-        userIds:
-          items:
-            type: integer
-            minimum: 1.0
-          type: array
-          title: Userids
-          description: List of user IDs to assign the task to. If more than one user ID is specified, it will be treated as a group task. To assign the task to multiple users individually, separate the requests. If this field remains empty the status field must be 'draft' and not archived.
-        status:
-          allOf:
-          - $ref: '#/components/schemas/TaskStatus'
-          description: The status of the task
-        title:
-          type: string
-          title: Title
-          description: The title of the task
-        startTime:
-          type: integer
-          title: Starttime
-          description: The start time of the task in Unix format (in seconds)
-        dueDate:
-          type: integer
-          title: Duedate
-          description: The due date of the task in Unix format (in seconds)
-        labelIds:
-          items:
-            type: string
-          type: array
-          title: Labelids
-          description: List of labels IDs associated with the task
-        type:
-          allOf:
-          - $ref: '#/components/schemas/TaskType'
-          description: The type of the task. Currently set to 'oneTime' by default.
-          default: oneTime
-        isArchived:
-          type: boolean
-          title: Isarchived
-          description: Indicates if the task is archived
-          default: false
-        subTasks:
-          items:
-            $ref: '#/components/schemas/SubTaskRequest'
-          type: array
-          title: Subtasks
-          description: List of subtasks associated with the task
-        description:
-          allOf:
-          - $ref: '#/components/schemas/TaskDescription'
-          title: Description
-          description: Specifies additional description on the task
-      type: object
-      required:
-      - userIds
-      - status
-      - title
-      title: UpdateTaskRequest
-    PaginatedBaseResponse_TasksResponse_:
-      properties:
-        requestId:
-          type: string
-          title: Requestid
-        data:
-          $ref: '#/components/schemas/TasksResponse'
-        paging:
-          $ref: '#/components/schemas/PagingResponseModel'
-      type: object
-      required:
-      - data
-      - paging
-      title: PaginatedBaseResponse[TasksResponse]
-    TaskType:
-      type: string
-      enum:
-      - oneTime
-      - recurring
-      title: TaskType
-      description: An enumeration.
     TaskAttachment:
       properties:
         fileId:
@@ -741,14 +749,6 @@ components:
       required:
       - fileId
       title: TaskAttachment
-    TaskStatus:
-      type: string
-      enum:
-      - draft
-      - published
-      - completed
-      title: TaskStatus
-      description: An enumeration.
   securitySchemes:
     APIKeyHeader:
       type: apiKey

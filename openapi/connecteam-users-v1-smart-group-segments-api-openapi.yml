@@ -1,6 +1,6 @@
 openapi: 3.2.0
 info:
-  title: Connecteam API documentation Users:v1:Smart Group Segments API
+  title: Connecteam API documentation Users:v1:Smart Group Segments…
   version: v1
 servers:
 - url: https://api.connecteam.com/
@@ -85,110 +85,6 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
-    ValidationError:
-      properties:
-        loc:
-          items:
-            anyOf:
-            - type: string
-            - type: integer
-          type: array
-          title: Location
-        msg:
-          type: string
-          title: Message
-        type:
-          type: string
-          title: Error Type
-      type: object
-      required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
-    SmartGroupSegmentCreateRequest:
-      properties:
-        name:
-          type: string
-          title: Name
-          description: The name of the smart group segment
-        color:
-          type: string
-          title: Color
-          description: 'The color hex code for the smart group segment (e.g. #ff5722)'
-      type: object
-      required:
-      - name
-      - color
-      title: SmartGroupSegmentCreateRequest
-    SmartGroupSegment:
-      properties:
-        id:
-          type: integer
-          title: Id
-          description: The unique identifier of the smart group segment
-        name:
-          type: string
-          title: Name
-          description: The name of the smart group segment
-        color:
-          type: string
-          title: Color
-          description: The color hex code of the smart group segment
-        sortOrder:
-          type: integer
-          title: Sortorder
-          description: The sort order of the smart group segment
-      type: object
-      required:
-      - id
-      - name
-      - color
-      - sortOrder
-      title: SmartGroupSegment
-    SmartGroupSegmentsResponse:
-      properties:
-        segments:
-          items:
-            $ref: '#/components/schemas/SmartGroupSegment'
-          type: array
-          title: Segments
-          description: List of smart group segments
-      type: object
-      required:
-      - segments
-      title: SmartGroupSegmentsResponse
-    APIResponse_SmartGroupSegmentCreateResponse_:
-      properties:
-        requestId:
-          type: string
-          title: Requestid
-        data:
-          $ref: '#/components/schemas/SmartGroupSegmentCreateResponse'
-      type: object
-      required:
-      - data
-      title: APIResponse[SmartGroupSegmentCreateResponse]
-    APIResponse_SmartGroupSegmentsResponse_:
-      properties:
-        requestId:
-          type: string
-          title: Requestid
-        data:
-          $ref: '#/components/schemas/SmartGroupSegmentsResponse'
-      type: object
-      required:
-      - data
-      title: APIResponse[SmartGroupSegmentsResponse]
     SmartGroupSegmentCreateResponse:
       properties:
         id:
@@ -214,6 +110,110 @@ components:
       - color
       - sortOrder
       title: SmartGroupSegmentCreateResponse
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    SmartGroupSegment:
+      properties:
+        id:
+          type: integer
+          title: Id
+          description: The unique identifier of the smart group segment
+        name:
+          type: string
+          title: Name
+          description: The name of the smart group segment
+        color:
+          type: string
+          title: Color
+          description: The color hex code of the smart group segment
+        sortOrder:
+          type: integer
+          title: Sortorder
+          description: The sort order of the smart group segment
+      type: object
+      required:
+      - id
+      - name
+      - color
+      - sortOrder
+      title: SmartGroupSegment
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    APIResponse_SmartGroupSegmentCreateResponse_:
+      properties:
+        requestId:
+          type: string
+          title: Requestid
+        data:
+          $ref: '#/components/schemas/SmartGroupSegmentCreateResponse'
+      type: object
+      required:
+      - data
+      title: APIResponse[SmartGroupSegmentCreateResponse]
+    SmartGroupSegmentsResponse:
+      properties:
+        segments:
+          items:
+            $ref: '#/components/schemas/SmartGroupSegment'
+          type: array
+          title: Segments
+          description: List of smart group segments
+      type: object
+      required:
+      - segments
+      title: SmartGroupSegmentsResponse
+    SmartGroupSegmentCreateRequest:
+      properties:
+        name:
+          type: string
+          title: Name
+          description: The name of the smart group segment
+        color:
+          type: string
+          title: Color
+          description: 'The color hex code for the smart group segment (e.g. #ff5722)'
+      type: object
+      required:
+      - name
+      - color
+      title: SmartGroupSegmentCreateRequest
+    APIResponse_SmartGroupSegmentsResponse_:
+      properties:
+        requestId:
+          type: string
+          title: Requestid
+        data:
+          $ref: '#/components/schemas/SmartGroupSegmentsResponse'
+      type: object
+      required:
+      - data
+      title: APIResponse[SmartGroupSegmentsResponse]
   securitySchemes:
     APIKeyHeader:
       type: apiKey

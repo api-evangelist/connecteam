@@ -51,27 +51,6 @@ components:
           title: Detail
       type: object
       title: HTTPValidationError
-    ValidationError:
-      properties:
-        loc:
-          items:
-            anyOf:
-            - type: string
-            - type: integer
-          type: array
-          title: Location
-        msg:
-          type: string
-          title: Message
-        type:
-          type: string
-          title: Error Type
-      type: object
-      required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
     InviteAdminsRequest:
       properties:
         userId:
@@ -93,6 +72,31 @@ components:
       - email
       - title
       title: InviteAdminsRequest
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    BaseResponse:
+      properties: {}
+      type: object
+      title: BaseResponse
     APIResponse_BaseResponse_:
       properties:
         requestId:
@@ -104,10 +108,6 @@ components:
       required:
       - data
       title: APIResponse[BaseResponse]
-    BaseResponse:
-      properties: {}
-      type: object
-      title: BaseResponse
   securitySchemes:
     APIKeyHeader:
       type: apiKey

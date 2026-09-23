@@ -1,6 +1,6 @@
 openapi: 3.2.0
 info:
-  title: Connecteam API documentation Company Policies:v1:PayRuleAssignment API
+  title: Connecteam API documentation Company…
   version: v1
 servers:
 - url: https://api.connecteam.com/
@@ -50,6 +50,22 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
+    PayRuleAssignmentRequest:
+      properties:
+        userId:
+          type: integer
+          title: Userid
+          description: The unique identifier of the user
+        effectiveDate:
+          type: string
+          format: date
+          title: Effectivedate
+          description: The date for the policy to take effect, specified in ISO 8601 format (e.g., 2025-01-25)
+      type: object
+      required:
+      - userId
+      - effectiveDate
+      title: PayRuleAssignmentRequest
     HTTPValidationError:
       properties:
         detail:
@@ -59,6 +75,17 @@ components:
           title: Detail
       type: object
       title: HTTPValidationError
+    APIResponse_PayRuleAssignmentResponse_:
+      properties:
+        requestId:
+          type: string
+          title: Requestid
+        data:
+          $ref: '#/components/schemas/PayRuleAssignmentResponse'
+      type: object
+      required:
+      - data
+      title: APIResponse[PayRuleAssignmentResponse]
     ValidationError:
       properties:
         loc:
@@ -90,33 +117,6 @@ components:
       required:
       - assignmentId
       title: PayRuleAssignmentResponse
-    PayRuleAssignmentRequest:
-      properties:
-        userId:
-          type: integer
-          title: Userid
-          description: The unique identifier of the user
-        effectiveDate:
-          type: string
-          format: date
-          title: Effectivedate
-          description: The date for the policy to take effect, specified in ISO 8601 format (e.g., 2025-01-25)
-      type: object
-      required:
-      - userId
-      - effectiveDate
-      title: PayRuleAssignmentRequest
-    APIResponse_PayRuleAssignmentResponse_:
-      properties:
-        requestId:
-          type: string
-          title: Requestid
-        data:
-          $ref: '#/components/schemas/PayRuleAssignmentResponse'
-      type: object
-      required:
-      - data
-      title: APIResponse[PayRuleAssignmentResponse]
   securitySchemes:
     APIKeyHeader:
       type: apiKey

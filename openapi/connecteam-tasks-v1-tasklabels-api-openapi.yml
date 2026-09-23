@@ -80,6 +80,20 @@ components:
           title: Detail
       type: object
       title: HTTPValidationError
+    PaginatedBaseResponse_TaskLabelsResponse_:
+      properties:
+        requestId:
+          type: string
+          title: Requestid
+        data:
+          $ref: '#/components/schemas/TaskLabelsResponse'
+        paging:
+          $ref: '#/components/schemas/PagingResponseModel'
+      type: object
+      required:
+      - data
+      - paging
+      title: PaginatedBaseResponse[TaskLabelsResponse]
     ValidationError:
       properties:
         loc:
@@ -101,18 +115,6 @@ components:
       - msg
       - type
       title: ValidationError
-    TaskLabelsResponse:
-      properties:
-        labels:
-          items:
-            $ref: '#/components/schemas/TaskLabel'
-          type: array
-          title: Labels
-          description: List of task labels
-      type: object
-      required:
-      - labels
-      title: TaskLabelsResponse
     TaskLabel:
       properties:
         id:
@@ -133,6 +135,18 @@ components:
       - name
       - color
       title: TaskLabel
+    TaskLabelsResponse:
+      properties:
+        labels:
+          items:
+            $ref: '#/components/schemas/TaskLabel'
+          type: array
+          title: Labels
+          description: List of task labels
+      type: object
+      required:
+      - labels
+      title: TaskLabelsResponse
     PagingResponseModel:
       properties:
         offset:
@@ -149,20 +163,6 @@ components:
       required:
       - offset
       title: PagingResponseModel
-    PaginatedBaseResponse_TaskLabelsResponse_:
-      properties:
-        requestId:
-          type: string
-          title: Requestid
-        data:
-          $ref: '#/components/schemas/TaskLabelsResponse'
-        paging:
-          $ref: '#/components/schemas/PagingResponseModel'
-      type: object
-      required:
-      - data
-      - paging
-      title: PaginatedBaseResponse[TaskLabelsResponse]
   securitySchemes:
     APIKeyHeader:
       type: apiKey

@@ -1,6 +1,6 @@
 openapi: 3.2.0
 info:
-  title: Connecteam API documentation Users:v1:Pending Request Users API
+  title: Connecteam API documentation Users:v1:Pending Request Users…
   version: v1
 servers:
 - url: https://api.connecteam.com/
@@ -227,165 +227,6 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
-    ValidationError:
-      properties:
-        loc:
-          items:
-            anyOf:
-            - type: string
-            - type: integer
-          type: array
-          title: Location
-        msg:
-          type: string
-          title: Message
-        type:
-          type: string
-          title: Error Type
-      type: object
-      required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
-    APIResponse_UpdatePendingUserResponse_:
-      properties:
-        requestId:
-          type: string
-          title: Requestid
-        data:
-          $ref: '#/components/schemas/UpdatePendingUserResponse'
-      type: object
-      required:
-      - data
-      title: APIResponse[UpdatePendingUserResponse]
-    PendingUserRequest:
-      properties:
-        firstName:
-          type: string
-          maxLength: 100
-          title: Firstname
-          description: The user's first name
-        lastName:
-          type: string
-          maxLength: 100
-          title: Lastname
-          description: The user's last name
-        phoneNumber:
-          type: string
-          title: Phonenumber
-          description: The user's phone number
-        email:
-          type: string
-          title: Email
-          description: The user's email (mandatory for managers and owners)
-        customFields:
-          items:
-            $ref: '#/components/schemas/BaseCustomField'
-          type: array
-          title: Customfields
-          description: The user's custom fields
-          default: []
-        rawFields:
-          type: object
-          title: Rawfields
-          description: The user's raw fields
-        linkId:
-          type: integer
-          title: Linkid
-          description: The id of the invite link
-        source:
-          type: string
-          title: Source
-          description: The source of the user
-        userId:
-          type: integer
-          title: Userid
-          description: Connecteam user id of the user
-        suggestedUserId:
-          type: integer
-          title: Suggesteduserid
-          description: Connecteam user id of the user for the admin to match
-        sourceIcon:
-          type: string
-          title: Sourceicon
-          description: The icon of the external system if users come from integration
-        externalUserId:
-          type: string
-          title: Externaluserid
-          description: The user ID from external system
-        integrationId:
-          type: integer
-          title: Integrationid
-          description: The integration ID from the integration service
-        extraFields:
-          type: object
-          title: Extrafields
-          description: Extra fields from integration
-        profilePictureFileId:
-          type: string
-          title: Profilepicturefileid
-          description: The file ID obtained from the upload attachment endpoint (POST /attachments/v1/files/generate-upload-url) with featureType set to 'users'. The file must be finalized via the complete-upload endpoint before use.
-      type: object
-      required:
-      - firstName
-      - lastName
-      title: PendingUserRequest
-    UpdatePendingUserResponse:
-      properties: {}
-      type: object
-      title: UpdatePendingUserResponse
-    UpdatePendingUsersStatusRequest:
-      properties:
-        requests:
-          items:
-            $ref: '#/components/schemas/PendingUserStatusRequest'
-          type: array
-          title: Requests
-          description: List of status updates to apply
-      type: object
-      required:
-      - requests
-      title: UpdatePendingUsersStatusRequest
-    APIResponse_GetPendingUsersResponse_:
-      properties:
-        requestId:
-          type: string
-          title: Requestid
-        data:
-          $ref: '#/components/schemas/GetPendingUsersResponse'
-      type: object
-      required:
-      - data
-      title: APIResponse[GetPendingUsersResponse]
-    APIResponse_BaseResponse_:
-      properties:
-        requestId:
-          type: string
-          title: Requestid
-        data:
-          $ref: '#/components/schemas/BaseResponse'
-      type: object
-      required:
-      - data
-      title: APIResponse[BaseResponse]
-    BaseResponse:
-      properties: {}
-      type: object
-      title: BaseResponse
-    PendingUsersResponse:
-      properties:
-        ids:
-          items:
-            type: integer
-          type: array
-          title: Ids
-          description: new pending users
-      type: object
-      required:
-      - ids
-      title: PendingUsersResponse
-      description: Response model for creating user pending requests.
     GetPendingUsersResponse:
       properties:
         pendingUsers:
@@ -398,18 +239,73 @@ components:
       required:
       - pendingUsers
       title: GetPendingUsersResponse
-    DeletePendingUsersRequest:
+    APIResponse_PendingUsersResponse_:
       properties:
-        ids:
-          items:
-            type: integer
-          type: array
-          title: Ids
-          description: List of pending user IDs to delete
+        requestId:
+          type: string
+          title: Requestid
+        data:
+          $ref: '#/components/schemas/PendingUsersResponse'
       type: object
       required:
-      - ids
-      title: DeletePendingUsersRequest
+      - data
+      title: APIResponse[PendingUsersResponse]
+    BaseResponse:
+      properties: {}
+      type: object
+      title: BaseResponse
+    PendingUserDataResponse:
+      properties:
+        id:
+          type: integer
+          title: Id
+          description: Pending user request ID
+        userFields:
+          type: object
+          title: Userfields
+          description: User profile fields submitted with the request
+        rawFields:
+          type: object
+          title: Rawfields
+          description: Raw unprocessed fields from the source
+        source:
+          type: string
+          title: Source
+          description: Origin source of the pending user request
+        sourceIcon:
+          type: string
+          title: Sourceicon
+          description: Icon representing the request source
+        userId:
+          type: integer
+          title: Userid
+          description: Associated user ID if the request was approved
+        externalUserId:
+          type: string
+          title: Externaluserid
+          description: External system user identifier
+        suggestedUserId:
+          type: integer
+          title: Suggesteduserid
+          description: Suggested matching user ID
+        integrationId:
+          type: integer
+          title: Integrationid
+          description: Integration that created this request
+        linkId:
+          type: integer
+          title: Linkid
+          description: Invite link ID associated with this request
+        status:
+          type: string
+          title: Status
+          description: Current status of the pending user request
+      type: object
+      required:
+      - id
+      - userFields
+      - status
+      title: PendingUserDataResponse
     PendingUserStatusRequest:
       properties:
         id:
@@ -425,6 +321,28 @@ components:
       - id
       - status
       title: PendingUserStatusRequest
+    PendingUsersResponse:
+      properties:
+        ids:
+          items:
+            type: integer
+          type: array
+          title: Ids
+          description: new pending users
+      type: object
+      required:
+      - ids
+      title: PendingUsersResponse
+      description: Response model for creating user pending requests.
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
     UpdatePendingUserRequest:
       properties:
         firstName:
@@ -497,74 +415,89 @@ components:
       - firstName
       - lastName
       title: UpdatePendingUserRequest
-    UserJoinRequestStatus:
-      type: string
-      enum:
-      - approved
-      - declined
-      - pending
-      title: UserJoinRequestStatus
-    HTTPValidationError:
+    PendingUserRequest:
       properties:
-        detail:
+        firstName:
+          type: string
+          maxLength: 100
+          title: Firstname
+          description: The user's first name
+        lastName:
+          type: string
+          maxLength: 100
+          title: Lastname
+          description: The user's last name
+        phoneNumber:
+          type: string
+          title: Phonenumber
+          description: The user's phone number
+        email:
+          type: string
+          title: Email
+          description: The user's email (mandatory for managers and owners)
+        customFields:
           items:
-            $ref: '#/components/schemas/ValidationError'
+            $ref: '#/components/schemas/BaseCustomField'
           type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
-    PendingUserDataResponse:
-      properties:
-        id:
-          type: integer
-          title: Id
-          description: Pending user request ID
-        userFields:
-          type: object
-          title: Userfields
-          description: User profile fields submitted with the request
+          title: Customfields
+          description: The user's custom fields
+          default: []
         rawFields:
           type: object
           title: Rawfields
-          description: Raw unprocessed fields from the source
-        source:
-          type: string
-          title: Source
-          description: Origin source of the pending user request
-        sourceIcon:
-          type: string
-          title: Sourceicon
-          description: Icon representing the request source
-        userId:
-          type: integer
-          title: Userid
-          description: Associated user ID if the request was approved
-        externalUserId:
-          type: string
-          title: Externaluserid
-          description: External system user identifier
-        suggestedUserId:
-          type: integer
-          title: Suggesteduserid
-          description: Suggested matching user ID
-        integrationId:
-          type: integer
-          title: Integrationid
-          description: Integration that created this request
+          description: The user's raw fields
         linkId:
           type: integer
           title: Linkid
-          description: Invite link ID associated with this request
-        status:
+          description: The id of the invite link
+        source:
           type: string
-          title: Status
-          description: Current status of the pending user request
+          title: Source
+          description: The source of the user
+        userId:
+          type: integer
+          title: Userid
+          description: Connecteam user id of the user
+        suggestedUserId:
+          type: integer
+          title: Suggesteduserid
+          description: Connecteam user id of the user for the admin to match
+        sourceIcon:
+          type: string
+          title: Sourceicon
+          description: The icon of the external system if users come from integration
+        externalUserId:
+          type: string
+          title: Externaluserid
+          description: The user ID from external system
+        integrationId:
+          type: integer
+          title: Integrationid
+          description: The integration ID from the integration service
+        extraFields:
+          type: object
+          title: Extrafields
+          description: Extra fields from integration
+        profilePictureFileId:
+          type: string
+          title: Profilepicturefileid
+          description: The file ID obtained from the upload attachment endpoint (POST /attachments/v1/files/generate-upload-url) with featureType set to 'users'. The file must be finalized via the complete-upload endpoint before use.
       type: object
       required:
-      - id
-      - userFields
-      - status
-      title: PendingUserDataResponse
+      - firstName
+      - lastName
+      title: PendingUserRequest
+    APIResponse_GetPendingUsersResponse_:
+      properties:
+        requestId:
+          type: string
+          title: Requestid
+        data:
+          $ref: '#/components/schemas/GetPendingUsersResponse'
+      type: object
+      required:
+      - data
+      title: APIResponse[GetPendingUsersResponse]
     PendingUsersRequest:
       properties:
         users:
@@ -577,17 +510,21 @@ components:
       required:
       - users
       title: PendingUsersRequest
-    APIResponse_PendingUsersResponse_:
+    UpdatePendingUserResponse:
+      properties: {}
+      type: object
+      title: UpdatePendingUserResponse
+    APIResponse_UpdatePendingUserResponse_:
       properties:
         requestId:
           type: string
           title: Requestid
         data:
-          $ref: '#/components/schemas/PendingUsersResponse'
+          $ref: '#/components/schemas/UpdatePendingUserResponse'
       type: object
       required:
       - data
-      title: APIResponse[PendingUsersResponse]
+      title: APIResponse[UpdatePendingUserResponse]
     BaseCustomField:
       properties:
         customFieldId:
@@ -603,6 +540,69 @@ components:
       - customFieldId
       - value
       title: BaseCustomField
+    DeletePendingUsersRequest:
+      properties:
+        ids:
+          items:
+            type: integer
+          type: array
+          title: Ids
+          description: List of pending user IDs to delete
+      type: object
+      required:
+      - ids
+      title: DeletePendingUsersRequest
+    UserJoinRequestStatus:
+      type: string
+      enum:
+      - approved
+      - declined
+      - pending
+      title: UserJoinRequestStatus
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    UpdatePendingUsersStatusRequest:
+      properties:
+        requests:
+          items:
+            $ref: '#/components/schemas/PendingUserStatusRequest'
+          type: array
+          title: Requests
+          description: List of status updates to apply
+      type: object
+      required:
+      - requests
+      title: UpdatePendingUsersStatusRequest
+    APIResponse_BaseResponse_:
+      properties:
+        requestId:
+          type: string
+          title: Requestid
+        data:
+          $ref: '#/components/schemas/BaseResponse'
+      type: object
+      required:
+      - data
+      title: APIResponse[BaseResponse]
   securitySchemes:
     APIKeyHeader:
       type: apiKey

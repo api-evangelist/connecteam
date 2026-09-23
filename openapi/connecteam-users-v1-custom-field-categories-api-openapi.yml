@@ -1,6 +1,6 @@
 openapi: 3.2.0
 info:
-  title: Connecteam API documentation Users:v1:Custom Field Categories API
+  title: Connecteam API documentation Users:v1:Custom Field…
   version: v1
 servers:
 - url: https://api.connecteam.com/
@@ -101,6 +101,12 @@ components:
           title: Detail
       type: object
       title: HTTPValidationError
+    CustomFieldCategoriesSortExternal:
+      enum:
+      - id
+      - name
+      title: CustomFieldCategoriesSortExternal
+      description: An enumeration.
     ValidationError:
       properties:
         loc:
@@ -122,6 +128,32 @@ components:
       - msg
       - type
       title: ValidationError
+    CustomFieldCategoriesResponse:
+      properties:
+        categories:
+          items:
+            $ref: '#/components/schemas/CustomFieldCategory'
+          type: array
+          title: Categories
+          description: The custom fields categories
+      type: object
+      required:
+      - categories
+      title: CustomFieldCategoriesResponse
+    PaginatedBaseResponse_CustomFieldCategoriesResponse_:
+      properties:
+        requestId:
+          type: string
+          title: Requestid
+        data:
+          $ref: '#/components/schemas/CustomFieldCategoriesResponse'
+        paging:
+          $ref: '#/components/schemas/PagingResponseModel'
+      type: object
+      required:
+      - data
+      - paging
+      title: PaginatedBaseResponse[CustomFieldCategoriesResponse]
     CustomFieldCategory:
       properties:
         id:
@@ -137,20 +169,6 @@ components:
       - id
       - name
       title: CustomFieldCategory
-    PaginatedBaseResponse_CustomFieldCategoriesResponse_:
-      properties:
-        requestId:
-          type: string
-          title: Requestid
-        data:
-          $ref: '#/components/schemas/CustomFieldCategoriesResponse'
-        paging:
-          $ref: '#/components/schemas/PagingResponseModel'
-      type: object
-      required:
-      - data
-      - paging
-      title: PaginatedBaseResponse[CustomFieldCategoriesResponse]
     PagingResponseModel:
       properties:
         offset:
@@ -167,24 +185,6 @@ components:
       required:
       - offset
       title: PagingResponseModel
-    CustomFieldCategoriesResponse:
-      properties:
-        categories:
-          items:
-            $ref: '#/components/schemas/CustomFieldCategory'
-          type: array
-          title: Categories
-          description: The custom fields categories
-      type: object
-      required:
-      - categories
-      title: CustomFieldCategoriesResponse
-    CustomFieldCategoriesSortExternal:
-      enum:
-      - id
-      - name
-      title: CustomFieldCategoriesSortExternal
-      description: An enumeration.
     SortOrder:
       type: string
       enum:

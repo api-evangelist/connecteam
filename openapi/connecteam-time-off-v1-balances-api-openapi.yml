@@ -134,6 +134,38 @@ components:
           title: Detail
       type: object
       title: HTTPValidationError
+    PolicyUnitsEnum:
+      type: string
+      enum:
+      - hours
+      - days
+      title: PolicyUnitsEnum
+      description: An enumeration.
+    TimeOffUserBalance:
+      properties:
+        userId:
+          type: integer
+          title: Userid
+          description: The user id
+        units:
+          allOf:
+          - $ref: '#/components/schemas/PolicyUnitsEnum'
+          description: The user balance units
+        balance:
+          type: number
+          title: Balance
+          description: The remaining user balance
+        policyId:
+          type: string
+          title: Policyid
+          description: The id of the policy this balance belongs to
+      type: object
+      required:
+      - userId
+      - units
+      - balance
+      - policyId
+      title: TimeOffUserBalance
     ValidationError:
       properties:
         loc:
@@ -155,13 +187,31 @@ components:
       - msg
       - type
       title: ValidationError
-    PolicyUnitsEnum:
-      type: string
-      enum:
-      - hours
-      - days
-      title: PolicyUnitsEnum
-      description: An enumeration.
+    PaginatedBaseResponse_TimeOffGetUserBalancesResponse_:
+      properties:
+        requestId:
+          type: string
+          title: Requestid
+        data:
+          $ref: '#/components/schemas/TimeOffGetUserBalancesResponse'
+        paging:
+          $ref: '#/components/schemas/PagingResponseModel'
+      type: object
+      required:
+      - data
+      - paging
+      title: PaginatedBaseResponse[TimeOffGetUserBalancesResponse]
+    APIResponse_TimeOffPutUserBalanceResponse_:
+      properties:
+        requestId:
+          type: string
+          title: Requestid
+        data:
+          $ref: '#/components/schemas/TimeOffPutUserBalanceResponse'
+      type: object
+      required:
+      - data
+      title: APIResponse[TimeOffPutUserBalanceResponse]
     TimeOffPutUserBalanceResponse:
       properties:
         balance:
@@ -195,31 +245,6 @@ components:
       required:
       - balance
       title: TimeOffUpdateUserBalanceRequest
-    APIResponse_TimeOffPutUserBalanceResponse_:
-      properties:
-        requestId:
-          type: string
-          title: Requestid
-        data:
-          $ref: '#/components/schemas/TimeOffPutUserBalanceResponse'
-      type: object
-      required:
-      - data
-      title: APIResponse[TimeOffPutUserBalanceResponse]
-    PaginatedBaseResponse_TimeOffGetUserBalancesResponse_:
-      properties:
-        requestId:
-          type: string
-          title: Requestid
-        data:
-          $ref: '#/components/schemas/TimeOffGetUserBalancesResponse'
-        paging:
-          $ref: '#/components/schemas/PagingResponseModel'
-      type: object
-      required:
-      - data
-      - paging
-      title: PaginatedBaseResponse[TimeOffGetUserBalancesResponse]
     PagingResponseModel:
       properties:
         offset:
@@ -236,31 +261,6 @@ components:
       required:
       - offset
       title: PagingResponseModel
-    TimeOffUserBalance:
-      properties:
-        userId:
-          type: integer
-          title: Userid
-          description: The user id
-        units:
-          allOf:
-          - $ref: '#/components/schemas/PolicyUnitsEnum'
-          description: The user balance units
-        balance:
-          type: number
-          title: Balance
-          description: The remaining user balance
-        policyId:
-          type: string
-          title: Policyid
-          description: The id of the policy this balance belongs to
-      type: object
-      required:
-      - userId
-      - units
-      - balance
-      - policyId
-      title: TimeOffUserBalance
   securitySchemes:
     APIKeyHeader:
       type: apiKey

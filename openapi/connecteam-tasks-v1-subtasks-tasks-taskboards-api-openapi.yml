@@ -1,6 +1,6 @@
 openapi: 3.2.0
 info:
-  title: Connecteam API documentation Tasks:v1:Sub Tasks:Tasks:Task Boards API
+  title: Connecteam API documentation Tasks:v1:Sub Tasks:Tasks:Task…
   version: v1
 servers:
 - url: https://api.connecteam.com/
@@ -234,17 +234,47 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
-    APIResponse_SubTaskUpdateResponse_:
+    PaginatedBaseResponse_SubTasksResponse_:
       properties:
         requestId:
           type: string
           title: Requestid
         data:
-          $ref: '#/components/schemas/SubTaskUpdateResponse'
+          $ref: '#/components/schemas/SubTasksResponse'
+        paging:
+          $ref: '#/components/schemas/PagingResponseModel'
       type: object
       required:
       - data
-      title: APIResponse[SubTaskUpdateResponse]
+      - paging
+      title: PaginatedBaseResponse[SubTasksResponse]
+    SubTaskDeleteResponse:
+      properties: {}
+      type: object
+      title: SubTaskDeleteResponse
+    APIResponse_SubTaskCreateResponse_:
+      properties:
+        requestId:
+          type: string
+          title: Requestid
+        data:
+          $ref: '#/components/schemas/SubTaskCreateResponse'
+      type: object
+      required:
+      - data
+      title: APIResponse[SubTaskCreateResponse]
+    SubTaskUpdateRequest:
+      properties:
+        title:
+          type: string
+          title: Title
+          description: The title of the sub task
+        isCompleted:
+          type: boolean
+          title: Iscompleted
+          description: Indicates whether the status of the sub-task is set to completed.
+      type: object
+      title: SubTaskUpdateRequest
     HTTPValidationError:
       properties:
         detail:
@@ -254,6 +284,46 @@ components:
           title: Detail
       type: object
       title: HTTPValidationError
+    SubTaskResponse:
+      properties:
+        id:
+          type: string
+          title: Id
+          description: The unique identifier of the subtask
+        title:
+          type: string
+          title: Title
+          description: The title of the subtask
+        isCompleted:
+          type: boolean
+          title: Iscompleted
+          description: Whether the subtask is completed
+      type: object
+      required:
+      - id
+      - title
+      - isCompleted
+      title: SubTaskResponse
+    SubTaskCreateResponse:
+      properties:
+        id:
+          type: string
+          title: Id
+          description: The unique identifier of the subtask
+        title:
+          type: string
+          title: Title
+          description: The title of the sub task
+        isCompleted:
+          type: boolean
+          title: Iscompleted
+          description: Indicates whether the status of the sub-task is set to completed.
+      type: object
+      required:
+      - id
+      - title
+      - isCompleted
+      title: SubTaskCreateResponse
     APIResponse_SubTaskDeleteResponse_:
       properties:
         requestId:
@@ -286,7 +356,7 @@ components:
       - msg
       - type
       title: ValidationError
-    SubTaskUpdateRequest:
+    SubTaskCreateRequest:
       properties:
         title:
           type: string
@@ -296,59 +366,11 @@ components:
           type: boolean
           title: Iscompleted
           description: Indicates whether the status of the sub-task is set to completed.
-      type: object
-      title: SubTaskUpdateRequest
-    APIResponse_SubTaskCreateResponse_:
-      properties:
-        requestId:
-          type: string
-          title: Requestid
-        data:
-          $ref: '#/components/schemas/SubTaskCreateResponse'
+          default: false
       type: object
       required:
-      - data
-      title: APIResponse[SubTaskCreateResponse]
-    SubTaskResponse:
-      properties:
-        id:
-          type: string
-          title: Id
-          description: The unique identifier of the subtask
-        title:
-          type: string
-          title: Title
-          description: The title of the subtask
-        isCompleted:
-          type: boolean
-          title: Iscompleted
-          description: Whether the subtask is completed
-      type: object
-      required:
-      - id
       - title
-      - isCompleted
-      title: SubTaskResponse
-    SubTaskDeleteResponse:
-      properties: {}
-      type: object
-      title: SubTaskDeleteResponse
-    PagingResponseModel:
-      properties:
-        offset:
-          type: integer
-          minimum: 0.0
-          title: Offset
-          description: The resource offset of the last successfully read resource will be returned as the paging.offset JSON property of a paginated response containing more results
-        total:
-          type: integer
-          minimum: 0.0
-          title: Total
-          description: Total number of resources matching the request, ignoring pagination. Use this to retrieve the full count without paginating through every page. Only populated by endpoints that compute it.
-      type: object
-      required:
-      - offset
-      title: PagingResponseModel
+      title: SubTaskCreateRequest
     SubTaskUpdateResponse:
       properties:
         id:
@@ -369,41 +391,22 @@ components:
       - title
       - isCompleted
       title: SubTaskUpdateResponse
-    SubTaskCreateResponse:
+    PagingResponseModel:
       properties:
-        id:
-          type: string
-          title: Id
-          description: The unique identifier of the subtask
-        title:
-          type: string
-          title: Title
-          description: The title of the sub task
-        isCompleted:
-          type: boolean
-          title: Iscompleted
-          description: Indicates whether the status of the sub-task is set to completed.
+        offset:
+          type: integer
+          minimum: 0.0
+          title: Offset
+          description: The resource offset of the last successfully read resource will be returned as the paging.offset JSON property of a paginated response containing more results
+        total:
+          type: integer
+          minimum: 0.0
+          title: Total
+          description: Total number of resources matching the request, ignoring pagination. Use this to retrieve the full count without paginating through every page. Only populated by endpoints that compute it.
       type: object
       required:
-      - id
-      - title
-      - isCompleted
-      title: SubTaskCreateResponse
-    SubTaskCreateRequest:
-      properties:
-        title:
-          type: string
-          title: Title
-          description: The title of the sub task
-        isCompleted:
-          type: boolean
-          title: Iscompleted
-          description: Indicates whether the status of the sub-task is set to completed.
-          default: false
-      type: object
-      required:
-      - title
-      title: SubTaskCreateRequest
+      - offset
+      title: PagingResponseModel
     SubTasksResponse:
       properties:
         subTasks:
@@ -416,20 +419,17 @@ components:
       required:
       - subTasks
       title: SubTasksResponse
-    PaginatedBaseResponse_SubTasksResponse_:
+    APIResponse_SubTaskUpdateResponse_:
       properties:
         requestId:
           type: string
           title: Requestid
         data:
-          $ref: '#/components/schemas/SubTasksResponse'
-        paging:
-          $ref: '#/components/schemas/PagingResponseModel'
+          $ref: '#/components/schemas/SubTaskUpdateResponse'
       type: object
       required:
       - data
-      - paging
-      title: PaginatedBaseResponse[SubTasksResponse]
+      title: APIResponse[SubTaskUpdateResponse]
   securitySchemes:
     APIKeyHeader:
       type: apiKey

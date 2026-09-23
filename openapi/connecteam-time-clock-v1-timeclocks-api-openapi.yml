@@ -63,18 +63,6 @@ components:
       - msg
       - type
       title: ValidationError
-    TimeClocksResponse:
-      properties:
-        timeClocks:
-          items:
-            $ref: '#/components/schemas/TimeClock'
-          type: array
-          title: Timeclocks
-          description: The time clocks
-      type: object
-      required:
-      - timeClocks
-      title: TimeClocksResponse
     TimeClock:
       properties:
         id:
@@ -96,6 +84,18 @@ components:
       - name
       - isArchived
       title: TimeClock
+    TimeClocksResponse:
+      properties:
+        timeClocks:
+          items:
+            $ref: '#/components/schemas/TimeClock'
+          type: array
+          title: Timeclocks
+          description: The time clocks
+      type: object
+      required:
+      - timeClocks
+      title: TimeClocksResponse
     APIResponse_TimeClocksResponse_:
       properties:
         requestId:

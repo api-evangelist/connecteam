@@ -1,6 +1,6 @@
 openapi: 3.2.0
 info:
-  title: Connecteam API documentation Sales:Sales V1:Sales Locations API
+  title: Connecteam API documentation Sales:Sales V1:Sales Locations…
   version: v1
 servers:
 - url: https://api.connecteam.com/
@@ -155,53 +155,6 @@ components:
       required:
       - data
       title: APIResponse[LocationsGetResponse]
-    LocationRequest:
-      properties:
-        name:
-          type: string
-          title: Name
-          description: The location name
-        isActive:
-          type: boolean
-          title: Isactive
-          description: Indicates whether the location is active upon creation
-          default: true
-      type: object
-      required:
-      - name
-      title: LocationRequest
-    LocationsGetResponse:
-      properties:
-        locations:
-          items:
-            $ref: '#/components/schemas/Location'
-          type: array
-          title: Locations
-          description: List of locations
-      type: object
-      required:
-      - locations
-      title: LocationsGetResponse
-    LocationResponse:
-      properties:
-        id:
-          type: integer
-          title: Id
-          description: Unique identifier for the location
-        name:
-          type: string
-          title: Name
-          description: The location name
-        isActive:
-          type: boolean
-          title: Isactive
-          description: Indicates whether the location is active
-      type: object
-      required:
-      - id
-      - name
-      - isActive
-      title: LocationResponse
     Location:
       properties:
         id:
@@ -222,6 +175,41 @@ components:
       - name
       - isActive
       title: Location
+    LocationRequest:
+      properties:
+        name:
+          type: string
+          title: Name
+          description: The location name
+        isActive:
+          type: boolean
+          title: Isactive
+          description: Indicates whether the location is active upon creation
+          default: true
+      type: object
+      required:
+      - name
+      title: LocationRequest
+    LocationResponse:
+      properties:
+        id:
+          type: integer
+          title: Id
+          description: Unique identifier for the location
+        name:
+          type: string
+          title: Name
+          description: The location name
+        isActive:
+          type: boolean
+          title: Isactive
+          description: Indicates whether the location is active
+      type: object
+      required:
+      - id
+      - name
+      - isActive
+      title: LocationResponse
     APIResponse_LocationResponse_:
       properties:
         requestId:
@@ -233,6 +221,18 @@ components:
       required:
       - data
       title: APIResponse[LocationResponse]
+    LocationsGetResponse:
+      properties:
+        locations:
+          items:
+            $ref: '#/components/schemas/Location'
+          type: array
+          title: Locations
+          description: List of locations
+      type: object
+      required:
+      - locations
+      title: LocationsGetResponse
   securitySchemes:
     APIKeyHeader:
       type: apiKey

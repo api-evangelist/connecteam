@@ -1,6 +1,6 @@
 openapi: 3.2.0
 info:
-  title: Connecteam API documentation Time Clock:v1:TimeClocks:TimeClock:LockDays API
+  title: Connecteam API documentation Time…
   version: v1
 servers:
 - url: https://api.connecteam.com/
@@ -173,6 +173,20 @@ components:
       required:
       - dates
       title: LockDaysPutRequest
+    ErrorParing:
+      properties:
+        error_message:
+          type: string
+          title: Error Message
+        error_code:
+          type: integer
+          title: Error Code
+      type: object
+      required:
+      - error_message
+      - error_code
+      title: ErrorParing
+      description: V1 error paring model for backward compatibility
     ValidationError:
       properties:
         loc:
@@ -194,20 +208,17 @@ components:
       - msg
       - type
       title: ValidationError
-    ErrorParing:
+    APIResponse_LockDaysPutResponse_:
       properties:
-        error_message:
+        requestId:
           type: string
-          title: Error Message
-        error_code:
-          type: integer
-          title: Error Code
+          title: Requestid
+        data:
+          $ref: '#/components/schemas/LockDaysPutResponse'
       type: object
       required:
-      - error_message
-      - error_code
-      title: ErrorParing
-      description: V1 error paring model for backward compatibility
+      - data
+      title: APIResponse[LockDaysPutResponse]
     ValidationErrorResponse:
       properties:
         details:
@@ -235,17 +246,6 @@ components:
       type: object
       title: ValidationErrorResponse
       description: "All errors responses should include:\nrequest_id,\nConnecteam error code and error message,\nthe url path,\nthe request body,\nand error data which can be a pydantic class or a dict and should look something like this:\n`{\n    \"error.path\": \"the gist of the error\"\n}`\n\nfor example if the user doesn't exist it should look something like this:\n`{\n    \"user.id\": \"user doesn't exist\"\n}`"
-    APIResponse_LockDaysPutResponse_:
-      properties:
-        requestId:
-          type: string
-          title: Requestid
-        data:
-          $ref: '#/components/schemas/LockDaysPutResponse'
-      type: object
-      required:
-      - data
-      title: APIResponse[LockDaysPutResponse]
     LockDaysPutResponse:
       properties:
         userId:

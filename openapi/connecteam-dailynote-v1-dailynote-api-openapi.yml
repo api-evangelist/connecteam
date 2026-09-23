@@ -123,6 +123,27 @@ components:
           title: Detail
       type: object
       title: HTTPValidationError
+    DailyNoteUpdateRequest:
+      properties:
+        title:
+          type: string
+          title: Title
+          description: The title of the note
+        qualifiedUserIds:
+          items:
+            type: integer
+            minimum: 1.0
+          type: array
+          title: Qualifieduserids
+          description: The users qualified to see the note
+        qualifiedGroupIds:
+          items:
+            type: integer
+          type: array
+          title: Qualifiedgroupids
+          description: The groups qualified to see the note
+      type: object
+      title: DailyNoteUpdateRequest
     ValidationError:
       properties:
         loc:
@@ -148,17 +169,17 @@ components:
       properties: {}
       type: object
       title: DeleteDailyNoteResponse
-    APIResponse_DailyNoteResponse_:
+    APIResponse_DeleteDailyNoteResponse_:
       properties:
         requestId:
           type: string
           title: Requestid
         data:
-          $ref: '#/components/schemas/DailyNoteResponse'
+          $ref: '#/components/schemas/DeleteDailyNoteResponse'
       type: object
       required:
       - data
-      title: APIResponse[DailyNoteResponse]
+      title: APIResponse[DeleteDailyNoteResponse]
     DailyNoteResponse:
       properties:
         id:
@@ -196,38 +217,17 @@ components:
       - title
       - dates
       title: DailyNoteResponse
-    APIResponse_DeleteDailyNoteResponse_:
+    APIResponse_DailyNoteResponse_:
       properties:
         requestId:
           type: string
           title: Requestid
         data:
-          $ref: '#/components/schemas/DeleteDailyNoteResponse'
+          $ref: '#/components/schemas/DailyNoteResponse'
       type: object
       required:
       - data
-      title: APIResponse[DeleteDailyNoteResponse]
-    DailyNoteUpdateRequest:
-      properties:
-        title:
-          type: string
-          title: Title
-          description: The title of the note
-        qualifiedUserIds:
-          items:
-            type: integer
-            minimum: 1.0
-          type: array
-          title: Qualifieduserids
-          description: The users qualified to see the note
-        qualifiedGroupIds:
-          items:
-            type: integer
-          type: array
-          title: Qualifiedgroupids
-          description: The groups qualified to see the note
-      type: object
-      title: DailyNoteUpdateRequest
+      title: APIResponse[DailyNoteResponse]
   securitySchemes:
     APIKeyHeader:
       type: apiKey

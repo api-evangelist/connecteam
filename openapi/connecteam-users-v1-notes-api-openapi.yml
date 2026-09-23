@@ -80,6 +80,17 @@ components:
       - msg
       - type
       title: ValidationError
+    APIResponse_NoteCreateResponse_:
+      properties:
+        requestId:
+          type: string
+          title: Requestid
+        data:
+          $ref: '#/components/schemas/NoteCreateResponse'
+      type: object
+      required:
+      - data
+      title: APIResponse[NoteCreateResponse]
     NoteCreateResponse:
       properties:
         id:
@@ -119,17 +130,6 @@ components:
       - createdAt
       - modifiedAt
       title: NoteCreateResponse
-    APIResponse_NoteCreateResponse_:
-      properties:
-        requestId:
-          type: string
-          title: Requestid
-        data:
-          $ref: '#/components/schemas/NoteCreateResponse'
-      type: object
-      required:
-      - data
-      title: APIResponse[NoteCreateResponse]
     NoteCreateRequest:
       properties:
         title:

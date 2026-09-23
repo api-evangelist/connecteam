@@ -42,6 +42,17 @@ components:
           title: Detail
       type: object
       title: HTTPValidationError
+    APIResponse_TimeOffGetPolicyTypesResponse_:
+      properties:
+        requestId:
+          type: string
+          title: Requestid
+        data:
+          $ref: '#/components/schemas/TimeOffGetPolicyTypesResponse'
+      type: object
+      required:
+      - data
+      title: APIResponse[TimeOffGetPolicyTypesResponse]
     ValidationError:
       properties:
         loc:
@@ -75,38 +86,6 @@ components:
       required:
       - policyTypes
       title: TimeOffGetPolicyTypesResponse
-    APIResponse_TimeOffGetPolicyTypesResponse_:
-      properties:
-        requestId:
-          type: string
-          title: Requestid
-        data:
-          $ref: '#/components/schemas/TimeOffGetPolicyTypesResponse'
-      type: object
-      required:
-      - data
-      title: APIResponse[TimeOffGetPolicyTypesResponse]
-    TimeOffPolicyType:
-      properties:
-        id:
-          type: string
-          title: Id
-          description: The policy type id
-        name:
-          type: string
-          title: Name
-          description: The policy type name
-        policies:
-          items:
-            $ref: '#/components/schemas/TimeOffPolicy'
-          type: array
-          title: Policies
-          description: List of policies within this policy type
-      type: object
-      required:
-      - id
-      - name
-      title: TimeOffPolicyType
     TimeOffPolicy:
       properties:
         id:
@@ -132,6 +111,27 @@ components:
       - unit
       - accrualType
       title: TimeOffPolicy
+    TimeOffPolicyType:
+      properties:
+        id:
+          type: string
+          title: Id
+          description: The policy type id
+        name:
+          type: string
+          title: Name
+          description: The policy type name
+        policies:
+          items:
+            $ref: '#/components/schemas/TimeOffPolicy'
+          type: array
+          title: Policies
+          description: List of policies within this policy type
+      type: object
+      required:
+      - id
+      - name
+      title: TimeOffPolicyType
   securitySchemes:
     APIKeyHeader:
       type: apiKey

@@ -64,18 +64,40 @@ components:
           title: Detail
       type: object
       title: HTTPValidationError
-    PublishersResponse:
+    PaginatedBaseResponse_PublishersResponse_:
       properties:
-        publishers:
-          items:
-            $ref: '#/components/schemas/PublisherResponse'
-          type: array
-          title: Publishers
-          description: The list of publishers
+        requestId:
+          type: string
+          title: Requestid
+        data:
+          $ref: '#/components/schemas/PublishersResponse'
+        paging:
+          $ref: '#/components/schemas/PagingResponseModel'
       type: object
       required:
-      - publishers
-      title: PublishersResponse
+      - data
+      - paging
+      title: PaginatedBaseResponse[PublishersResponse]
+    PublisherResponse:
+      properties:
+        id:
+          type: integer
+          title: Id
+          description: The unique identifier of the publisher
+        name:
+          type: string
+          title: Name
+          description: The name of the publisher
+        imageUrl:
+          type: string
+          title: Imageurl
+          description: The image url of the publisher
+      type: object
+      required:
+      - id
+      - name
+      - imageUrl
+      title: PublisherResponse
     ValidationError:
       properties:
         loc:
@@ -97,26 +119,18 @@ components:
       - msg
       - type
       title: ValidationError
-    PublisherResponse:
+    PublishersResponse:
       properties:
-        id:
-          type: integer
-          title: Id
-          description: The unique identifier of the publisher
-        name:
-          type: string
-          title: Name
-          description: The name of the publisher
-        imageUrl:
-          type: string
-          title: Imageurl
-          description: The image url of the publisher
+        publishers:
+          items:
+            $ref: '#/components/schemas/PublisherResponse'
+          type: array
+          title: Publishers
+          description: The list of publishers
       type: object
       required:
-      - id
-      - name
-      - imageUrl
-      title: PublisherResponse
+      - publishers
+      title: PublishersResponse
     PagingResponseModel:
       properties:
         offset:
@@ -133,20 +147,6 @@ components:
       required:
       - offset
       title: PagingResponseModel
-    PaginatedBaseResponse_PublishersResponse_:
-      properties:
-        requestId:
-          type: string
-          title: Requestid
-        data:
-          $ref: '#/components/schemas/PublishersResponse'
-        paging:
-          $ref: '#/components/schemas/PagingResponseModel'
-      type: object
-      required:
-      - data
-      - paging
-      title: PaginatedBaseResponse[PublishersResponse]
   securitySchemes:
     APIKeyHeader:
       type: apiKey

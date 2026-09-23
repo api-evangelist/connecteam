@@ -1,6 +1,6 @@
 openapi: 3.2.0
 info:
-  title: Connecteam API documentation Users:v1:Performance Indicators API
+  title: Connecteam API documentation Users:v1:Performance…
   version: v1
 servers:
 - url: https://api.connecteam.com/
@@ -64,6 +64,20 @@ components:
           title: Detail
       type: object
       title: HTTPValidationError
+    PaginatedBaseResponse_GetIndicatorsBaseResponse_:
+      properties:
+        requestId:
+          type: string
+          title: Requestid
+        data:
+          $ref: '#/components/schemas/GetIndicatorsBaseResponse'
+        paging:
+          $ref: '#/components/schemas/PagingResponseModel'
+      type: object
+      required:
+      - data
+      - paging
+      title: PaginatedBaseResponse[GetIndicatorsBaseResponse]
     ValidationError:
       properties:
         loc:
@@ -85,20 +99,6 @@ components:
       - msg
       - type
       title: ValidationError
-    PaginatedBaseResponse_GetIndicatorsBaseResponse_:
-      properties:
-        requestId:
-          type: string
-          title: Requestid
-        data:
-          $ref: '#/components/schemas/GetIndicatorsBaseResponse'
-        paging:
-          $ref: '#/components/schemas/PagingResponseModel'
-      type: object
-      required:
-      - data
-      - paging
-      title: PaginatedBaseResponse[GetIndicatorsBaseResponse]
     IndicatorResponse:
       properties:
         id:
@@ -115,6 +115,19 @@ components:
       - id
       - name
       title: IndicatorResponse
+    GetIndicatorsBaseResponse:
+      properties:
+        indicators:
+          items:
+            $ref: '#/components/schemas/IndicatorResponse'
+          type: array
+          title: Indicators
+          description: List of performance indicators
+      type: object
+      required:
+      - indicators
+      title: GetIndicatorsBaseResponse
+      description: Base response model for getting indicators.
     PagingResponseModel:
       properties:
         offset:
@@ -131,19 +144,6 @@ components:
       required:
       - offset
       title: PagingResponseModel
-    GetIndicatorsBaseResponse:
-      properties:
-        indicators:
-          items:
-            $ref: '#/components/schemas/IndicatorResponse'
-          type: array
-          title: Indicators
-          description: List of performance indicators
-      type: object
-      required:
-      - indicators
-      title: GetIndicatorsBaseResponse
-      description: Base response model for getting indicators.
   securitySchemes:
     APIKeyHeader:
       type: apiKey

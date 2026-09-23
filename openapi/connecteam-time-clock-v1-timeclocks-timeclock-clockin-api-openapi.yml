@@ -1,6 +1,6 @@
 openapi: 3.2.0
 info:
-  title: Connecteam API documentation Time Clock:v1:TimeClocks:TimeClock:ClockIn API
+  title: Connecteam API documentation Time…
   version: v1
 servers:
 - url: https://api.connecteam.com/
@@ -50,59 +50,6 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
-    ClockInResponse:
-      properties:
-        shift:
-          allOf:
-          - $ref: '#/components/schemas/v2__features__punchclock__external_api__v1__time_clocks__models__shift_response__ShiftResponse'
-          title: Shift
-          description: The created shift
-      type: object
-      required:
-      - shift
-      title: ClockInResponse
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
-    ValidationError:
-      properties:
-        loc:
-          items:
-            anyOf:
-            - type: string
-            - type: integer
-          type: array
-          title: Location
-        msg:
-          type: string
-          title: Message
-        type:
-          type: string
-          title: Error Type
-      type: object
-      required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
-    PunchSourceType:
-      type: string
-      enum:
-      - autoClockOut
-      - nfc
-      - mobile
-      - pc
-      - kiosk
-      - api
-      - admin
-      title: PunchSourceType
-      description: An enumeration.
     APIResponse_ClockInResponse_:
       properties:
         requestId:
@@ -114,6 +61,26 @@ components:
       required:
       - data
       title: APIResponse[ClockInResponse]
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    ClockInResponse:
+      properties:
+        shift:
+          allOf:
+          - $ref: '#/components/schemas/v2__features__punchclock__external_api__v1__time_clocks__models__shift_response__ShiftResponse'
+          title: Shift
+          description: The created shift
+      type: object
+      required:
+      - shift
+      title: ClockInResponse
     ClockInRequest:
       properties:
         userId:
@@ -168,58 +135,27 @@ components:
       required:
       - type
       title: PunchSourceResponse
-    v2__features__punchclock__external_api__v1__time_clocks__models__shift_response__ShiftResponse:
+    ValidationError:
       properties:
-        id:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
           type: string
-          title: Id
-          description: The unique identifier of the time clock
-        managerNote:
+          title: Message
+        type:
           type: string
-          title: Managernote
-          description: The manager note providing additional details
-        employeeNote:
-          type: string
-          title: Employeenote
-          description: The employee note providing additional details
-        start:
-          allOf:
-          - $ref: '#/components/schemas/TimeActivityTimePointResponse'
-          title: Start
-          description: The start time of the time activity
-        end:
-          allOf:
-          - $ref: '#/components/schemas/TimeActivityTimePointResponse'
-          title: End
-          description: The end time of the time activity
-        createdAt:
-          type: integer
-          minimum: 1.0
-          title: Createdat
-          description: The creation time of the time activity
-        modifiedAt:
-          type: integer
-          minimum: 1.0
-          title: Modifiedat
-          description: The last modification time of the time activity
-        userId:
-          type: integer
-          title: Userid
-          description: The unique identifier of the user. Make sure the user is assigned to the specified time clock.
-        jobId:
-          type: string
-          title: Jobid
-          description: The unique identifier of the associated job or sub-job. Make sure the job is assigned to the specified time clock.
-        schedulerShiftId:
-          type: string
-          title: Schedulershiftid
-          description: The scheduled shift from the schedule associated with the clocking in event
+          title: Error Type
       type: object
       required:
-      - id
-      - start
-      - userId
-      title: ShiftResponse
+      - loc
+      - msg
+      - type
+      title: ValidationError
     GpsData:
       properties:
         address:
@@ -277,6 +213,70 @@ components:
       - timestamp
       - timezone
       title: TimeActivityTimePointResponse
+    v2__features__punchclock__external_api__v1__time_clocks__models__shift_response__ShiftResponse:
+      properties:
+        id:
+          type: string
+          title: Id
+          description: The unique identifier of the time clock
+        managerNote:
+          type: string
+          title: Managernote
+          description: The manager note providing additional details
+        employeeNote:
+          type: string
+          title: Employeenote
+          description: The employee note providing additional details
+        start:
+          allOf:
+          - $ref: '#/components/schemas/TimeActivityTimePointResponse'
+          title: Start
+          description: The start time of the time activity
+        end:
+          allOf:
+          - $ref: '#/components/schemas/TimeActivityTimePointResponse'
+          title: End
+          description: The end time of the time activity
+        createdAt:
+          type: integer
+          minimum: 1.0
+          title: Createdat
+          description: The creation time of the time activity
+        modifiedAt:
+          type: integer
+          minimum: 1.0
+          title: Modifiedat
+          description: The last modification time of the time activity
+        userId:
+          type: integer
+          title: Userid
+          description: The unique identifier of the user. Make sure the user is assigned to the specified time clock.
+        jobId:
+          type: string
+          title: Jobid
+          description: The unique identifier of the associated job or sub-job. Make sure the job is assigned to the specified time clock.
+        schedulerShiftId:
+          type: string
+          title: Schedulershiftid
+          description: The scheduled shift from the schedule associated with the clocking in event
+      type: object
+      required:
+      - id
+      - start
+      - userId
+      title: ShiftResponse
+    PunchSourceType:
+      type: string
+      enum:
+      - autoClockOut
+      - nfc
+      - mobile
+      - pc
+      - kiosk
+      - api
+      - admin
+      title: PunchSourceType
+      description: An enumeration.
   securitySchemes:
     APIKeyHeader:
       type: apiKey

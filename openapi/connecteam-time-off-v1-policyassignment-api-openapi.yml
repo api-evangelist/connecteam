@@ -1,6 +1,6 @@
 openapi: 3.2.0
 info:
-  title: Connecteam API documentation Time Off:v1:PolicyAssignment API
+  title: Connecteam API documentation Time Off:v1:PolicyAssignment…
   version: v1
 servers:
 - url: https://api.connecteam.com/
@@ -51,35 +51,6 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
-    APIResponse_TimeOffAssignPolicyResponse_:
-      properties:
-        requestId:
-          type: string
-          title: Requestid
-        data:
-          $ref: '#/components/schemas/TimeOffAssignPolicyResponse'
-      type: object
-      required:
-      - data
-      title: APIResponse[TimeOffAssignPolicyResponse]
-    TimeOffAssignPolicyRequest:
-      properties:
-        userId:
-          type: integer
-          title: Userid
-          description: The unique identifier of the user
-        balance:
-          type: number
-          title: Balance
-          description: The balance amount
-        unit:
-          allOf:
-          - $ref: '#/components/schemas/PolicyUnitsEnum'
-          description: The unit (days/hours)
-      type: object
-      required:
-      - userId
-      title: TimeOffAssignPolicyRequest
     HTTPValidationError:
       properties:
         detail:
@@ -89,6 +60,13 @@ components:
           title: Detail
       type: object
       title: HTTPValidationError
+    PolicyUnitsEnum:
+      type: string
+      enum:
+      - hours
+      - days
+      title: PolicyUnitsEnum
+      description: An enumeration.
     ValidationError:
       properties:
         loc:
@@ -110,17 +88,39 @@ components:
       - msg
       - type
       title: ValidationError
-    PolicyUnitsEnum:
-      type: string
-      enum:
-      - hours
-      - days
-      title: PolicyUnitsEnum
-      description: An enumeration.
+    TimeOffAssignPolicyRequest:
+      properties:
+        userId:
+          type: integer
+          title: Userid
+          description: The unique identifier of the user
+        balance:
+          type: number
+          title: Balance
+          description: The balance amount
+        unit:
+          allOf:
+          - $ref: '#/components/schemas/PolicyUnitsEnum'
+          description: The unit (days/hours)
+      type: object
+      required:
+      - userId
+      title: TimeOffAssignPolicyRequest
     TimeOffAssignPolicyResponse:
       properties: {}
       type: object
       title: TimeOffAssignPolicyResponse
+    APIResponse_TimeOffAssignPolicyResponse_:
+      properties:
+        requestId:
+          type: string
+          title: Requestid
+        data:
+          $ref: '#/components/schemas/TimeOffAssignPolicyResponse'
+      type: object
+      required:
+      - data
+      title: APIResponse[TimeOffAssignPolicyResponse]
   securitySchemes:
     APIKeyHeader:
       type: apiKey

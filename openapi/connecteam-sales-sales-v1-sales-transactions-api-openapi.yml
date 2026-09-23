@@ -1,6 +1,6 @@
 openapi: 3.2.0
 info:
-  title: Connecteam API documentation Sales:Sales V1:Sales Transactions API
+  title: Connecteam API documentation Sales:Sales V1:Sales…
   version: v1
 servers:
 - url: https://api.connecteam.com/
@@ -122,6 +122,15 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
     TransactionData:
       properties:
         transactionId:
@@ -160,15 +169,67 @@ components:
       - createdAt
       - finalSaleAmount
       title: TransactionData
-    HTTPValidationError:
+    APIResponse_TransactionCreateResponse_:
       properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
+        requestId:
+          type: string
+          title: Requestid
+        data:
+          $ref: '#/components/schemas/TransactionCreateResponse'
       type: object
-      title: HTTPValidationError
+      required:
+      - data
+      title: APIResponse[TransactionCreateResponse]
+    SaleType:
+      type: string
+      enum:
+      - SALE
+      - VOID
+      - RECALL
+      - REFUND
+      - SPLIT
+      - UPDATE
+      - TRANSFER
+      - FLOAT
+      - TRANSITORY
+      - CROSS_BL
+      - CANCEL
+      - MANUAL
+      title: SaleType
+      description: An enumeration.
+    TransactionCreateItem:
+      properties:
+        locationId:
+          type: integer
+          title: Locationid
+          description: The unique identifier of the location
+        saleType:
+          allOf:
+          - $ref: '#/components/schemas/SaleType'
+          description: 'The type of the sale. Current options are: SALE,VOID,REFUND,SPLIT,TRANSFER'
+        createdAt:
+          type: integer
+          title: Createdat
+          description: The timestamp of the sale in UNIX format (UTC)
+        finalSaleAmount:
+          type: number
+          title: Finalsaleamount
+          description: The final sale amount of the transaction after discounts/changes and without applicable taxes
+        taxAmount:
+          type: number
+          title: Taxamount
+          description: The tax amount to be added in absolute number (not in percentage)
+        currency:
+          type: string
+          title: Currency
+          description: The currency of the transaction
+      type: object
+      required:
+      - locationId
+      - saleType
+      - createdAt
+      - finalSaleAmount
+      title: TransactionCreateItem
     ValidationError:
       properties:
         loc:
@@ -204,71 +265,6 @@ components:
       required:
       - transactionsCreateRequest
       title: TransactionCreateRequest
-    SaleType:
-      type: string
-      enum:
-      - SALE
-      - VOID
-      - RECALL
-      - REFUND
-      - SPLIT
-      - UPDATE
-      - TRANSFER
-      - FLOAT
-      - TRANSITORY
-      - CROSS_BL
-      - CANCEL
-      - MANUAL
-      title: SaleType
-      description: An enumeration.
-    APIResponse_BaseResponse_:
-      properties:
-        requestId:
-          type: string
-          title: Requestid
-        data:
-          $ref: '#/components/schemas/BaseResponse'
-      type: object
-      required:
-      - data
-      title: APIResponse[BaseResponse]
-    BaseResponse:
-      properties: {}
-      type: object
-      title: BaseResponse
-    TransactionCreateItem:
-      properties:
-        locationId:
-          type: integer
-          title: Locationid
-          description: The unique identifier of the location
-        saleType:
-          allOf:
-          - $ref: '#/components/schemas/SaleType'
-          description: 'The type of the sale. Current options are: SALE,VOID,REFUND,SPLIT,TRANSFER'
-        createdAt:
-          type: integer
-          title: Createdat
-          description: The timestamp of the sale in UNIX format (UTC)
-        finalSaleAmount:
-          type: number
-          title: Finalsaleamount
-          description: The final sale amount of the transaction after discounts/changes and without applicable taxes
-        taxAmount:
-          type: number
-          title: Taxamount
-          description: The tax amount to be added in absolute number (not in percentage)
-        currency:
-          type: string
-          title: Currency
-          description: The currency of the transaction
-      type: object
-      required:
-      - locationId
-      - saleType
-      - createdAt
-      - finalSaleAmount
-      title: TransactionCreateItem
     TransactionCreateResponse:
       properties:
         transactions:
@@ -281,17 +277,21 @@ components:
       required:
       - transactions
       title: TransactionCreateResponse
-    APIResponse_TransactionCreateResponse_:
+    BaseResponse:
+      properties: {}
+      type: object
+      title: BaseResponse
+    APIResponse_BaseResponse_:
       properties:
         requestId:
           type: string
           title: Requestid
         data:
-          $ref: '#/components/schemas/TransactionCreateResponse'
+          $ref: '#/components/schemas/BaseResponse'
       type: object
       required:
       - data
-      title: APIResponse[TransactionCreateResponse]
+      title: APIResponse[BaseResponse]
   securitySchemes:
     APIKeyHeader:
       type: apiKey

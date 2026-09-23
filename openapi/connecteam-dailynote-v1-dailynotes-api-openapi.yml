@@ -42,6 +42,15 @@ paths:
         - daily_note.write
 components:
   schemas:
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
     ValidationError:
       properties:
         loc:
@@ -63,15 +72,43 @@ components:
       - msg
       - type
       title: ValidationError
-    HTTPValidationError:
+    DailyNoteResponse:
       properties:
-        detail:
+        id:
+          type: integer
+          title: Id
+          description: The note ID
+        title:
+          type: string
+          title: Title
+          description: The title of the note
+        qualifiedUserIds:
           items:
-            $ref: '#/components/schemas/ValidationError'
+            type: integer
+            minimum: 1.0
           type: array
-          title: Detail
+          title: Qualifieduserids
+          description: The users qualified to see the note
+          default: []
+        qualifiedGroupIds:
+          items:
+            type: integer
+          type: array
+          title: Qualifiedgroupids
+          description: The groups qualified to see the note
+          default: []
+        dates:
+          items:
+            type: string
+          type: array
+          title: Dates
+          description: Dates the note is relevant for in ISO 8601 format (e.g. YYYY-MM-DD)
       type: object
-      title: HTTPValidationError
+      required:
+      - id
+      - title
+      - dates
+      title: DailyNoteResponse
     APIResponse_DailyNoteResponse_:
       properties:
         requestId:
@@ -118,43 +155,6 @@ components:
       - date
       - instanceId
       title: DailyNoteCreateRequest
-    DailyNoteResponse:
-      properties:
-        id:
-          type: integer
-          title: Id
-          description: The note ID
-        title:
-          type: string
-          title: Title
-          description: The title of the note
-        qualifiedUserIds:
-          items:
-            type: integer
-            minimum: 1.0
-          type: array
-          title: Qualifieduserids
-          description: The users qualified to see the note
-          default: []
-        qualifiedGroupIds:
-          items:
-            type: integer
-          type: array
-          title: Qualifiedgroupids
-          description: The groups qualified to see the note
-          default: []
-        dates:
-          items:
-            type: string
-          type: array
-          title: Dates
-          description: Dates the note is relevant for in ISO 8601 format (e.g. YYYY-MM-DD)
-      type: object
-      required:
-      - id
-      - title
-      - dates
-      title: DailyNoteResponse
   securitySchemes:
     APIKeyHeader:
       type: apiKey

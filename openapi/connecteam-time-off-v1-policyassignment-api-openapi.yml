@@ -51,22 +51,6 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
-    PolicyUnitsEnum:
-      type: string
-      enum:
-      - hours
-      - days
-      title: PolicyUnitsEnum
-      description: An enumeration.
     ValidationError:
       properties:
         loc:
@@ -88,6 +72,13 @@ components:
       - msg
       - type
       title: ValidationError
+    PolicyUnitsEnum:
+      type: string
+      enum:
+      - hours
+      - days
+      title: PolicyUnitsEnum
+      description: An enumeration.
     TimeOffAssignPolicyRequest:
       properties:
         userId:
@@ -106,10 +97,6 @@ components:
       required:
       - userId
       title: TimeOffAssignPolicyRequest
-    TimeOffAssignPolicyResponse:
-      properties: {}
-      type: object
-      title: TimeOffAssignPolicyResponse
     APIResponse_TimeOffAssignPolicyResponse_:
       properties:
         requestId:
@@ -121,6 +108,19 @@ components:
       required:
       - data
       title: APIResponse[TimeOffAssignPolicyResponse]
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    TimeOffAssignPolicyResponse:
+      properties: {}
+      type: object
+      title: TimeOffAssignPolicyResponse
   securitySchemes:
     APIKeyHeader:
       type: apiKey

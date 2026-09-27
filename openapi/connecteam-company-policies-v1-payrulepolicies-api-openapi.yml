@@ -33,41 +33,6 @@ paths:
         - company_policies.read
 components:
   schemas:
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
-    APIResponse_PayRulePoliciesResponse_:
-      properties:
-        requestId:
-          type: string
-          title: Requestid
-        data:
-          $ref: '#/components/schemas/PayRulePoliciesResponse'
-      type: object
-      required:
-      - data
-      title: APIResponse[PayRulePoliciesResponse]
-    PayRulePolicy:
-      properties:
-        id:
-          type: integer
-          title: Id
-          description: The pay rule policy id
-        name:
-          type: string
-          title: Name
-          description: The pay rule policy name
-      type: object
-      required:
-      - id
-      - name
-      title: PayRulePolicy
     ValidationError:
       properties:
         loc:
@@ -101,6 +66,41 @@ components:
       required:
       - payRulesPolicies
       title: PayRulePoliciesResponse
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    PayRulePolicy:
+      properties:
+        id:
+          type: integer
+          title: Id
+          description: The pay rule policy id
+        name:
+          type: string
+          title: Name
+          description: The pay rule policy name
+      type: object
+      required:
+      - id
+      - name
+      title: PayRulePolicy
+    APIResponse_PayRulePoliciesResponse_:
+      properties:
+        requestId:
+          type: string
+          title: Requestid
+        data:
+          $ref: '#/components/schemas/PayRulePoliciesResponse'
+      type: object
+      required:
+      - data
+      title: APIResponse[PayRulePoliciesResponse]
   securitySchemes:
     APIKeyHeader:
       type: apiKey

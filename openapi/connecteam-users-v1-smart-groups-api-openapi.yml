@@ -154,138 +154,6 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
-    SmartGroupFilterOperator:
-      type: string
-      enum:
-      - and
-      - or
-      title: SmartGroupFilterOperator
-      description: An enumeration.
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
-    SmartGroupUpdateResponse:
-      properties:
-        id:
-          type: integer
-          minimum: 1.0
-          title: Id
-          description: The unique identifier of the smart group
-        name:
-          type: string
-          title: Name
-          description: The name of the smart group
-        description:
-          type: string
-          title: Description
-          description: The description of the smart group
-        groupSegmentId:
-          type: integer
-          title: Groupsegmentid
-          description: The ID of the group segment this smart group belongs to
-        numberOfUsers:
-          type: integer
-          title: Numberofusers
-          description: The total number of users in the group (excluding admins)
-        isAutomaticallyCreated:
-          type: boolean
-          title: Isautomaticallycreated
-          description: 'Whether this smart group is automatically created and system-managed: generated from a dropdown custom field that has its ''create a group per option'' setting turned on. Automatically created groups cannot be edited or deleted directly — their name and membership are owned by the field and its options. Change them by editing the source custom field instead.'
-          default: false
-        adminUserIds:
-          items:
-            type: integer
-          type: array
-          title: Adminuserids
-          description: User IDs of admins who can administer this group — every active owner plus every manager with an explicit per-cohort authorization. Populated only when the request includes the internal include_admin_user_ids flag; otherwise null.
-      type: object
-      required:
-      - id
-      - name
-      - groupSegmentId
-      - numberOfUsers
-      title: SmartGroupUpdateResponse
-    APIResponse_SmartGroupCreateResponse_:
-      properties:
-        requestId:
-          type: string
-          title: Requestid
-        data:
-          $ref: '#/components/schemas/SmartGroupCreateResponse'
-      type: object
-      required:
-      - data
-      title: APIResponse[SmartGroupCreateResponse]
-    DropdownFilter:
-      properties:
-        fieldId:
-          type: integer
-          title: Fieldid
-          description: The ID of the custom field to filter by
-        optionIds:
-          items:
-            type: integer
-          type: array
-          title: Optionids
-          description: List of dropdown option IDs to match
-      type: object
-      required:
-      - fieldId
-      - optionIds
-      title: DropdownFilter
-    APIResponse_BaseResponse_:
-      properties:
-        requestId:
-          type: string
-          title: Requestid
-        data:
-          $ref: '#/components/schemas/BaseResponse'
-      type: object
-      required:
-      - data
-      title: APIResponse[BaseResponse]
-    BaseResponse:
-      properties: {}
-      type: object
-      title: BaseResponse
-    APIResponse_SmartGroupUpdateResponse_:
-      properties:
-        requestId:
-          type: string
-          title: Requestid
-        data:
-          $ref: '#/components/schemas/SmartGroupUpdateResponse'
-      type: object
-      required:
-      - data
-      title: APIResponse[SmartGroupUpdateResponse]
-    ValidationError:
-      properties:
-        loc:
-          items:
-            anyOf:
-            - type: string
-            - type: integer
-          type: array
-          title: Location
-        msg:
-          type: string
-          title: Message
-        type:
-          type: string
-          title: Error Type
-      type: object
-      required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
     SmartGroupCreateResponse:
       properties:
         id:
@@ -327,54 +195,6 @@ components:
       - groupSegmentId
       - numberOfUsers
       title: SmartGroupCreateResponse
-    SmartGroupUpdateRequest:
-      properties:
-        name:
-          type: string
-          title: Name
-          description: The name of the smart group
-        description:
-          type: string
-          title: Description
-          description: Description of the smart group
-        groupSegmentId:
-          type: integer
-          title: Groupsegmentid
-          description: The ID of the group segment this smart group belongs to
-        filters:
-          allOf:
-          - $ref: '#/components/schemas/SmartGroupFilters'
-          title: Filters
-          description: Filters to apply to the smart group
-      type: object
-      title: SmartGroupUpdateRequest
-    GetSmartGroupsResponse:
-      properties:
-        groups:
-          items:
-            $ref: '#/components/schemas/SmartGroup'
-          type: array
-          title: Groups
-          description: 'The smart groups '
-      type: object
-      required:
-      - groups
-      title: GetSmartGroupsResponse
-    SmartGroupFilters:
-      properties:
-        operator:
-          allOf:
-          - $ref: '#/components/schemas/SmartGroupFilterOperator'
-          description: Select whether to use the 'and' or 'or' operator to determine how matching criteria are applied.
-          default: and
-        dropdownFilters:
-          items:
-            $ref: '#/components/schemas/DropdownFilter'
-          type: array
-          title: Dropdownfilters
-          description: Dropdown custom field filters
-      type: object
-      title: SmartGroupFilters
     SmartGroup:
       properties:
         id:
@@ -416,17 +236,134 @@ components:
       - groupSegmentId
       - numberOfUsers
       title: SmartGroup
-    APIResponse_GetSmartGroupsResponse_:
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    GetSmartGroupsResponse:
+      properties:
+        groups:
+          items:
+            $ref: '#/components/schemas/SmartGroup'
+          type: array
+          title: Groups
+          description: 'The smart groups '
+      type: object
+      required:
+      - groups
+      title: GetSmartGroupsResponse
+    APIResponse_BaseResponse_:
       properties:
         requestId:
           type: string
           title: Requestid
         data:
-          $ref: '#/components/schemas/GetSmartGroupsResponse'
+          $ref: '#/components/schemas/BaseResponse'
       type: object
       required:
       - data
-      title: APIResponse[GetSmartGroupsResponse]
+      title: APIResponse[BaseResponse]
+    SmartGroupFilters:
+      properties:
+        operator:
+          allOf:
+          - $ref: '#/components/schemas/SmartGroupFilterOperator'
+          description: Select whether to use the 'and' or 'or' operator to determine how matching criteria are applied.
+          default: and
+        dropdownFilters:
+          items:
+            $ref: '#/components/schemas/DropdownFilter'
+          type: array
+          title: Dropdownfilters
+          description: Dropdown custom field filters
+      type: object
+      title: SmartGroupFilters
+    APIResponse_SmartGroupCreateResponse_:
+      properties:
+        requestId:
+          type: string
+          title: Requestid
+        data:
+          $ref: '#/components/schemas/SmartGroupCreateResponse'
+      type: object
+      required:
+      - data
+      title: APIResponse[SmartGroupCreateResponse]
+    DropdownFilter:
+      properties:
+        fieldId:
+          type: integer
+          title: Fieldid
+          description: The ID of the custom field to filter by
+        optionIds:
+          items:
+            type: integer
+          type: array
+          title: Optionids
+          description: List of dropdown option IDs to match
+      type: object
+      required:
+      - fieldId
+      - optionIds
+      title: DropdownFilter
+    SmartGroupUpdateResponse:
+      properties:
+        id:
+          type: integer
+          minimum: 1.0
+          title: Id
+          description: The unique identifier of the smart group
+        name:
+          type: string
+          title: Name
+          description: The name of the smart group
+        description:
+          type: string
+          title: Description
+          description: The description of the smart group
+        groupSegmentId:
+          type: integer
+          title: Groupsegmentid
+          description: The ID of the group segment this smart group belongs to
+        numberOfUsers:
+          type: integer
+          title: Numberofusers
+          description: The total number of users in the group (excluding admins)
+        isAutomaticallyCreated:
+          type: boolean
+          title: Isautomaticallycreated
+          description: 'Whether this smart group is automatically created and system-managed: generated from a dropdown custom field that has its ''create a group per option'' setting turned on. Automatically created groups cannot be edited or deleted directly — their name and membership are owned by the field and its options. Change them by editing the source custom field instead.'
+          default: false
+        adminUserIds:
+          items:
+            type: integer
+          type: array
+          title: Adminuserids
+          description: User IDs of admins who can administer this group — every active owner plus every manager with an explicit per-cohort authorization. Populated only when the request includes the internal include_admin_user_ids flag; otherwise null.
+      type: object
+      required:
+      - id
+      - name
+      - groupSegmentId
+      - numberOfUsers
+      title: SmartGroupUpdateResponse
     SmartGroupCreateRequest:
       properties:
         name:
@@ -452,6 +389,69 @@ components:
       - groupSegmentId
       - filters
       title: SmartGroupCreateRequest
+    APIResponse_GetSmartGroupsResponse_:
+      properties:
+        requestId:
+          type: string
+          title: Requestid
+        data:
+          $ref: '#/components/schemas/GetSmartGroupsResponse'
+      type: object
+      required:
+      - data
+      title: APIResponse[GetSmartGroupsResponse]
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    APIResponse_SmartGroupUpdateResponse_:
+      properties:
+        requestId:
+          type: string
+          title: Requestid
+        data:
+          $ref: '#/components/schemas/SmartGroupUpdateResponse'
+      type: object
+      required:
+      - data
+      title: APIResponse[SmartGroupUpdateResponse]
+    SmartGroupFilterOperator:
+      type: string
+      enum:
+      - and
+      - or
+      title: SmartGroupFilterOperator
+      description: An enumeration.
+    SmartGroupUpdateRequest:
+      properties:
+        name:
+          type: string
+          title: Name
+          description: The name of the smart group
+        description:
+          type: string
+          title: Description
+          description: Description of the smart group
+        groupSegmentId:
+          type: integer
+          title: Groupsegmentid
+          description: The ID of the group segment this smart group belongs to
+        filters:
+          allOf:
+          - $ref: '#/components/schemas/SmartGroupFilters'
+          title: Filters
+          description: Filters to apply to the smart group
+      type: object
+      title: SmartGroupUpdateRequest
+    BaseResponse:
+      properties: {}
+      type: object
+      title: BaseResponse
   securitySchemes:
     APIKeyHeader:
       type: apiKey

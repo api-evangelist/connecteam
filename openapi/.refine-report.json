@@ -74,9 +74,7 @@
     "connecteam-users-v1-smart-groups-api-openapi.yml",
     "connecteam-users-v1-users-api-openapi.yml"
   ],
-  "archived": [
-    "deleted 1 superseded output(s) from the previous generation"
-  ],
+  "archived": [],
   "errors": [],
   "warnings": [],
   "notes": [
@@ -192,8 +190,7 @@
     "connecteam-openapi-original.json: declared missing tag: Users:v1:Smart Group Segments",
     "connecteam-openapi-original.json: declared missing tag: Users:v1:Smart Groups",
     "connecteam-openapi-original.json: declared missing tag: Users:v1:Users",
-    "superseded outputs removed: connecteam-o-auth-api-openapi.yml",
-    "apis.yml register: written (+1 apis, 69 total)"
+    "apis.yml register: already-registered"
   ],
   "skipped": [
     "connecteam-account-api-openapi.yml: previously refined output, superseded by openapi/_original/",
@@ -212,7 +209,7 @@
     "connecteam-jobs-v1-custom-fields-api-openapi.yml: previously refined output, superseded by openapi/_original/",
     "connecteam-jobs-v1-job-api-openapi.yml: previously refined output, superseded by openapi/_original/",
     "connecteam-jobs-v1-jobs-api-openapi.yml: previously refined output, superseded by openapi/_original/",
-    "connecteam-o-auth-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "connecteam-oauth-api-openapi.yml: previously refined output, superseded by openapi/_original/",
     "connecteam-onboarding-v1-onboarding-assignments-api-openapi.yml: previously refined output, superseded by openapi/_original/",
     "connecteam-onboarding-v1-onboarding-packs-api-openapi.yml: previously refined output, superseded by openapi/_original/",
     "connecteam-pay-rates-v1-pay-rates-v1-payrates-api-openapi.yml: previously refined output, superseded by openapi/_original/",

@@ -82,32 +82,6 @@ paths:
           description: Validation error
 components:
   schemas:
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
-    AssignmentsCreateResponse:
-      properties: {}
-      type: object
-      title: AssignmentsCreateResponse
-    AssignmentsCreateRequest:
-      properties:
-        userIds:
-          items:
-            type: integer
-            minimum: 1.0
-          type: array
-          title: Userids
-          description: 'List of user IDs to assign (max: 500)'
-      type: object
-      required:
-      - userIds
-      title: AssignmentsCreateRequest
     APIResponse_AssignmentsCreateResponse_:
       properties:
         requestId:
@@ -146,6 +120,26 @@ components:
       - completed
       title: OnboardingStatus
       description: An enumeration.
+    APIResponse_AssignmentsGetResponse_:
+      properties:
+        requestId:
+          type: string
+          title: Requestid
+        data:
+          $ref: '#/components/schemas/AssignmentsGetResponse'
+      type: object
+      required:
+      - data
+      title: APIResponse[AssignmentsGetResponse]
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
     AssignmentsGetResponse:
       properties:
         assignments:
@@ -183,17 +177,23 @@ components:
       - status
       - isWaitingApproval
       title: AssignmentResponse
-    APIResponse_AssignmentsGetResponse_:
+    AssignmentsCreateRequest:
       properties:
-        requestId:
-          type: string
-          title: Requestid
-        data:
-          $ref: '#/components/schemas/AssignmentsGetResponse'
+        userIds:
+          items:
+            type: integer
+            minimum: 1.0
+          type: array
+          title: Userids
+          description: 'List of user IDs to assign (max: 500)'
       type: object
       required:
-      - data
-      title: APIResponse[AssignmentsGetResponse]
+      - userIds
+      title: AssignmentsCreateRequest
+    AssignmentsCreateResponse:
+      properties: {}
+      type: object
+      title: AssignmentsCreateResponse
   securitySchemes:
     APIKeyHeader:
       type: apiKey

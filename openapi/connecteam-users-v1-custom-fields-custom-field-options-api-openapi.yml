@@ -209,42 +209,55 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
-    DropdownCustomFieldOptionResponse:
+    APIResponse_DropdownCustomFieldOptionResponse_:
       properties:
-        id:
-          type: integer
-          title: Id
-          description: The id of this option
+        requestId:
+          type: string
+          title: Requestid
+        data:
+          $ref: '#/components/schemas/DropdownCustomFieldOptionResponse'
+      type: object
+      required:
+      - data
+      title: APIResponse[DropdownCustomFieldOptionResponse]
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    EditSingleDropdownCustomFieldOption:
+      properties:
         value:
           type: string
           title: Value
-          description: The name of this option
+          description: The value to be added as the option
         isDisabled:
           type: boolean
           title: Isdisabled
           description: Indicates if this option is disabled
           default: false
-        isDeleted:
-          type: boolean
-          title: Isdeleted
-          description: 'Indicates if this option is deleted
-
-            (this will still be returned in case someone already chose this option so you can see the value).'
-          default: false
       type: object
-      required:
-      - id
-      - value
-      title: DropdownCustomFieldOptionResponse
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
+      title: EditSingleDropdownCustomFieldOption
+    BaseResponse:
+      properties: {}
       type: object
-      title: HTTPValidationError
+      title: BaseResponse
     PaginatedBaseResponse_CustomFieldOptionsResponse_:
       properties:
         requestId:
@@ -259,6 +272,42 @@ components:
       - data
       - paging
       title: PaginatedBaseResponse[CustomFieldOptionsResponse]
+    APIResponse_BaseResponse_:
+      properties:
+        requestId:
+          type: string
+          title: Requestid
+        data:
+          $ref: '#/components/schemas/BaseResponse'
+      type: object
+      required:
+      - data
+      title: APIResponse[BaseResponse]
+    PagingResponseModel:
+      properties:
+        offset:
+          type: integer
+          minimum: 0.0
+          title: Offset
+          description: The resource offset of the last successfully read resource will be returned as the paging.offset JSON property of a paginated response containing more results
+        total:
+          type: integer
+          minimum: 0.0
+          title: Total
+          description: Total number of resources matching the request, ignoring pagination. Use this to retrieve the full count without paginating through every page. Only populated by endpoints that compute it.
+      type: object
+      required:
+      - offset
+      title: PagingResponseModel
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
     CreateDropdownCustomFieldOption:
       properties:
         value:
@@ -286,82 +335,33 @@ components:
       required:
       - options
       title: CustomFieldOptionsResponse
-    ValidationError:
+    DropdownCustomFieldOptionResponse:
       properties:
-        loc:
-          items:
-            anyOf:
-            - type: string
-            - type: integer
-          type: array
-          title: Location
-        msg:
-          type: string
-          title: Message
-        type:
-          type: string
-          title: Error Type
-      type: object
-      required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
-    PagingResponseModel:
-      properties:
-        offset:
+        id:
           type: integer
-          minimum: 0.0
-          title: Offset
-          description: The resource offset of the last successfully read resource will be returned as the paging.offset JSON property of a paginated response containing more results
-        total:
-          type: integer
-          minimum: 0.0
-          title: Total
-          description: Total number of resources matching the request, ignoring pagination. Use this to retrieve the full count without paginating through every page. Only populated by endpoints that compute it.
-      type: object
-      required:
-      - offset
-      title: PagingResponseModel
-    APIResponse_DropdownCustomFieldOptionResponse_:
-      properties:
-        requestId:
-          type: string
-          title: Requestid
-        data:
-          $ref: '#/components/schemas/DropdownCustomFieldOptionResponse'
-      type: object
-      required:
-      - data
-      title: APIResponse[DropdownCustomFieldOptionResponse]
-    EditSingleDropdownCustomFieldOption:
-      properties:
+          title: Id
+          description: The id of this option
         value:
           type: string
           title: Value
-          description: The value to be added as the option
+          description: The name of this option
         isDisabled:
           type: boolean
           title: Isdisabled
           description: Indicates if this option is disabled
           default: false
-      type: object
-      title: EditSingleDropdownCustomFieldOption
-    BaseResponse:
-      properties: {}
-      type: object
-      title: BaseResponse
-    APIResponse_BaseResponse_:
-      properties:
-        requestId:
-          type: string
-          title: Requestid
-        data:
-          $ref: '#/components/schemas/BaseResponse'
+        isDeleted:
+          type: boolean
+          title: Isdeleted
+          description: 'Indicates if this option is deleted
+
+            (this will still be returned in case someone already chose this option so you can see the value).'
+          default: false
       type: object
       required:
-      - data
-      title: APIResponse[BaseResponse]
+      - id
+      - value
+      title: DropdownCustomFieldOptionResponse
   securitySchemes:
     APIKeyHeader:
       type: apiKey

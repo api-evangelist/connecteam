@@ -51,26 +51,6 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
-    APIResponse_AssignmentsResponse_:
-      properties:
-        requestId:
-          type: string
-          title: Requestid
-        data:
-          $ref: '#/components/schemas/AssignmentsResponse'
-      type: object
-      required:
-      - data
-      title: APIResponse[AssignmentsResponse]
     ValidationError:
       properties:
         loc:
@@ -92,6 +72,59 @@ components:
       - msg
       - type
       title: ValidationError
+    AssetInstance:
+      properties:
+        id:
+          type: integer
+          title: Id
+          description: Asset id
+        type:
+          type: string
+          title: Type
+          description: Asset type
+      type: object
+      required:
+      - type
+      - id
+      title: AssetInstance
+    APIResponse_AssignmentsResponse_:
+      properties:
+        requestId:
+          type: string
+          title: Requestid
+        data:
+          $ref: '#/components/schemas/AssignmentsResponse'
+      type: object
+      required:
+      - data
+      title: APIResponse[AssignmentsResponse]
+    AssignmentsResponse:
+      properties:
+        smartGroups:
+          items:
+            $ref: '#/components/schemas/SmartGroupInstance'
+          type: array
+          title: Smartgroups
+          description: The unique identifiers of the smart group Ids the user is assigned to
+          default: []
+        assets:
+          items:
+            $ref: '#/components/schemas/AssetInstance'
+          type: array
+          title: Assets
+          description: The unique identifiers for the specified assets
+          default: []
+      type: object
+      title: AssignmentsResponse
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
     LpidWithCoursesDisplayName:
       type: string
       enum:
@@ -111,21 +144,6 @@ components:
       - timeOff
       title: LpidWithCoursesDisplayName
       description: An enumeration.
-    AssetInstance:
-      properties:
-        id:
-          type: integer
-          title: Id
-          description: Asset id
-        type:
-          type: string
-          title: Type
-          description: Asset type
-      type: object
-      required:
-      - type
-      - id
-      title: AssetInstance
     SmartGroupInstance:
       properties:
         id:
@@ -136,24 +154,6 @@ components:
       required:
       - id
       title: SmartGroupInstance
-    AssignmentsResponse:
-      properties:
-        smartGroups:
-          items:
-            $ref: '#/components/schemas/SmartGroupInstance'
-          type: array
-          title: Smartgroups
-          description: The unique identifiers of the smart group Ids the user is assigned to
-          default: []
-        assets:
-          items:
-            $ref: '#/components/schemas/AssetInstance'
-          type: array
-          title: Assets
-          description: The unique identifiers for the specified assets
-          default: []
-      type: object
-      title: AssignmentsResponse
   securitySchemes:
     APIKeyHeader:
       type: apiKey

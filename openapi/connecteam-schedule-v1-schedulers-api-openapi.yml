@@ -33,26 +33,6 @@ paths:
         - schedule.read
 components:
   schemas:
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
-    APIResponseV2_SchedulersResponse_:
-      properties:
-        requestId:
-          type: string
-          title: Requestid
-        data:
-          $ref: '#/components/schemas/SchedulersResponse'
-      type: object
-      required:
-      - data
-      title: APIResponseV2[SchedulersResponse]
     ValidationError:
       properties:
         loc:
@@ -74,18 +54,6 @@ components:
       - msg
       - type
       title: ValidationError
-    SchedulersResponse:
-      properties:
-        schedulers:
-          items:
-            $ref: '#/components/schemas/SchedulerResponse'
-          type: array
-          title: Schedulers
-          description: The schedules
-      type: object
-      required:
-      - schedulers
-      title: SchedulersResponse
     SchedulerResponse:
       properties:
         schedulerId:
@@ -112,6 +80,38 @@ components:
       - isArchived
       - timezone
       title: SchedulerResponse
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    SchedulersResponse:
+      properties:
+        schedulers:
+          items:
+            $ref: '#/components/schemas/SchedulerResponse'
+          type: array
+          title: Schedulers
+          description: The schedules
+      type: object
+      required:
+      - schedulers
+      title: SchedulersResponse
+    APIResponseV2_SchedulersResponse_:
+      properties:
+        requestId:
+          type: string
+          title: Requestid
+        data:
+          $ref: '#/components/schemas/SchedulersResponse'
+      type: object
+      required:
+      - data
+      title: APIResponseV2[SchedulersResponse]
   securitySchemes:
     APIKeyHeader:
       type: apiKey

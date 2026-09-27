@@ -165,147 +165,6 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
-    PaginatedBaseResponseV2_JobsResponse_:
-      properties:
-        requestId:
-          type: string
-          title: Requestid
-        data:
-          $ref: '#/components/schemas/JobsResponse'
-        paging:
-          $ref: '#/components/schemas/PagingResponseModelV2'
-      type: object
-      required:
-      - data
-      - paging
-      title: PaginatedBaseResponseV2[JobsResponse]
-    JobCreateRequest:
-      properties:
-        instanceIds:
-          items:
-            type: integer
-          type: array
-          title: Instanceids
-          description: List of instance IDs (schedule id or time clock id)
-        title:
-          type: string
-          title: Title
-          description: The title of the job
-        code:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Code
-          description: The code of the job
-          default: ''
-        description:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Description
-          description: The description of the job
-          default: ''
-        fenceSize:
-          anyOf:
-          - type: integer
-          - type: 'null'
-          title: Fencesize
-          description: The geofence size of the job
-        gps:
-          anyOf:
-          - $ref: '#/components/schemas/GpsDataV2'
-          - type: 'null'
-          description: The GPS data of the job
-        assign:
-          $ref: '#/components/schemas/AssignDataIn'
-          description: Settings related to job assignment
-        customFields:
-          items:
-            $ref: '#/components/schemas/BaseCustomFieldV2'
-          type: array
-          title: Customfields
-          description: The job's custom fields
-        color:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Color
-          description: 'The color associated with the job. Should be one of the following colors: [''#4B7AC5'', ''#801A1A'', ''#AE2121'', ''#DC7A7A'', ''#B0712E'', ''#D4985A'', ''#E4B37F'', ''#AE8E2D'', ''#CBA73A'', ''#D9B443'', ''#487037'', ''#6F9B5C'', ''#91B282'', ''#365C64'', ''#5687B3'', ''#7C9BA2'', ''#3968BB'', ''#85A6DA'', ''#225A8C'', ''#548CBE'', ''#81A8CC'', ''#4E3F75'', ''#604E8E'', ''#8679AA'', ''#983D73'', ''#A43778'', ''#D178AD'', ''#6B2E4C'', ''#925071'', ''#B57D9A'', ''#3a3a3a'', ''#616161'', ''#969696'']'
-          default: '#4B7AC5'
-        subJobs:
-          items:
-            $ref: '#/components/schemas/SubJobCreateRequestInJob'
-          type: array
-          title: Subjobs
-          description: List of sub jobs to create
-      type: object
-      required:
-      - title
-      - instanceIds
-      title: JobCreateRequest
-    AssignDataTypes:
-      type: string
-      enum:
-      - users
-      - groups
-      - both
-      title: AssignDataTypes
-    SubJobCreateRequest:
-      properties:
-        title:
-          type: string
-          title: Title
-          description: The title of the job
-        code:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Code
-          description: The code of the job
-          default: ''
-        description:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Description
-          description: The description of the job
-          default: ''
-        fenceSize:
-          anyOf:
-          - type: integer
-          - type: 'null'
-          title: Fencesize
-          description: The geofence size of the job
-        gps:
-          anyOf:
-          - $ref: '#/components/schemas/GpsDataV2'
-          - type: 'null'
-          description: The GPS data of the job
-        assign:
-          anyOf:
-          - $ref: '#/components/schemas/AssignDataIn'
-          - type: 'null'
-          description: Data related to job assignment
-        customFields:
-          items:
-            $ref: '#/components/schemas/BaseCustomFieldV2'
-          type: array
-          title: Customfields
-          description: The job's custom fields
-        parentId:
-          type: string
-          title: Parentid
-          description: The ID of the parent job
-        useParentData:
-          type: boolean
-          title: Useparentdata
-          description: Indicates whether to use the parent job's data or not
-          default: true
-      type: object
-      required:
-      - title
-      - parentId
-      title: SubJobCreateRequest
     BaseCustomFieldV2:
       properties:
         customFieldId:
@@ -321,26 +180,6 @@ components:
       - customFieldId
       - value
       title: BaseCustomFieldV2
-    SortOrder:
-      type: string
-      enum:
-      - asc
-      - desc
-      title: SortOrder
-    JobsSortKeysExternal:
-      type: string
-      enum:
-      - title
-      title: JobsSortKeysExternal
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
     JobsResponse:
       properties:
         jobs:
@@ -354,57 +193,49 @@ components:
       required:
       - jobs
       title: JobsResponse
-    SubJobCreateRequestInJob:
+    AssignDataIn:
       properties:
-        title:
-          type: string
-          title: Title
-          description: The title of the job
-        code:
+        type:
+          $ref: '#/components/schemas/AssignDataTypes'
+          description: The type of the assign data (users, groups, both), default is both.
+          default: both
+        userIds:
           anyOf:
-          - type: string
+          - items:
+              type: integer
+              minimum: 1.0
+              description: Integer with minimum value of 1
+            type: array
           - type: 'null'
-          title: Code
-          description: The code of the job
-          default: ''
-        description:
+          title: Userids
+          description: The user ids to assign to this entity (if assigning type is users).
+        groupIds:
           anyOf:
-          - type: string
+          - items:
+              type: integer
+              minimum: 1.0
+              description: Integer with minimum value of 1
+            type: array
           - type: 'null'
-          title: Description
-          description: The description of the job
-          default: ''
-        fenceSize:
-          anyOf:
-          - type: integer
-          - type: 'null'
-          title: Fencesize
-          description: The geofence size of the job
-        gps:
-          anyOf:
-          - $ref: '#/components/schemas/GpsDataV2'
-          - type: 'null'
-          description: The GPS data of the job
-        assign:
-          anyOf:
-          - $ref: '#/components/schemas/AssignDataIn'
-          - type: 'null'
-          description: Data related to job assignment
-        customFields:
-          items:
-            $ref: '#/components/schemas/BaseCustomFieldV2'
-          type: array
-          title: Customfields
-          description: The job's custom fields
-        useParentData:
-          type: boolean
-          title: Useparentdata
-          description: Indicates whether to use the parent job's data or not
-          default: true
+          title: Groupids
+          description: The group ids to assign to this entity (if assigning type is groups).
       type: object
-      required:
-      - title
-      title: SubJobCreateRequestInJob
+      title: AssignDataIn
+    UserCustomFields:
+      type: string
+      enum:
+      - email
+      - date
+      - phone
+      - number
+      - str
+      - dropdown
+      - file
+      - directManager
+      - birthday
+      - link
+      - location
+      title: UserCustomFields
     APIResponseV2_JobsResponse_:
       properties:
         requestId:
@@ -416,6 +247,55 @@ components:
       required:
       - data
       title: APIResponseV2[JobsResponse]
+    JobsSortKeysExternal:
+      type: string
+      enum:
+      - title
+      title: JobsSortKeysExternal
+    PaginatedBaseResponseV2_JobsResponse_:
+      properties:
+        requestId:
+          type: string
+          title: Requestid
+        data:
+          $ref: '#/components/schemas/JobsResponse'
+        paging:
+          $ref: '#/components/schemas/PagingResponseModelV2'
+      type: object
+      required:
+      - data
+      - paging
+      title: PaginatedBaseResponseV2[JobsResponse]
+    CustomFieldResponseV2:
+      properties:
+        customFieldId:
+          type: integer
+          minimum: 1.0
+          title: Customfieldid
+          description: The custom field unique id
+        value:
+          title: Value
+          description: The custom field value
+        type:
+          $ref: '#/components/schemas/UserCustomFields'
+          description: The custom field type
+        name:
+          type: string
+          title: Name
+          description: The custom field name
+      type: object
+      required:
+      - customFieldId
+      - value
+      - type
+      - name
+      title: CustomFieldResponseV2
+    SortOrder:
+      type: string
+      enum:
+      - asc
+      - desc
+      title: SortOrder
     BaseJobResponse:
       properties:
         jobId:
@@ -500,6 +380,13 @@ components:
       - description
       - assign
       title: BaseJobResponse
+    AssignDataTypes:
+      type: string
+      enum:
+      - users
+      - groups
+      - both
+      title: AssignDataTypes
     GpsDataV2:
       properties:
         address:
@@ -528,34 +415,109 @@ components:
           description: The latitude coordinate.
       type: object
       title: GpsDataV2
-    AssignDataIn:
+    JobCreateRequest:
       properties:
-        type:
-          $ref: '#/components/schemas/AssignDataTypes'
-          description: The type of the assign data (users, groups, both), default is both.
-          default: both
-        userIds:
+        instanceIds:
+          items:
+            type: integer
+          type: array
+          title: Instanceids
+          description: List of instance IDs (schedule id or time clock id)
+        title:
+          type: string
+          title: Title
+          description: The title of the job
+        code:
           anyOf:
-          - items:
-              type: integer
-              minimum: 1.0
-              description: Integer with minimum value of 1
-            type: array
+          - type: string
           - type: 'null'
-          title: Userids
-          description: The user ids to assign to this entity (if assigning type is users).
-        groupIds:
+          title: Code
+          description: The code of the job
+          default: ''
+        description:
           anyOf:
-          - items:
-              type: integer
-              minimum: 1.0
-              description: Integer with minimum value of 1
-            type: array
+          - type: string
           - type: 'null'
-          title: Groupids
-          description: The group ids to assign to this entity (if assigning type is groups).
+          title: Description
+          description: The description of the job
+          default: ''
+        fenceSize:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Fencesize
+          description: The geofence size of the job
+        gps:
+          anyOf:
+          - $ref: '#/components/schemas/GpsDataV2'
+          - type: 'null'
+          description: The GPS data of the job
+        assign:
+          $ref: '#/components/schemas/AssignDataIn'
+          description: Settings related to job assignment
+        customFields:
+          items:
+            $ref: '#/components/schemas/BaseCustomFieldV2'
+          type: array
+          title: Customfields
+          description: The job's custom fields
+        color:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Color
+          description: 'The color associated with the job. Should be one of the following colors: [''#4B7AC5'', ''#801A1A'', ''#AE2121'', ''#DC7A7A'', ''#B0712E'', ''#D4985A'', ''#E4B37F'', ''#AE8E2D'', ''#CBA73A'', ''#D9B443'', ''#487037'', ''#6F9B5C'', ''#91B282'', ''#365C64'', ''#5687B3'', ''#7C9BA2'', ''#3968BB'', ''#85A6DA'', ''#225A8C'', ''#548CBE'', ''#81A8CC'', ''#4E3F75'', ''#604E8E'', ''#8679AA'', ''#983D73'', ''#A43778'', ''#D178AD'', ''#6B2E4C'', ''#925071'', ''#B57D9A'', ''#3a3a3a'', ''#616161'', ''#969696'']'
+          default: '#4B7AC5'
+        subJobs:
+          items:
+            $ref: '#/components/schemas/SubJobCreateRequestInJob'
+          type: array
+          title: Subjobs
+          description: List of sub jobs to create
       type: object
-      title: AssignDataIn
+      required:
+      - title
+      - instanceIds
+      title: JobCreateRequest
+    PagingResponseModelV2:
+      properties:
+        offset:
+          type: integer
+          minimum: 0.0
+          title: Offset
+          description: The resource offset of the last successfully read resource will be returned as the paging.offset JSON property of a paginated response containing more results
+        total:
+          anyOf:
+          - type: integer
+            minimum: 0.0
+          - type: 'null'
+          title: Total
+          description: Total number of resources matching the request, ignoring pagination. Use this to retrieve the full count without paginating through every page. Only populated by endpoints that compute it.
+      type: object
+      required:
+      - offset
+      title: PagingResponseModelV2
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
     AssignDataApi:
       properties:
         type:
@@ -582,84 +544,122 @@ components:
           description: The group ids to assign to this entity (if assigning type is groups).
       type: object
       title: AssignDataApi
-    CustomFieldResponseV2:
+    SubJobCreateRequest:
       properties:
-        customFieldId:
-          type: integer
-          minimum: 1.0
-          title: Customfieldid
-          description: The custom field unique id
-        value:
-          title: Value
-          description: The custom field value
-        type:
-          $ref: '#/components/schemas/UserCustomFields'
-          description: The custom field type
-        name:
+        title:
           type: string
-          title: Name
-          description: The custom field name
-      type: object
-      required:
-      - customFieldId
-      - value
-      - type
-      - name
-      title: CustomFieldResponseV2
-    ValidationError:
-      properties:
-        loc:
-          items:
-            anyOf:
-            - type: string
-            - type: integer
-          type: array
-          title: Location
-        msg:
-          type: string
-          title: Message
-        type:
-          type: string
-          title: Error Type
-      type: object
-      required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
-    PagingResponseModelV2:
-      properties:
-        offset:
-          type: integer
-          minimum: 0.0
-          title: Offset
-          description: The resource offset of the last successfully read resource will be returned as the paging.offset JSON property of a paginated response containing more results
-        total:
+          title: Title
+          description: The title of the job
+        code:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Code
+          description: The code of the job
+          default: ''
+        description:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Description
+          description: The description of the job
+          default: ''
+        fenceSize:
           anyOf:
           - type: integer
-            minimum: 0.0
           - type: 'null'
-          title: Total
-          description: Total number of resources matching the request, ignoring pagination. Use this to retrieve the full count without paginating through every page. Only populated by endpoints that compute it.
+          title: Fencesize
+          description: The geofence size of the job
+        gps:
+          anyOf:
+          - $ref: '#/components/schemas/GpsDataV2'
+          - type: 'null'
+          description: The GPS data of the job
+        assign:
+          anyOf:
+          - $ref: '#/components/schemas/AssignDataIn'
+          - type: 'null'
+          description: Data related to job assignment
+        customFields:
+          items:
+            $ref: '#/components/schemas/BaseCustomFieldV2'
+          type: array
+          title: Customfields
+          description: The job's custom fields
+        parentId:
+          type: string
+          title: Parentid
+          description: The ID of the parent job
+        useParentData:
+          type: boolean
+          title: Useparentdata
+          description: Indicates whether to use the parent job's data or not
+          default: true
       type: object
       required:
-      - offset
-      title: PagingResponseModelV2
-    UserCustomFields:
-      type: string
-      enum:
-      - email
-      - date
-      - phone
-      - number
-      - str
-      - dropdown
-      - file
-      - directManager
-      - birthday
-      - link
-      - location
-      title: UserCustomFields
+      - title
+      - parentId
+      title: SubJobCreateRequest
+    SubJobCreateRequestInJob:
+      properties:
+        title:
+          type: string
+          title: Title
+          description: The title of the job
+        code:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Code
+          description: The code of the job
+          default: ''
+        description:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Description
+          description: The description of the job
+          default: ''
+        fenceSize:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Fencesize
+          description: The geofence size of the job
+        gps:
+          anyOf:
+          - $ref: '#/components/schemas/GpsDataV2'
+          - type: 'null'
+          description: The GPS data of the job
+        assign:
+          anyOf:
+          - $ref: '#/components/schemas/AssignDataIn'
+          - type: 'null'
+          description: Data related to job assignment
+        customFields:
+          items:
+            $ref: '#/components/schemas/BaseCustomFieldV2'
+          type: array
+          title: Customfields
+          description: The job's custom fields
+        useParentData:
+          type: boolean
+          title: Useparentdata
+          description: Indicates whether to use the parent job's data or not
+          default: true
+      type: object
+      required:
+      - title
+      title: SubJobCreateRequestInJob
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
   securitySchemes:
     APIKeyHeader:
       type: apiKey

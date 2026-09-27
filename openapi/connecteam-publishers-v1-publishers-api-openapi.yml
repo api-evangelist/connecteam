@@ -55,49 +55,6 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
-    PaginatedBaseResponse_PublishersResponse_:
-      properties:
-        requestId:
-          type: string
-          title: Requestid
-        data:
-          $ref: '#/components/schemas/PublishersResponse'
-        paging:
-          $ref: '#/components/schemas/PagingResponseModel'
-      type: object
-      required:
-      - data
-      - paging
-      title: PaginatedBaseResponse[PublishersResponse]
-    PublisherResponse:
-      properties:
-        id:
-          type: integer
-          title: Id
-          description: The unique identifier of the publisher
-        name:
-          type: string
-          title: Name
-          description: The name of the publisher
-        imageUrl:
-          type: string
-          title: Imageurl
-          description: The image url of the publisher
-      type: object
-      required:
-      - id
-      - name
-      - imageUrl
-      title: PublisherResponse
     ValidationError:
       properties:
         loc:
@@ -119,18 +76,26 @@ components:
       - msg
       - type
       title: ValidationError
-    PublishersResponse:
+    PublisherResponse:
       properties:
-        publishers:
-          items:
-            $ref: '#/components/schemas/PublisherResponse'
-          type: array
-          title: Publishers
-          description: The list of publishers
+        id:
+          type: integer
+          title: Id
+          description: The unique identifier of the publisher
+        name:
+          type: string
+          title: Name
+          description: The name of the publisher
+        imageUrl:
+          type: string
+          title: Imageurl
+          description: The image url of the publisher
       type: object
       required:
-      - publishers
-      title: PublishersResponse
+      - id
+      - name
+      - imageUrl
+      title: PublisherResponse
     PagingResponseModel:
       properties:
         offset:
@@ -147,6 +112,41 @@ components:
       required:
       - offset
       title: PagingResponseModel
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    PublishersResponse:
+      properties:
+        publishers:
+          items:
+            $ref: '#/components/schemas/PublisherResponse'
+          type: array
+          title: Publishers
+          description: The list of publishers
+      type: object
+      required:
+      - publishers
+      title: PublishersResponse
+    PaginatedBaseResponse_PublishersResponse_:
+      properties:
+        requestId:
+          type: string
+          title: Requestid
+        data:
+          $ref: '#/components/schemas/PublishersResponse'
+        paging:
+          $ref: '#/components/schemas/PagingResponseModel'
+      type: object
+      required:
+      - data
+      - paging
+      title: PaginatedBaseResponse[PublishersResponse]
   securitySchemes:
     APIKeyHeader:
       type: apiKey

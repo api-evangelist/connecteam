@@ -33,15 +33,6 @@ paths:
         - quick_tasks.read
 components:
   schemas:
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
     ValidationError:
       properties:
         loc:
@@ -63,6 +54,17 @@ components:
       - msg
       - type
       title: ValidationError
+    APIResponse_GetTasksBoardsResponse_:
+      properties:
+        requestId:
+          type: string
+          title: Requestid
+        data:
+          $ref: '#/components/schemas/GetTasksBoardsResponse'
+      type: object
+      required:
+      - data
+      title: APIResponse[GetTasksBoardsResponse]
     GetTasksBoardsResponse:
       properties:
         taskBoards:
@@ -95,17 +97,15 @@ components:
       - name
       - isArchived
       title: TasksBoard
-    APIResponse_GetTasksBoardsResponse_:
+    HTTPValidationError:
       properties:
-        requestId:
-          type: string
-          title: Requestid
-        data:
-          $ref: '#/components/schemas/GetTasksBoardsResponse'
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
       type: object
-      required:
-      - data
-      title: APIResponse[GetTasksBoardsResponse]
+      title: HTTPValidationError
   securitySchemes:
     APIKeyHeader:
       type: apiKey

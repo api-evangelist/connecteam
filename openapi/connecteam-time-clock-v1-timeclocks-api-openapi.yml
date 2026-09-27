@@ -33,15 +33,6 @@ paths:
         - time_clock.read
 components:
   schemas:
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
     ValidationError:
       properties:
         loc:
@@ -63,6 +54,27 @@ components:
       - msg
       - type
       title: ValidationError
+    TimeClocksResponse:
+      properties:
+        timeClocks:
+          items:
+            $ref: '#/components/schemas/TimeClock'
+          type: array
+          title: Timeclocks
+          description: The time clocks
+      type: object
+      required:
+      - timeClocks
+      title: TimeClocksResponse
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
     TimeClock:
       properties:
         id:
@@ -84,18 +96,6 @@ components:
       - name
       - isArchived
       title: TimeClock
-    TimeClocksResponse:
-      properties:
-        timeClocks:
-          items:
-            $ref: '#/components/schemas/TimeClock'
-          type: array
-          title: Timeclocks
-          description: The time clocks
-      type: object
-      required:
-      - timeClocks
-      title: TimeClocksResponse
     APIResponse_TimeClocksResponse_:
       properties:
         requestId:

@@ -175,54 +175,6 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
-    ImageAttachmentRequest:
-      properties:
-        type:
-          type: string
-          enum:
-          - image
-          title: Type
-          description: The type of the attachment.
-        fileId:
-          type: string
-          title: Fileid
-          description: The unique identifier of the image.
-      type: object
-      required:
-      - type
-      - fileId
-      title: ImageAttachmentRequest
-    ErrorParing:
-      properties:
-        error_message:
-          type: string
-          title: Error Message
-        error_code:
-          type: integer
-          title: Error Code
-      type: object
-      required:
-      - error_message
-      - error_code
-      title: ErrorParing
-      description: V1 error paring model for backward compatibility
-    FileAttachmentRequest:
-      properties:
-        type:
-          type: string
-          enum:
-          - file
-          title: Type
-          description: The type of the attachment.
-        fileId:
-          type: string
-          title: Fileid
-          description: The unique identifier of the file.
-      type: object
-      required:
-      - type
-      - fileId
-      title: FileAttachmentRequest
     ConversationResponse:
       properties:
         id:
@@ -248,110 +200,42 @@ components:
       - type
       - conversationSource
       title: ConversationResponse
-    BaseResponse:
-      properties: {}
-      type: object
-      title: BaseResponse
-    HTTPValidationError:
+    APIResponse_BaseResponse_:
       properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
-    ConversationMutationRequest:
-      properties:
-        title:
-          type: string
-          title: Title
-          description: The conversation title shown in the chat clients. Must be non-empty after trimming whitespace.
-        type:
-          allOf:
-          - $ref: '#/components/schemas/ConversationType'
-          description: The conversation type. team = collaborative chat, all members can send messages. channel = broadcast group, only admins can send messages.
-        assignedUserIds:
-          items:
-            type: integer
-          type: array
-          title: Assigneduserids
-          description: Individual user IDs assigned as members. At least one of assignedUserIds or assignedSmartGroupIds must be provided. Defaults to an empty array.
-        assignedSmartGroupIds:
-          items:
-            type: integer
-          type: array
-          title: Assignedsmartgroupids
-          description: Smart group (dynamic cohort) IDs assigned to the conversation. Membership follows the smart group's rules. At least one of assignedUserIds or assignedSmartGroupIds must be provided. Defaults to an empty array.
-        adminUserIds:
-          items:
-            type: integer
-          type: array
-          title: Adminuserids
-          description: User IDs granted admin privileges in the conversation (manage members/settings; for channels, the only users who can post). An admin id must also be an assigned member (via assignedUserIds or an assigned smart group) to take effect. If omitted, defaults are applied.
-        isLocked:
-          type: boolean
-          title: Islocked
-          description: Whether the conversation is created locked (members cannot send messages until an admin unlocks it). Defaults to unlocked.
-        isMembersHidden:
-          type: boolean
-          title: Ismembershidden
-          description: Whether the member list is hidden from members in the chat clients. Defaults to false.
-          default: false
-        description:
-          items:
-            type: object
-          type: array
-          title: Description
-          description: Ordered list of structured rich-text blocks shown in the conversation details (not a chat message). Each block is a typed object, e.g. {"type":"html","html":"<div>...</div>"}. Defaults to an empty array.
-      type: object
-      required:
-      - title
-      - type
-      title: ConversationMutationRequest
-    ValidationErrorResponse:
-      properties:
-        details:
-          allOf:
-          - $ref: '#/components/schemas/ErrorParing'
-          title: Details
-          default:
-            error_message: Request is invalid
-            error_code: 1004
-        error:
-          anyOf:
-          - type: object
-          - items:
-              type: object
-            type: array
-          - type: string
-          title: Error
-          default: Validation Error
-        path:
-          type: string
-          title: Path
         requestId:
           type: string
           title: Requestid
-      type: object
-      title: ValidationErrorResponse
-      description: "All errors responses should include:\nrequest_id,\nConnecteam error code and error message,\nthe url path,\nthe request body,\nand error data which can be a pydantic class or a dict and should look something like this:\n`{\n    \"error.path\": \"the gist of the error\"\n}`\n\nfor example if the user doesn't exist it should look something like this:\n`{\n    \"user.id\": \"user doesn't exist\"\n}`"
-    PagingResponseModel:
-      properties:
-        offset:
-          type: integer
-          minimum: 0.0
-          title: Offset
-          description: The resource offset of the last successfully read resource will be returned as the paging.offset JSON property of a paginated response containing more results
-        total:
-          type: integer
-          minimum: 0.0
-          title: Total
-          description: Total number of resources matching the request, ignoring pagination. Use this to retrieve the full count without paginating through every page. Only populated by endpoints that compute it.
+        data:
+          $ref: '#/components/schemas/BaseResponse'
       type: object
       required:
-      - offset
-      title: PagingResponseModel
+      - data
+      title: APIResponse[BaseResponse]
+    PaginatedBaseResponse_ConversationsResponse_:
+      properties:
+        requestId:
+          type: string
+          title: Requestid
+        data:
+          $ref: '#/components/schemas/ConversationsResponse'
+        paging:
+          $ref: '#/components/schemas/PagingResponseModel'
+      type: object
+      required:
+      - data
+      - paging
+      title: PaginatedBaseResponse[ConversationsResponse]
+    ConversationMutationResponse:
+      properties:
+        conversation:
+          allOf:
+          - $ref: '#/components/schemas/ConversationDetailsResponse'
+          title: Conversation
+          description: The created or updated conversation
+      type: object
+      required:
+      - conversation
+      title: ConversationMutationResponse
     ConversationPostMessageRequest:
       properties:
         senderId:
@@ -382,88 +266,29 @@ components:
       - senderId
       - text
       title: ConversationPostMessageRequest
-    APIResponse_ConversationMutationResponse_:
+    ImageAttachmentRequest:
       properties:
-        requestId:
+        type:
           type: string
-          title: Requestid
-        data:
-          $ref: '#/components/schemas/ConversationMutationResponse'
+          enum:
+          - image
+          title: Type
+          description: The type of the attachment.
+        fileId:
+          type: string
+          title: Fileid
+          description: The unique identifier of the image.
       type: object
       required:
-      - data
-      title: APIResponse[ConversationMutationResponse]
-    ConversationsResponse:
-      properties:
-        conversations:
-          items:
-            $ref: '#/components/schemas/ConversationResponse'
-          type: array
-          title: Conversations
-          description: The list of conversations
-      type: object
-      required:
-      - conversations
-      title: ConversationsResponse
+      - type
+      - fileId
+      title: ImageAttachmentRequest
     ConversationTypeResponse:
       enum:
       - team
       - channel
       title: ConversationTypeResponse
       description: An enumeration.
-    ValidationError:
-      properties:
-        loc:
-          items:
-            anyOf:
-            - type: string
-            - type: integer
-          type: array
-          title: Location
-        msg:
-          type: string
-          title: Message
-        type:
-          type: string
-          title: Error Type
-      type: object
-      required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
-    ConversationType:
-      type: string
-      enum:
-      - team
-      - channel
-      title: ConversationType
-      description: An enumeration.
-    PaginatedBaseResponse_ConversationsResponse_:
-      properties:
-        requestId:
-          type: string
-          title: Requestid
-        data:
-          $ref: '#/components/schemas/ConversationsResponse'
-        paging:
-          $ref: '#/components/schemas/PagingResponseModel'
-      type: object
-      required:
-      - data
-      - paging
-      title: PaginatedBaseResponse[ConversationsResponse]
-    ConversationMutationResponse:
-      properties:
-        conversation:
-          allOf:
-          - $ref: '#/components/schemas/ConversationDetailsResponse'
-          title: Conversation
-          description: The created or updated conversation
-      type: object
-      required:
-      - conversation
-      title: ConversationMutationResponse
     ConversationDetailsResponse:
       properties:
         id:
@@ -520,17 +345,192 @@ components:
       - assignedSmartGroupIds
       - adminUserIds
       title: ConversationDetailsResponse
-    APIResponse_BaseResponse_:
+    ValidationErrorResponse:
+      properties:
+        details:
+          allOf:
+          - $ref: '#/components/schemas/ErrorParing'
+          title: Details
+          default:
+            error_message: Request is invalid
+            error_code: 1004
+        error:
+          anyOf:
+          - type: object
+          - items:
+              type: object
+            type: array
+          - type: string
+          title: Error
+          default: Validation Error
+        path:
+          type: string
+          title: Path
+        requestId:
+          type: string
+          title: Requestid
+      type: object
+      title: ValidationErrorResponse
+      description: "All errors responses should include:\nrequest_id,\nConnecteam error code and error message,\nthe url path,\nthe request body,\nand error data which can be a pydantic class or a dict and should look something like this:\n`{\n    \"error.path\": \"the gist of the error\"\n}`\n\nfor example if the user doesn't exist it should look something like this:\n`{\n    \"user.id\": \"user doesn't exist\"\n}`"
+    ConversationMutationRequest:
+      properties:
+        title:
+          type: string
+          title: Title
+          description: The conversation title shown in the chat clients. Must be non-empty after trimming whitespace.
+        type:
+          allOf:
+          - $ref: '#/components/schemas/ConversationType'
+          description: The conversation type. team = collaborative chat, all members can send messages. channel = broadcast group, only admins can send messages.
+        assignedUserIds:
+          items:
+            type: integer
+          type: array
+          title: Assigneduserids
+          description: Individual user IDs assigned as members. At least one of assignedUserIds or assignedSmartGroupIds must be provided. Defaults to an empty array.
+        assignedSmartGroupIds:
+          items:
+            type: integer
+          type: array
+          title: Assignedsmartgroupids
+          description: Smart group (dynamic cohort) IDs assigned to the conversation. Membership follows the smart group's rules. At least one of assignedUserIds or assignedSmartGroupIds must be provided. Defaults to an empty array.
+        adminUserIds:
+          items:
+            type: integer
+          type: array
+          title: Adminuserids
+          description: User IDs granted admin privileges in the conversation (manage members/settings; for channels, the only users who can post). An admin id must also be an assigned member (via assignedUserIds or an assigned smart group) to take effect. If omitted, defaults are applied.
+        isLocked:
+          type: boolean
+          title: Islocked
+          description: Whether the conversation is created locked (members cannot send messages until an admin unlocks it). Defaults to unlocked.
+        isMembersHidden:
+          type: boolean
+          title: Ismembershidden
+          description: Whether the member list is hidden from members in the chat clients. Defaults to false.
+          default: false
+        description:
+          items:
+            type: object
+          type: array
+          title: Description
+          description: Ordered list of structured rich-text blocks shown in the conversation details (not a chat message). Each block is a typed object, e.g. {"type":"html","html":"<div>...</div>"}. Defaults to an empty array.
+      type: object
+      required:
+      - title
+      - type
+      title: ConversationMutationRequest
+    ConversationType:
+      type: string
+      enum:
+      - team
+      - channel
+      title: ConversationType
+      description: An enumeration.
+    BaseResponse:
+      properties: {}
+      type: object
+      title: BaseResponse
+    ErrorParing:
+      properties:
+        error_message:
+          type: string
+          title: Error Message
+        error_code:
+          type: integer
+          title: Error Code
+      type: object
+      required:
+      - error_message
+      - error_code
+      title: ErrorParing
+      description: V1 error paring model for backward compatibility
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    PagingResponseModel:
+      properties:
+        offset:
+          type: integer
+          minimum: 0.0
+          title: Offset
+          description: The resource offset of the last successfully read resource will be returned as the paging.offset JSON property of a paginated response containing more results
+        total:
+          type: integer
+          minimum: 0.0
+          title: Total
+          description: Total number of resources matching the request, ignoring pagination. Use this to retrieve the full count without paginating through every page. Only populated by endpoints that compute it.
+      type: object
+      required:
+      - offset
+      title: PagingResponseModel
+    ConversationsResponse:
+      properties:
+        conversations:
+          items:
+            $ref: '#/components/schemas/ConversationResponse'
+          type: array
+          title: Conversations
+          description: The list of conversations
+      type: object
+      required:
+      - conversations
+      title: ConversationsResponse
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    APIResponse_ConversationMutationResponse_:
       properties:
         requestId:
           type: string
           title: Requestid
         data:
-          $ref: '#/components/schemas/BaseResponse'
+          $ref: '#/components/schemas/ConversationMutationResponse'
       type: object
       required:
       - data
-      title: APIResponse[BaseResponse]
+      title: APIResponse[ConversationMutationResponse]
+    FileAttachmentRequest:
+      properties:
+        type:
+          type: string
+          enum:
+          - file
+          title: Type
+          description: The type of the attachment.
+        fileId:
+          type: string
+          title: Fileid
+          description: The unique identifier of the file.
+      type: object
+      required:
+      - type
+      - fileId
+      title: FileAttachmentRequest
   securitySchemes:
     APIKeyHeader:
       type: apiKey

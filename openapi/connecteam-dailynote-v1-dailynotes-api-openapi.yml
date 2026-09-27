@@ -42,15 +42,52 @@ paths:
         - daily_note.write
 components:
   schemas:
-    HTTPValidationError:
+    DailyNoteCreateRequest:
       properties:
-        detail:
+        title:
+          type: string
+          title: Title
+          description: The title of the note
+        qualifiedUserIds:
           items:
-            $ref: '#/components/schemas/ValidationError'
+            type: integer
+            minimum: 1.0
           type: array
-          title: Detail
+          title: Qualifieduserids
+          description: The users qualified to see the note
+          default: []
+        qualifiedGroupIds:
+          items:
+            type: integer
+          type: array
+          title: Qualifiedgroupids
+          description: The groups qualified to see the note
+          default: []
+        date:
+          type: string
+          title: Date
+          description: The date for the note in ISO 8601 format (e.g. YYYY-MM-DD)
+        instanceId:
+          type: integer
+          title: Instanceid
+          description: The unique identifier of the schedule
       type: object
-      title: HTTPValidationError
+      required:
+      - title
+      - date
+      - instanceId
+      title: DailyNoteCreateRequest
+    APIResponse_DailyNoteResponse_:
+      properties:
+        requestId:
+          type: string
+          title: Requestid
+        data:
+          $ref: '#/components/schemas/DailyNoteResponse'
+      type: object
+      required:
+      - data
+      title: APIResponse[DailyNoteResponse]
     ValidationError:
       properties:
         loc:
@@ -109,52 +146,15 @@ components:
       - title
       - dates
       title: DailyNoteResponse
-    APIResponse_DailyNoteResponse_:
+    HTTPValidationError:
       properties:
-        requestId:
-          type: string
-          title: Requestid
-        data:
-          $ref: '#/components/schemas/DailyNoteResponse'
-      type: object
-      required:
-      - data
-      title: APIResponse[DailyNoteResponse]
-    DailyNoteCreateRequest:
-      properties:
-        title:
-          type: string
-          title: Title
-          description: The title of the note
-        qualifiedUserIds:
+        detail:
           items:
-            type: integer
-            minimum: 1.0
+            $ref: '#/components/schemas/ValidationError'
           type: array
-          title: Qualifieduserids
-          description: The users qualified to see the note
-          default: []
-        qualifiedGroupIds:
-          items:
-            type: integer
-          type: array
-          title: Qualifiedgroupids
-          description: The groups qualified to see the note
-          default: []
-        date:
-          type: string
-          title: Date
-          description: The date for the note in ISO 8601 format (e.g. YYYY-MM-DD)
-        instanceId:
-          type: integer
-          title: Instanceid
-          description: The unique identifier of the schedule
+          title: Detail
       type: object
-      required:
-      - title
-      - date
-      - instanceId
-      title: DailyNoteCreateRequest
+      title: HTTPValidationError
   securitySchemes:
     APIKeyHeader:
       type: apiKey

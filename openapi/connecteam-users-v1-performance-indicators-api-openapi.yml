@@ -55,29 +55,6 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
-    PaginatedBaseResponse_GetIndicatorsBaseResponse_:
-      properties:
-        requestId:
-          type: string
-          title: Requestid
-        data:
-          $ref: '#/components/schemas/GetIndicatorsBaseResponse'
-        paging:
-          $ref: '#/components/schemas/PagingResponseModel'
-      type: object
-      required:
-      - data
-      - paging
-      title: PaginatedBaseResponse[GetIndicatorsBaseResponse]
     ValidationError:
       properties:
         loc:
@@ -115,19 +92,20 @@ components:
       - id
       - name
       title: IndicatorResponse
-    GetIndicatorsBaseResponse:
+    PaginatedBaseResponse_GetIndicatorsBaseResponse_:
       properties:
-        indicators:
-          items:
-            $ref: '#/components/schemas/IndicatorResponse'
-          type: array
-          title: Indicators
-          description: List of performance indicators
+        requestId:
+          type: string
+          title: Requestid
+        data:
+          $ref: '#/components/schemas/GetIndicatorsBaseResponse'
+        paging:
+          $ref: '#/components/schemas/PagingResponseModel'
       type: object
       required:
-      - indicators
-      title: GetIndicatorsBaseResponse
-      description: Base response model for getting indicators.
+      - data
+      - paging
+      title: PaginatedBaseResponse[GetIndicatorsBaseResponse]
     PagingResponseModel:
       properties:
         offset:
@@ -144,6 +122,28 @@ components:
       required:
       - offset
       title: PagingResponseModel
+    GetIndicatorsBaseResponse:
+      properties:
+        indicators:
+          items:
+            $ref: '#/components/schemas/IndicatorResponse'
+          type: array
+          title: Indicators
+          description: List of performance indicators
+      type: object
+      required:
+      - indicators
+      title: GetIndicatorsBaseResponse
+      description: Base response model for getting indicators.
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
   securitySchemes:
     APIKeyHeader:
       type: apiKey

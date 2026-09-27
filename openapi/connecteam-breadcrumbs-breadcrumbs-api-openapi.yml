@@ -104,15 +104,6 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
     APIResponse_BreadcrumbsReportStatusResponse_:
       properties:
         requestId:
@@ -124,6 +115,30 @@ components:
       required:
       - data
       title: APIResponse[BreadcrumbsReportStatusResponse]
+    BreadcrumbsReportStatusResponse:
+      properties:
+        status:
+          type: string
+          title: Status
+          description: 'Task status: in_queue, in_progress, completed, error, or canceled'
+        errorMsg:
+          type: string
+          title: Errormsg
+          description: Error message when status is error
+      type: object
+      required:
+      - status
+      title: BreadcrumbsReportStatusResponse
+    BreadcrumbsReportResponse:
+      properties:
+        fileId:
+          type: string
+          title: Fileid
+          description: Request ID for tracking the report task
+      type: object
+      required:
+      - fileId
+      title: BreadcrumbsReportResponse
     APIResponse_BreadcrumbsReportResponse_:
       properties:
         requestId:
@@ -167,30 +182,15 @@ components:
       required:
       - date
       title: BreadcrumbsReportRequest
-    BreadcrumbsReportStatusResponse:
+    HTTPValidationError:
       properties:
-        status:
-          type: string
-          title: Status
-          description: 'Task status: in_queue, in_progress, completed, error, or canceled'
-        errorMsg:
-          type: string
-          title: Errormsg
-          description: Error message when status is error
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
       type: object
-      required:
-      - status
-      title: BreadcrumbsReportStatusResponse
-    BreadcrumbsReportResponse:
-      properties:
-        fileId:
-          type: string
-          title: Fileid
-          description: Request ID for tracking the report task
-      type: object
-      required:
-      - fileId
-      title: BreadcrumbsReportResponse
+      title: HTTPValidationError
   securitySchemes:
     APIKeyHeader:
       type: apiKey

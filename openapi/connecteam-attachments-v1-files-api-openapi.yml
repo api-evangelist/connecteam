@@ -140,76 +140,6 @@ paths:
         - attachments.read
 components:
   schemas:
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
-    FileURLResponse:
-      properties:
-        fileId:
-          type: string
-          title: Fileid
-          description: The unique identifier for the file
-        uploadFileUrl:
-          type: string
-          maxLength: 65536
-          minLength: 1
-          format: uri
-          title: Uploadfileurl
-          description: The pre-signed URL for uploading the file to the cloud storage
-      type: object
-      required:
-      - fileId
-      - uploadFileUrl
-      title: FileURLResponse
-    GetFileURLResponse:
-      properties:
-        fileId:
-          type: string
-          title: Fileid
-          description: The unique identifier for the file
-        fileUrl:
-          type: string
-          maxLength: 65536
-          minLength: 1
-          format: uri
-          title: Fileurl
-          description: The file URL
-        uploadCompleted:
-          type: boolean
-          title: Uploadcompleted
-          description: Indicates whether the upload process for the file has been successfully completed
-        fileType:
-          type: string
-          title: Filetype
-          description: The MIME type or format of the file
-        featureType:
-          type: string
-          title: Featuretype
-          description: Feature type
-      type: object
-      required:
-      - fileId
-      - uploadCompleted
-      - fileType
-      - featureType
-      title: GetFileURLResponse
-    APIResponse_FileCompleteUploadResponse_:
-      properties:
-        requestId:
-          type: string
-          title: Requestid
-        data:
-          $ref: '#/components/schemas/FileCompleteUploadResponse'
-      type: object
-      required:
-      - data
-      title: APIResponse[FileCompleteUploadResponse]
     FileDownloadURLRequest:
       properties:
         fileUrl:
@@ -263,47 +193,56 @@ components:
       - msg
       - type
       title: ValidationError
-    AttachmentsFeatureTypeEnum:
-      type: string
-      enum:
-      - chat
-      - shiftscheduler
-      - users
-      - quicktasks
-      title: AttachmentsFeatureTypeEnum
-      description: An enumeration.
-    FileCompleteUploadResponse:
+    GetFileURLResponse:
       properties:
         fileId:
           type: string
           title: Fileid
           description: The unique identifier for the file
+        fileUrl:
+          type: string
+          maxLength: 65536
+          minLength: 1
+          format: uri
+          title: Fileurl
+          description: The file URL
+        uploadCompleted:
+          type: boolean
+          title: Uploadcompleted
+          description: Indicates whether the upload process for the file has been successfully completed
+        fileType:
+          type: string
+          title: Filetype
+          description: The MIME type or format of the file
+        featureType:
+          type: string
+          title: Featuretype
+          description: Feature type
       type: object
       required:
       - fileId
-      title: FileCompleteUploadResponse
-    APIResponse_FileURLResponse_:
+      - uploadCompleted
+      - fileType
+      - featureType
+      title: GetFileURLResponse
+    FileURLResponse:
       properties:
-        requestId:
+        fileId:
           type: string
-          title: Requestid
-        data:
-          $ref: '#/components/schemas/FileURLResponse'
+          title: Fileid
+          description: The unique identifier for the file
+        uploadFileUrl:
+          type: string
+          maxLength: 65536
+          minLength: 1
+          format: uri
+          title: Uploadfileurl
+          description: The pre-signed URL for uploading the file to the cloud storage
       type: object
       required:
-      - data
-      title: APIResponse[FileURLResponse]
-    APIResponse_FileDownloadURLResponse_:
-      properties:
-        requestId:
-          type: string
-          title: Requestid
-        data:
-          $ref: '#/components/schemas/FileDownloadURLResponse'
-      type: object
-      required:
-      - data
-      title: APIResponse[FileDownloadURLResponse]
+      - fileId
+      - uploadFileUrl
+      title: FileURLResponse
     APIResponse_GetFileURLResponse_:
       properties:
         requestId:
@@ -315,6 +254,38 @@ components:
       required:
       - data
       title: APIResponse[GetFileURLResponse]
+    APIResponse_FileDownloadURLResponse_:
+      properties:
+        requestId:
+          type: string
+          title: Requestid
+        data:
+          $ref: '#/components/schemas/FileDownloadURLResponse'
+      type: object
+      required:
+      - data
+      title: APIResponse[FileDownloadURLResponse]
+    FileCompleteUploadResponse:
+      properties:
+        fileId:
+          type: string
+          title: Fileid
+          description: The unique identifier for the file
+      type: object
+      required:
+      - fileId
+      title: FileCompleteUploadResponse
+    APIResponse_FileCompleteUploadResponse_:
+      properties:
+        requestId:
+          type: string
+          title: Requestid
+        data:
+          $ref: '#/components/schemas/FileCompleteUploadResponse'
+      type: object
+      required:
+      - data
+      title: APIResponse[FileCompleteUploadResponse]
     FileURLCreateRequest:
       properties:
         fileName:
@@ -334,6 +305,35 @@ components:
       - fileName
       - featureType
       title: FileURLCreateRequest
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    APIResponse_FileURLResponse_:
+      properties:
+        requestId:
+          type: string
+          title: Requestid
+        data:
+          $ref: '#/components/schemas/FileURLResponse'
+      type: object
+      required:
+      - data
+      title: APIResponse[FileURLResponse]
+    AttachmentsFeatureTypeEnum:
+      type: string
+      enum:
+      - chat
+      - shiftscheduler
+      - users
+      - quicktasks
+      title: AttachmentsFeatureTypeEnum
+      description: An enumeration.
   securitySchemes:
     APIKeyHeader:
       type: apiKey

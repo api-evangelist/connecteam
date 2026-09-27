@@ -79,6 +79,57 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
+    PagingResponseModelV2:
+      properties:
+        offset:
+          type: integer
+          minimum: 0.0
+          title: Offset
+          description: The resource offset of the last successfully read resource will be returned as the paging.offset JSON property of a paginated response containing more results
+        total:
+          anyOf:
+          - type: integer
+            minimum: 0.0
+          - type: 'null'
+          title: Total
+          description: Total number of resources matching the request, ignoring pagination. Use this to retrieve the full count without paginating through every page. Only populated by endpoints that compute it.
+      type: object
+      required:
+      - offset
+      title: PagingResponseModelV2
+    UnavailabilitiesListGetResponse:
+      properties:
+        unavailabilities:
+          items:
+            $ref: '#/components/schemas/SchedulerUnavailabilityResponse'
+          type: array
+          title: Unavailabilities
+          description: The list of the unavailabilities
+      type: object
+      required:
+      - unavailabilities
+      title: UnavailabilitiesListGetResponse
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
     HTTPValidationError:
       properties:
         detail:
@@ -102,18 +153,6 @@ components:
       - data
       - paging
       title: PaginatedBaseResponseV2[UnavailabilitiesListGetResponse]
-    UnavailabilitiesListGetResponse:
-      properties:
-        unavailabilities:
-          items:
-            $ref: '#/components/schemas/SchedulerUnavailabilityResponse'
-          type: array
-          title: Unavailabilities
-          description: The list of the unavailabilities
-      type: object
-      required:
-      - unavailabilities
-      title: UnavailabilitiesListGetResponse
     SchedulerUnavailabilityResponse:
       properties:
         id:
@@ -163,45 +202,6 @@ components:
       - unavailabilityDate
       - timezone
       title: SchedulerUnavailabilityResponse
-    ValidationError:
-      properties:
-        loc:
-          items:
-            anyOf:
-            - type: string
-            - type: integer
-          type: array
-          title: Location
-        msg:
-          type: string
-          title: Message
-        type:
-          type: string
-          title: Error Type
-      type: object
-      required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
-    PagingResponseModelV2:
-      properties:
-        offset:
-          type: integer
-          minimum: 0.0
-          title: Offset
-          description: The resource offset of the last successfully read resource will be returned as the paging.offset JSON property of a paginated response containing more results
-        total:
-          anyOf:
-          - type: integer
-            minimum: 0.0
-          - type: 'null'
-          title: Total
-          description: Total number of resources matching the request, ignoring pagination. Use this to retrieve the full count without paginating through every page. Only populated by endpoints that compute it.
-      type: object
-      required:
-      - offset
-      title: PagingResponseModelV2
   securitySchemes:
     APIKeyHeader:
       type: apiKey

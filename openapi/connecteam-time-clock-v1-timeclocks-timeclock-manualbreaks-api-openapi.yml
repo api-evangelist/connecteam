@@ -42,26 +42,6 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
-    APIResponse_ManualBreaksGetResponse_:
-      properties:
-        requestId:
-          type: string
-          title: Requestid
-        data:
-          $ref: '#/components/schemas/ManualBreaksGetResponse'
-      type: object
-      required:
-      - data
-      title: APIResponse[ManualBreaksGetResponse]
     ValidationError:
       properties:
         loc:
@@ -83,23 +63,6 @@ components:
       - msg
       - type
       title: ValidationError
-    ManualBreaksGetResponse:
-      properties:
-        manualBreaks:
-          items:
-            $ref: '#/components/schemas/ManualBreakResponse'
-          type: array
-          title: Manualbreaks
-          description: The manual breaks
-        areManualBreaksEnabled:
-          type: boolean
-          title: Aremanualbreaksenabled
-          description: Whether manual breaks are enabled
-      type: object
-      required:
-      - manualBreaks
-      - areManualBreaksEnabled
-      title: ManualBreaksGetResponse
     ManualBreakResponse:
       properties:
         id:
@@ -125,6 +88,43 @@ components:
       - isPaid
       - duration
       title: ManualBreakResponse
+    APIResponse_ManualBreaksGetResponse_:
+      properties:
+        requestId:
+          type: string
+          title: Requestid
+        data:
+          $ref: '#/components/schemas/ManualBreaksGetResponse'
+      type: object
+      required:
+      - data
+      title: APIResponse[ManualBreaksGetResponse]
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    ManualBreaksGetResponse:
+      properties:
+        manualBreaks:
+          items:
+            $ref: '#/components/schemas/ManualBreakResponse'
+          type: array
+          title: Manualbreaks
+          description: The manual breaks
+        areManualBreaksEnabled:
+          type: boolean
+          title: Aremanualbreaksenabled
+          description: Whether manual breaks are enabled
+      type: object
+      required:
+      - manualBreaks
+      - areManualBreaksEnabled
+      title: ManualBreaksGetResponse
   securitySchemes:
     APIKeyHeader:
       type: apiKey

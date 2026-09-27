@@ -33,15 +33,6 @@ paths:
         - onboarding.read
 components:
   schemas:
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
     PackResponse:
       properties:
         id:
@@ -87,17 +78,6 @@ components:
       - msg
       - type
       title: ValidationError
-    APIResponse_PacksListResponse_:
-      properties:
-        requestId:
-          type: string
-          title: Requestid
-        data:
-          $ref: '#/components/schemas/PacksListResponse'
-      type: object
-      required:
-      - data
-      title: APIResponse[PacksListResponse]
     PacksListResponse:
       properties:
         packs:
@@ -110,6 +90,26 @@ components:
       required:
       - packs
       title: PacksListResponse
+    APIResponse_PacksListResponse_:
+      properties:
+        requestId:
+          type: string
+          title: Requestid
+        data:
+          $ref: '#/components/schemas/PacksListResponse'
+      type: object
+      required:
+      - data
+      title: APIResponse[PacksListResponse]
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
   securitySchemes:
     APIKeyHeader:
       type: apiKey

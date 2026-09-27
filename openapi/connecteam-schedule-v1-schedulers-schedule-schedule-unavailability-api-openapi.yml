@@ -89,6 +89,107 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
+    UnavailabilityDeleteResponse:
+      properties: {}
+      type: object
+      title: UnavailabilityDeleteResponse
+    APIResponseV2_UnavailabilityCreateResponse_:
+      properties:
+        requestId:
+          type: string
+          title: Requestid
+        data:
+          $ref: '#/components/schemas/UnavailabilityCreateResponse'
+      type: object
+      required:
+      - data
+      title: APIResponseV2[UnavailabilityCreateResponse]
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    APIResponseV2_UnavailabilityDeleteResponse_:
+      properties:
+        requestId:
+          type: string
+          title: Requestid
+        data:
+          $ref: '#/components/schemas/UnavailabilityDeleteResponse'
+      type: object
+      required:
+      - data
+      title: APIResponseV2[UnavailabilityDeleteResponse]
+    UnavailabilityCreateRequest:
+      properties:
+        userId:
+          type: integer
+          minimum: 1.0
+          title: Userid
+          description: The unique identifier of the user to which the unavailability will be assigned
+        isAllDay:
+          type: boolean
+          title: Isallday
+          description: Specifies the type of the time period for the unavailability, Defaults to true. If set to false, start and end time fields must be specified.
+        unavailabilityDate:
+          type: string
+          title: Unavailabilitydate
+          description: The date of the unavailability in ISO format (YYYY-MM-DD).
+        timezone:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Timezone
+          description: The timezone of the unavailability in Tz format (e.g. America/New_York). If not specified, it uses the timezone configured in the app settings.
+        note:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Note
+          description: Optional note with additional details about the unavailability
+        startTime:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Starttime
+          description: The start time of the unavailability in ISO format (HH:MM:SS). This field is required if isAllDay set to false.
+        endTime:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Endtime
+          description: The end time of the unavailability in ISO format (HH:MM:SS). This field is required if isAllDay set to false.
+      type: object
+      required:
+      - userId
+      - isAllDay
+      - unavailabilityDate
+      title: UnavailabilityCreateRequest
     UnavailabilityCreateResponse:
       properties:
         id:
@@ -138,107 +239,6 @@ components:
       - unavailabilityDate
       - timezone
       title: UnavailabilityCreateResponse
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
-    UnavailabilityDeleteResponse:
-      properties: {}
-      type: object
-      title: UnavailabilityDeleteResponse
-    UnavailabilityCreateRequest:
-      properties:
-        userId:
-          type: integer
-          minimum: 1.0
-          title: Userid
-          description: The unique identifier of the user to which the unavailability will be assigned
-        isAllDay:
-          type: boolean
-          title: Isallday
-          description: Specifies the type of the time period for the unavailability, Defaults to true. If set to false, start and end time fields must be specified.
-        unavailabilityDate:
-          type: string
-          title: Unavailabilitydate
-          description: The date of the unavailability in ISO format (YYYY-MM-DD).
-        timezone:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Timezone
-          description: The timezone of the unavailability in Tz format (e.g. America/New_York). If not specified, it uses the timezone configured in the app settings.
-        note:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Note
-          description: Optional note with additional details about the unavailability
-        startTime:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Starttime
-          description: The start time of the unavailability in ISO format (HH:MM:SS). This field is required if isAllDay set to false.
-        endTime:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Endtime
-          description: The end time of the unavailability in ISO format (HH:MM:SS). This field is required if isAllDay set to false.
-      type: object
-      required:
-      - userId
-      - isAllDay
-      - unavailabilityDate
-      title: UnavailabilityCreateRequest
-    ValidationError:
-      properties:
-        loc:
-          items:
-            anyOf:
-            - type: string
-            - type: integer
-          type: array
-          title: Location
-        msg:
-          type: string
-          title: Message
-        type:
-          type: string
-          title: Error Type
-      type: object
-      required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
-    APIResponseV2_UnavailabilityCreateResponse_:
-      properties:
-        requestId:
-          type: string
-          title: Requestid
-        data:
-          $ref: '#/components/schemas/UnavailabilityCreateResponse'
-      type: object
-      required:
-      - data
-      title: APIResponseV2[UnavailabilityCreateResponse]
-    APIResponseV2_UnavailabilityDeleteResponse_:
-      properties:
-        requestId:
-          type: string
-          title: Requestid
-        data:
-          $ref: '#/components/schemas/UnavailabilityDeleteResponse'
-      type: object
-      required:
-      - data
-      title: APIResponseV2[UnavailabilityDeleteResponse]
   securitySchemes:
     APIKeyHeader:
       type: apiKey

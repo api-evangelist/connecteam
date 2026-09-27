@@ -50,55 +50,6 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
-    APIResponse_ManualBreakClockOutResponse_:
-      properties:
-        requestId:
-          type: string
-          title: Requestid
-        data:
-          $ref: '#/components/schemas/ManualBreakClockOutResponse'
-      type: object
-      required:
-      - data
-      title: APIResponse[ManualBreakClockOutResponse]
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
-    ManualBreakClockOutRequest:
-      properties:
-        userId:
-          type: integer
-          title: Userid
-          description: The unique identifier of the user. Make sure the user is assigned to the specified time clock.
-        timezone:
-          type: string
-          title: Timezone
-          description: The timezone in Tz format (e.g. America/New_York). If not specified, the time clock's configured timezone is used.
-        timestamp:
-          type: integer
-          minimum: 1.0
-          title: Timestamp
-          description: The break-end time in Unix format (in seconds). If omitted, the server captures the time when the request is received. Must be no more than 12 hours in the past, not in the future, and after the open break's start time. For mandatory breaks, the elapsed time used for the early-return check is measured against this value.
-        isResumeShift:
-          type: boolean
-          title: Isresumeshift
-          description: Controls what happens after the break ends. Defaults to true (mobile 'Return to job'). When true and the break was started from an open shift, the shift is re-opened on the same job. When the break is standalone, no shift is resumed. Set to false to end the break without resuming (mobile 'End shift'). The response returns the actual outcome, which may be false even when true was requested.
-          default: true
-        locationData:
-          allOf:
-          - $ref: '#/components/schemas/GpsData'
-          title: Locationdata
-          description: GPS data associated with the break end
-      type: object
-      required:
-      - userId
-      title: ManualBreakClockOutRequest
     PunchSourceResponse:
       properties:
         id:
@@ -121,6 +72,22 @@ components:
       required:
       - type
       title: PunchSourceResponse
+    GpsData:
+      properties:
+        address:
+          type: string
+          title: Address
+          description: The address associated with the GPS data.
+        longitude:
+          type: number
+          title: Longitude
+          description: The longitude coordinate.
+        latitude:
+          type: number
+          title: Latitude
+          description: The latitude coordinate.
+      type: object
+      title: GpsData
     ValidationError:
       properties:
         loc:
@@ -142,33 +109,17 @@ components:
       - msg
       - type
       title: ValidationError
-    GpsData:
+    APIResponse_ManualBreakClockOutResponse_:
       properties:
-        address:
+        requestId:
           type: string
-          title: Address
-          description: The address associated with the GPS data.
-        longitude:
-          type: number
-          title: Longitude
-          description: The longitude coordinate.
-        latitude:
-          type: number
-          title: Latitude
-          description: The latitude coordinate.
+          title: Requestid
+        data:
+          $ref: '#/components/schemas/ManualBreakClockOutResponse'
       type: object
-      title: GpsData
-    AutoClockOutModeType:
-      type: string
-      enum:
-      - dailyLimit
-      - hourLimit
-      - schedulerShiftEnded
-      - geofenceExit
-      - disabledGps
-      - disabledGpsPermission
-      title: AutoClockOutModeType
-      description: An enumeration.
+      required:
+      - data
+      title: APIResponse[ManualBreakClockOutResponse]
     ManualBreakClockOutResponse:
       properties:
         id:
@@ -195,36 +146,6 @@ components:
       - end
       - isResumeShift
       title: ManualBreakClockOutResponse
-    TimeActivityTimePointResponse:
-      properties:
-        timestamp:
-          type: integer
-          minimum: 1.0
-          title: Timestamp
-          description: The timestamp in Unix format (in seconds)
-        timezone:
-          type: string
-          title: Timezone
-          description: The timezone in Tz format (e.g. America/New_York)
-        locationData:
-          allOf:
-          - $ref: '#/components/schemas/GpsData'
-          title: Locationdata
-          description: The location data
-        geofenceId:
-          type: string
-          title: Geofenceid
-          description: The ID of the geofence the user was inside when this punch was recorded. None if the punch was outside any configured geofence.
-        source:
-          allOf:
-          - $ref: '#/components/schemas/PunchSourceResponse'
-          title: Source
-          description: Describes the origin from which the punch was created
-      type: object
-      required:
-      - timestamp
-      - timezone
-      title: TimeActivityTimePointResponse
     v2__features__punchclock__external_api__v1__time_clocks__models__shift_response__ShiftResponse:
       properties:
         id:
@@ -289,6 +210,85 @@ components:
       - admin
       title: PunchSourceType
       description: An enumeration.
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    AutoClockOutModeType:
+      type: string
+      enum:
+      - dailyLimit
+      - hourLimit
+      - schedulerShiftEnded
+      - geofenceExit
+      - disabledGps
+      - disabledGpsPermission
+      title: AutoClockOutModeType
+      description: An enumeration.
+    ManualBreakClockOutRequest:
+      properties:
+        userId:
+          type: integer
+          title: Userid
+          description: The unique identifier of the user. Make sure the user is assigned to the specified time clock.
+        timezone:
+          type: string
+          title: Timezone
+          description: The timezone in Tz format (e.g. America/New_York). If not specified, the time clock's configured timezone is used.
+        timestamp:
+          type: integer
+          minimum: 1.0
+          title: Timestamp
+          description: The break-end time in Unix format (in seconds). If omitted, the server captures the time when the request is received. Must be no more than 12 hours in the past, not in the future, and after the open break's start time. For mandatory breaks, the elapsed time used for the early-return check is measured against this value.
+        isResumeShift:
+          type: boolean
+          title: Isresumeshift
+          description: Controls what happens after the break ends. Defaults to true (mobile 'Return to job'). When true and the break was started from an open shift, the shift is re-opened on the same job. When the break is standalone, no shift is resumed. Set to false to end the break without resuming (mobile 'End shift'). The response returns the actual outcome, which may be false even when true was requested.
+          default: true
+        locationData:
+          allOf:
+          - $ref: '#/components/schemas/GpsData'
+          title: Locationdata
+          description: GPS data associated with the break end
+      type: object
+      required:
+      - userId
+      title: ManualBreakClockOutRequest
+    TimeActivityTimePointResponse:
+      properties:
+        timestamp:
+          type: integer
+          minimum: 1.0
+          title: Timestamp
+          description: The timestamp in Unix format (in seconds)
+        timezone:
+          type: string
+          title: Timezone
+          description: The timezone in Tz format (e.g. America/New_York)
+        locationData:
+          allOf:
+          - $ref: '#/components/schemas/GpsData'
+          title: Locationdata
+          description: The location data
+        geofenceId:
+          type: string
+          title: Geofenceid
+          description: The ID of the geofence the user was inside when this punch was recorded. None if the punch was outside any configured geofence.
+        source:
+          allOf:
+          - $ref: '#/components/schemas/PunchSourceResponse'
+          title: Source
+          description: Describes the origin from which the punch was created
+      type: object
+      required:
+      - timestamp
+      - timezone
+      title: TimeActivityTimePointResponse
   securitySchemes:
     APIKeyHeader:
       type: apiKey

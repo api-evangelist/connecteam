@@ -50,47 +50,6 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
-    PayslipCreateRequest:
-      properties:
-        fileId:
-          type: string
-          title: Fileid
-          description: The unique identifier of the payslip attachment
-        startDate:
-          type: string
-          title: Startdate
-          description: The start date for the payslip in ISO 8601 format (YYYY-MM-DD)
-        endDate:
-          type: string
-          title: Enddate
-          description: The end date for the payslip in ISO 8601 format (YYYY-MM-DD)
-      type: object
-      required:
-      - fileId
-      - startDate
-      - endDate
-      title: PayslipCreateRequest
-      description: Request model for creating a payslip
-    APIResponse_PayslipCreateResponse_:
-      properties:
-        requestId:
-          type: string
-          title: Requestid
-        data:
-          $ref: '#/components/schemas/PayslipCreateResponse'
-      type: object
-      required:
-      - data
-      title: APIResponse[PayslipCreateResponse]
     ValidationError:
       properties:
         loc:
@@ -123,6 +82,47 @@ components:
       - id
       title: PayslipCreateResponse
       description: Response model for payslip creation
+    PayslipCreateRequest:
+      properties:
+        fileId:
+          type: string
+          title: Fileid
+          description: The unique identifier of the payslip attachment
+        startDate:
+          type: string
+          title: Startdate
+          description: The start date for the payslip in ISO 8601 format (YYYY-MM-DD)
+        endDate:
+          type: string
+          title: Enddate
+          description: The end date for the payslip in ISO 8601 format (YYYY-MM-DD)
+      type: object
+      required:
+      - fileId
+      - startDate
+      - endDate
+      title: PayslipCreateRequest
+      description: Request model for creating a payslip
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    APIResponse_PayslipCreateResponse_:
+      properties:
+        requestId:
+          type: string
+          title: Requestid
+        data:
+          $ref: '#/components/schemas/PayslipCreateResponse'
+      type: object
+      required:
+      - data
+      title: APIResponse[PayslipCreateResponse]
   securitySchemes:
     APIKeyHeader:
       type: apiKey

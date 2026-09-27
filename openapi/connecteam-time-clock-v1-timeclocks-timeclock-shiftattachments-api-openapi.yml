@@ -42,35 +42,6 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
-    ShiftAttachmentDropDownListItemSettingsResponse:
-      properties:
-        id:
-          type: string
-          title: Id
-          description: The ID of the dropdown list item
-        name:
-          type: string
-          title: Name
-          description: The name of the dropdown list item
-        isEnabled:
-          type: boolean
-          title: Isenabled
-          description: Whether the dropdown list item is enabled
-      type: object
-      required:
-      - id
-      - name
-      - isEnabled
-      title: ShiftAttachmentDropDownListItemSettingsResponse
     APIResponse_ShiftAttachmentsGetResponse_:
       properties:
         requestId:
@@ -103,20 +74,36 @@ components:
       - msg
       - type
       title: ValidationError
-    ShiftAttachmentsGetResponse:
+    ShiftAttachmentSettingsResponse:
       properties:
-        shiftAttachments:
-          items:
-            anyOf:
-            - $ref: '#/components/schemas/ShiftAttachmentDropDownListSettingsResponse'
-            - $ref: '#/components/schemas/ShiftAttachmentSettingsResponse'
-          type: array
-          title: Shiftattachments
-          description: The shift attachments
+        id:
+          type: string
+          title: Id
+          description: The ID of the shift attachment
+        type:
+          allOf:
+          - $ref: '#/components/schemas/ShiftAttachmentType'
+          description: The type of the shift attachment
+        name:
+          type: string
+          title: Name
+          description: The name of the shift attachment
+        isRequired:
+          type: boolean
+          title: Isrequired
+          description: Whether the shift attachment is required
+        isEnabled:
+          type: boolean
+          title: Isenabled
+          description: Whether the shift attachment is enabled
       type: object
       required:
-      - shiftAttachments
-      title: ShiftAttachmentsGetResponse
+      - id
+      - type
+      - name
+      - isRequired
+      - isEnabled
+      title: ShiftAttachmentSettingsResponse
     ShiftAttachmentType:
       type: string
       enum:
@@ -128,6 +115,15 @@ components:
       - signature
       title: ShiftAttachmentType
       description: An enumeration.
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
     ShiftAttachmentDropDownListSettingsResponse:
       properties:
         id:
@@ -165,36 +161,40 @@ components:
       - isEnabled
       - items
       title: ShiftAttachmentDropDownListSettingsResponse
-    ShiftAttachmentSettingsResponse:
+    ShiftAttachmentsGetResponse:
+      properties:
+        shiftAttachments:
+          items:
+            anyOf:
+            - $ref: '#/components/schemas/ShiftAttachmentDropDownListSettingsResponse'
+            - $ref: '#/components/schemas/ShiftAttachmentSettingsResponse'
+          type: array
+          title: Shiftattachments
+          description: The shift attachments
+      type: object
+      required:
+      - shiftAttachments
+      title: ShiftAttachmentsGetResponse
+    ShiftAttachmentDropDownListItemSettingsResponse:
       properties:
         id:
           type: string
           title: Id
-          description: The ID of the shift attachment
-        type:
-          allOf:
-          - $ref: '#/components/schemas/ShiftAttachmentType'
-          description: The type of the shift attachment
+          description: The ID of the dropdown list item
         name:
           type: string
           title: Name
-          description: The name of the shift attachment
-        isRequired:
-          type: boolean
-          title: Isrequired
-          description: Whether the shift attachment is required
+          description: The name of the dropdown list item
         isEnabled:
           type: boolean
           title: Isenabled
-          description: Whether the shift attachment is enabled
+          description: Whether the dropdown list item is enabled
       type: object
       required:
       - id
-      - type
       - name
-      - isRequired
       - isEnabled
-      title: ShiftAttachmentSettingsResponse
+      title: ShiftAttachmentDropDownListItemSettingsResponse
   securitySchemes:
     APIKeyHeader:
       type: apiKey

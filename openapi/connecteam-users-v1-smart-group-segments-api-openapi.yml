@@ -85,6 +85,38 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
+    APIResponse_SmartGroupSegmentsResponse_:
+      properties:
+        requestId:
+          type: string
+          title: Requestid
+        data:
+          $ref: '#/components/schemas/SmartGroupSegmentsResponse'
+      type: object
+      required:
+      - data
+      title: APIResponse[SmartGroupSegmentsResponse]
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
     SmartGroupSegmentCreateResponse:
       properties:
         id:
@@ -110,6 +142,29 @@ components:
       - color
       - sortOrder
       title: SmartGroupSegmentCreateResponse
+    SmartGroupSegmentsResponse:
+      properties:
+        segments:
+          items:
+            $ref: '#/components/schemas/SmartGroupSegment'
+          type: array
+          title: Segments
+          description: List of smart group segments
+      type: object
+      required:
+      - segments
+      title: SmartGroupSegmentsResponse
+    APIResponse_SmartGroupSegmentCreateResponse_:
+      properties:
+        requestId:
+          type: string
+          title: Requestid
+        data:
+          $ref: '#/components/schemas/SmartGroupSegmentCreateResponse'
+      type: object
+      required:
+      - data
+      title: APIResponse[SmartGroupSegmentCreateResponse]
     HTTPValidationError:
       properties:
         detail:
@@ -144,50 +199,6 @@ components:
       - color
       - sortOrder
       title: SmartGroupSegment
-    ValidationError:
-      properties:
-        loc:
-          items:
-            anyOf:
-            - type: string
-            - type: integer
-          type: array
-          title: Location
-        msg:
-          type: string
-          title: Message
-        type:
-          type: string
-          title: Error Type
-      type: object
-      required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
-    APIResponse_SmartGroupSegmentCreateResponse_:
-      properties:
-        requestId:
-          type: string
-          title: Requestid
-        data:
-          $ref: '#/components/schemas/SmartGroupSegmentCreateResponse'
-      type: object
-      required:
-      - data
-      title: APIResponse[SmartGroupSegmentCreateResponse]
-    SmartGroupSegmentsResponse:
-      properties:
-        segments:
-          items:
-            $ref: '#/components/schemas/SmartGroupSegment'
-          type: array
-          title: Segments
-          description: List of smart group segments
-      type: object
-      required:
-      - segments
-      title: SmartGroupSegmentsResponse
     SmartGroupSegmentCreateRequest:
       properties:
         name:
@@ -203,17 +214,6 @@ components:
       - name
       - color
       title: SmartGroupSegmentCreateRequest
-    APIResponse_SmartGroupSegmentsResponse_:
-      properties:
-        requestId:
-          type: string
-          title: Requestid
-        data:
-          $ref: '#/components/schemas/SmartGroupSegmentsResponse'
-      type: object
-      required:
-      - data
-      title: APIResponse[SmartGroupSegmentsResponse]
   securitySchemes:
     APIKeyHeader:
       type: apiKey

@@ -111,30 +111,6 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
-    ResourceCustomFields:
-      type: string
-      enum:
-      - str
-      - phone
-      - dropdown
-      title: ResourceCustomFields
-      description: An enumeration.
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
-    ResourceCustomFieldsSortExternal:
-      type: string
-      enum:
-      - name
-      - type
-      title: ResourceCustomFieldsSortExternal
-      description: An enumeration.
     GetResourceCustomFieldsSettingsResponse:
       properties:
         customFields:
@@ -149,6 +125,36 @@ components:
       required:
       - customFields
       title: GetResourceCustomFieldsSettingsResponse
+    UserCustomFields:
+      type: string
+      enum:
+      - email
+      - date
+      - phone
+      - number
+      - str
+      - dropdown
+      - file
+      - directManager
+      - birthday
+      - link
+      - location
+      title: UserCustomFields
+    ResourceCustomFieldsSortExternal:
+      type: string
+      enum:
+      - name
+      - type
+      title: ResourceCustomFieldsSortExternal
+      description: An enumeration.
+    ResourceCustomFields:
+      type: string
+      enum:
+      - str
+      - phone
+      - dropdown
+      title: ResourceCustomFields
+      description: An enumeration.
     ValidationError:
       properties:
         loc:
@@ -170,22 +176,6 @@ components:
       - msg
       - type
       title: ValidationError
-    PagingResponseModel:
-      properties:
-        offset:
-          type: integer
-          minimum: 0.0
-          title: Offset
-          description: The resource offset of the last successfully read resource will be returned as the paging.offset JSON property of a paginated response containing more results
-        total:
-          type: integer
-          minimum: 0.0
-          title: Total
-          description: Total number of resources matching the request, ignoring pagination. Use this to retrieve the full count without paginating through every page. Only populated by endpoints that compute it.
-      type: object
-      required:
-      - offset
-      title: PagingResponseModel
     PaginatedBaseResponse_GetResourceCustomFieldsSettingsResponse_:
       properties:
         requestId:
@@ -227,6 +217,37 @@ components:
       - id
       - value
       title: DropdownCustomFieldOption
+    SortOrder:
+      type: string
+      enum:
+      - asc
+      - desc
+      title: SortOrder
+    PagingResponseModel:
+      properties:
+        offset:
+          type: integer
+          minimum: 0.0
+          title: Offset
+          description: The resource offset of the last successfully read resource will be returned as the paging.offset JSON property of a paginated response containing more results
+        total:
+          type: integer
+          minimum: 0.0
+          title: Total
+          description: Total number of resources matching the request, ignoring pagination. Use this to retrieve the full count without paginating through every page. Only populated by endpoints that compute it.
+      type: object
+      required:
+      - offset
+      title: PagingResponseModel
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
     DropdownResourceCustomFieldSettingsResponse:
       properties:
         id:
@@ -315,21 +336,6 @@ components:
       - dropdownOptions
       - id
       title: DropdownResourceCustomFieldSettingsResponse
-    UserCustomFields:
-      type: string
-      enum:
-      - email
-      - date
-      - phone
-      - number
-      - str
-      - dropdown
-      - file
-      - directManager
-      - birthday
-      - link
-      - location
-      title: UserCustomFields
     ResourceCustomFieldSettingsResponse:
       properties:
         id:
@@ -400,12 +406,6 @@ components:
       - id
       - type
       title: ResourceCustomFieldSettingsResponse
-    SortOrder:
-      type: string
-      enum:
-      - asc
-      - desc
-      title: SortOrder
   securitySchemes:
     APIKeyHeader:
       type: apiKey

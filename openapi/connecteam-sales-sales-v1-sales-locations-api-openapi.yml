@@ -114,15 +114,57 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
-    HTTPValidationError:
+    APIResponse_LocationResponse_:
       properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
+        requestId:
+          type: string
+          title: Requestid
+        data:
+          $ref: '#/components/schemas/LocationResponse'
       type: object
-      title: HTTPValidationError
+      required:
+      - data
+      title: APIResponse[LocationResponse]
+    LocationResponse:
+      properties:
+        id:
+          type: integer
+          title: Id
+          description: Unique identifier for the location
+        name:
+          type: string
+          title: Name
+          description: The location name
+        isActive:
+          type: boolean
+          title: Isactive
+          description: Indicates whether the location is active
+      type: object
+      required:
+      - id
+      - name
+      - isActive
+      title: LocationResponse
+    Location:
+      properties:
+        id:
+          type: integer
+          title: Id
+          description: Unique identifier for the location
+        name:
+          type: string
+          title: Name
+          description: The location name
+        isActive:
+          type: boolean
+          title: Isactive
+          description: Indicates whether the location is active
+      type: object
+      required:
+      - id
+      - name
+      - isActive
+      title: Location
     ValidationError:
       properties:
         loc:
@@ -144,37 +186,6 @@ components:
       - msg
       - type
       title: ValidationError
-    APIResponse_LocationsGetResponse_:
-      properties:
-        requestId:
-          type: string
-          title: Requestid
-        data:
-          $ref: '#/components/schemas/LocationsGetResponse'
-      type: object
-      required:
-      - data
-      title: APIResponse[LocationsGetResponse]
-    Location:
-      properties:
-        id:
-          type: integer
-          title: Id
-          description: Unique identifier for the location
-        name:
-          type: string
-          title: Name
-          description: The location name
-        isActive:
-          type: boolean
-          title: Isactive
-          description: Indicates whether the location is active
-      type: object
-      required:
-      - id
-      - name
-      - isActive
-      title: Location
     LocationRequest:
       properties:
         name:
@@ -190,37 +201,26 @@ components:
       required:
       - name
       title: LocationRequest
-    LocationResponse:
+    HTTPValidationError:
       properties:
-        id:
-          type: integer
-          title: Id
-          description: Unique identifier for the location
-        name:
-          type: string
-          title: Name
-          description: The location name
-        isActive:
-          type: boolean
-          title: Isactive
-          description: Indicates whether the location is active
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
       type: object
-      required:
-      - id
-      - name
-      - isActive
-      title: LocationResponse
-    APIResponse_LocationResponse_:
+      title: HTTPValidationError
+    APIResponse_LocationsGetResponse_:
       properties:
         requestId:
           type: string
           title: Requestid
         data:
-          $ref: '#/components/schemas/LocationResponse'
+          $ref: '#/components/schemas/LocationsGetResponse'
       type: object
       required:
       - data
-      title: APIResponse[LocationResponse]
+      title: APIResponse[LocationsGetResponse]
     LocationsGetResponse:
       properties:
         locations:

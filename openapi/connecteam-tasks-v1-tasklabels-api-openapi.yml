@@ -71,29 +71,26 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
-    HTTPValidationError:
+    TaskLabel:
       properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
-    PaginatedBaseResponse_TaskLabelsResponse_:
-      properties:
-        requestId:
+        id:
           type: string
-          title: Requestid
-        data:
-          $ref: '#/components/schemas/TaskLabelsResponse'
-        paging:
-          $ref: '#/components/schemas/PagingResponseModel'
+          title: Id
+          description: The ID of the task label
+        name:
+          type: string
+          title: Name
+          description: The name of the task label
+        color:
+          type: string
+          title: Color
+          description: The color of the task label
       type: object
       required:
-      - data
-      - paging
-      title: PaginatedBaseResponse[TaskLabelsResponse]
+      - id
+      - name
+      - color
+      title: TaskLabel
     ValidationError:
       properties:
         loc:
@@ -115,26 +112,6 @@ components:
       - msg
       - type
       title: ValidationError
-    TaskLabel:
-      properties:
-        id:
-          type: string
-          title: Id
-          description: The ID of the task label
-        name:
-          type: string
-          title: Name
-          description: The name of the task label
-        color:
-          type: string
-          title: Color
-          description: The color of the task label
-      type: object
-      required:
-      - id
-      - name
-      - color
-      title: TaskLabel
     TaskLabelsResponse:
       properties:
         labels:
@@ -163,6 +140,29 @@ components:
       required:
       - offset
       title: PagingResponseModel
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    PaginatedBaseResponse_TaskLabelsResponse_:
+      properties:
+        requestId:
+          type: string
+          title: Requestid
+        data:
+          $ref: '#/components/schemas/TaskLabelsResponse'
+        paging:
+          $ref: '#/components/schemas/PagingResponseModel'
+      type: object
+      required:
+      - data
+      - paging
+      title: PaginatedBaseResponse[TaskLabelsResponse]
   securitySchemes:
     APIKeyHeader:
       type: apiKey

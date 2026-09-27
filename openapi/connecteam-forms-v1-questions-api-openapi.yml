@@ -239,31 +239,6 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
-    DeleteDropdownOptionResponse:
-      properties: {}
-      type: object
-      title: DeleteDropdownOptionResponse
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
-    AddDropdownOptionsResponse:
-      properties:
-        options:
-          items:
-            $ref: '#/components/schemas/v2__features__workflow__external_api__v1__form_dropdown_options__models__dropdown_options__DropdownOptionResponse'
-          type: array
-          title: Options
-          description: The dropdown options.
-      type: object
-      required:
-      - options
-      title: AddDropdownOptionsResponse
     PaginatedBaseResponse_GetDropdownOptionsResponse_:
       properties:
         requestId:
@@ -278,6 +253,26 @@ components:
       - data
       - paging
       title: PaginatedBaseResponse[GetDropdownOptionsResponse]
+    v2__features__workflow__external_api__v1__form_dropdown_options__models__dropdown_options__DropdownOptionResponse:
+      properties:
+        id:
+          type: string
+          title: Id
+          description: The dropdown id
+        value:
+          type: string
+          title: Value
+          description: The dropdown value
+        isDeleted:
+          type: boolean
+          title: Isdeleted
+          description: The dropdown option is deleted
+          default: false
+      type: object
+      required:
+      - id
+      - value
+      title: DropdownOptionResponse
     ValidationError:
       properties:
         loc:
@@ -299,6 +294,62 @@ components:
       - msg
       - type
       title: ValidationError
+    APIResponse_DeleteDropdownOptionResponse_:
+      properties:
+        requestId:
+          type: string
+          title: Requestid
+        data:
+          $ref: '#/components/schemas/DeleteDropdownOptionResponse'
+      type: object
+      required:
+      - data
+      title: APIResponse[DeleteDropdownOptionResponse]
+    AddDropdownOptionRequest:
+      properties:
+        dropdownOptions:
+          items:
+            $ref: '#/components/schemas/AddDropdownOption'
+          type: array
+          title: Dropdownoptions
+          description: The dropdown options
+      type: object
+      required:
+      - dropdownOptions
+      title: AddDropdownOptionRequest
+    AddDropdownOption:
+      properties:
+        value:
+          type: string
+          title: Value
+          description: The dropdown value
+      type: object
+      required:
+      - value
+      title: AddDropdownOption
+    GetDropdownOptionsResponse:
+      properties:
+        options:
+          items:
+            $ref: '#/components/schemas/v2__features__workflow__external_api__v1__form_dropdown_options__models__dropdown_options__DropdownOptionResponse'
+          type: array
+          title: Options
+          description: The dropdown options.
+      type: object
+      required:
+      - options
+      title: GetDropdownOptionsResponse
+    APIResponse_UpdateDropdownOptionResponse_:
+      properties:
+        requestId:
+          type: string
+          title: Requestid
+        data:
+          $ref: '#/components/schemas/UpdateDropdownOptionResponse'
+      type: object
+      required:
+      - data
+      title: APIResponse[UpdateDropdownOptionResponse]
     APIResponse_AddDropdownOptionsResponse_:
       properties:
         requestId:
@@ -326,81 +377,19 @@ components:
       required:
       - offset
       title: PagingResponseModel
-    UpdateDropdownOptionRequest:
-      properties:
-        value:
-          type: string
-          title: Value
-          description: The dropdown value
+    DeleteDropdownOptionResponse:
+      properties: {}
       type: object
-      required:
-      - value
-      title: UpdateDropdownOptionRequest
-    GetDropdownOptionsResponse:
+      title: DeleteDropdownOptionResponse
+    HTTPValidationError:
       properties:
-        options:
+        detail:
           items:
-            $ref: '#/components/schemas/v2__features__workflow__external_api__v1__form_dropdown_options__models__dropdown_options__DropdownOptionResponse'
+            $ref: '#/components/schemas/ValidationError'
           type: array
-          title: Options
-          description: The dropdown options.
+          title: Detail
       type: object
-      required:
-      - options
-      title: GetDropdownOptionsResponse
-    AddDropdownOption:
-      properties:
-        value:
-          type: string
-          title: Value
-          description: The dropdown value
-      type: object
-      required:
-      - value
-      title: AddDropdownOption
-    APIResponse_DeleteDropdownOptionResponse_:
-      properties:
-        requestId:
-          type: string
-          title: Requestid
-        data:
-          $ref: '#/components/schemas/DeleteDropdownOptionResponse'
-      type: object
-      required:
-      - data
-      title: APIResponse[DeleteDropdownOptionResponse]
-    AddDropdownOptionRequest:
-      properties:
-        dropdownOptions:
-          items:
-            $ref: '#/components/schemas/AddDropdownOption'
-          type: array
-          title: Dropdownoptions
-          description: The dropdown options
-      type: object
-      required:
-      - dropdownOptions
-      title: AddDropdownOptionRequest
-    v2__features__workflow__external_api__v1__form_dropdown_options__models__dropdown_options__DropdownOptionResponse:
-      properties:
-        id:
-          type: string
-          title: Id
-          description: The dropdown id
-        value:
-          type: string
-          title: Value
-          description: The dropdown value
-        isDeleted:
-          type: boolean
-          title: Isdeleted
-          description: The dropdown option is deleted
-          default: false
-      type: object
-      required:
-      - id
-      - value
-      title: DropdownOptionResponse
+      title: HTTPValidationError
     UpdateDropdownOptionResponse:
       properties:
         id:
@@ -416,17 +405,28 @@ components:
       - id
       - value
       title: UpdateDropdownOptionResponse
-    APIResponse_UpdateDropdownOptionResponse_:
+    AddDropdownOptionsResponse:
       properties:
-        requestId:
-          type: string
-          title: Requestid
-        data:
-          $ref: '#/components/schemas/UpdateDropdownOptionResponse'
+        options:
+          items:
+            $ref: '#/components/schemas/v2__features__workflow__external_api__v1__form_dropdown_options__models__dropdown_options__DropdownOptionResponse'
+          type: array
+          title: Options
+          description: The dropdown options.
       type: object
       required:
-      - data
-      title: APIResponse[UpdateDropdownOptionResponse]
+      - options
+      title: AddDropdownOptionsResponse
+    UpdateDropdownOptionRequest:
+      properties:
+        value:
+          type: string
+          title: Value
+          description: The dropdown value
+      type: object
+      required:
+      - value
+      title: UpdateDropdownOptionRequest
   securitySchemes:
     APIKeyHeader:
       type: apiKey

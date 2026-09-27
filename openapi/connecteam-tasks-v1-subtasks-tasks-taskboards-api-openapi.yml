@@ -234,96 +234,6 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
-    PaginatedBaseResponse_SubTasksResponse_:
-      properties:
-        requestId:
-          type: string
-          title: Requestid
-        data:
-          $ref: '#/components/schemas/SubTasksResponse'
-        paging:
-          $ref: '#/components/schemas/PagingResponseModel'
-      type: object
-      required:
-      - data
-      - paging
-      title: PaginatedBaseResponse[SubTasksResponse]
-    SubTaskDeleteResponse:
-      properties: {}
-      type: object
-      title: SubTaskDeleteResponse
-    APIResponse_SubTaskCreateResponse_:
-      properties:
-        requestId:
-          type: string
-          title: Requestid
-        data:
-          $ref: '#/components/schemas/SubTaskCreateResponse'
-      type: object
-      required:
-      - data
-      title: APIResponse[SubTaskCreateResponse]
-    SubTaskUpdateRequest:
-      properties:
-        title:
-          type: string
-          title: Title
-          description: The title of the sub task
-        isCompleted:
-          type: boolean
-          title: Iscompleted
-          description: Indicates whether the status of the sub-task is set to completed.
-      type: object
-      title: SubTaskUpdateRequest
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
-    SubTaskResponse:
-      properties:
-        id:
-          type: string
-          title: Id
-          description: The unique identifier of the subtask
-        title:
-          type: string
-          title: Title
-          description: The title of the subtask
-        isCompleted:
-          type: boolean
-          title: Iscompleted
-          description: Whether the subtask is completed
-      type: object
-      required:
-      - id
-      - title
-      - isCompleted
-      title: SubTaskResponse
-    SubTaskCreateResponse:
-      properties:
-        id:
-          type: string
-          title: Id
-          description: The unique identifier of the subtask
-        title:
-          type: string
-          title: Title
-          description: The title of the sub task
-        isCompleted:
-          type: boolean
-          title: Iscompleted
-          description: Indicates whether the status of the sub-task is set to completed.
-      type: object
-      required:
-      - id
-      - title
-      - isCompleted
-      title: SubTaskCreateResponse
     APIResponse_SubTaskDeleteResponse_:
       properties:
         requestId:
@@ -335,6 +245,17 @@ components:
       required:
       - data
       title: APIResponse[SubTaskDeleteResponse]
+    APIResponse_SubTaskCreateResponse_:
+      properties:
+        requestId:
+          type: string
+          title: Requestid
+        data:
+          $ref: '#/components/schemas/SubTaskCreateResponse'
+      type: object
+      required:
+      - data
+      title: APIResponse[SubTaskCreateResponse]
     ValidationError:
       properties:
         loc:
@@ -356,6 +277,83 @@ components:
       - msg
       - type
       title: ValidationError
+    SubTaskUpdateRequest:
+      properties:
+        title:
+          type: string
+          title: Title
+          description: The title of the sub task
+        isCompleted:
+          type: boolean
+          title: Iscompleted
+          description: Indicates whether the status of the sub-task is set to completed.
+      type: object
+      title: SubTaskUpdateRequest
+    SubTaskCreateResponse:
+      properties:
+        id:
+          type: string
+          title: Id
+          description: The unique identifier of the subtask
+        title:
+          type: string
+          title: Title
+          description: The title of the sub task
+        isCompleted:
+          type: boolean
+          title: Iscompleted
+          description: Indicates whether the status of the sub-task is set to completed.
+      type: object
+      required:
+      - id
+      - title
+      - isCompleted
+      title: SubTaskCreateResponse
+    PaginatedBaseResponse_SubTasksResponse_:
+      properties:
+        requestId:
+          type: string
+          title: Requestid
+        data:
+          $ref: '#/components/schemas/SubTasksResponse'
+        paging:
+          $ref: '#/components/schemas/PagingResponseModel'
+      type: object
+      required:
+      - data
+      - paging
+      title: PaginatedBaseResponse[SubTasksResponse]
+    PagingResponseModel:
+      properties:
+        offset:
+          type: integer
+          minimum: 0.0
+          title: Offset
+          description: The resource offset of the last successfully read resource will be returned as the paging.offset JSON property of a paginated response containing more results
+        total:
+          type: integer
+          minimum: 0.0
+          title: Total
+          description: Total number of resources matching the request, ignoring pagination. Use this to retrieve the full count without paginating through every page. Only populated by endpoints that compute it.
+      type: object
+      required:
+      - offset
+      title: PagingResponseModel
+    SubTaskDeleteResponse:
+      properties: {}
+      type: object
+      title: SubTaskDeleteResponse
+    APIResponse_SubTaskUpdateResponse_:
+      properties:
+        requestId:
+          type: string
+          title: Requestid
+        data:
+          $ref: '#/components/schemas/SubTaskUpdateResponse'
+      type: object
+      required:
+      - data
+      title: APIResponse[SubTaskUpdateResponse]
     SubTaskCreateRequest:
       properties:
         title:
@@ -391,22 +389,35 @@ components:
       - title
       - isCompleted
       title: SubTaskUpdateResponse
-    PagingResponseModel:
+    HTTPValidationError:
       properties:
-        offset:
-          type: integer
-          minimum: 0.0
-          title: Offset
-          description: The resource offset of the last successfully read resource will be returned as the paging.offset JSON property of a paginated response containing more results
-        total:
-          type: integer
-          minimum: 0.0
-          title: Total
-          description: Total number of resources matching the request, ignoring pagination. Use this to retrieve the full count without paginating through every page. Only populated by endpoints that compute it.
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    SubTaskResponse:
+      properties:
+        id:
+          type: string
+          title: Id
+          description: The unique identifier of the subtask
+        title:
+          type: string
+          title: Title
+          description: The title of the subtask
+        isCompleted:
+          type: boolean
+          title: Iscompleted
+          description: Whether the subtask is completed
       type: object
       required:
-      - offset
-      title: PagingResponseModel
+      - id
+      - title
+      - isCompleted
+      title: SubTaskResponse
     SubTasksResponse:
       properties:
         subTasks:
@@ -419,17 +430,6 @@ components:
       required:
       - subTasks
       title: SubTasksResponse
-    APIResponse_SubTaskUpdateResponse_:
-      properties:
-        requestId:
-          type: string
-          title: Requestid
-        data:
-          $ref: '#/components/schemas/SubTaskUpdateResponse'
-      type: object
-      required:
-      - data
-      title: APIResponse[SubTaskUpdateResponse]
   securitySchemes:
     APIKeyHeader:
       type: apiKey

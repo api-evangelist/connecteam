@@ -33,15 +33,6 @@ paths:
         - time_off.read
 components:
   schemas:
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
     APIResponse_TimeOffGetPolicyTypesResponse_:
       properties:
         requestId:
@@ -74,18 +65,6 @@ components:
       - msg
       - type
       title: ValidationError
-    TimeOffGetPolicyTypesResponse:
-      properties:
-        policyTypes:
-          items:
-            $ref: '#/components/schemas/TimeOffPolicyType'
-          type: array
-          title: Policytypes
-          description: List of the company policy types
-      type: object
-      required:
-      - policyTypes
-      title: TimeOffGetPolicyTypesResponse
     TimeOffPolicy:
       properties:
         id:
@@ -132,6 +111,27 @@ components:
       - id
       - name
       title: TimeOffPolicyType
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    TimeOffGetPolicyTypesResponse:
+      properties:
+        policyTypes:
+          items:
+            $ref: '#/components/schemas/TimeOffPolicyType'
+          type: array
+          title: Policytypes
+          description: List of the company policy types
+      type: object
+      required:
+      - policyTypes
+      title: TimeOffGetPolicyTypesResponse
   securitySchemes:
     APIKeyHeader:
       type: apiKey

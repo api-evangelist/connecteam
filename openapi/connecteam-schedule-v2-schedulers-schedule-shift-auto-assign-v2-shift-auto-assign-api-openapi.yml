@@ -89,15 +89,38 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
-    HTTPValidationError:
+    AutoAssignStatusResponse:
       properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
+        autoAssignRequestId:
+          type: string
+          title: Autoassignrequestid
+          description: The unique identifier of the auto assign request
+        status:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Status
+          description: The status of the request
+        assignedShiftIds:
+          anyOf:
+          - items:
+              type: string
+            type: array
+          - type: 'null'
+          title: Assignedshiftids
+          description: List of shift IDs that were successfully assigned
+        unassignedShiftIds:
+          anyOf:
+          - items:
+              type: string
+            type: array
+          - type: 'null'
+          title: Unassignedshiftids
+          description: List of shift IDs that were not successfully assigned
       type: object
-      title: HTTPValidationError
+      required:
+      - autoAssignRequestId
+      title: AutoAssignStatusResponse
     ValidationError:
       properties:
         loc:
@@ -119,38 +142,6 @@ components:
       - msg
       - type
       title: ValidationError
-    APIResponseV2_AutoAssignStatusResponse_:
-      properties:
-        requestId:
-          type: string
-          title: Requestid
-        data:
-          $ref: '#/components/schemas/AutoAssignStatusResponse'
-      type: object
-      required:
-      - data
-      title: APIResponseV2[AutoAssignStatusResponse]
-    APIResponseV2_AutoAssignResponse_:
-      properties:
-        requestId:
-          type: string
-          title: Requestid
-        data:
-          $ref: '#/components/schemas/AutoAssignResponse'
-      type: object
-      required:
-      - data
-      title: APIResponseV2[AutoAssignResponse]
-    AutoAssignResponse:
-      properties:
-        autoAssignRequestId:
-          type: string
-          title: Autoassignrequestid
-          description: The unique identifier of the auto assign request
-      type: object
-      required:
-      - autoAssignRequestId
-      title: AutoAssignResponse
     AutoAssignRequest:
       properties:
         shiftsIds:
@@ -191,38 +182,47 @@ components:
       required:
       - shiftsIds
       title: AutoAssignRequest
-    AutoAssignStatusResponse:
+    AutoAssignResponse:
       properties:
         autoAssignRequestId:
           type: string
           title: Autoassignrequestid
           description: The unique identifier of the auto assign request
-        status:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Status
-          description: The status of the request
-        assignedShiftIds:
-          anyOf:
-          - items:
-              type: string
-            type: array
-          - type: 'null'
-          title: Assignedshiftids
-          description: List of shift IDs that were successfully assigned
-        unassignedShiftIds:
-          anyOf:
-          - items:
-              type: string
-            type: array
-          - type: 'null'
-          title: Unassignedshiftids
-          description: List of shift IDs that were not successfully assigned
       type: object
       required:
       - autoAssignRequestId
-      title: AutoAssignStatusResponse
+      title: AutoAssignResponse
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    APIResponseV2_AutoAssignResponse_:
+      properties:
+        requestId:
+          type: string
+          title: Requestid
+        data:
+          $ref: '#/components/schemas/AutoAssignResponse'
+      type: object
+      required:
+      - data
+      title: APIResponseV2[AutoAssignResponse]
+    APIResponseV2_AutoAssignStatusResponse_:
+      properties:
+        requestId:
+          type: string
+          title: Requestid
+        data:
+          $ref: '#/components/schemas/AutoAssignStatusResponse'
+      type: object
+      required:
+      - data
+      title: APIResponseV2[AutoAssignStatusResponse]
   securitySchemes:
     APIKeyHeader:
       type: apiKey

@@ -300,39 +300,187 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
-    SubResourceRateResponse:
+    WageTypesEnum:
+      type: string
+      enum:
+      - hourly
+      - monthly
+      - yearly
+      title: WageTypesEnum
+      description: An enumeration.
+    PayRateByUserRequest:
       properties:
-        subResourceId:
+        userId:
+          type: integer
+          title: Userid
+          description: The unique identifier of the user to create/update pay rate for
+        payRate:
+          allOf:
+          - $ref: '#/components/schemas/PayRateRequest'
+          title: Payrate
+          description: Pay rate configuration for this user
+      type: object
+      required:
+      - userId
+      - payRate
+      title: PayRateByUserRequest
+    PayRateRequest:
+      properties:
+        effectiveDate:
           type: string
-          title: Subresourceid
-          description: The unique identifier of the sub-resource
+          title: Effectivedate
+          description: The date this pay rate becomes effective (YYYY-MM-DD). Cannot be on or before any approved/locked timesheet days for this user
+        rateType:
+          allOf:
+          - $ref: '#/components/schemas/WageTypesEnum'
+          description: 'Type of rate: hourly, monthly, or yearly'
+        isDefaultRateEnabled:
+          type: boolean
+          title: Isdefaultrateenabled
+          description: Whether to enable the default rate
+          default: true
+        defaultRate:
+          type: number
+          minimum: 0.0
+          title: Defaultrate
+          description: The default rate amount. Must be >= 0 ($0 is allowed for unpaid/volunteer work). Required when isDefaultRateEnabled is true
+        isResourceRateEnabled:
+          type: boolean
+          title: Isresourcerateenabled
+          description: Whether to enable resource-specific rates
+          default: false
+        isApplyDefaultRateToNewResource:
+          type: boolean
+          title: Isapplydefaultratetonewresource
+          description: Auto-apply default rate to new resources and parent rate to new sub-resources
+          default: true
+        resourcesRates:
+          items:
+            $ref: '#/components/schemas/ResourceRateRequest'
+          type: array
+          title: Resourcesrates
+          description: Array of resource-specific rate configurations. Include ALL resources that should have custom rates
+      type: object
+      required:
+      - effectiveDate
+      - rateType
+      title: PayRateRequest
+    APIResponse_PayRatePutResponse_:
+      properties:
+        requestId:
+          type: string
+          title: Requestid
+        data:
+          $ref: '#/components/schemas/PayRatePutResponse'
+      type: object
+      required:
+      - data
+      title: APIResponse[PayRatePutResponse]
+    PayRateModificationResponse:
+      properties:
+        modifiedBy:
+          type: integer
+          title: Modifiedby
+          description: User ID of the person who made this modification
+        modifiedAt:
+          type: integer
+          title: Modifiedat
+          description: Unix timestamp (seconds since epoch) when this modification was made
+        previousRateType:
+          allOf:
+          - $ref: '#/components/schemas/WageTypesEnum'
+          description: The rate type before this modification, if changed
+        previousDefaultRate:
+          type: number
+          title: Previousdefaultrate
+          description: The default rate before this modification, if changed
+        previousIsDefaultRateEnabled:
+          type: boolean
+          title: Previousisdefaultrateenabled
+          description: Whether the default rate was enabled before this modification, if changed
+        previousIsResourceRateEnabled:
+          type: boolean
+          title: Previousisresourcerateenabled
+          description: Whether resource-specific rates were enabled before this modification, if changed
+      type: object
+      required:
+      - modifiedBy
+      - modifiedAt
+      title: PayRateModificationResponse
+    PayRatePutResponse:
+      properties:
+        payRatesByUsers:
+          items:
+            $ref: '#/components/schemas/PayRateByUserResponse'
+          type: array
+          title: Payratesbyusers
+          description: Array of user records with their updated pay rate configurations
+      type: object
+      required:
+      - payRatesByUsers
+      title: PayRatePutResponse
+    ResourceRateResponse:
+      properties:
+        resourceId:
+          type: string
+          title: Resourceid
+          description: The unique identifier of the resource in the Connecteam system
         rate:
           type: number
           title: Rate
-          description: The rate amount for this sub-resource. Only present when isUsingParentRate is false
-        isUsingParentRate:
+          description: The rate amount for this specific resource. Only present when isUsingDefaultRate is false
+        isUsingDefaultRate:
           type: boolean
-          title: Isusingparentrate
-          description: When true, this sub-resource inherits the parent resource's rate
+          title: Isusingdefaultrate
+          description: When true, this resource uses the user's defaultRate instead of the resource-specific rate
+        subResourcesRates:
+          items:
+            $ref: '#/components/schemas/SubResourceRateResponse'
+          type: array
+          title: Subresourcesrates
+          description: Array of sub-resource rate configurations nested under this parent resource
       type: object
       required:
-      - subResourceId
-      - isUsingParentRate
-      title: SubResourceRateResponse
-    ErrorParing:
+      - resourceId
+      - isUsingDefaultRate
+      title: ResourceRateResponse
+    APIResponse_PayRateDeleteResponse_:
       properties:
-        error_message:
+        requestId:
           type: string
-          title: Error Message
-        error_code:
-          type: integer
-          title: Error Code
+          title: Requestid
+        data:
+          $ref: '#/components/schemas/PayRateDeleteResponse'
       type: object
       required:
-      - error_message
-      - error_code
-      title: ErrorParing
-      description: V1 error paring model for backward compatibility
+      - data
+      title: APIResponse[PayRateDeleteResponse]
+    ResourceRateRequest:
+      properties:
+        resourceId:
+          type: string
+          title: Resourceid
+          description: The unique identifier of the resource
+        rate:
+          type: number
+          minimum: 0.0
+          title: Rate
+          description: The rate amount for this resource. Must be >= 0 ($0 is allowed for unpaid work)
+        useDefaultRate:
+          type: boolean
+          title: Usedefaultrate
+          description: Use default rate instead of resource-specific rate. When true, the rate field is not required
+          default: false
+        subResourcesRates:
+          items:
+            $ref: '#/components/schemas/SubResourceRateRequest'
+          type: array
+          title: Subresourcesrates
+          description: Array of sub-resource rate configurations
+      type: object
+      required:
+      - resourceId
+      title: ResourceRateRequest
     PayRateResponse:
       properties:
         effectiveDate:
@@ -393,134 +541,45 @@ components:
       - createdBy
       - createdAt
       title: PayRateResponse
-    PayRateRequest:
+    SubResourceRateRequest:
       properties:
-        effectiveDate:
+        subResourceId:
           type: string
-          title: Effectivedate
-          description: The date this pay rate becomes effective (YYYY-MM-DD). Cannot be on or before any approved/locked timesheet days for this user
-        rateType:
-          allOf:
-          - $ref: '#/components/schemas/WageTypesEnum'
-          description: 'Type of rate: hourly, monthly, or yearly'
-        isDefaultRateEnabled:
-          type: boolean
-          title: Isdefaultrateenabled
-          description: Whether to enable the default rate
-          default: true
-        defaultRate:
-          type: number
-          minimum: 0.0
-          title: Defaultrate
-          description: The default rate amount. Must be >= 0 ($0 is allowed for unpaid/volunteer work). Required when isDefaultRateEnabled is true
-        isResourceRateEnabled:
-          type: boolean
-          title: Isresourcerateenabled
-          description: Whether to enable resource-specific rates
-          default: false
-        isApplyDefaultRateToNewResource:
-          type: boolean
-          title: Isapplydefaultratetonewresource
-          description: Auto-apply default rate to new resources and parent rate to new sub-resources
-          default: true
-        resourcesRates:
-          items:
-            $ref: '#/components/schemas/ResourceRateRequest'
-          type: array
-          title: Resourcesrates
-          description: Array of resource-specific rate configurations. Include ALL resources that should have custom rates
-      type: object
-      required:
-      - effectiveDate
-      - rateType
-      title: PayRateRequest
-    ResourceRateResponse:
-      properties:
-        resourceId:
-          type: string
-          title: Resourceid
-          description: The unique identifier of the resource in the Connecteam system
-        rate:
-          type: number
-          title: Rate
-          description: The rate amount for this specific resource. Only present when isUsingDefaultRate is false
-        isUsingDefaultRate:
-          type: boolean
-          title: Isusingdefaultrate
-          description: When true, this resource uses the user's defaultRate instead of the resource-specific rate
-        subResourcesRates:
-          items:
-            $ref: '#/components/schemas/SubResourceRateResponse'
-          type: array
-          title: Subresourcesrates
-          description: Array of sub-resource rate configurations nested under this parent resource
-      type: object
-      required:
-      - resourceId
-      - isUsingDefaultRate
-      title: ResourceRateResponse
-    APIResponse_PayRatePutResponse_:
-      properties:
-        requestId:
-          type: string
-          title: Requestid
-        data:
-          $ref: '#/components/schemas/PayRatePutResponse'
-      type: object
-      required:
-      - data
-      title: APIResponse[PayRatePutResponse]
-    ResourceRateRequest:
-      properties:
-        resourceId:
-          type: string
-          title: Resourceid
-          description: The unique identifier of the resource
+          title: Subresourceid
+          description: The unique identifier of the sub-resource
         rate:
           type: number
           minimum: 0.0
           title: Rate
-          description: The rate amount for this resource. Must be >= 0 ($0 is allowed for unpaid work)
-        useDefaultRate:
+          description: The rate amount for this sub-resource. Must be >= 0 ($0 is allowed for unpaid work)
+        useParentRate:
           type: boolean
-          title: Usedefaultrate
-          description: Use default rate instead of resource-specific rate. When true, the rate field is not required
+          title: Useparentrate
+          description: Inherit parent resource's rate. When true, the rate field is not required
           default: false
-        subResourcesRates:
-          items:
-            $ref: '#/components/schemas/SubResourceRateRequest'
-          type: array
-          title: Subresourcesrates
-          description: Array of sub-resource rate configurations
       type: object
       required:
-      - resourceId
-      title: ResourceRateRequest
-    HTTPValidationError:
+      - subResourceId
+      title: SubResourceRateRequest
+    SubResourceRateResponse:
       properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
-    PayRateByUserRequest:
-      properties:
-        userId:
-          type: integer
-          title: Userid
-          description: The unique identifier of the user to create/update pay rate for
-        payRate:
-          allOf:
-          - $ref: '#/components/schemas/PayRateRequest'
-          title: Payrate
-          description: Pay rate configuration for this user
+        subResourceId:
+          type: string
+          title: Subresourceid
+          description: The unique identifier of the sub-resource
+        rate:
+          type: number
+          title: Rate
+          description: The rate amount for this sub-resource. Only present when isUsingParentRate is false
+        isUsingParentRate:
+          type: boolean
+          title: Isusingparentrate
+          description: When true, this sub-resource inherits the parent resource's rate
       type: object
       required:
-      - userId
-      - payRate
-      title: PayRateByUserRequest
+      - subResourceId
+      - isUsingParentRate
+      title: SubResourceRateResponse
     ValidationErrorResponse:
       properties:
         details:
@@ -548,105 +607,36 @@ components:
       type: object
       title: ValidationErrorResponse
       description: "All errors responses should include:\nrequest_id,\nConnecteam error code and error message,\nthe url path,\nthe request body,\nand error data which can be a pydantic class or a dict and should look something like this:\n`{\n    \"error.path\": \"the gist of the error\"\n}`\n\nfor example if the user doesn't exist it should look something like this:\n`{\n    \"user.id\": \"user doesn't exist\"\n}`"
-    PagingResponseModel:
+    PayRateByUserResponse:
       properties:
-        offset:
+        userId:
           type: integer
-          minimum: 0.0
-          title: Offset
-          description: The resource offset of the last successfully read resource will be returned as the paging.offset JSON property of a paginated response containing more results
-        total:
-          type: integer
-          minimum: 0.0
-          title: Total
-          description: Total number of resources matching the request, ignoring pagination. Use this to retrieve the full count without paginating through every page. Only populated by endpoints that compute it.
-      type: object
-      required:
-      - offset
-      title: PagingResponseModel
-    SubResourceRateRequest:
-      properties:
-        subResourceId:
-          type: string
-          title: Subresourceid
-          description: The unique identifier of the sub-resource
-        rate:
-          type: number
-          minimum: 0.0
-          title: Rate
-          description: The rate amount for this sub-resource. Must be >= 0 ($0 is allowed for unpaid work)
-        useParentRate:
-          type: boolean
-          title: Useparentrate
-          description: Inherit parent resource's rate. When true, the rate field is not required
-          default: false
-      type: object
-      required:
-      - subResourceId
-      title: SubResourceRateRequest
-    PayRateModificationResponse:
-      properties:
-        modifiedBy:
-          type: integer
-          title: Modifiedby
-          description: User ID of the person who made this modification
-        modifiedAt:
-          type: integer
-          title: Modifiedat
-          description: Unix timestamp (seconds since epoch) when this modification was made
-        previousRateType:
+          title: Userid
+          description: The unique identifier of the user in the Connecteam system
+        payRate:
           allOf:
-          - $ref: '#/components/schemas/WageTypesEnum'
-          description: The rate type before this modification, if changed
-        previousDefaultRate:
-          type: number
-          title: Previousdefaultrate
-          description: The default rate before this modification, if changed
-        previousIsDefaultRateEnabled:
-          type: boolean
-          title: Previousisdefaultrateenabled
-          description: Whether the default rate was enabled before this modification, if changed
-        previousIsResourceRateEnabled:
-          type: boolean
-          title: Previousisresourcerateenabled
-          description: Whether resource-specific rates were enabled before this modification, if changed
+          - $ref: '#/components/schemas/PayRateResponse'
+          title: Payrate
+          description: Pay rate configuration for this user
       type: object
       required:
-      - modifiedBy
-      - modifiedAt
-      title: PayRateModificationResponse
-    PayRatesGetResponseData:
+      - userId
+      - payRate
+      title: PayRateByUserResponse
+    ErrorParing:
       properties:
-        payRatesByUsers:
-          items:
-            $ref: '#/components/schemas/PayRateByUserResponse'
-          type: array
-          title: Payratesbyusers
-          description: Array of user records with their pay rate configurations
+        error_message:
+          type: string
+          title: Error Message
+        error_code:
+          type: integer
+          title: Error Code
       type: object
       required:
-      - payRatesByUsers
-      title: PayRatesGetResponseData
-    PayRatePutResponse:
-      properties:
-        payRatesByUsers:
-          items:
-            $ref: '#/components/schemas/PayRateByUserResponse'
-          type: array
-          title: Payratesbyusers
-          description: Array of user records with their updated pay rate configurations
-      type: object
-      required:
-      - payRatesByUsers
-      title: PayRatePutResponse
-    WageTypesEnum:
-      type: string
-      enum:
-      - hourly
-      - monthly
-      - yearly
-      title: WageTypesEnum
-      description: An enumeration.
+      - error_message
+      - error_code
+      title: ErrorParing
+      description: V1 error paring model for backward compatibility
     ValidationError:
       properties:
         loc:
@@ -668,32 +658,35 @@ components:
       - msg
       - type
       title: ValidationError
-    PayRateDeleteResponse:
+    PayRatesPutRequest:
       properties:
-        success:
-          type: boolean
-          title: Success
-          description: Indicates whether the deletion was successful
+        payRatesByUsers:
+          items:
+            $ref: '#/components/schemas/PayRateByUserRequest'
+          type: array
+          maxItems: 500
+          title: Payratesbyusers
+          description: Array of user pay rate configurations. Max 500 users per request
       type: object
       required:
-      - success
-      title: PayRateDeleteResponse
-    PayRateByUserResponse:
+      - payRatesByUsers
+      title: PayRatesPutRequest
+    PagingResponseModel:
       properties:
-        userId:
+        offset:
           type: integer
-          title: Userid
-          description: The unique identifier of the user in the Connecteam system
-        payRate:
-          allOf:
-          - $ref: '#/components/schemas/PayRateResponse'
-          title: Payrate
-          description: Pay rate configuration for this user
+          minimum: 0.0
+          title: Offset
+          description: The resource offset of the last successfully read resource will be returned as the paging.offset JSON property of a paginated response containing more results
+        total:
+          type: integer
+          minimum: 0.0
+          title: Total
+          description: Total number of resources matching the request, ignoring pagination. Use this to retrieve the full count without paginating through every page. Only populated by endpoints that compute it.
       type: object
       required:
-      - userId
-      - payRate
-      title: PayRateByUserResponse
+      - offset
+      title: PagingResponseModel
     PaginatedBaseResponse_PayRatesGetResponseData_:
       properties:
         requestId:
@@ -708,30 +701,37 @@ components:
       - data
       - paging
       title: PaginatedBaseResponse[PayRatesGetResponseData]
-    APIResponse_PayRateDeleteResponse_:
+    HTTPValidationError:
       properties:
-        requestId:
-          type: string
-          title: Requestid
-        data:
-          $ref: '#/components/schemas/PayRateDeleteResponse'
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    PayRateDeleteResponse:
+      properties:
+        success:
+          type: boolean
+          title: Success
+          description: Indicates whether the deletion was successful
       type: object
       required:
-      - data
-      title: APIResponse[PayRateDeleteResponse]
-    PayRatesPutRequest:
+      - success
+      title: PayRateDeleteResponse
+    PayRatesGetResponseData:
       properties:
         payRatesByUsers:
           items:
-            $ref: '#/components/schemas/PayRateByUserRequest'
+            $ref: '#/components/schemas/PayRateByUserResponse'
           type: array
-          maxItems: 500
           title: Payratesbyusers
-          description: Array of user pay rate configurations. Max 500 users per request
+          description: Array of user records with their pay rate configurations
       type: object
       required:
       - payRatesByUsers
-      title: PayRatesPutRequest
+      title: PayRatesGetResponseData
   securitySchemes:
     APIKeyHeader:
       type: apiKey

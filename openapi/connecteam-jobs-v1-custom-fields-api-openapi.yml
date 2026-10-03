@@ -111,71 +111,6 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
-    GetResourceCustomFieldsSettingsResponse:
-      properties:
-        customFields:
-          items:
-            anyOf:
-            - $ref: '#/components/schemas/DropdownResourceCustomFieldSettingsResponse'
-            - $ref: '#/components/schemas/ResourceCustomFieldSettingsResponse'
-          type: array
-          title: Customfields
-          description: The resource custom fields.
-      type: object
-      required:
-      - customFields
-      title: GetResourceCustomFieldsSettingsResponse
-    UserCustomFields:
-      type: string
-      enum:
-      - email
-      - date
-      - phone
-      - number
-      - str
-      - dropdown
-      - file
-      - directManager
-      - birthday
-      - link
-      - location
-      title: UserCustomFields
-    ResourceCustomFieldsSortExternal:
-      type: string
-      enum:
-      - name
-      - type
-      title: ResourceCustomFieldsSortExternal
-      description: An enumeration.
-    ResourceCustomFields:
-      type: string
-      enum:
-      - str
-      - phone
-      - dropdown
-      title: ResourceCustomFields
-      description: An enumeration.
-    ValidationError:
-      properties:
-        loc:
-          items:
-            anyOf:
-            - type: string
-            - type: integer
-          type: array
-          title: Location
-        msg:
-          type: string
-          title: Message
-        type:
-          type: string
-          title: Error Type
-      type: object
-      required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
     PaginatedBaseResponse_GetResourceCustomFieldsSettingsResponse_:
       properties:
         requestId:
@@ -190,6 +125,36 @@ components:
       - data
       - paging
       title: PaginatedBaseResponse[GetResourceCustomFieldsSettingsResponse]
+    PagingResponseModel:
+      properties:
+        offset:
+          type: integer
+          minimum: 0.0
+          title: Offset
+          description: The resource offset of the last successfully read resource will be returned as the paging.offset JSON property of a paginated response containing more results
+        total:
+          type: integer
+          minimum: 0.0
+          title: Total
+          description: Total number of resources matching the request, ignoring pagination. Use this to retrieve the full count without paginating through every page. Only populated by endpoints that compute it.
+      type: object
+      required:
+      - offset
+      title: PagingResponseModel
+    GetResourceCustomFieldsSettingsResponse:
+      properties:
+        customFields:
+          items:
+            anyOf:
+            - $ref: '#/components/schemas/DropdownResourceCustomFieldSettingsResponse'
+            - $ref: '#/components/schemas/ResourceCustomFieldSettingsResponse'
+          type: array
+          title: Customfields
+          description: The resource custom fields.
+      type: object
+      required:
+      - customFields
+      title: GetResourceCustomFieldsSettingsResponse
     DropdownCustomFieldOption:
       properties:
         id:
@@ -217,28 +182,27 @@ components:
       - id
       - value
       title: DropdownCustomFieldOption
+    ResourceCustomFieldsSortExternal:
+      type: string
+      enum:
+      - name
+      - type
+      title: ResourceCustomFieldsSortExternal
+      description: An enumeration.
     SortOrder:
       type: string
       enum:
       - asc
       - desc
       title: SortOrder
-    PagingResponseModel:
-      properties:
-        offset:
-          type: integer
-          minimum: 0.0
-          title: Offset
-          description: The resource offset of the last successfully read resource will be returned as the paging.offset JSON property of a paginated response containing more results
-        total:
-          type: integer
-          minimum: 0.0
-          title: Total
-          description: Total number of resources matching the request, ignoring pagination. Use this to retrieve the full count without paginating through every page. Only populated by endpoints that compute it.
-      type: object
-      required:
-      - offset
-      title: PagingResponseModel
+    ResourceCustomFields:
+      type: string
+      enum:
+      - str
+      - phone
+      - dropdown
+      title: ResourceCustomFields
+      description: An enumeration.
     HTTPValidationError:
       properties:
         detail:
@@ -248,6 +212,27 @@ components:
           title: Detail
       type: object
       title: HTTPValidationError
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
     DropdownResourceCustomFieldSettingsResponse:
       properties:
         id:
@@ -406,6 +391,21 @@ components:
       - id
       - type
       title: ResourceCustomFieldSettingsResponse
+    UserCustomFields:
+      type: string
+      enum:
+      - email
+      - date
+      - phone
+      - number
+      - str
+      - dropdown
+      - file
+      - directManager
+      - birthday
+      - link
+      - location
+      title: UserCustomFields
   securitySchemes:
     APIKeyHeader:
       type: apiKey

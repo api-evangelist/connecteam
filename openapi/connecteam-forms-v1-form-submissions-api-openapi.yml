@@ -181,7 +181,7 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
-    AudioAnswer:
+    TaskAnswer:
       properties:
         questionId:
           type: string
@@ -215,24 +215,21 @@ components:
         questionType:
           type: string
           enum:
-          - audioRecording
+          - task
           title: Questiontype
           description: The questions type
-          default: audioRecording
-        audioUrl:
-          type: string
-          title: Audiourl
-          description: The audio url.
-        audioLength:
-          type: integer
-          title: Audiolength
-          description: The audio length in seconds.
+          default: task
+        isChecked:
+          type: boolean
+          title: Ischecked
+          description: Whether the task is checked
       type: object
       required:
       - questionId
       - wasSubmittedEmpty
-      title: AudioAnswer
-    YesNoAnswer:
+      - isChecked
+      title: TaskAnswer
+    VideoAnswer:
       properties:
         questionId:
           type: string
@@ -266,19 +263,295 @@ components:
         questionType:
           type: string
           enum:
-          - yesNo
+          - video
           title: Questiontype
           description: The questions type
-          default: yesNo
-        selectedIndex:
-          type: integer
-          title: Selectedindex
-          description: The selected index.
+          default: video
+        videos:
+          items:
+            $ref: '#/components/schemas/FormVideoModel'
+          type: array
+          title: Videos
+          description: The videos.
       type: object
       required:
       - questionId
       - wasSubmittedEmpty
-      title: YesNoAnswer
+      - videos
+      title: VideoAnswer
+    APIResponse_FormsSubmissionGetResponse_:
+      properties:
+        requestId:
+          type: string
+          title: Requestid
+        data:
+          $ref: '#/components/schemas/FormsSubmissionGetResponse'
+      type: object
+      required:
+      - data
+      title: APIResponse[FormsSubmissionGetResponse]
+    FormVideoModel:
+      properties:
+        videoUrl:
+          type: string
+          title: Videourl
+          description: The URL of the video.
+      type: object
+      required:
+      - videoUrl
+      title: FormVideoModel
+    ManagerFieldStatusOption:
+      properties:
+        statusOptionId:
+          type: string
+          title: Statusoptionid
+          description: The ID of the status option.
+        name:
+          type: string
+          title: Name
+          description: The name of the status option.
+        color:
+          type: string
+          title: Color
+          description: The color of the status option.
+      type: object
+      required:
+      - statusOptionId
+      - name
+      - color
+      title: ManagerFieldStatusOption
+    GroupAnswer:
+      properties:
+        questionId:
+          type: string
+          title: Questionid
+          description: The questions id.
+        wasHidden:
+          type: boolean
+          title: Washidden
+          description: Whether the submission was hidden (by a condition).
+        questionType:
+          type: string
+          enum:
+          - group
+          title: Questiontype
+          description: The questions type
+          default: group
+        answers:
+          items:
+            oneOf:
+            - $ref: '#/components/schemas/MultipleChoiceAnswer'
+            - $ref: '#/components/schemas/NumberAnswer'
+            - $ref: '#/components/schemas/OpenEndedAnswer'
+            - $ref: '#/components/schemas/EmailAnswer'
+            - $ref: '#/components/schemas/YesNoAnswer'
+            - $ref: '#/components/schemas/PhoneNumberAnswer'
+            - $ref: '#/components/schemas/ScannerAnswer'
+            - $ref: '#/components/schemas/ImageSelectionAnswer'
+            - $ref: '#/components/schemas/LocationAnswer'
+            - $ref: '#/components/schemas/AudioAnswer'
+            - $ref: '#/components/schemas/TaskAnswer'
+            - $ref: '#/components/schemas/DateTimeAnswer'
+            - $ref: '#/components/schemas/RatingAnswer'
+            - $ref: '#/components/schemas/ImageAnswer'
+            - $ref: '#/components/schemas/SignatureAnswer'
+            - $ref: '#/components/schemas/FilesAnswer'
+            - $ref: '#/components/schemas/SliderAnswer'
+            - $ref: '#/components/schemas/FormulaAnswer'
+            - $ref: '#/components/schemas/VideoAnswer'
+            - $ref: '#/components/schemas/DescriptionAnswer'
+            discriminator:
+              propertyName: questionType
+              mapping:
+                multipleChoice: '#/components/schemas/MultipleChoiceAnswer'
+                number: '#/components/schemas/NumberAnswer'
+                openEnded: '#/components/schemas/OpenEndedAnswer'
+                emailAddress: '#/components/schemas/EmailAnswer'
+                yesNo: '#/components/schemas/YesNoAnswer'
+                phoneNumber: '#/components/schemas/PhoneNumberAnswer'
+                scanDocument: '#/components/schemas/ScannerAnswer'
+                imageSelection: '#/components/schemas/ImageSelectionAnswer'
+                location: '#/components/schemas/LocationAnswer'
+                audioRecording: '#/components/schemas/AudioAnswer'
+                task: '#/components/schemas/TaskAnswer'
+                datetime: '#/components/schemas/DateTimeAnswer'
+                rating: '#/components/schemas/RatingAnswer'
+                image: '#/components/schemas/ImageAnswer'
+                signature: '#/components/schemas/SignatureAnswer'
+                files: '#/components/schemas/FilesAnswer'
+                slider: '#/components/schemas/SliderAnswer'
+                formula: '#/components/schemas/FormulaAnswer'
+                video: '#/components/schemas/VideoAnswer'
+                description: '#/components/schemas/DescriptionAnswer'
+          type: array
+          title: Answers
+          description: The list of answers in the group.
+      type: object
+      required:
+      - questionId
+      - answers
+      title: GroupAnswer
+    v2__features__workflow__external_api__v1__form_submissions__models__response__answer_models__ManagerFieldStatus:
+      properties:
+        managerFieldId:
+          type: string
+          title: Managerfieldid
+          description: The manager field id.
+        managerFieldType:
+          type: string
+          enum:
+          - status
+          title: Managerfieldtype
+          description: The field type
+          default: status
+        lastUpdatedTimestamp:
+          type: integer
+          title: Lastupdatedtimestamp
+          description: The timestamp of the status update.
+        status:
+          allOf:
+          - $ref: '#/components/schemas/ManagerFieldStatusOption'
+          title: Status
+          description: The status of the field.
+      type: object
+      required:
+      - managerFieldId
+      title: ManagerFieldStatus
+    ManagerFieldOwnerRequest:
+      properties:
+        managerFieldId:
+          type: string
+          title: Managerfieldid
+          description: The manager field id
+        managerFieldType:
+          type: string
+          enum:
+          - owner
+          title: Managerfieldtype
+          description: The manager field type
+          default: owner
+        userId:
+          type: integer
+          minimum: 1.0
+          title: Userid
+          description: The user id that is the value of the manager field
+      type: object
+      required:
+      - managerFieldId
+      - userId
+      title: ManagerFieldOwnerRequest
+    ImageAnswer:
+      properties:
+        questionId:
+          type: string
+          title: Questionid
+          description: The questions id.
+        wasHidden:
+          type: boolean
+          title: Washidden
+          description: Whether the submission was hidden (by a condition).
+        submissionTimestamp:
+          type: integer
+          title: Submissiontimestamp
+          description: The timestamp of the submission.
+        location:
+          allOf:
+          - $ref: '#/components/schemas/GpsData'
+          title: Location
+          description: The location of the submission.
+        updateTimestamp:
+          type: integer
+          title: Updatetimestamp
+          description: The timestamp of the last update.
+        updateUserId:
+          type: integer
+          title: Updateuserid
+          description: The user id of the last update.
+        wasSubmittedEmpty:
+          type: boolean
+          title: Wassubmittedempty
+          description: Whether the submission was empty.
+        questionType:
+          type: string
+          enum:
+          - image
+          title: Questiontype
+          description: The questions type
+          default: image
+        images:
+          items:
+            $ref: '#/components/schemas/FormImageModel'
+          type: array
+          title: Images
+          description: The images.
+      type: object
+      required:
+      - questionId
+      - wasSubmittedEmpty
+      - images
+      title: ImageAnswer
+    ImageSelectionAnswer:
+      properties:
+        questionId:
+          type: string
+          title: Questionid
+          description: The questions id.
+        wasHidden:
+          type: boolean
+          title: Washidden
+          description: Whether the submission was hidden (by a condition).
+        submissionTimestamp:
+          type: integer
+          title: Submissiontimestamp
+          description: The timestamp of the submission.
+        location:
+          allOf:
+          - $ref: '#/components/schemas/GpsData'
+          title: Location
+          description: The location of the submission.
+        updateTimestamp:
+          type: integer
+          title: Updatetimestamp
+          description: The timestamp of the last update.
+        updateUserId:
+          type: integer
+          title: Updateuserid
+          description: The user id of the last update.
+        wasSubmittedEmpty:
+          type: boolean
+          title: Wassubmittedempty
+          description: Whether the submission was empty.
+        questionType:
+          type: string
+          enum:
+          - imageSelection
+          title: Questiontype
+          description: The questions type
+          default: imageSelection
+        selectedAnswers:
+          items:
+            $ref: '#/components/schemas/FormImageSelectionModel'
+          type: array
+          title: Selectedanswers
+          description: The selected answers.
+      type: object
+      required:
+      - questionId
+      - wasSubmittedEmpty
+      - selectedAnswers
+      title: ImageSelectionAnswer
+    FormsSubmissionPutResponse:
+      properties:
+        formSubmission:
+          items:
+            $ref: '#/components/schemas/FormSubmissionResponse'
+          type: array
+          title: Formsubmission
+          description: A list of form submissions.
+      type: object
+      required:
+      - formSubmission
+      title: FormsSubmissionPutResponse
     EmailAnswer:
       properties:
         questionId:
@@ -326,95 +599,6 @@ components:
       - questionId
       - wasSubmittedEmpty
       title: EmailAnswer
-    MultiGroupAnswer:
-      properties:
-        questionId:
-          type: string
-          title: Questionid
-          description: The questions id.
-        wasHidden:
-          type: boolean
-          title: Washidden
-          description: Whether the submission was hidden (by a condition).
-        questionType:
-          type: string
-          enum:
-          - multiGroup
-          title: Questiontype
-          description: The questions type
-          default: multiGroup
-        groupAnswers:
-          items:
-            $ref: '#/components/schemas/MultiAnswerItem'
-          type: array
-          title: Groupanswers
-          description: List of multi-answer items
-      type: object
-      required:
-      - questionId
-      - groupAnswers
-      title: MultiGroupAnswer
-    v2__features__workflow__external_api__v1__form_submissions__models__response__answer_models__ManagerFieldStatus:
-      properties:
-        managerFieldId:
-          type: string
-          title: Managerfieldid
-          description: The manager field id.
-        managerFieldType:
-          type: string
-          enum:
-          - status
-          title: Managerfieldtype
-          description: The field type
-          default: status
-        lastUpdatedTimestamp:
-          type: integer
-          title: Lastupdatedtimestamp
-          description: The timestamp of the status update.
-        status:
-          allOf:
-          - $ref: '#/components/schemas/ManagerFieldStatusOption'
-          title: Status
-          description: The status of the field.
-      type: object
-      required:
-      - managerFieldId
-      title: ManagerFieldStatus
-    FormsSubmissionPutResponse:
-      properties:
-        formSubmission:
-          items:
-            $ref: '#/components/schemas/FormSubmissionResponse'
-          type: array
-          title: Formsubmission
-          description: A list of form submissions.
-      type: object
-      required:
-      - formSubmission
-      title: FormsSubmissionPutResponse
-    FormsSubmissionsGetResponse:
-      properties:
-        formSubmissions:
-          items:
-            $ref: '#/components/schemas/FormSubmissionResponse'
-          type: array
-          title: Formsubmissions
-          description: A list of form submissions.
-      type: object
-      required:
-      - formSubmissions
-      title: FormsSubmissionsGetResponse
-    APIResponse_FormsSubmissionPutResponse_:
-      properties:
-        requestId:
-          type: string
-          title: Requestid
-        data:
-          $ref: '#/components/schemas/FormsSubmissionPutResponse'
-      type: object
-      required:
-      - data
-      title: APIResponse[FormsSubmissionPutResponse]
     PhoneNumberAnswer:
       properties:
         questionId:
@@ -523,190 +707,16 @@ components:
       - isTimeSubmitted
       - isDateSubmitted
       title: DateTimeAnswer
-    ManagerFieldDateRequest:
+    FormImageModel:
       properties:
-        managerFieldId:
+        url:
           type: string
-          title: Managerfieldid
-          description: The manager field id
-        managerFieldType:
-          type: string
-          enum:
-          - date
-          title: Managerfieldtype
-          description: The manager field type
-          default: date
-        date:
-          type: string
-          title: Date
-          description: The date
+          title: Url
+          description: The URL of the image.
       type: object
       required:
-      - managerFieldId
-      - date
-      title: ManagerFieldDateRequest
-    TaskAnswer:
-      properties:
-        questionId:
-          type: string
-          title: Questionid
-          description: The questions id.
-        wasHidden:
-          type: boolean
-          title: Washidden
-          description: Whether the submission was hidden (by a condition).
-        submissionTimestamp:
-          type: integer
-          title: Submissiontimestamp
-          description: The timestamp of the submission.
-        location:
-          allOf:
-          - $ref: '#/components/schemas/GpsData'
-          title: Location
-          description: The location of the submission.
-        updateTimestamp:
-          type: integer
-          title: Updatetimestamp
-          description: The timestamp of the last update.
-        updateUserId:
-          type: integer
-          title: Updateuserid
-          description: The user id of the last update.
-        wasSubmittedEmpty:
-          type: boolean
-          title: Wassubmittedempty
-          description: Whether the submission was empty.
-        questionType:
-          type: string
-          enum:
-          - task
-          title: Questiontype
-          description: The questions type
-          default: task
-        isChecked:
-          type: boolean
-          title: Ischecked
-          description: Whether the task is checked
-      type: object
-      required:
-      - questionId
-      - wasSubmittedEmpty
-      - isChecked
-      title: TaskAnswer
-    ManagerFieldStatusRequest:
-      properties:
-        managerFieldId:
-          type: string
-          title: Managerfieldid
-          description: The manager field id
-        managerFieldType:
-          type: string
-          enum:
-          - status
-          title: Managerfieldtype
-          description: The manager field type
-          default: status
-        status:
-          allOf:
-          - $ref: '#/components/schemas/ManagerFieldStatusOption'
-          title: Status
-          description: The status
-      type: object
-      required:
-      - managerFieldId
-      - status
-      title: ManagerFieldStatusRequest
-    SliderAnswer:
-      properties:
-        questionId:
-          type: string
-          title: Questionid
-          description: The questions id.
-        wasHidden:
-          type: boolean
-          title: Washidden
-          description: Whether the submission was hidden (by a condition).
-        submissionTimestamp:
-          type: integer
-          title: Submissiontimestamp
-          description: The timestamp of the submission.
-        location:
-          allOf:
-          - $ref: '#/components/schemas/GpsData'
-          title: Location
-          description: The location of the submission.
-        updateTimestamp:
-          type: integer
-          title: Updatetimestamp
-          description: The timestamp of the last update.
-        updateUserId:
-          type: integer
-          title: Updateuserid
-          description: The user id of the last update.
-        wasSubmittedEmpty:
-          type: boolean
-          title: Wassubmittedempty
-          description: Whether the submission was empty.
-        questionType:
-          type: string
-          enum:
-          - slider
-          title: Questiontype
-          description: The questions type
-          default: slider
-        value:
-          type: integer
-          title: Value
-          description: The value of the slider.
-      type: object
-      required:
-      - questionId
-      - wasSubmittedEmpty
-      title: SliderAnswer
-    ManagerFieldOwner:
-      properties:
-        managerFieldId:
-          type: string
-          title: Managerfieldid
-          description: The manager field id.
-        managerFieldType:
-          type: string
-          enum:
-          - owner
-          title: Managerfieldtype
-          description: The field type
-          default: owner
-        userId:
-          type: integer
-          title: Userid
-          description: The user id of the assigned owner.
-      type: object
-      required:
-      - managerFieldId
-      title: ManagerFieldOwner
-    ManagerFieldOwnerRequest:
-      properties:
-        managerFieldId:
-          type: string
-          title: Managerfieldid
-          description: The manager field id
-        managerFieldType:
-          type: string
-          enum:
-          - owner
-          title: Managerfieldtype
-          description: The manager field type
-          default: owner
-        userId:
-          type: integer
-          minimum: 1.0
-          title: Userid
-          description: The user id that is the value of the manager field
-      type: object
-      required:
-      - managerFieldId
-      - userId
-      title: ManagerFieldOwnerRequest
+      - url
+      title: FormImageModel
     ManagerFieldNoteRequest:
       properties:
         managerFieldId:
@@ -729,102 +739,6 @@ components:
       - managerFieldId
       - note
       title: ManagerFieldNoteRequest
-    SignatureAnswer:
-      properties:
-        questionId:
-          type: string
-          title: Questionid
-          description: The questions id.
-        wasHidden:
-          type: boolean
-          title: Washidden
-          description: Whether the submission was hidden (by a condition).
-        submissionTimestamp:
-          type: integer
-          title: Submissiontimestamp
-          description: The timestamp of the submission.
-        location:
-          allOf:
-          - $ref: '#/components/schemas/GpsData'
-          title: Location
-          description: The location of the submission.
-        updateTimestamp:
-          type: integer
-          title: Updatetimestamp
-          description: The timestamp of the last update.
-        updateUserId:
-          type: integer
-          title: Updateuserid
-          description: The user id of the last update.
-        wasSubmittedEmpty:
-          type: boolean
-          title: Wassubmittedempty
-          description: Whether the submission was empty.
-        questionType:
-          type: string
-          enum:
-          - signature
-          title: Questiontype
-          description: The questions type
-          default: signature
-        images:
-          items:
-            $ref: '#/components/schemas/FormImageModel'
-          type: array
-          title: Images
-          description: The images.
-      type: object
-      required:
-      - questionId
-      - wasSubmittedEmpty
-      - images
-      title: SignatureAnswer
-    ManagerFieldNote:
-      properties:
-        managerFieldId:
-          type: string
-          title: Managerfieldid
-          description: The manager field id.
-        managerFieldType:
-          type: string
-          enum:
-          - note
-          title: Managerfieldtype
-          description: The field type
-          default: note
-        note:
-          type: string
-          title: Note
-          description: The note filled in the field.
-      type: object
-      required:
-      - managerFieldId
-      title: ManagerFieldNote
-    FormVideoModel:
-      properties:
-        videoUrl:
-          type: string
-          title: Videourl
-          description: The URL of the video.
-      type: object
-      required:
-      - videoUrl
-      title: FormVideoModel
-    ManagerFieldFileModel:
-      properties:
-        fileUrl:
-          type: string
-          title: Fileurl
-          description: The URL of the file.
-        filename:
-          type: string
-          title: Filename
-          description: The name of the file.
-      type: object
-      required:
-      - fileUrl
-      - filename
-      title: ManagerFieldFileModel
     FormImageSelectionModel:
       properties:
         imageSelectionId:
@@ -845,298 +759,6 @@ components:
       - text
       - image
       title: FormImageSelectionModel
-    APIResponse_FormsSubmissionGetResponse_:
-      properties:
-        requestId:
-          type: string
-          title: Requestid
-        data:
-          $ref: '#/components/schemas/FormsSubmissionGetResponse'
-      type: object
-      required:
-      - data
-      title: APIResponse[FormsSubmissionGetResponse]
-    ImageAnswer:
-      properties:
-        questionId:
-          type: string
-          title: Questionid
-          description: The questions id.
-        wasHidden:
-          type: boolean
-          title: Washidden
-          description: Whether the submission was hidden (by a condition).
-        submissionTimestamp:
-          type: integer
-          title: Submissiontimestamp
-          description: The timestamp of the submission.
-        location:
-          allOf:
-          - $ref: '#/components/schemas/GpsData'
-          title: Location
-          description: The location of the submission.
-        updateTimestamp:
-          type: integer
-          title: Updatetimestamp
-          description: The timestamp of the last update.
-        updateUserId:
-          type: integer
-          title: Updateuserid
-          description: The user id of the last update.
-        wasSubmittedEmpty:
-          type: boolean
-          title: Wassubmittedempty
-          description: Whether the submission was empty.
-        questionType:
-          type: string
-          enum:
-          - image
-          title: Questiontype
-          description: The questions type
-          default: image
-        images:
-          items:
-            $ref: '#/components/schemas/FormImageModel'
-          type: array
-          title: Images
-          description: The images.
-      type: object
-      required:
-      - questionId
-      - wasSubmittedEmpty
-      - images
-      title: ImageAnswer
-    ImageSelectionAnswer:
-      properties:
-        questionId:
-          type: string
-          title: Questionid
-          description: The questions id.
-        wasHidden:
-          type: boolean
-          title: Washidden
-          description: Whether the submission was hidden (by a condition).
-        submissionTimestamp:
-          type: integer
-          title: Submissiontimestamp
-          description: The timestamp of the submission.
-        location:
-          allOf:
-          - $ref: '#/components/schemas/GpsData'
-          title: Location
-          description: The location of the submission.
-        updateTimestamp:
-          type: integer
-          title: Updatetimestamp
-          description: The timestamp of the last update.
-        updateUserId:
-          type: integer
-          title: Updateuserid
-          description: The user id of the last update.
-        wasSubmittedEmpty:
-          type: boolean
-          title: Wassubmittedempty
-          description: Whether the submission was empty.
-        questionType:
-          type: string
-          enum:
-          - imageSelection
-          title: Questiontype
-          description: The questions type
-          default: imageSelection
-        selectedAnswers:
-          items:
-            $ref: '#/components/schemas/FormImageSelectionModel'
-          type: array
-          title: Selectedanswers
-          description: The selected answers.
-      type: object
-      required:
-      - questionId
-      - wasSubmittedEmpty
-      - selectedAnswers
-      title: ImageSelectionAnswer
-    PaginatedBaseResponse_FormsSubmissionsGetResponse_:
-      properties:
-        requestId:
-          type: string
-          title: Requestid
-        data:
-          $ref: '#/components/schemas/FormsSubmissionsGetResponse'
-        paging:
-          $ref: '#/components/schemas/PagingResponseModel'
-      type: object
-      required:
-      - data
-      - paging
-      title: PaginatedBaseResponse[FormsSubmissionsGetResponse]
-    LocationAnswer:
-      properties:
-        questionId:
-          type: string
-          title: Questionid
-          description: The questions id.
-        wasHidden:
-          type: boolean
-          title: Washidden
-          description: Whether the submission was hidden (by a condition).
-        submissionTimestamp:
-          type: integer
-          title: Submissiontimestamp
-          description: The timestamp of the submission.
-        location:
-          allOf:
-          - $ref: '#/components/schemas/GpsData'
-          title: Location
-          description: The location of the submission.
-        updateTimestamp:
-          type: integer
-          title: Updatetimestamp
-          description: The timestamp of the last update.
-        updateUserId:
-          type: integer
-          title: Updateuserid
-          description: The user id of the last update.
-        wasSubmittedEmpty:
-          type: boolean
-          title: Wassubmittedempty
-          description: Whether the submission was empty.
-        questionType:
-          type: string
-          enum:
-          - location
-          title: Questiontype
-          description: The questions type
-          default: location
-        locationInput:
-          allOf:
-          - $ref: '#/components/schemas/GpsData'
-          title: Locationinput
-          description: The location input.
-      type: object
-      required:
-      - questionId
-      - wasSubmittedEmpty
-      title: LocationAnswer
-    ManagerFieldSignature:
-      properties:
-        managerFieldId:
-          type: string
-          title: Managerfieldid
-          description: The manager field id.
-        managerFieldType:
-          type: string
-          enum:
-          - signature
-          title: Managerfieldtype
-          description: The field type
-          default: signature
-        image:
-          type: string
-          title: Image
-          description: The image of the signature.
-        signingUserId:
-          type: integer
-          title: Signinguserid
-          description: The user id of the signing user.
-        signingTimestamp:
-          type: integer
-          title: Signingtimestamp
-          description: The timestamp of the signing.
-      type: object
-      required:
-      - managerFieldId
-      title: ManagerFieldSignature
-    MultipleChoiceAnswer:
-      properties:
-        questionId:
-          type: string
-          title: Questionid
-          description: The questions id.
-        wasHidden:
-          type: boolean
-          title: Washidden
-          description: Whether the submission was hidden (by a condition).
-        submissionTimestamp:
-          type: integer
-          title: Submissiontimestamp
-          description: The timestamp of the submission.
-        location:
-          allOf:
-          - $ref: '#/components/schemas/GpsData'
-          title: Location
-          description: The location of the submission.
-        updateTimestamp:
-          type: integer
-          title: Updatetimestamp
-          description: The timestamp of the last update.
-        updateUserId:
-          type: integer
-          title: Updateuserid
-          description: The user id of the last update.
-        wasSubmittedEmpty:
-          type: boolean
-          title: Wassubmittedempty
-          description: Whether the submission was empty.
-        questionType:
-          type: string
-          enum:
-          - multipleChoice
-          title: Questiontype
-          description: The questions type
-          default: multipleChoice
-        selectedAnswers:
-          items:
-            $ref: '#/components/schemas/FormMultipleChoiceOptionModel'
-          type: array
-          title: Selectedanswers
-          description: The selected answers.
-      type: object
-      required:
-      - questionId
-      - wasSubmittedEmpty
-      - selectedAnswers
-      title: MultipleChoiceAnswer
-    ManagerFieldStatusOption:
-      properties:
-        statusOptionId:
-          type: string
-          title: Statusoptionid
-          description: The ID of the status option.
-        name:
-          type: string
-          title: Name
-          description: The name of the status option.
-        color:
-          type: string
-          title: Color
-          description: The color of the status option.
-      type: object
-      required:
-      - statusOptionId
-      - name
-      - color
-      title: ManagerFieldStatusOption
-    FormFileModel:
-      properties:
-        url:
-          type: string
-          title: Url
-          description: The URL of the file.
-        size:
-          type: integer
-          title: Size
-          description: The size of the file in bytes.
-        fileName:
-          type: string
-          title: Filename
-          description: The name of the file.
-      type: object
-      required:
-      - url
-      - size
-      - fileName
-      title: FormFileModel
     NumberAnswer:
       properties:
         questionId:
@@ -1184,143 +806,28 @@ components:
       - questionId
       - wasSubmittedEmpty
       title: NumberAnswer
-    FormImageModel:
+    ValidationError:
       properties:
-        url:
-          type: string
-          title: Url
-          description: The URL of the image.
-      type: object
-      required:
-      - url
-      title: FormImageModel
-    VideoAnswer:
-      properties:
-        questionId:
-          type: string
-          title: Questionid
-          description: The questions id.
-        wasHidden:
-          type: boolean
-          title: Washidden
-          description: Whether the submission was hidden (by a condition).
-        submissionTimestamp:
-          type: integer
-          title: Submissiontimestamp
-          description: The timestamp of the submission.
-        location:
-          allOf:
-          - $ref: '#/components/schemas/GpsData'
-          title: Location
-          description: The location of the submission.
-        updateTimestamp:
-          type: integer
-          title: Updatetimestamp
-          description: The timestamp of the last update.
-        updateUserId:
-          type: integer
-          title: Updateuserid
-          description: The user id of the last update.
-        wasSubmittedEmpty:
-          type: boolean
-          title: Wassubmittedempty
-          description: Whether the submission was empty.
-        questionType:
-          type: string
-          enum:
-          - video
-          title: Questiontype
-          description: The questions type
-          default: video
-        videos:
+        loc:
           items:
-            $ref: '#/components/schemas/FormVideoModel'
+            anyOf:
+            - type: string
+            - type: integer
           type: array
-          title: Videos
-          description: The videos.
-      type: object
-      required:
-      - questionId
-      - wasSubmittedEmpty
-      - videos
-      title: VideoAnswer
-    MultiAnswerItem:
-      properties:
+          title: Location
+        msg:
+          type: string
+          title: Message
         type:
           type: string
-          title: Type
-          description: The type of the answer item
-        index:
-          type: integer
-          title: Index
-          description: The index of the answer item
-        answers:
-          items:
-            oneOf:
-            - $ref: '#/components/schemas/MultipleChoiceAnswer'
-            - $ref: '#/components/schemas/NumberAnswer'
-            - $ref: '#/components/schemas/OpenEndedAnswer'
-            - $ref: '#/components/schemas/EmailAnswer'
-            - $ref: '#/components/schemas/YesNoAnswer'
-            - $ref: '#/components/schemas/PhoneNumberAnswer'
-            - $ref: '#/components/schemas/ScannerAnswer'
-            - $ref: '#/components/schemas/ImageSelectionAnswer'
-            - $ref: '#/components/schemas/LocationAnswer'
-            - $ref: '#/components/schemas/AudioAnswer'
-            - $ref: '#/components/schemas/TaskAnswer'
-            - $ref: '#/components/schemas/DateTimeAnswer'
-            - $ref: '#/components/schemas/RatingAnswer'
-            - $ref: '#/components/schemas/ImageAnswer'
-            - $ref: '#/components/schemas/SignatureAnswer'
-            - $ref: '#/components/schemas/FilesAnswer'
-            - $ref: '#/components/schemas/SliderAnswer'
-            - $ref: '#/components/schemas/FormulaAnswer'
-            - $ref: '#/components/schemas/VideoAnswer'
-            - $ref: '#/components/schemas/DescriptionAnswer'
-            discriminator:
-              propertyName: questionType
-              mapping:
-                multipleChoice: '#/components/schemas/MultipleChoiceAnswer'
-                number: '#/components/schemas/NumberAnswer'
-                openEnded: '#/components/schemas/OpenEndedAnswer'
-                emailAddress: '#/components/schemas/EmailAnswer'
-                yesNo: '#/components/schemas/YesNoAnswer'
-                phoneNumber: '#/components/schemas/PhoneNumberAnswer'
-                scanDocument: '#/components/schemas/ScannerAnswer'
-                imageSelection: '#/components/schemas/ImageSelectionAnswer'
-                location: '#/components/schemas/LocationAnswer'
-                audioRecording: '#/components/schemas/AudioAnswer'
-                task: '#/components/schemas/TaskAnswer'
-                datetime: '#/components/schemas/DateTimeAnswer'
-                rating: '#/components/schemas/RatingAnswer'
-                image: '#/components/schemas/ImageAnswer'
-                signature: '#/components/schemas/SignatureAnswer'
-                files: '#/components/schemas/FilesAnswer'
-                slider: '#/components/schemas/SliderAnswer'
-                formula: '#/components/schemas/FormulaAnswer'
-                video: '#/components/schemas/VideoAnswer'
-                description: '#/components/schemas/DescriptionAnswer'
-          type: array
-          title: Answers
-          description: The list of answers
+          title: Error Type
       type: object
       required:
+      - loc
+      - msg
       - type
-      - index
-      - answers
-      title: MultiAnswerItem
-    FormsSubmissionGetResponse:
-      properties:
-        formSubmission:
-          allOf:
-          - $ref: '#/components/schemas/FormSubmissionResponse'
-          title: Formsubmission
-          description: The form submission.
-      type: object
-      required:
-      - formSubmission
-      title: FormsSubmissionGetResponse
-    FormulaAnswer:
+      title: ValidationError
+    AudioAnswer:
       properties:
         questionId:
           type: string
@@ -1354,23 +861,23 @@ components:
         questionType:
           type: string
           enum:
-          - formula
+          - audioRecording
           title: Questiontype
           description: The questions type
-          default: formula
-        result:
-          type: number
-          title: Result
-          description: The result of the formula.
-        status:
+          default: audioRecording
+        audioUrl:
           type: string
-          title: Status
-          description: The status of the formula.
+          title: Audiourl
+          description: The audio url.
+        audioLength:
+          type: integer
+          title: Audiolength
+          description: The audio length in seconds.
       type: object
       required:
       - questionId
       - wasSubmittedEmpty
-      title: FormulaAnswer
+      title: AudioAnswer
     FilesAnswer:
       properties:
         questionId:
@@ -1421,6 +928,267 @@ components:
       - wasSubmittedEmpty
       - files
       title: FilesAnswer
+    APIResponse_FormsSubmissionPutResponse_:
+      properties:
+        requestId:
+          type: string
+          title: Requestid
+        data:
+          $ref: '#/components/schemas/FormsSubmissionPutResponse'
+      type: object
+      required:
+      - data
+      title: APIResponse[FormsSubmissionPutResponse]
+    YesNoAnswer:
+      properties:
+        questionId:
+          type: string
+          title: Questionid
+          description: The questions id.
+        wasHidden:
+          type: boolean
+          title: Washidden
+          description: Whether the submission was hidden (by a condition).
+        submissionTimestamp:
+          type: integer
+          title: Submissiontimestamp
+          description: The timestamp of the submission.
+        location:
+          allOf:
+          - $ref: '#/components/schemas/GpsData'
+          title: Location
+          description: The location of the submission.
+        updateTimestamp:
+          type: integer
+          title: Updatetimestamp
+          description: The timestamp of the last update.
+        updateUserId:
+          type: integer
+          title: Updateuserid
+          description: The user id of the last update.
+        wasSubmittedEmpty:
+          type: boolean
+          title: Wassubmittedempty
+          description: Whether the submission was empty.
+        questionType:
+          type: string
+          enum:
+          - yesNo
+          title: Questiontype
+          description: The questions type
+          default: yesNo
+        selectedIndex:
+          type: integer
+          title: Selectedindex
+          description: The selected index.
+      type: object
+      required:
+      - questionId
+      - wasSubmittedEmpty
+      title: YesNoAnswer
+    PaginatedBaseResponse_FormsSubmissionsGetResponse_:
+      properties:
+        requestId:
+          type: string
+          title: Requestid
+        data:
+          $ref: '#/components/schemas/FormsSubmissionsGetResponse'
+        paging:
+          $ref: '#/components/schemas/PagingResponseModel'
+      type: object
+      required:
+      - data
+      - paging
+      title: PaginatedBaseResponse[FormsSubmissionsGetResponse]
+    FormSubmissionPutRequest:
+      properties:
+        managerFields:
+          items:
+            oneOf:
+            - $ref: '#/components/schemas/ManagerFieldFileRequest'
+            - $ref: '#/components/schemas/ManagerFieldDateRequest'
+            - $ref: '#/components/schemas/ManagerFieldSignatureRequest'
+            - $ref: '#/components/schemas/ManagerFieldOwnerRequest'
+            - $ref: '#/components/schemas/ManagerFieldStatusRequest'
+            - $ref: '#/components/schemas/ManagerFieldNoteRequest'
+            discriminator:
+              propertyName: managerFieldType
+              mapping:
+                file: '#/components/schemas/ManagerFieldFileRequest'
+                date: '#/components/schemas/ManagerFieldDateRequest'
+                signature: '#/components/schemas/ManagerFieldSignatureRequest'
+                owner: '#/components/schemas/ManagerFieldOwnerRequest'
+                status: '#/components/schemas/ManagerFieldStatusRequest'
+                note: '#/components/schemas/ManagerFieldNoteRequest'
+          type: array
+          title: Managerfields
+          description: The manager fields to update
+      type: object
+      required:
+      - managerFields
+      title: FormSubmissionPutRequest
+    ManagerFieldOwner:
+      properties:
+        managerFieldId:
+          type: string
+          title: Managerfieldid
+          description: The manager field id.
+        managerFieldType:
+          type: string
+          enum:
+          - owner
+          title: Managerfieldtype
+          description: The field type
+          default: owner
+        userId:
+          type: integer
+          title: Userid
+          description: The user id of the assigned owner.
+      type: object
+      required:
+      - managerFieldId
+      title: ManagerFieldOwner
+    MultiGroupAnswer:
+      properties:
+        questionId:
+          type: string
+          title: Questionid
+          description: The questions id.
+        wasHidden:
+          type: boolean
+          title: Washidden
+          description: Whether the submission was hidden (by a condition).
+        questionType:
+          type: string
+          enum:
+          - multiGroup
+          title: Questiontype
+          description: The questions type
+          default: multiGroup
+        groupAnswers:
+          items:
+            $ref: '#/components/schemas/MultiAnswerItem'
+          type: array
+          title: Groupanswers
+          description: List of multi-answer items
+      type: object
+      required:
+      - questionId
+      - groupAnswers
+      title: MultiGroupAnswer
+    OpenEndedAnswer:
+      properties:
+        questionId:
+          type: string
+          title: Questionid
+          description: The questions id.
+        wasHidden:
+          type: boolean
+          title: Washidden
+          description: Whether the submission was hidden (by a condition).
+        submissionTimestamp:
+          type: integer
+          title: Submissiontimestamp
+          description: The timestamp of the submission.
+        location:
+          allOf:
+          - $ref: '#/components/schemas/GpsData'
+          title: Location
+          description: The location of the submission.
+        updateTimestamp:
+          type: integer
+          title: Updatetimestamp
+          description: The timestamp of the last update.
+        updateUserId:
+          type: integer
+          title: Updateuserid
+          description: The user id of the last update.
+        wasSubmittedEmpty:
+          type: boolean
+          title: Wassubmittedempty
+          description: Whether the submission was empty.
+        questionType:
+          type: string
+          enum:
+          - openEnded
+          title: Questiontype
+          description: The questions type
+          default: openEnded
+        value:
+          type: string
+          title: Value
+          description: The input text.
+      type: object
+      required:
+      - questionId
+      - wasSubmittedEmpty
+      title: OpenEndedAnswer
+    ScannerAnswer:
+      properties:
+        questionId:
+          type: string
+          title: Questionid
+          description: The questions id.
+        wasHidden:
+          type: boolean
+          title: Washidden
+          description: Whether the submission was hidden (by a condition).
+        submissionTimestamp:
+          type: integer
+          title: Submissiontimestamp
+          description: The timestamp of the submission.
+        location:
+          allOf:
+          - $ref: '#/components/schemas/GpsData'
+          title: Location
+          description: The location of the submission.
+        updateTimestamp:
+          type: integer
+          title: Updatetimestamp
+          description: The timestamp of the last update.
+        updateUserId:
+          type: integer
+          title: Updateuserid
+          description: The user id of the last update.
+        wasSubmittedEmpty:
+          type: boolean
+          title: Wassubmittedempty
+          description: Whether the submission was empty.
+        questionType:
+          type: string
+          enum:
+          - scanDocument
+          title: Questiontype
+          description: The questions type
+          default: scanDocument
+        images:
+          items:
+            $ref: '#/components/schemas/FormImageModel'
+          type: array
+          title: Images
+          description: The images.
+      type: object
+      required:
+      - questionId
+      - wasSubmittedEmpty
+      - images
+      title: ScannerAnswer
+    GpsData:
+      properties:
+        address:
+          type: string
+          title: Address
+          description: The address associated with the GPS data.
+        longitude:
+          type: number
+          title: Longitude
+          description: The longitude coordinate.
+        latitude:
+          type: number
+          title: Latitude
+          description: The latitude coordinate.
+      type: object
+      title: GpsData
     FormSubmissionResponse:
       properties:
         formSubmissionId:
@@ -1542,6 +1310,48 @@ components:
       - answers
       - submissionStartTimestamp
       title: FormSubmissionResponse
+    DescriptionAnswer:
+      properties:
+        questionId:
+          type: string
+          title: Questionid
+          description: The questions id.
+        wasHidden:
+          type: boolean
+          title: Washidden
+          description: Whether the submission was hidden (by a condition).
+        questionType:
+          type: string
+          enum:
+          - description
+          title: Questiontype
+          description: The questions type
+          default: description
+      type: object
+      required:
+      - questionId
+      title: DescriptionAnswer
+    ManagerFieldNote:
+      properties:
+        managerFieldId:
+          type: string
+          title: Managerfieldid
+          description: The manager field id.
+        managerFieldType:
+          type: string
+          enum:
+          - note
+          title: Managerfieldtype
+          description: The field type
+          default: note
+        note:
+          type: string
+          title: Note
+          description: The note filled in the field.
+      type: object
+      required:
+      - managerFieldId
+      title: ManagerFieldNote
     RatingAnswer:
       properties:
         questionId:
@@ -1589,174 +1399,6 @@ components:
       - questionId
       - wasSubmittedEmpty
       title: RatingAnswer
-    FormMultipleChoiceOptionModel:
-      properties:
-        multipleChoiceOptionId:
-          type: string
-          title: Multiplechoiceoptionid
-          description: The ID of the multiple choice option
-        text:
-          type: string
-          title: Text
-          description: The text of the option
-      type: object
-      required:
-      - multipleChoiceOptionId
-      - text
-      title: FormMultipleChoiceOptionModel
-    DescriptionAnswer:
-      properties:
-        questionId:
-          type: string
-          title: Questionid
-          description: The questions id.
-        wasHidden:
-          type: boolean
-          title: Washidden
-          description: Whether the submission was hidden (by a condition).
-        questionType:
-          type: string
-          enum:
-          - description
-          title: Questiontype
-          description: The questions type
-          default: description
-      type: object
-      required:
-      - questionId
-      title: DescriptionAnswer
-    GpsData:
-      properties:
-        address:
-          type: string
-          title: Address
-          description: The address associated with the GPS data.
-        longitude:
-          type: number
-          title: Longitude
-          description: The longitude coordinate.
-        latitude:
-          type: number
-          title: Latitude
-          description: The latitude coordinate.
-      type: object
-      title: GpsData
-    ManagerFieldDate:
-      properties:
-        managerFieldId:
-          type: string
-          title: Managerfieldid
-          description: The manager field id.
-        managerFieldType:
-          type: string
-          enum:
-          - date
-          title: Managerfieldtype
-          description: The field type
-          default: date
-        date:
-          type: string
-          title: Date
-          description: The date filled in the field.
-      type: object
-      required:
-      - managerFieldId
-      title: ManagerFieldDate
-    ManagerFieldFileRequest:
-      properties:
-        managerFieldId:
-          type: string
-          title: Managerfieldid
-          description: The manager field id
-        managerFieldType:
-          type: string
-          enum:
-          - file
-          title: Managerfieldtype
-          description: The manager field type
-          default: file
-        files:
-          items:
-            $ref: '#/components/schemas/ManagerFieldFileModel'
-          type: array
-          title: Files
-          description: The files
-      type: object
-      required:
-      - managerFieldId
-      - files
-      title: ManagerFieldFileRequest
-    ValidationError:
-      properties:
-        loc:
-          items:
-            anyOf:
-            - type: string
-            - type: integer
-          type: array
-          title: Location
-        msg:
-          type: string
-          title: Message
-        type:
-          type: string
-          title: Error Type
-      type: object
-      required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
-    ScannerAnswer:
-      properties:
-        questionId:
-          type: string
-          title: Questionid
-          description: The questions id.
-        wasHidden:
-          type: boolean
-          title: Washidden
-          description: Whether the submission was hidden (by a condition).
-        submissionTimestamp:
-          type: integer
-          title: Submissiontimestamp
-          description: The timestamp of the submission.
-        location:
-          allOf:
-          - $ref: '#/components/schemas/GpsData'
-          title: Location
-          description: The location of the submission.
-        updateTimestamp:
-          type: integer
-          title: Updatetimestamp
-          description: The timestamp of the last update.
-        updateUserId:
-          type: integer
-          title: Updateuserid
-          description: The user id of the last update.
-        wasSubmittedEmpty:
-          type: boolean
-          title: Wassubmittedempty
-          description: Whether the submission was empty.
-        questionType:
-          type: string
-          enum:
-          - scanDocument
-          title: Questiontype
-          description: The questions type
-          default: scanDocument
-        images:
-          items:
-            $ref: '#/components/schemas/FormImageModel'
-          type: array
-          title: Images
-          description: The images.
-      type: object
-      required:
-      - questionId
-      - wasSubmittedEmpty
-      - images
-      title: ScannerAnswer
     ManagerFieldSignatureRequest:
       properties:
         managerFieldId:
@@ -1791,7 +1433,18 @@ components:
       - signingUserId
       - signingTimestamp
       title: ManagerFieldSignatureRequest
-    GroupAnswer:
+    FormsSubmissionGetResponse:
+      properties:
+        formSubmission:
+          allOf:
+          - $ref: '#/components/schemas/FormSubmissionResponse'
+          title: Formsubmission
+          description: The form submission.
+      type: object
+      required:
+      - formSubmission
+      title: FormsSubmissionGetResponse
+    SignatureAnswer:
       properties:
         questionId:
           type: string
@@ -1801,13 +1454,56 @@ components:
           type: boolean
           title: Washidden
           description: Whether the submission was hidden (by a condition).
+        submissionTimestamp:
+          type: integer
+          title: Submissiontimestamp
+          description: The timestamp of the submission.
+        location:
+          allOf:
+          - $ref: '#/components/schemas/GpsData'
+          title: Location
+          description: The location of the submission.
+        updateTimestamp:
+          type: integer
+          title: Updatetimestamp
+          description: The timestamp of the last update.
+        updateUserId:
+          type: integer
+          title: Updateuserid
+          description: The user id of the last update.
+        wasSubmittedEmpty:
+          type: boolean
+          title: Wassubmittedempty
+          description: Whether the submission was empty.
         questionType:
           type: string
           enum:
-          - group
+          - signature
           title: Questiontype
           description: The questions type
-          default: group
+          default: signature
+        images:
+          items:
+            $ref: '#/components/schemas/FormImageModel'
+          type: array
+          title: Images
+          description: The images.
+      type: object
+      required:
+      - questionId
+      - wasSubmittedEmpty
+      - images
+      title: SignatureAnswer
+    MultiAnswerItem:
+      properties:
+        type:
+          type: string
+          title: Type
+          description: The type of the answer item
+        index:
+          type: integer
+          title: Index
+          description: The index of the answer item
         answers:
           items:
             oneOf:
@@ -1856,64 +1552,13 @@ components:
                 description: '#/components/schemas/DescriptionAnswer'
           type: array
           title: Answers
-          description: The list of answers in the group.
+          description: The list of answers
       type: object
       required:
-      - questionId
+      - type
+      - index
       - answers
-      title: GroupAnswer
-    PagingResponseModel:
-      properties:
-        offset:
-          type: integer
-          minimum: 0.0
-          title: Offset
-          description: The resource offset of the last successfully read resource will be returned as the paging.offset JSON property of a paginated response containing more results
-        total:
-          type: integer
-          minimum: 0.0
-          title: Total
-          description: Total number of resources matching the request, ignoring pagination. Use this to retrieve the full count without paginating through every page. Only populated by endpoints that compute it.
-      type: object
-      required:
-      - offset
-      title: PagingResponseModel
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
-    FormSubmissionPutRequest:
-      properties:
-        managerFields:
-          items:
-            oneOf:
-            - $ref: '#/components/schemas/ManagerFieldFileRequest'
-            - $ref: '#/components/schemas/ManagerFieldDateRequest'
-            - $ref: '#/components/schemas/ManagerFieldSignatureRequest'
-            - $ref: '#/components/schemas/ManagerFieldOwnerRequest'
-            - $ref: '#/components/schemas/ManagerFieldStatusRequest'
-            - $ref: '#/components/schemas/ManagerFieldNoteRequest'
-            discriminator:
-              propertyName: managerFieldType
-              mapping:
-                file: '#/components/schemas/ManagerFieldFileRequest'
-                date: '#/components/schemas/ManagerFieldDateRequest'
-                signature: '#/components/schemas/ManagerFieldSignatureRequest'
-                owner: '#/components/schemas/ManagerFieldOwnerRequest'
-                status: '#/components/schemas/ManagerFieldStatusRequest'
-                note: '#/components/schemas/ManagerFieldNoteRequest'
-          type: array
-          title: Managerfields
-          description: The manager fields to update
-      type: object
-      required:
-      - managerFields
-      title: FormSubmissionPutRequest
+      title: MultiAnswerItem
     ManagerFieldFile:
       properties:
         managerFieldId:
@@ -1937,7 +1582,22 @@ components:
       required:
       - managerFieldId
       title: ManagerFieldFile
-    OpenEndedAnswer:
+    ManagerFieldFileModel:
+      properties:
+        fileUrl:
+          type: string
+          title: Fileurl
+          description: The URL of the file.
+        filename:
+          type: string
+          title: Filename
+          description: The name of the file.
+      type: object
+      required:
+      - fileUrl
+      - filename
+      title: ManagerFieldFileModel
+    FormulaAnswer:
       properties:
         questionId:
           type: string
@@ -1971,19 +1631,359 @@ components:
         questionType:
           type: string
           enum:
-          - openEnded
+          - formula
           title: Questiontype
           description: The questions type
-          default: openEnded
-        value:
+          default: formula
+        result:
+          type: number
+          title: Result
+          description: The result of the formula.
+        status:
           type: string
-          title: Value
-          description: The input text.
+          title: Status
+          description: The status of the formula.
       type: object
       required:
       - questionId
       - wasSubmittedEmpty
-      title: OpenEndedAnswer
+      title: FormulaAnswer
+    ManagerFieldStatusRequest:
+      properties:
+        managerFieldId:
+          type: string
+          title: Managerfieldid
+          description: The manager field id
+        managerFieldType:
+          type: string
+          enum:
+          - status
+          title: Managerfieldtype
+          description: The manager field type
+          default: status
+        status:
+          allOf:
+          - $ref: '#/components/schemas/ManagerFieldStatusOption'
+          title: Status
+          description: The status
+      type: object
+      required:
+      - managerFieldId
+      - status
+      title: ManagerFieldStatusRequest
+    ManagerFieldDate:
+      properties:
+        managerFieldId:
+          type: string
+          title: Managerfieldid
+          description: The manager field id.
+        managerFieldType:
+          type: string
+          enum:
+          - date
+          title: Managerfieldtype
+          description: The field type
+          default: date
+        date:
+          type: string
+          title: Date
+          description: The date filled in the field.
+      type: object
+      required:
+      - managerFieldId
+      title: ManagerFieldDate
+    PagingResponseModel:
+      properties:
+        offset:
+          type: integer
+          minimum: 0.0
+          title: Offset
+          description: The resource offset of the last successfully read resource will be returned as the paging.offset JSON property of a paginated response containing more results
+        total:
+          type: integer
+          minimum: 0.0
+          title: Total
+          description: Total number of resources matching the request, ignoring pagination. Use this to retrieve the full count without paginating through every page. Only populated by endpoints that compute it.
+      type: object
+      required:
+      - offset
+      title: PagingResponseModel
+    FormsSubmissionsGetResponse:
+      properties:
+        formSubmissions:
+          items:
+            $ref: '#/components/schemas/FormSubmissionResponse'
+          type: array
+          title: Formsubmissions
+          description: A list of form submissions.
+      type: object
+      required:
+      - formSubmissions
+      title: FormsSubmissionsGetResponse
+    ManagerFieldDateRequest:
+      properties:
+        managerFieldId:
+          type: string
+          title: Managerfieldid
+          description: The manager field id
+        managerFieldType:
+          type: string
+          enum:
+          - date
+          title: Managerfieldtype
+          description: The manager field type
+          default: date
+        date:
+          type: string
+          title: Date
+          description: The date
+      type: object
+      required:
+      - managerFieldId
+      - date
+      title: ManagerFieldDateRequest
+    SliderAnswer:
+      properties:
+        questionId:
+          type: string
+          title: Questionid
+          description: The questions id.
+        wasHidden:
+          type: boolean
+          title: Washidden
+          description: Whether the submission was hidden (by a condition).
+        submissionTimestamp:
+          type: integer
+          title: Submissiontimestamp
+          description: The timestamp of the submission.
+        location:
+          allOf:
+          - $ref: '#/components/schemas/GpsData'
+          title: Location
+          description: The location of the submission.
+        updateTimestamp:
+          type: integer
+          title: Updatetimestamp
+          description: The timestamp of the last update.
+        updateUserId:
+          type: integer
+          title: Updateuserid
+          description: The user id of the last update.
+        wasSubmittedEmpty:
+          type: boolean
+          title: Wassubmittedempty
+          description: Whether the submission was empty.
+        questionType:
+          type: string
+          enum:
+          - slider
+          title: Questiontype
+          description: The questions type
+          default: slider
+        value:
+          type: integer
+          title: Value
+          description: The value of the slider.
+      type: object
+      required:
+      - questionId
+      - wasSubmittedEmpty
+      title: SliderAnswer
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    ManagerFieldSignature:
+      properties:
+        managerFieldId:
+          type: string
+          title: Managerfieldid
+          description: The manager field id.
+        managerFieldType:
+          type: string
+          enum:
+          - signature
+          title: Managerfieldtype
+          description: The field type
+          default: signature
+        image:
+          type: string
+          title: Image
+          description: The image of the signature.
+        signingUserId:
+          type: integer
+          title: Signinguserid
+          description: The user id of the signing user.
+        signingTimestamp:
+          type: integer
+          title: Signingtimestamp
+          description: The timestamp of the signing.
+      type: object
+      required:
+      - managerFieldId
+      title: ManagerFieldSignature
+    FormFileModel:
+      properties:
+        url:
+          type: string
+          title: Url
+          description: The URL of the file.
+        size:
+          type: integer
+          title: Size
+          description: The size of the file in bytes.
+        fileName:
+          type: string
+          title: Filename
+          description: The name of the file.
+      type: object
+      required:
+      - url
+      - size
+      - fileName
+      title: FormFileModel
+    MultipleChoiceAnswer:
+      properties:
+        questionId:
+          type: string
+          title: Questionid
+          description: The questions id.
+        wasHidden:
+          type: boolean
+          title: Washidden
+          description: Whether the submission was hidden (by a condition).
+        submissionTimestamp:
+          type: integer
+          title: Submissiontimestamp
+          description: The timestamp of the submission.
+        location:
+          allOf:
+          - $ref: '#/components/schemas/GpsData'
+          title: Location
+          description: The location of the submission.
+        updateTimestamp:
+          type: integer
+          title: Updatetimestamp
+          description: The timestamp of the last update.
+        updateUserId:
+          type: integer
+          title: Updateuserid
+          description: The user id of the last update.
+        wasSubmittedEmpty:
+          type: boolean
+          title: Wassubmittedempty
+          description: Whether the submission was empty.
+        questionType:
+          type: string
+          enum:
+          - multipleChoice
+          title: Questiontype
+          description: The questions type
+          default: multipleChoice
+        selectedAnswers:
+          items:
+            $ref: '#/components/schemas/FormMultipleChoiceOptionModel'
+          type: array
+          title: Selectedanswers
+          description: The selected answers.
+      type: object
+      required:
+      - questionId
+      - wasSubmittedEmpty
+      - selectedAnswers
+      title: MultipleChoiceAnswer
+    FormMultipleChoiceOptionModel:
+      properties:
+        multipleChoiceOptionId:
+          type: string
+          title: Multiplechoiceoptionid
+          description: The ID of the multiple choice option
+        text:
+          type: string
+          title: Text
+          description: The text of the option
+      type: object
+      required:
+      - multipleChoiceOptionId
+      - text
+      title: FormMultipleChoiceOptionModel
+    ManagerFieldFileRequest:
+      properties:
+        managerFieldId:
+          type: string
+          title: Managerfieldid
+          description: The manager field id
+        managerFieldType:
+          type: string
+          enum:
+          - file
+          title: Managerfieldtype
+          description: The manager field type
+          default: file
+        files:
+          items:
+            $ref: '#/components/schemas/ManagerFieldFileModel'
+          type: array
+          title: Files
+          description: The files
+      type: object
+      required:
+      - managerFieldId
+      - files
+      title: ManagerFieldFileRequest
+    LocationAnswer:
+      properties:
+        questionId:
+          type: string
+          title: Questionid
+          description: The questions id.
+        wasHidden:
+          type: boolean
+          title: Washidden
+          description: Whether the submission was hidden (by a condition).
+        submissionTimestamp:
+          type: integer
+          title: Submissiontimestamp
+          description: The timestamp of the submission.
+        location:
+          allOf:
+          - $ref: '#/components/schemas/GpsData'
+          title: Location
+          description: The location of the submission.
+        updateTimestamp:
+          type: integer
+          title: Updatetimestamp
+          description: The timestamp of the last update.
+        updateUserId:
+          type: integer
+          title: Updateuserid
+          description: The user id of the last update.
+        wasSubmittedEmpty:
+          type: boolean
+          title: Wassubmittedempty
+          description: Whether the submission was empty.
+        questionType:
+          type: string
+          enum:
+          - location
+          title: Questiontype
+          description: The questions type
+          default: location
+        locationInput:
+          allOf:
+          - $ref: '#/components/schemas/GpsData'
+          title: Locationinput
+          description: The location input.
+      type: object
+      required:
+      - questionId
+      - wasSubmittedEmpty
+      title: LocationAnswer
   securitySchemes:
     APIKeyHeader:
       type: apiKey

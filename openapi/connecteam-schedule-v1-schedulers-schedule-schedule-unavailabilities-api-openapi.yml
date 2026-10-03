@@ -97,18 +97,6 @@ components:
       required:
       - offset
       title: PagingResponseModelV2
-    UnavailabilitiesListGetResponse:
-      properties:
-        unavailabilities:
-          items:
-            $ref: '#/components/schemas/SchedulerUnavailabilityResponse'
-          type: array
-          title: Unavailabilities
-          description: The list of the unavailabilities
-      type: object
-      required:
-      - unavailabilities
-      title: UnavailabilitiesListGetResponse
     ValidationError:
       properties:
         loc:
@@ -139,20 +127,18 @@ components:
           title: Detail
       type: object
       title: HTTPValidationError
-    PaginatedBaseResponseV2_UnavailabilitiesListGetResponse_:
+    UnavailabilitiesListGetResponse:
       properties:
-        requestId:
-          type: string
-          title: Requestid
-        data:
-          $ref: '#/components/schemas/UnavailabilitiesListGetResponse'
-        paging:
-          $ref: '#/components/schemas/PagingResponseModelV2'
+        unavailabilities:
+          items:
+            $ref: '#/components/schemas/SchedulerUnavailabilityResponse'
+          type: array
+          title: Unavailabilities
+          description: The list of the unavailabilities
       type: object
       required:
-      - data
-      - paging
-      title: PaginatedBaseResponseV2[UnavailabilitiesListGetResponse]
+      - unavailabilities
+      title: UnavailabilitiesListGetResponse
     SchedulerUnavailabilityResponse:
       properties:
         id:
@@ -202,6 +188,20 @@ components:
       - unavailabilityDate
       - timezone
       title: SchedulerUnavailabilityResponse
+    PaginatedBaseResponseV2_UnavailabilitiesListGetResponse_:
+      properties:
+        requestId:
+          type: string
+          title: Requestid
+        data:
+          $ref: '#/components/schemas/UnavailabilitiesListGetResponse'
+        paging:
+          $ref: '#/components/schemas/PagingResponseModelV2'
+      type: object
+      required:
+      - data
+      - paging
+      title: PaginatedBaseResponseV2[UnavailabilitiesListGetResponse]
   securitySchemes:
     APIKeyHeader:
       type: apiKey

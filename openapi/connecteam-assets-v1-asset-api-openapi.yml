@@ -42,6 +42,25 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
+    AssetAssignments:
+      properties:
+        userIds:
+          items:
+            type: integer
+          type: array
+          title: Userids
+          description: The unique identifiers of the assigned users to the asset
+        smartGroups:
+          items:
+            type: string
+          type: array
+          title: Smartgroups
+          description: The unique identifiers of the assigned smart groups to the asset
+      type: object
+      required:
+      - userIds
+      - smartGroups
+      title: AssetAssignments
     ValidationError:
       properties:
         loc:
@@ -63,59 +82,6 @@ components:
       - msg
       - type
       title: ValidationError
-    AssetResponse:
-      properties:
-        permissions:
-          items:
-            $ref: '#/components/schemas/AssetPermissions'
-          type: array
-          title: Permissions
-          description: The details of user IDs with access permissions to the asset.
-          default: []
-        assignments:
-          allOf:
-          - $ref: '#/components/schemas/AssetAssignments'
-          title: Assignments
-          description: The details of the assignments of the asset
-      type: object
-      required:
-      - assignments
-      title: AssetResponse
-    AssetAssignments:
-      properties:
-        userIds:
-          items:
-            type: integer
-          type: array
-          title: Userids
-          description: The unique identifiers of the assigned users to the asset
-        smartGroups:
-          items:
-            type: string
-          type: array
-          title: Smartgroups
-          description: The unique identifiers of the assigned smart groups to the asset
-      type: object
-      required:
-      - userIds
-      - smartGroups
-      title: AssetAssignments
-    AssetPermissions:
-      properties:
-        userId:
-          type: integer
-          title: Userid
-          description: The unique identifiers who have permissions to the asset
-        deepPermission:
-          additionalProperties:
-            type: boolean
-          type: object
-          title: Deeppermission
-          description: Granular per-feature permissions for this user on this asset. Keys depend on the feature (e.g. shift scheduler exposes view, add_and_edit_shifts, publish_shifts, edit_settings). Omitted entirely for assets whose feature has no granular permissions. Owners always receive a full-access object (every flag = true).
-      type: object
-      required:
-      - userId
-      title: AssetPermissions
     HTTPValidationError:
       properties:
         detail:
@@ -136,6 +102,40 @@ components:
       required:
       - data
       title: APIResponse[AssetResponse]
+    AssetResponse:
+      properties:
+        permissions:
+          items:
+            $ref: '#/components/schemas/AssetPermissions'
+          type: array
+          title: Permissions
+          description: The details of user IDs with access permissions to the asset.
+          default: []
+        assignments:
+          allOf:
+          - $ref: '#/components/schemas/AssetAssignments'
+          title: Assignments
+          description: The details of the assignments of the asset
+      type: object
+      required:
+      - assignments
+      title: AssetResponse
+    AssetPermissions:
+      properties:
+        userId:
+          type: integer
+          title: Userid
+          description: The unique identifiers who have permissions to the asset
+        deepPermission:
+          additionalProperties:
+            type: boolean
+          type: object
+          title: Deeppermission
+          description: Granular per-feature permissions for this user on this asset. Keys depend on the feature (e.g. shift scheduler exposes view, add_and_edit_shifts, publish_shifts, edit_settings). Omitted entirely for assets whose feature has no granular permissions. Owners always receive a full-access object (every flag = true).
+      type: object
+      required:
+      - userId
+      title: AssetPermissions
   securitySchemes:
     APIKeyHeader:
       type: apiKey

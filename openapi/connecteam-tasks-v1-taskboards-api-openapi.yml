@@ -33,6 +33,35 @@ paths:
         - quick_tasks.read
 components:
   schemas:
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    TasksBoard:
+      properties:
+        id:
+          type: integer
+          title: Id
+          description: The ID of the tasks board
+        name:
+          type: string
+          title: Name
+          description: The name of the tasks board
+        isArchived:
+          type: boolean
+          title: Isarchived
+          description: Whether the tasks board is archived
+      type: object
+      required:
+      - id
+      - name
+      - isArchived
+      title: TasksBoard
     ValidationError:
       properties:
         loc:
@@ -77,35 +106,6 @@ components:
       required:
       - taskBoards
       title: GetTasksBoardsResponse
-    TasksBoard:
-      properties:
-        id:
-          type: integer
-          title: Id
-          description: The ID of the tasks board
-        name:
-          type: string
-          title: Name
-          description: The name of the tasks board
-        isArchived:
-          type: boolean
-          title: Isarchived
-          description: Whether the tasks board is archived
-      type: object
-      required:
-      - id
-      - name
-      - isArchived
-      title: TasksBoard
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
   securitySchemes:
     APIKeyHeader:
       type: apiKey

@@ -52,44 +52,6 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
-    ValidationError:
-      properties:
-        loc:
-          items:
-            anyOf:
-            - type: string
-            - type: integer
-          type: array
-          title: Location
-        msg:
-          type: string
-          title: Message
-        type:
-          type: string
-          title: Error Type
-      type: object
-      required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
-    ProjectedSalesUpdateResponse:
-      properties:
-        daysAffected:
-          type: integer
-          title: Daysaffected
-          description: Number of days successfully updated in this request.
-        updatedDays:
-          items:
-            $ref: '#/components/schemas/DailySalesEntry'
-          type: array
-          title: Updateddays
-          description: List of daily sales entries after the update, one per date in the request.
-      type: object
-      required:
-      - daysAffected
-      - updatedDays
-      title: ProjectedSalesUpdateResponse
     DailySalesEntry:
       properties:
         date:
@@ -113,17 +75,19 @@ components:
       - date
       - locationId
       title: DailySalesEntry
-    APIResponse_ProjectedSalesUpdateResponse_:
+    ProjectedSalesUpdateRequest:
       properties:
-        requestId:
-          type: string
-          title: Requestid
-        data:
-          $ref: '#/components/schemas/ProjectedSalesUpdateResponse'
+        updates:
+          items:
+            $ref: '#/components/schemas/ProjectedSalesUpdateItem'
+          type: array
+          minItems: 1
+          title: Updates
+          description: List of projected sales updates for this location. Minimum one item. Each date may appear only once in the request.
       type: object
       required:
-      - data
-      title: APIResponse[ProjectedSalesUpdateResponse]
+      - updates
+      title: ProjectedSalesUpdateRequest
     HTTPValidationError:
       properties:
         detail:
@@ -148,19 +112,55 @@ components:
       - date
       - projectedSales
       title: ProjectedSalesUpdateItem
-    ProjectedSalesUpdateRequest:
+    ValidationError:
       properties:
-        updates:
+        loc:
           items:
-            $ref: '#/components/schemas/ProjectedSalesUpdateItem'
+            anyOf:
+            - type: string
+            - type: integer
           type: array
-          minItems: 1
-          title: Updates
-          description: List of projected sales updates for this location. Minimum one item. Each date may appear only once in the request.
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
       type: object
       required:
-      - updates
-      title: ProjectedSalesUpdateRequest
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    APIResponse_ProjectedSalesUpdateResponse_:
+      properties:
+        requestId:
+          type: string
+          title: Requestid
+        data:
+          $ref: '#/components/schemas/ProjectedSalesUpdateResponse'
+      type: object
+      required:
+      - data
+      title: APIResponse[ProjectedSalesUpdateResponse]
+    ProjectedSalesUpdateResponse:
+      properties:
+        daysAffected:
+          type: integer
+          title: Daysaffected
+          description: Number of days successfully updated in this request.
+        updatedDays:
+          items:
+            $ref: '#/components/schemas/DailySalesEntry'
+          type: array
+          title: Updateddays
+          description: List of daily sales entries after the update, one per date in the request.
+      type: object
+      required:
+      - daysAffected
+      - updatedDays
+      title: ProjectedSalesUpdateResponse
   securitySchemes:
     APIKeyHeader:
       type: apiKey

@@ -58,12 +58,18 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
-    AbsenceType:
-      type: string
-      enum:
-      - unavailability
-      - timeOff
-      title: AbsenceType
+    GetUnavailabilitiesResponse:
+      properties:
+        userUnavailabilities:
+          items:
+            $ref: '#/components/schemas/UserUnavailabilityItem'
+          type: array
+          title: Userunavailabilities
+          description: List of users with unavailabilities
+      type: object
+      required:
+      - userUnavailabilities
+      title: GetUnavailabilitiesResponse
     UserUnavailabilityItem:
       properties:
         userId:
@@ -89,6 +95,12 @@ components:
       - unavailabilities
       - shifts
       title: UserUnavailabilityItem
+    AbsenceType:
+      type: string
+      enum:
+      - unavailability
+      - timeOff
+      title: AbsenceType
     SingleAbsence:
       properties:
         id:
@@ -129,55 +141,15 @@ components:
       - endTime
       - note
       title: SingleAbsence
-    ValidationError:
+    HTTPValidationError:
       properties:
-        loc:
+        detail:
           items:
-            anyOf:
-            - type: string
-            - type: integer
+            $ref: '#/components/schemas/ValidationError'
           type: array
-          title: Location
-        msg:
-          type: string
-          title: Message
-        type:
-          type: string
-          title: Error Type
+          title: Detail
       type: object
-      required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
-    TimestampWithTimezone:
-      properties:
-        timestamp:
-          type: integer
-          minimum: 1.0
-          title: Timestamp
-          description: The timestamp in Unix format (in seconds)
-        timezone:
-          type: string
-          title: Timezone
-          description: The timezone in Tz format (e.g. America/New_York)
-      type: object
-      required:
-      - timestamp
-      - timezone
-      title: TimestampWithTimezone
-    GetUnavailabilitiesResponse:
-      properties:
-        userUnavailabilities:
-          items:
-            $ref: '#/components/schemas/UserUnavailabilityItem'
-          type: array
-          title: Userunavailabilities
-          description: List of users with unavailabilities
-      type: object
-      required:
-      - userUnavailabilities
-      title: GetUnavailabilitiesResponse
+      title: HTTPValidationError
     APIResponseV2_GetUnavailabilitiesResponse_:
       properties:
         requestId:
@@ -189,15 +161,6 @@ components:
       required:
       - data
       title: APIResponseV2[GetUnavailabilitiesResponse]
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
     SingleShift:
       properties:
         id:
@@ -221,6 +184,43 @@ components:
       - endTime
       - instanceId
       title: SingleShift
+    TimestampWithTimezone:
+      properties:
+        timestamp:
+          type: integer
+          minimum: 1.0
+          title: Timestamp
+          description: The timestamp in Unix format (in seconds)
+        timezone:
+          type: string
+          title: Timezone
+          description: The timezone in Tz format (e.g. America/New_York)
+      type: object
+      required:
+      - timestamp
+      - timezone
+      title: TimestampWithTimezone
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
   securitySchemes:
     APIKeyHeader:
       type: apiKey

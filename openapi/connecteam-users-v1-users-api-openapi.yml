@@ -342,84 +342,18 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
-    UsersSortKeysExternal:
-      enum:
-      - created_at
-      title: UsersSortKeysExternal
-      description: An enumeration.
-    UserCustomFields:
-      type: string
-      enum:
-      - email
-      - date
-      - phone
-      - number
-      - str
-      - dropdown
-      - file
-      - directManager
-      - birthday
-      - link
-      - location
-      title: UserCustomFields
-    UserType:
-      type: string
-      enum:
-      - user
-      - manager
-      - owner
-      title: UserType
-      description: An enumeration.
-    SortOrder:
-      type: string
-      enum:
-      - asc
-      - desc
-      title: SortOrder
-    EditUsersResponse:
+    UsersResponse:
       properties:
-        count:
-          type: integer
-          title: Count
-          description: The number of users edited.
         users:
           items:
             $ref: '#/components/schemas/User'
           type: array
           title: Users
-          description: The edited users.
+          description: The users.
       type: object
       required:
-      - count
       - users
-      title: EditUsersResponse
-    BaseCustomField:
-      properties:
-        customFieldId:
-          type: integer
-          minimum: 1.0
-          title: Customfieldid
-          description: The custom field unique id
-        value:
-          title: Value
-          description: 'The value of the custom field. Our real-time API documentation experience does not support custom fields of the dropdown type.To update dropdown fields value(s), pass an array of objects with the IDs of the selected dropdown values (e.g., [{id: 1}, {id: 2}]).'
-      type: object
-      required:
-      - customFieldId
-      - value
-      title: BaseCustomField
-    CreateUsersResponse:
-      properties:
-        results:
-          items:
-            $ref: '#/components/schemas/User'
-          type: array
-          title: Results
-          description: The created users.
-      type: object
-      required:
-      - results
-      title: CreateUsersResponse
+      title: UsersResponse
     CustomFieldResponse:
       properties:
         customFieldId:
@@ -445,20 +379,6 @@ components:
       - type
       - name
       title: CustomFieldResponse
-    PaginatedBaseResponse_UsersResponse_:
-      properties:
-        requestId:
-          type: string
-          title: Requestid
-        data:
-          $ref: '#/components/schemas/UsersResponse'
-        paging:
-          $ref: '#/components/schemas/PagingResponseModel'
-      type: object
-      required:
-      - data
-      - paging
-      title: PaginatedBaseResponse[UsersResponse]
     User:
       properties:
         firstName:
@@ -561,16 +481,6 @@ components:
       - userType
       - userId
       title: User
-    ArchiveUsersResponse:
-      properties:
-        success:
-          type: boolean
-          title: Success
-          description: Whether the users were deleted successfully.
-      type: object
-      required:
-      - success
-      title: ArchiveUsersResponse
     APIResponse_EditUsersResponse_:
       properties:
         requestId:
@@ -582,147 +492,20 @@ components:
       required:
       - data
       title: APIResponse[EditUsersResponse]
-    UserEditRequest:
-      properties:
-        firstName:
-          type: string
-          maxLength: 100
-          title: Firstname
-          description: The user's first name
-        lastName:
-          type: string
-          maxLength: 100
-          title: Lastname
-          description: The user's last name
-        phoneNumber:
-          type: string
-          title: Phonenumber
-          description: The user's phone number
-        userType:
-          allOf:
-          - $ref: '#/components/schemas/UserType'
-          description: The type of the user is 'user' by default. To promote a user to 'admin', first create the user and then use the users/v1/admins endpoint to send an invite by mail. On edit (PUT /users), only 'manager' <-> 'owner' transitions are supported via this field; transitions that cross the user/manager boundary are rejected with 400 and must go through the /admins endpoint.
-        email:
-          type: string
-          title: Email
-          description: The user's email (mandatory for managers and owners)
-        customFields:
-          items:
-            $ref: '#/components/schemas/BaseCustomField'
-          type: array
-          title: Customfields
-          description: The user's custom fields
-          default: []
-        isArchived:
-          type: boolean
-          title: Isarchived
-          description: The user status.Note that restoring a user is not applicable with the editUserByPhone field (you must provide the user ID).
-        userId:
-          type: integer
-          minimum: 1.0
-          title: Userid
-          description: The user's unique id
-        profilePictureFileId:
-          type: string
-          title: Profilepicturefileid
-          description: The file ID obtained from the upload attachment endpoint (POST /attachments/v1/files/generate-upload-url) with featureType set to 'users'. Send an empty string to remove the current profile picture.
-      type: object
-      title: UserEditRequest
-    UsersResponse:
-      properties:
-        users:
-          items:
-            $ref: '#/components/schemas/User'
-          type: array
-          title: Users
-          description: The users.
-      type: object
-      required:
-      - users
-      title: UsersResponse
-    ValidationError:
-      properties:
-        loc:
-          items:
-            anyOf:
-            - type: string
-            - type: integer
-          type: array
-          title: Location
-        msg:
-          type: string
-          title: Message
-        type:
-          type: string
-          title: Error Type
-      type: object
-      required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
-    DeletionType:
-      type: string
-      enum:
-      - archive
-      - delete
-      title: DeletionType
-      description: Deletion type for user deletion endpoint
-    APIResponse_ArchiveUsersResponse_:
+    PaginatedBaseResponse_UsersResponse_:
       properties:
         requestId:
           type: string
           title: Requestid
         data:
-          $ref: '#/components/schemas/ArchiveUsersResponse'
+          $ref: '#/components/schemas/UsersResponse'
+        paging:
+          $ref: '#/components/schemas/PagingResponseModel'
       type: object
       required:
       - data
-      title: APIResponse[ArchiveUsersResponse]
-    UserStatus:
-      type: string
-      enum:
-      - active
-      - archived
-      - all
-      title: UserStatus
-      description: An enumeration.
-    PagingResponseModel:
-      properties:
-        offset:
-          type: integer
-          minimum: 0.0
-          title: Offset
-          description: The resource offset of the last successfully read resource will be returned as the paging.offset JSON property of a paginated response containing more results
-        total:
-          type: integer
-          minimum: 0.0
-          title: Total
-          description: Total number of resources matching the request, ignoring pagination. Use this to retrieve the full count without paginating through every page. Only populated by endpoints that compute it.
-      type: object
-      required:
-      - offset
-      title: PagingResponseModel
-    APIResponse_CreateUsersResponse_:
-      properties:
-        requestId:
-          type: string
-          title: Requestid
-        data:
-          $ref: '#/components/schemas/CreateUsersResponse'
-      type: object
-      required:
-      - data
-      title: APIResponse[CreateUsersResponse]
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
+      - paging
+      title: PaginatedBaseResponse[UsersResponse]
     UserCreateRequest:
       properties:
         firstName:
@@ -770,6 +553,223 @@ components:
       - phoneNumber
       - userType
       title: UserCreateRequest
+    APIResponse_ArchiveUsersResponse_:
+      properties:
+        requestId:
+          type: string
+          title: Requestid
+        data:
+          $ref: '#/components/schemas/ArchiveUsersResponse'
+      type: object
+      required:
+      - data
+      title: APIResponse[ArchiveUsersResponse]
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    UserEditRequest:
+      properties:
+        firstName:
+          type: string
+          maxLength: 100
+          title: Firstname
+          description: The user's first name
+        lastName:
+          type: string
+          maxLength: 100
+          title: Lastname
+          description: The user's last name
+        phoneNumber:
+          type: string
+          title: Phonenumber
+          description: The user's phone number
+        userType:
+          allOf:
+          - $ref: '#/components/schemas/UserType'
+          description: The type of the user is 'user' by default. To promote a user to 'admin', first create the user and then use the users/v1/admins endpoint to send an invite by mail. On edit (PUT /users), only 'manager' <-> 'owner' transitions are supported via this field; transitions that cross the user/manager boundary are rejected with 400 and must go through the /admins endpoint.
+        email:
+          type: string
+          title: Email
+          description: The user's email (mandatory for managers and owners)
+        customFields:
+          items:
+            $ref: '#/components/schemas/BaseCustomField'
+          type: array
+          title: Customfields
+          description: The user's custom fields
+          default: []
+        isArchived:
+          type: boolean
+          title: Isarchived
+          description: The user status.Note that restoring a user is not applicable with the editUserByPhone field (you must provide the user ID).
+        userId:
+          type: integer
+          minimum: 1.0
+          title: Userid
+          description: The user's unique id
+        profilePictureFileId:
+          type: string
+          title: Profilepicturefileid
+          description: The file ID obtained from the upload attachment endpoint (POST /attachments/v1/files/generate-upload-url) with featureType set to 'users'. Send an empty string to remove the current profile picture.
+      type: object
+      title: UserEditRequest
+    UsersSortKeysExternal:
+      enum:
+      - created_at
+      title: UsersSortKeysExternal
+      description: An enumeration.
+    EditUsersResponse:
+      properties:
+        count:
+          type: integer
+          title: Count
+          description: The number of users edited.
+        users:
+          items:
+            $ref: '#/components/schemas/User'
+          type: array
+          title: Users
+          description: The edited users.
+      type: object
+      required:
+      - count
+      - users
+      title: EditUsersResponse
+    UserType:
+      type: string
+      enum:
+      - user
+      - manager
+      - owner
+      title: UserType
+      description: An enumeration.
+    SortOrder:
+      type: string
+      enum:
+      - asc
+      - desc
+      title: SortOrder
+    DeletionType:
+      type: string
+      enum:
+      - archive
+      - delete
+      title: DeletionType
+      description: Deletion type for user deletion endpoint
+    UserCustomFields:
+      type: string
+      enum:
+      - email
+      - date
+      - phone
+      - number
+      - str
+      - dropdown
+      - file
+      - directManager
+      - birthday
+      - link
+      - location
+      title: UserCustomFields
+    BaseCustomField:
+      properties:
+        customFieldId:
+          type: integer
+          minimum: 1.0
+          title: Customfieldid
+          description: The custom field unique id
+        value:
+          title: Value
+          description: 'The value of the custom field. Our real-time API documentation experience does not support custom fields of the dropdown type.To update dropdown fields value(s), pass an array of objects with the IDs of the selected dropdown values (e.g., [{id: 1}, {id: 2}]).'
+      type: object
+      required:
+      - customFieldId
+      - value
+      title: BaseCustomField
+    PagingResponseModel:
+      properties:
+        offset:
+          type: integer
+          minimum: 0.0
+          title: Offset
+          description: The resource offset of the last successfully read resource will be returned as the paging.offset JSON property of a paginated response containing more results
+        total:
+          type: integer
+          minimum: 0.0
+          title: Total
+          description: Total number of resources matching the request, ignoring pagination. Use this to retrieve the full count without paginating through every page. Only populated by endpoints that compute it.
+      type: object
+      required:
+      - offset
+      title: PagingResponseModel
+    ArchiveUsersResponse:
+      properties:
+        success:
+          type: boolean
+          title: Success
+          description: Whether the users were deleted successfully.
+      type: object
+      required:
+      - success
+      title: ArchiveUsersResponse
+    APIResponse_CreateUsersResponse_:
+      properties:
+        requestId:
+          type: string
+          title: Requestid
+        data:
+          $ref: '#/components/schemas/CreateUsersResponse'
+      type: object
+      required:
+      - data
+      title: APIResponse[CreateUsersResponse]
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    CreateUsersResponse:
+      properties:
+        results:
+          items:
+            $ref: '#/components/schemas/User'
+          type: array
+          title: Results
+          description: The created users.
+      type: object
+      required:
+      - results
+      title: CreateUsersResponse
+    UserStatus:
+      type: string
+      enum:
+      - active
+      - archived
+      - all
+      title: UserStatus
+      description: An enumeration.
   securitySchemes:
     APIKeyHeader:
       type: apiKey

@@ -42,15 +42,6 @@ paths:
       - HTTPBasic: []
 components:
   schemas:
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
     Body_oauth_token_docs_oauth_v1_token_post:
       properties:
         grant_type:
@@ -66,6 +57,15 @@ components:
           description: Space-separated list of requested scopes
       type: object
       title: Body_oauth_token_docs_oauth_v1_token_post
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
     ValidationError:
       properties:
         loc:

@@ -125,69 +125,6 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
-    APIResponse_TimeOffPutUserBalanceResponse_:
-      properties:
-        requestId:
-          type: string
-          title: Requestid
-        data:
-          $ref: '#/components/schemas/TimeOffPutUserBalanceResponse'
-      type: object
-      required:
-      - data
-      title: APIResponse[TimeOffPutUserBalanceResponse]
-    ValidationError:
-      properties:
-        loc:
-          items:
-            anyOf:
-            - type: string
-            - type: integer
-          type: array
-          title: Location
-        msg:
-          type: string
-          title: Message
-        type:
-          type: string
-          title: Error Type
-      type: object
-      required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
-    PolicyUnitsEnum:
-      type: string
-      enum:
-      - hours
-      - days
-      title: PolicyUnitsEnum
-      description: An enumeration.
-    PaginatedBaseResponse_TimeOffGetUserBalancesResponse_:
-      properties:
-        requestId:
-          type: string
-          title: Requestid
-        data:
-          $ref: '#/components/schemas/TimeOffGetUserBalancesResponse'
-        paging:
-          $ref: '#/components/schemas/PagingResponseModel'
-      type: object
-      required:
-      - data
-      - paging
-      title: PaginatedBaseResponse[TimeOffGetUserBalancesResponse]
-    TimeOffUpdateUserBalanceRequest:
-      properties:
-        balance:
-          type: number
-          title: Balance
-          description: The balance to update to
-      type: object
-      required:
-      - balance
-      title: TimeOffUpdateUserBalanceRequest
     PagingResponseModel:
       properties:
         offset:
@@ -204,6 +141,31 @@ components:
       required:
       - offset
       title: PagingResponseModel
+    PaginatedBaseResponse_TimeOffGetUserBalancesResponse_:
+      properties:
+        requestId:
+          type: string
+          title: Requestid
+        data:
+          $ref: '#/components/schemas/TimeOffGetUserBalancesResponse'
+        paging:
+          $ref: '#/components/schemas/PagingResponseModel'
+      type: object
+      required:
+      - data
+      - paging
+      title: PaginatedBaseResponse[TimeOffGetUserBalancesResponse]
+    TimeOffPutUserBalanceResponse:
+      properties:
+        balance:
+          allOf:
+          - $ref: '#/components/schemas/TimeOffUserBalance'
+          title: Balance
+          description: The updated user balance
+      type: object
+      required:
+      - balance
+      title: TimeOffPutUserBalanceResponse
     TimeOffGetUserBalancesResponse:
       properties:
         balances:
@@ -250,17 +212,55 @@ components:
       - balance
       - policyId
       title: TimeOffUserBalance
-    TimeOffPutUserBalanceResponse:
+    PolicyUnitsEnum:
+      type: string
+      enum:
+      - hours
+      - days
+      title: PolicyUnitsEnum
+      description: An enumeration.
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    TimeOffUpdateUserBalanceRequest:
       properties:
         balance:
-          allOf:
-          - $ref: '#/components/schemas/TimeOffUserBalance'
+          type: number
           title: Balance
-          description: The updated user balance
+          description: The balance to update to
       type: object
       required:
       - balance
-      title: TimeOffPutUserBalanceResponse
+      title: TimeOffUpdateUserBalanceRequest
+    APIResponse_TimeOffPutUserBalanceResponse_:
+      properties:
+        requestId:
+          type: string
+          title: Requestid
+        data:
+          $ref: '#/components/schemas/TimeOffPutUserBalanceResponse'
+      type: object
+      required:
+      - data
+      title: APIResponse[TimeOffPutUserBalanceResponse]
   securitySchemes:
     APIKeyHeader:
       type: apiKey

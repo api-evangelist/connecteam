@@ -267,106 +267,6 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
-    PunchSourceResponse:
-      properties:
-        id:
-          type: string
-          title: Id
-          description: Unique identifier of the source (for NFC or geofence-based sources)
-        type:
-          allOf:
-          - $ref: '#/components/schemas/PunchSourceType'
-          description: Indicates how the punch was performed
-        mode:
-          allOf:
-          - $ref: '#/components/schemas/AutoClockOutModeType'
-          description: For autoClockOut type, indicates the reason for the auto clock out (e.g., dailyLimit, geofenceExit)
-        name:
-          type: string
-          title: Name
-          description: Human-readable name of the source (for NFC or geofence-based sources)
-      type: object
-      required:
-      - type
-      title: PunchSourceResponse
-    TimeOffActivityResponse:
-      properties:
-        id:
-          type: string
-          title: Id
-          description: The unique identifier of the time clock
-        managerNote:
-          type: string
-          title: Managernote
-          description: The manager note providing additional details
-        employeeNote:
-          type: string
-          title: Employeenote
-          description: The employee note providing additional details
-        start:
-          allOf:
-          - $ref: '#/components/schemas/TimeActivityTimePointResponse'
-          title: Start
-          description: The start time of the time activity
-        end:
-          allOf:
-          - $ref: '#/components/schemas/TimeActivityTimePointResponse'
-          title: End
-          description: The end time of the time activity
-        createdAt:
-          type: integer
-          minimum: 1.0
-          title: Createdat
-          description: The creation time of the time activity
-        modifiedAt:
-          type: integer
-          minimum: 1.0
-          title: Modifiedat
-          description: The last modification time of the time activity
-        policyTypeId:
-          type: string
-          title: Policytypeid
-          description: The ID of the policy type
-        duration:
-          allOf:
-          - $ref: '#/components/schemas/TimeOffDurationResponse'
-          title: Duration
-          description: The duration of the time off
-        isAllDay:
-          type: boolean
-          title: Isallday
-          description: Indicates whether the time off is all day
-      type: object
-      required:
-      - id
-      - start
-      - policyTypeId
-      - duration
-      - isAllDay
-      title: TimeOffActivityResponse
-    TimeActivitiesCreateResponse:
-      properties:
-        timeActivitiesByUsers:
-          items:
-            $ref: '#/components/schemas/UserTimeActivity'
-          type: array
-          title: Timeactivitiesbyusers
-          description: The time activities
-      type: object
-      required:
-      - timeActivitiesByUsers
-      title: TimeActivitiesCreateResponse
-    APIResponse_BaseResponse_:
-      properties:
-        requestId:
-          type: string
-          title: Requestid
-        data:
-          $ref: '#/components/schemas/BaseResponse'
-      type: object
-      required:
-      - data
-      title: APIResponse[BaseResponse]
     GeneralActivityShiftAttachmentValueResponse:
       properties:
         itemId:
@@ -407,85 +307,95 @@ components:
           description: The value of the shift attachment of type signature
       type: object
       title: GeneralActivityShiftAttachmentValueResponse
-    ActivityFileResponse:
+    PunchSourceResponse:
       properties:
-        fileName:
+        id:
           type: string
-          title: Filename
-          description: The name of the file in a shift attachment of type file
-        fileUrl:
+          title: Id
+          description: Unique identifier of the source (for NFC or geofence-based sources)
+        type:
+          allOf:
+          - $ref: '#/components/schemas/PunchSourceType'
+          description: Indicates how the punch was performed
+        mode:
+          allOf:
+          - $ref: '#/components/schemas/AutoClockOutModeType'
+          description: For autoClockOut type, indicates the reason for the auto clock out (e.g., dailyLimit, geofenceExit)
+        name:
           type: string
-          title: Fileurl
-          description: The URL of the file in a shift attachment of type file
+          title: Name
+          description: Human-readable name of the source (for NFC or geofence-based sources)
       type: object
       required:
-      - fileName
-      - fileUrl
-      title: ActivityFileResponse
-    APIResponse_TimeActivitiesGetResponse_:
+      - type
+      title: PunchSourceResponse
+    AutoClockOutModeType:
+      type: string
+      enum:
+      - dailyLimit
+      - hourLimit
+      - schedulerShiftEnded
+      - geofenceExit
+      - disabledGps
+      - disabledGpsPermission
+      title: AutoClockOutModeType
+      description: An enumeration.
+    ErrorParing:
       properties:
-        requestId:
+        error_message:
           type: string
-          title: Requestid
-        data:
-          $ref: '#/components/schemas/TimeActivitiesGetResponse'
+          title: Error Message
+        error_code:
+          type: integer
+          title: Error Code
       type: object
       required:
-      - data
-      title: APIResponse[TimeActivitiesGetResponse]
-    TimeActivitiesUpdateResponse:
-      properties:
-        timeActivitiesByUsers:
-          items:
-            $ref: '#/components/schemas/UserTimeActivity'
-          type: array
-          title: Timeactivitiesbyusers
-          description: The time activities
-      type: object
-      required:
-      - timeActivitiesByUsers
-      title: TimeActivitiesUpdateResponse
-    UserTimeActivitiesUpdateRequest:
+      - error_message
+      - error_code
+      title: ErrorParing
+      description: V1 error paring model for backward compatibility
+    UserTimeActivity:
       properties:
         userId:
           type: integer
           minimum: 1.0
           title: Userid
-          description: The user ID of the time activity
+          description: The ID of the user
         shifts:
           items:
-            $ref: '#/components/schemas/TimeActivityShiftUpdateRequest'
+            $ref: '#/components/schemas/ShiftActivityResponse'
           type: array
-          maxItems: 50
           title: Shifts
-          description: The shifts to update
-        manualbreaks:
+          description: The shifts
+        manualBreaks:
           items:
-            $ref: '#/components/schemas/TimeActivityManualBreakUpdateRequest'
+            $ref: '#/components/schemas/ManualBreakActivityResponse'
           type: array
-          maxItems: 50
           title: Manualbreaks
-          description: The breaks to update
+          description: The manual breaks
+        timeOffs:
+          items:
+            $ref: '#/components/schemas/TimeOffActivityResponse'
+          type: array
+          title: Timeoffs
+          description: The time offs
       type: object
       required:
       - userId
       - shifts
-      title: UserTimeActivitiesUpdateRequest
-    TimeOffDurationResponse:
+      - manualBreaks
+      title: UserTimeActivity
+    APIResponse_TimeActivitiesCreateResponse_:
       properties:
-        value:
-          type: number
-          title: Value
-          description: The value of the duration
-        units:
-          allOf:
-          - $ref: '#/components/schemas/TimeOffActivityDurationUnits'
-          description: The units of the time off in the chosen unit (hours/days)
+        requestId:
+          type: string
+          title: Requestid
+        data:
+          $ref: '#/components/schemas/TimeActivitiesCreateResponse'
       type: object
       required:
-      - value
-      - units
-      title: TimeOffDurationResponse
+      - data
+      title: APIResponse[TimeActivitiesCreateResponse]
     GeneralActivityShiftAttachmentResponse:
       properties:
         shiftAttachmentId:
@@ -502,18 +412,18 @@ components:
       - shiftAttachmentId
       - attachment
       title: GeneralActivityShiftAttachmentResponse
-    PunchSourceType:
-      type: string
-      enum:
-      - autoClockOut
-      - nfc
-      - mobile
-      - pc
-      - kiosk
-      - api
-      - admin
-      title: PunchSourceType
-      description: An enumeration.
+    TimeActivitiesGetResponse:
+      properties:
+        timeActivitiesByUsers:
+          items:
+            $ref: '#/components/schemas/UserTimeActivity'
+          type: array
+          title: Timeactivitiesbyusers
+          description: The time activities
+      type: object
+      required:
+      - timeActivitiesByUsers
+      title: TimeActivitiesGetResponse
     TimeActivityShiftCreateRequest:
       properties:
         start:
@@ -546,129 +456,18 @@ components:
       required:
       - start
       title: TimeActivityShiftCreateRequest
-    UserTimeActivity:
+    APIResponse_BaseResponse_:
       properties:
-        userId:
-          type: integer
-          minimum: 1.0
-          title: Userid
-          description: The ID of the user
-        shifts:
-          items:
-            $ref: '#/components/schemas/ShiftActivityResponse'
-          type: array
-          title: Shifts
-          description: The shifts
-        manualBreaks:
-          items:
-            $ref: '#/components/schemas/ManualBreakActivityResponse'
-          type: array
-          title: Manualbreaks
-          description: The manual breaks
-        timeOffs:
-          items:
-            $ref: '#/components/schemas/TimeOffActivityResponse'
-          type: array
-          title: Timeoffs
-          description: The time offs
+        requestId:
+          type: string
+          title: Requestid
+        data:
+          $ref: '#/components/schemas/BaseResponse'
       type: object
       required:
-      - userId
-      - shifts
-      - manualBreaks
-      title: UserTimeActivity
-    TimeActivityTimePointResponse:
-      properties:
-        timestamp:
-          type: integer
-          minimum: 1.0
-          title: Timestamp
-          description: The timestamp in Unix format (in seconds)
-        timezone:
-          type: string
-          title: Timezone
-          description: The timezone in Tz format (e.g. America/New_York)
-        locationData:
-          allOf:
-          - $ref: '#/components/schemas/GpsData'
-          title: Locationdata
-          description: The location data
-        geofenceId:
-          type: string
-          title: Geofenceid
-          description: The ID of the geofence the user was inside when this punch was recorded. None if the punch was outside any configured geofence.
-        source:
-          allOf:
-          - $ref: '#/components/schemas/PunchSourceResponse'
-          title: Source
-          description: Describes the origin from which the punch was created
-      type: object
-      required:
-      - timestamp
-      - timezone
-      title: TimeActivityTimePointResponse
-    TimeActivitiesGetResponse:
-      properties:
-        timeActivitiesByUsers:
-          items:
-            $ref: '#/components/schemas/UserTimeActivity'
-          type: array
-          title: Timeactivitiesbyusers
-          description: The time activities
-      type: object
-      required:
-      - timeActivitiesByUsers
-      title: TimeActivitiesGetResponse
-    TimeActivitiesUpdateRequestList:
-      properties:
-        timeActivities:
-          items:
-            $ref: '#/components/schemas/UserTimeActivitiesUpdateRequest'
-          type: array
-          maxItems: 100
-          title: Timeactivities
-          description: List of time activities of the users
-      type: object
-      required:
-      - timeActivities
-      title: TimeActivitiesUpdateRequestList
-    TimeActivityShiftUpdateRequest:
-      properties:
-        id:
-          type: string
-          title: Id
-          description: The ID of the time activity associated with the time clock
-        start:
-          allOf:
-          - $ref: '#/components/schemas/TimestampWithTimezoneRequest'
-          title: Start
-          description: The start time of the time activity
-        end:
-          allOf:
-          - $ref: '#/components/schemas/TimestampWithTimezoneRequest'
-          title: End
-          description: The end time of the time activity
-        employeeNote:
-          type: string
-          title: Employeenote
-          description: Employee note providing additional details
-        managerNote:
-          type: string
-          title: Managernote
-          description: Manager note providing additional details
-        jobId:
-          type: string
-          title: Jobid
-          description: The job ID to associate with the shift (if the shift remains under the same job leave it empty)
-        subJobId:
-          type: string
-          title: Subjobid
-          description: The sub-job ID to associate with the job (if the sub-job remains under the same parent job update only the sub-job ID)
-      type: object
-      required:
-      - id
-      title: TimeActivityShiftUpdateRequest
-    UserTimeActivitiesCreateRequest:
+      - data
+      title: APIResponse[BaseResponse]
+    UserTimeActivitiesUpdateRequest:
       properties:
         userId:
           type: integer
@@ -677,267 +476,23 @@ components:
           description: The user ID of the time activity
         shifts:
           items:
-            $ref: '#/components/schemas/TimeActivityShiftCreateRequest'
+            $ref: '#/components/schemas/TimeActivityShiftUpdateRequest'
           type: array
           maxItems: 50
           title: Shifts
-          description: The new shifts
+          description: The shifts to update
         manualbreaks:
           items:
-            $ref: '#/components/schemas/TimeActivityManualBreakCreateRequest'
+            $ref: '#/components/schemas/TimeActivityManualBreakUpdateRequest'
           type: array
           maxItems: 50
           title: Manualbreaks
-          description: The new manual breaks
+          description: The breaks to update
       type: object
       required:
       - userId
-      title: UserTimeActivitiesCreateRequest
-    APIResponse_TimeActivitiesUpdateResponse_:
-      properties:
-        requestId:
-          type: string
-          title: Requestid
-        data:
-          $ref: '#/components/schemas/TimeActivitiesUpdateResponse'
-      type: object
-      required:
-      - data
-      title: APIResponse[TimeActivitiesUpdateResponse]
-    TimeOffActivityDurationUnits:
-      type: string
-      enum:
-      - hours
-      - days
-      title: TimeOffActivityDurationUnits
-      description: An enumeration.
-    ValidationErrorResponse:
-      properties:
-        details:
-          allOf:
-          - $ref: '#/components/schemas/ErrorParing'
-          title: Details
-          default:
-            error_message: Request is invalid
-            error_code: 1004
-        error:
-          anyOf:
-          - type: object
-          - items:
-              type: object
-            type: array
-          - type: string
-          title: Error
-          default: Validation Error
-        path:
-          type: string
-          title: Path
-        requestId:
-          type: string
-          title: Requestid
-      type: object
-      title: ValidationErrorResponse
-      description: "All errors responses should include:\nrequest_id,\nConnecteam error code and error message,\nthe url path,\nthe request body,\nand error data which can be a pydantic class or a dict and should look something like this:\n`{\n    \"error.path\": \"the gist of the error\"\n}`\n\nfor example if the user doesn't exist it should look something like this:\n`{\n    \"user.id\": \"user doesn't exist\"\n}`"
-    TimeActivityType:
-      type: string
-      enum:
-      - shift
-      - manual_break
-      - time_off
-      title: TimeActivityType
-      description: An enumeration.
-    TimeActivityManualBreakCreateRequest:
-      properties:
-        id:
-          type: string
-          title: Id
-          description: The ID of the manual break
-        start:
-          allOf:
-          - $ref: '#/components/schemas/TimestampWithTimezoneRequest'
-          title: Start
-          description: The start time
-        end:
-          allOf:
-          - $ref: '#/components/schemas/TimestampWithTimezoneRequest'
-          title: End
-          description: The end time
-        employeeNote:
-          type: string
-          title: Employeenote
-          description: Employee note providing additional details
-        managerNote:
-          type: string
-          title: Managernote
-          description: Manager note providing additional details
-      type: object
-      required:
-      - start
-      - id
-      title: TimeActivityManualBreakCreateRequest
-    AutoClockOutModeType:
-      type: string
-      enum:
-      - dailyLimit
-      - hourLimit
-      - schedulerShiftEnded
-      - geofenceExit
-      - disabledGps
-      - disabledGpsPermission
-      title: AutoClockOutModeType
-      description: An enumeration.
-    TimeActivityManualBreakUpdateRequest:
-      properties:
-        id:
-          type: string
-          title: Id
-          description: The ID of the time activity associated with the time clock
-        start:
-          allOf:
-          - $ref: '#/components/schemas/TimestampWithTimezoneRequest'
-          title: Start
-          description: The start time of the time activity
-        end:
-          allOf:
-          - $ref: '#/components/schemas/TimestampWithTimezoneRequest'
-          title: End
-          description: The end time of the time activity
-        employeeNote:
-          type: string
-          title: Employeenote
-          description: Employee note providing additional details
-        managerNote:
-          type: string
-          title: Managernote
-          description: Manager note providing additional details
-        manualBreakId:
-          type: string
-          title: Manualbreakid
-          description: The manual break ID to associate with the break
-      type: object
-      required:
-      - id
-      title: TimeActivityManualBreakUpdateRequest
-    BaseResponse:
-      properties: {}
-      type: object
-      title: BaseResponse
-    GpsData:
-      properties:
-        address:
-          type: string
-          title: Address
-          description: The address associated with the GPS data.
-        longitude:
-          type: number
-          title: Longitude
-          description: The longitude coordinate.
-        latitude:
-          type: number
-          title: Latitude
-          description: The latitude coordinate.
-      type: object
-      title: GpsData
-    ErrorParing:
-      properties:
-        error_message:
-          type: string
-          title: Error Message
-        error_code:
-          type: integer
-          title: Error Code
-      type: object
-      required:
-      - error_message
-      - error_code
-      title: ErrorParing
-      description: V1 error paring model for backward compatibility
-    ValidationError:
-      properties:
-        loc:
-          items:
-            anyOf:
-            - type: string
-            - type: integer
-          type: array
-          title: Location
-        msg:
-          type: string
-          title: Message
-        type:
-          type: string
-          title: Error Type
-      type: object
-      required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
-    TimestampWithTimezoneRequest:
-      properties:
-        timestamp:
-          type: integer
-          minimum: 1.0
-          title: Timestamp
-          description: The timestamp in Unix format (in seconds)
-        timezone:
-          type: string
-          title: Timezone
-          description: The timezone in Tz format (e.g. America/New_York)
-      type: object
-      required:
-      - timestamp
-      - timezone
-      title: TimestampWithTimezoneRequest
-    ManualBreakActivityResponse:
-      properties:
-        id:
-          type: string
-          title: Id
-          description: The unique identifier of the time clock
-        managerNote:
-          type: string
-          title: Managernote
-          description: The manager note providing additional details
-        employeeNote:
-          type: string
-          title: Employeenote
-          description: The employee note providing additional details
-        start:
-          allOf:
-          - $ref: '#/components/schemas/TimeActivityTimePointResponse'
-          title: Start
-          description: The start time of the time activity
-        end:
-          allOf:
-          - $ref: '#/components/schemas/TimeActivityTimePointResponse'
-          title: End
-          description: The end time of the time activity
-        createdAt:
-          type: integer
-          minimum: 1.0
-          title: Createdat
-          description: The creation time of the time activity
-        modifiedAt:
-          type: integer
-          minimum: 1.0
-          title: Modifiedat
-          description: The last modification time of the time activity
-        manualBreakId:
-          type: string
-          title: Manualbreakid
-          description: The ID of the manual break
-        isAutoClockOut:
-          type: boolean
-          title: Isautoclockout
-          description: Indicates whether the user was auto clocked out from the shift
-          default: false
-      type: object
-      required:
-      - id
-      - start
-      - manualBreakId
-      title: ManualBreakActivityResponse
+      - shifts
+      title: UserTimeActivitiesUpdateRequest
     ShiftActivityResponse:
       properties:
         id:
@@ -1000,6 +555,67 @@ components:
       - id
       - start
       title: ShiftActivityResponse
+    TimeActivityShiftUpdateRequest:
+      properties:
+        id:
+          type: string
+          title: Id
+          description: The ID of the time activity associated with the time clock
+        start:
+          allOf:
+          - $ref: '#/components/schemas/TimestampWithTimezoneRequest'
+          title: Start
+          description: The start time of the time activity
+        end:
+          allOf:
+          - $ref: '#/components/schemas/TimestampWithTimezoneRequest'
+          title: End
+          description: The end time of the time activity
+        employeeNote:
+          type: string
+          title: Employeenote
+          description: Employee note providing additional details
+        managerNote:
+          type: string
+          title: Managernote
+          description: Manager note providing additional details
+        jobId:
+          type: string
+          title: Jobid
+          description: The job ID to associate with the shift (if the shift remains under the same job leave it empty)
+        subJobId:
+          type: string
+          title: Subjobid
+          description: The sub-job ID to associate with the job (if the sub-job remains under the same parent job update only the sub-job ID)
+      type: object
+      required:
+      - id
+      title: TimeActivityShiftUpdateRequest
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    BaseResponse:
+      properties: {}
+      type: object
+      title: BaseResponse
     TimeActivitiesCreateRequestList:
       properties:
         timeActivities:
@@ -1018,6 +634,323 @@ components:
       required:
       - timeActivities
       title: TimeActivitiesCreateRequestList
+    ValidationErrorResponse:
+      properties:
+        details:
+          allOf:
+          - $ref: '#/components/schemas/ErrorParing'
+          title: Details
+          default:
+            error_message: Request is invalid
+            error_code: 1004
+        error:
+          anyOf:
+          - type: object
+          - items:
+              type: object
+            type: array
+          - type: string
+          title: Error
+          default: Validation Error
+        path:
+          type: string
+          title: Path
+        requestId:
+          type: string
+          title: Requestid
+      type: object
+      title: ValidationErrorResponse
+      description: "All errors responses should include:\nrequest_id,\nConnecteam error code and error message,\nthe url path,\nthe request body,\nand error data which can be a pydantic class or a dict and should look something like this:\n`{\n    \"error.path\": \"the gist of the error\"\n}`\n\nfor example if the user doesn't exist it should look something like this:\n`{\n    \"user.id\": \"user doesn't exist\"\n}`"
+    ActivityFileResponse:
+      properties:
+        fileName:
+          type: string
+          title: Filename
+          description: The name of the file in a shift attachment of type file
+        fileUrl:
+          type: string
+          title: Fileurl
+          description: The URL of the file in a shift attachment of type file
+      type: object
+      required:
+      - fileName
+      - fileUrl
+      title: ActivityFileResponse
+    TimeActivityType:
+      type: string
+      enum:
+      - shift
+      - manual_break
+      - time_off
+      title: TimeActivityType
+      description: An enumeration.
+    ManualBreakActivityResponse:
+      properties:
+        id:
+          type: string
+          title: Id
+          description: The unique identifier of the time clock
+        managerNote:
+          type: string
+          title: Managernote
+          description: The manager note providing additional details
+        employeeNote:
+          type: string
+          title: Employeenote
+          description: The employee note providing additional details
+        start:
+          allOf:
+          - $ref: '#/components/schemas/TimeActivityTimePointResponse'
+          title: Start
+          description: The start time of the time activity
+        end:
+          allOf:
+          - $ref: '#/components/schemas/TimeActivityTimePointResponse'
+          title: End
+          description: The end time of the time activity
+        createdAt:
+          type: integer
+          minimum: 1.0
+          title: Createdat
+          description: The creation time of the time activity
+        modifiedAt:
+          type: integer
+          minimum: 1.0
+          title: Modifiedat
+          description: The last modification time of the time activity
+        manualBreakId:
+          type: string
+          title: Manualbreakid
+          description: The ID of the manual break
+        isAutoClockOut:
+          type: boolean
+          title: Isautoclockout
+          description: Indicates whether the user was auto clocked out from the shift
+          default: false
+      type: object
+      required:
+      - id
+      - start
+      - manualBreakId
+      title: ManualBreakActivityResponse
+    APIResponse_TimeActivitiesGetResponse_:
+      properties:
+        requestId:
+          type: string
+          title: Requestid
+        data:
+          $ref: '#/components/schemas/TimeActivitiesGetResponse'
+      type: object
+      required:
+      - data
+      title: APIResponse[TimeActivitiesGetResponse]
+    TimeActivitiesUpdateRequestList:
+      properties:
+        timeActivities:
+          items:
+            $ref: '#/components/schemas/UserTimeActivitiesUpdateRequest'
+          type: array
+          maxItems: 100
+          title: Timeactivities
+          description: List of time activities of the users
+      type: object
+      required:
+      - timeActivities
+      title: TimeActivitiesUpdateRequestList
+    TimeOffDurationResponse:
+      properties:
+        value:
+          type: number
+          title: Value
+          description: The value of the duration
+        units:
+          allOf:
+          - $ref: '#/components/schemas/TimeOffActivityDurationUnits'
+          description: The units of the time off in the chosen unit (hours/days)
+      type: object
+      required:
+      - value
+      - units
+      title: TimeOffDurationResponse
+    GpsData:
+      properties:
+        address:
+          type: string
+          title: Address
+          description: The address associated with the GPS data.
+        longitude:
+          type: number
+          title: Longitude
+          description: The longitude coordinate.
+        latitude:
+          type: number
+          title: Latitude
+          description: The latitude coordinate.
+      type: object
+      title: GpsData
+    TimeActivitiesCreateResponse:
+      properties:
+        timeActivitiesByUsers:
+          items:
+            $ref: '#/components/schemas/UserTimeActivity'
+          type: array
+          title: Timeactivitiesbyusers
+          description: The time activities
+      type: object
+      required:
+      - timeActivitiesByUsers
+      title: TimeActivitiesCreateResponse
+    TimeActivityTimePointResponse:
+      properties:
+        timestamp:
+          type: integer
+          minimum: 1.0
+          title: Timestamp
+          description: The timestamp in Unix format (in seconds)
+        timezone:
+          type: string
+          title: Timezone
+          description: The timezone in Tz format (e.g. America/New_York)
+        locationData:
+          allOf:
+          - $ref: '#/components/schemas/GpsData'
+          title: Locationdata
+          description: The location data
+        geofenceId:
+          type: string
+          title: Geofenceid
+          description: The ID of the geofence the user was inside when this punch was recorded. None if the punch was outside any configured geofence.
+        source:
+          allOf:
+          - $ref: '#/components/schemas/PunchSourceResponse'
+          title: Source
+          description: Describes the origin from which the punch was created
+      type: object
+      required:
+      - timestamp
+      - timezone
+      title: TimeActivityTimePointResponse
+    UserTimeActivitiesCreateRequest:
+      properties:
+        userId:
+          type: integer
+          minimum: 1.0
+          title: Userid
+          description: The user ID of the time activity
+        shifts:
+          items:
+            $ref: '#/components/schemas/TimeActivityShiftCreateRequest'
+          type: array
+          maxItems: 50
+          title: Shifts
+          description: The new shifts
+        manualbreaks:
+          items:
+            $ref: '#/components/schemas/TimeActivityManualBreakCreateRequest'
+          type: array
+          maxItems: 50
+          title: Manualbreaks
+          description: The new manual breaks
+      type: object
+      required:
+      - userId
+      title: UserTimeActivitiesCreateRequest
+    TimeOffActivityDurationUnits:
+      type: string
+      enum:
+      - hours
+      - days
+      title: TimeOffActivityDurationUnits
+      description: An enumeration.
+    PunchSourceType:
+      type: string
+      enum:
+      - autoClockOut
+      - nfc
+      - mobile
+      - pc
+      - kiosk
+      - api
+      - admin
+      title: PunchSourceType
+      description: An enumeration.
+    TimestampWithTimezoneRequest:
+      properties:
+        timestamp:
+          type: integer
+          minimum: 1.0
+          title: Timestamp
+          description: The timestamp in Unix format (in seconds)
+        timezone:
+          type: string
+          title: Timezone
+          description: The timezone in Tz format (e.g. America/New_York)
+      type: object
+      required:
+      - timestamp
+      - timezone
+      title: TimestampWithTimezoneRequest
+    TimeActivityManualBreakCreateRequest:
+      properties:
+        id:
+          type: string
+          title: Id
+          description: The ID of the manual break
+        start:
+          allOf:
+          - $ref: '#/components/schemas/TimestampWithTimezoneRequest'
+          title: Start
+          description: The start time
+        end:
+          allOf:
+          - $ref: '#/components/schemas/TimestampWithTimezoneRequest'
+          title: End
+          description: The end time
+        employeeNote:
+          type: string
+          title: Employeenote
+          description: Employee note providing additional details
+        managerNote:
+          type: string
+          title: Managernote
+          description: Manager note providing additional details
+      type: object
+      required:
+      - start
+      - id
+      title: TimeActivityManualBreakCreateRequest
+    TimeActivityManualBreakUpdateRequest:
+      properties:
+        id:
+          type: string
+          title: Id
+          description: The ID of the time activity associated with the time clock
+        start:
+          allOf:
+          - $ref: '#/components/schemas/TimestampWithTimezoneRequest'
+          title: Start
+          description: The start time of the time activity
+        end:
+          allOf:
+          - $ref: '#/components/schemas/TimestampWithTimezoneRequest'
+          title: End
+          description: The end time of the time activity
+        employeeNote:
+          type: string
+          title: Employeenote
+          description: Employee note providing additional details
+        managerNote:
+          type: string
+          title: Managernote
+          description: Manager note providing additional details
+        manualBreakId:
+          type: string
+          title: Manualbreakid
+          description: The manual break ID to associate with the break
+      type: object
+      required:
+      - id
+      title: TimeActivityManualBreakUpdateRequest
     HTTPValidationError:
       properties:
         detail:
@@ -1027,17 +960,84 @@ components:
           title: Detail
       type: object
       title: HTTPValidationError
-    APIResponse_TimeActivitiesCreateResponse_:
+    APIResponse_TimeActivitiesUpdateResponse_:
       properties:
         requestId:
           type: string
           title: Requestid
         data:
-          $ref: '#/components/schemas/TimeActivitiesCreateResponse'
+          $ref: '#/components/schemas/TimeActivitiesUpdateResponse'
       type: object
       required:
       - data
-      title: APIResponse[TimeActivitiesCreateResponse]
+      title: APIResponse[TimeActivitiesUpdateResponse]
+    TimeActivitiesUpdateResponse:
+      properties:
+        timeActivitiesByUsers:
+          items:
+            $ref: '#/components/schemas/UserTimeActivity'
+          type: array
+          title: Timeactivitiesbyusers
+          description: The time activities
+      type: object
+      required:
+      - timeActivitiesByUsers
+      title: TimeActivitiesUpdateResponse
+    TimeOffActivityResponse:
+      properties:
+        id:
+          type: string
+          title: Id
+          description: The unique identifier of the time clock
+        managerNote:
+          type: string
+          title: Managernote
+          description: The manager note providing additional details
+        employeeNote:
+          type: string
+          title: Employeenote
+          description: The employee note providing additional details
+        start:
+          allOf:
+          - $ref: '#/components/schemas/TimeActivityTimePointResponse'
+          title: Start
+          description: The start time of the time activity
+        end:
+          allOf:
+          - $ref: '#/components/schemas/TimeActivityTimePointResponse'
+          title: End
+          description: The end time of the time activity
+        createdAt:
+          type: integer
+          minimum: 1.0
+          title: Createdat
+          description: The creation time of the time activity
+        modifiedAt:
+          type: integer
+          minimum: 1.0
+          title: Modifiedat
+          description: The last modification time of the time activity
+        policyTypeId:
+          type: string
+          title: Policytypeid
+          description: The ID of the policy type
+        duration:
+          allOf:
+          - $ref: '#/components/schemas/TimeOffDurationResponse'
+          title: Duration
+          description: The duration of the time off
+        isAllDay:
+          type: boolean
+          title: Isallday
+          description: Indicates whether the time off is all day
+      type: object
+      required:
+      - id
+      - start
+      - policyTypeId
+      - duration
+      - isAllDay
+      title: TimeOffActivityResponse
   securitySchemes:
     APIKeyHeader:
       type: apiKey

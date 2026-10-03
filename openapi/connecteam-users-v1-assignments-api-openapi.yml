@@ -51,6 +51,40 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
+    AssetInstance:
+      properties:
+        id:
+          type: integer
+          title: Id
+          description: Asset id
+        type:
+          type: string
+          title: Type
+          description: Asset type
+      type: object
+      required:
+      - type
+      - id
+      title: AssetInstance
+    LpidWithCoursesDisplayName:
+      type: string
+      enum:
+      - quickTasks
+      - events
+      - quiz
+      - knowledgeBase
+      - updates
+      - directory
+      - timeClock
+      - shiftscheduler
+      - workflows
+      - surveys
+      - customize
+      - suggestions
+      - library
+      - timeOff
+      title: LpidWithCoursesDisplayName
+      description: An enumeration.
     ValidationError:
       properties:
         loc:
@@ -72,21 +106,15 @@ components:
       - msg
       - type
       title: ValidationError
-    AssetInstance:
+    HTTPValidationError:
       properties:
-        id:
-          type: integer
-          title: Id
-          description: Asset id
-        type:
-          type: string
-          title: Type
-          description: Asset type
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
       type: object
-      required:
-      - type
-      - id
-      title: AssetInstance
+      title: HTTPValidationError
     APIResponse_AssignmentsResponse_:
       properties:
         requestId:
@@ -116,34 +144,6 @@ components:
           default: []
       type: object
       title: AssignmentsResponse
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
-    LpidWithCoursesDisplayName:
-      type: string
-      enum:
-      - quickTasks
-      - events
-      - quiz
-      - knowledgeBase
-      - updates
-      - directory
-      - timeClock
-      - shiftscheduler
-      - workflows
-      - surveys
-      - customize
-      - suggestions
-      - library
-      - timeOff
-      title: LpidWithCoursesDisplayName
-      description: An enumeration.
     SmartGroupInstance:
       properties:
         id:

@@ -199,6 +199,111 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
+    PublicBaseWebhookResponse:
+      properties:
+        id:
+          type: integer
+          title: Id
+          description: The unique identifier of the webhook
+        name:
+          type: string
+          title: Name
+          description: The name of the webhook
+        userId:
+          type: integer
+          title: Userid
+          description: Webhook creator's user id
+        timeCreated:
+          type: integer
+          title: Timecreated
+          description: The timestamp when the webhook was created
+        url:
+          type: string
+          minLength: 1
+          format: uri
+          title: Url
+          description: The webhook's URL
+        isDisabled:
+          type: boolean
+          title: Isdisabled
+          description: The webhook's disabled status
+        featureType:
+          type: string
+          title: Featuretype
+          description: The webhook's feature type
+        entityId:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Entityid
+          description: The webhook's entity id as a string. `null` for broadcast webhooks.
+        objectId:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Objectid
+          description: Deprecated. The legacy numeric object id for this webhook.
+          deprecated: true
+        retryLimit:
+          type: integer
+          title: Retrylimit
+          description: The webhook's retry limit
+        eventTypes:
+          items:
+            type: string
+          type: array
+          title: Eventtypes
+          description: The webhook's event types
+        webhookVersion:
+          type: integer
+          title: Webhookversion
+          description: The version of the webhook payload schema
+          default: 1
+      type: object
+      required:
+      - id
+      - name
+      - userId
+      - timeCreated
+      - url
+      - isDisabled
+      - featureType
+      - retryLimit
+      - eventTypes
+      title: PublicBaseWebhookResponse
+    WebhookDeleteResponse:
+      properties: {}
+      type: object
+      title: WebhookDeleteResponse
+    APIResponseV2_PublicBaseWebhookResponse_:
+      properties:
+        requestId:
+          type: string
+          title: Requestid
+        data:
+          $ref: '#/components/schemas/PublicBaseWebhookResponse'
+      type: object
+      required:
+      - data
+      title: APIResponseV2[PublicBaseWebhookResponse]
+    PagingResponseModelV2:
+      properties:
+        offset:
+          type: integer
+          minimum: 0.0
+          title: Offset
+          description: The resource offset of the last successfully read resource will be returned as the paging.offset JSON property of a paginated response containing more results
+        total:
+          anyOf:
+          - type: integer
+            minimum: 0.0
+          - type: 'null'
+          title: Total
+          description: Total number of resources matching the request, ignoring pagination. Use this to retrieve the full count without paginating through every page. Only populated by endpoints that compute it.
+      type: object
+      required:
+      - offset
+      title: PagingResponseModelV2
     WebhookOrigin:
       type: string
       enum:
@@ -226,24 +331,38 @@ components:
       - msg
       - type
       title: ValidationError
-    WebhookDeleteResponse:
-      properties: {}
+    WebhookListResponse:
+      properties:
+        webhooks:
+          items:
+            $ref: '#/components/schemas/WebhookResponse'
+          type: array
+          title: Webhooks
+          description: List of webhooks
       type: object
-      title: WebhookDeleteResponse
-    PaginatedBaseResponseV2_WebhookListResponse_:
+      required:
+      - webhooks
+      title: WebhookListResponse
+    APIResponseV2_WebhookDeleteResponse_:
       properties:
         requestId:
           type: string
           title: Requestid
         data:
-          $ref: '#/components/schemas/WebhookListResponse'
-        paging:
-          $ref: '#/components/schemas/PagingResponseModelV2'
+          $ref: '#/components/schemas/WebhookDeleteResponse'
       type: object
       required:
       - data
-      - paging
-      title: PaginatedBaseResponseV2[WebhookListResponse]
+      title: APIResponseV2[WebhookDeleteResponse]
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
     WebhookResponse:
       properties:
         id:
@@ -320,110 +439,20 @@ components:
       - retryLimit
       - eventTypes
       title: WebhookResponse
-    APIResponseV2_PublicBaseWebhookResponse_:
+    PaginatedBaseResponseV2_WebhookListResponse_:
       properties:
         requestId:
           type: string
           title: Requestid
         data:
-          $ref: '#/components/schemas/PublicBaseWebhookResponse'
+          $ref: '#/components/schemas/WebhookListResponse'
+        paging:
+          $ref: '#/components/schemas/PagingResponseModelV2'
       type: object
       required:
       - data
-      title: APIResponseV2[PublicBaseWebhookResponse]
-    WebhookListResponse:
-      properties:
-        webhooks:
-          items:
-            $ref: '#/components/schemas/WebhookResponse'
-          type: array
-          title: Webhooks
-          description: List of webhooks
-      type: object
-      required:
-      - webhooks
-      title: WebhookListResponse
-    PublicBaseWebhookResponse:
-      properties:
-        id:
-          type: integer
-          title: Id
-          description: The unique identifier of the webhook
-        name:
-          type: string
-          title: Name
-          description: The name of the webhook
-        userId:
-          type: integer
-          title: Userid
-          description: Webhook creator's user id
-        timeCreated:
-          type: integer
-          title: Timecreated
-          description: The timestamp when the webhook was created
-        url:
-          type: string
-          minLength: 1
-          format: uri
-          title: Url
-          description: The webhook's URL
-        isDisabled:
-          type: boolean
-          title: Isdisabled
-          description: The webhook's disabled status
-        featureType:
-          type: string
-          title: Featuretype
-          description: The webhook's feature type
-        entityId:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Entityid
-          description: The webhook's entity id as a string. `null` for broadcast webhooks.
-        objectId:
-          anyOf:
-          - type: integer
-          - type: 'null'
-          title: Objectid
-          description: Deprecated. The legacy numeric object id for this webhook.
-          deprecated: true
-        retryLimit:
-          type: integer
-          title: Retrylimit
-          description: The webhook's retry limit
-        eventTypes:
-          items:
-            type: string
-          type: array
-          title: Eventtypes
-          description: The webhook's event types
-        webhookVersion:
-          type: integer
-          title: Webhookversion
-          description: The version of the webhook payload schema
-          default: 1
-      type: object
-      required:
-      - id
-      - name
-      - userId
-      - timeCreated
-      - url
-      - isDisabled
-      - featureType
-      - retryLimit
-      - eventTypes
-      title: PublicBaseWebhookResponse
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
+      - paging
+      title: PaginatedBaseResponseV2[WebhookListResponse]
     WebhookUpdateRequest:
       properties:
         name:
@@ -488,17 +517,6 @@ components:
           description: The version of the webhook payload schema.
       type: object
       title: WebhookUpdateRequest
-    APIResponseV2_WebhookDeleteResponse_:
-      properties:
-        requestId:
-          type: string
-          title: Requestid
-        data:
-          $ref: '#/components/schemas/WebhookDeleteResponse'
-      type: object
-      required:
-      - data
-      title: APIResponseV2[WebhookDeleteResponse]
     WebhookCreateRequest:
       properties:
         name:
@@ -558,24 +576,6 @@ components:
       - featureType
       - eventTypes
       title: WebhookCreateRequest
-    PagingResponseModelV2:
-      properties:
-        offset:
-          type: integer
-          minimum: 0.0
-          title: Offset
-          description: The resource offset of the last successfully read resource will be returned as the paging.offset JSON property of a paginated response containing more results
-        total:
-          anyOf:
-          - type: integer
-            minimum: 0.0
-          - type: 'null'
-          title: Total
-          description: Total number of resources matching the request, ignoring pagination. Use this to retrieve the full count without paginating through every page. Only populated by endpoints that compute it.
-      type: object
-      required:
-      - offset
-      title: PagingResponseModelV2
   securitySchemes:
     APIKeyHeader:
       type: apiKey

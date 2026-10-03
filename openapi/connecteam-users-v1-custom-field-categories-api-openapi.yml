@@ -92,21 +92,42 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
-    CustomFieldCategory:
+    PagingResponseModel:
       properties:
-        id:
+        offset:
           type: integer
-          title: Id
-          description: The category's id
-        name:
-          type: string
-          title: Name
-          description: The category's name
+          minimum: 0.0
+          title: Offset
+          description: The resource offset of the last successfully read resource will be returned as the paging.offset JSON property of a paginated response containing more results
+        total:
+          type: integer
+          minimum: 0.0
+          title: Total
+          description: Total number of resources matching the request, ignoring pagination. Use this to retrieve the full count without paginating through every page. Only populated by endpoints that compute it.
       type: object
       required:
+      - offset
+      title: PagingResponseModel
+    PaginatedBaseResponse_CustomFieldCategoriesResponse_:
+      properties:
+        requestId:
+          type: string
+          title: Requestid
+        data:
+          $ref: '#/components/schemas/CustomFieldCategoriesResponse'
+        paging:
+          $ref: '#/components/schemas/PagingResponseModel'
+      type: object
+      required:
+      - data
+      - paging
+      title: PaginatedBaseResponse[CustomFieldCategoriesResponse]
+    CustomFieldCategoriesSortExternal:
+      enum:
       - id
       - name
-      title: CustomFieldCategory
+      title: CustomFieldCategoriesSortExternal
+      description: An enumeration.
     ValidationError:
       properties:
         loc:
@@ -128,40 +149,6 @@ components:
       - msg
       - type
       title: ValidationError
-    CustomFieldCategoriesResponse:
-      properties:
-        categories:
-          items:
-            $ref: '#/components/schemas/CustomFieldCategory'
-          type: array
-          title: Categories
-          description: The custom fields categories
-      type: object
-      required:
-      - categories
-      title: CustomFieldCategoriesResponse
-    CustomFieldCategoriesSortExternal:
-      enum:
-      - id
-      - name
-      title: CustomFieldCategoriesSortExternal
-      description: An enumeration.
-    PagingResponseModel:
-      properties:
-        offset:
-          type: integer
-          minimum: 0.0
-          title: Offset
-          description: The resource offset of the last successfully read resource will be returned as the paging.offset JSON property of a paginated response containing more results
-        total:
-          type: integer
-          minimum: 0.0
-          title: Total
-          description: Total number of resources matching the request, ignoring pagination. Use this to retrieve the full count without paginating through every page. Only populated by endpoints that compute it.
-      type: object
-      required:
-      - offset
-      title: PagingResponseModel
     SortOrder:
       type: string
       enum:
@@ -177,20 +164,33 @@ components:
           title: Detail
       type: object
       title: HTTPValidationError
-    PaginatedBaseResponse_CustomFieldCategoriesResponse_:
+    CustomFieldCategoriesResponse:
       properties:
-        requestId:
-          type: string
-          title: Requestid
-        data:
-          $ref: '#/components/schemas/CustomFieldCategoriesResponse'
-        paging:
-          $ref: '#/components/schemas/PagingResponseModel'
+        categories:
+          items:
+            $ref: '#/components/schemas/CustomFieldCategory'
+          type: array
+          title: Categories
+          description: The custom fields categories
       type: object
       required:
-      - data
-      - paging
-      title: PaginatedBaseResponse[CustomFieldCategoriesResponse]
+      - categories
+      title: CustomFieldCategoriesResponse
+    CustomFieldCategory:
+      properties:
+        id:
+          type: integer
+          title: Id
+          description: The category's id
+        name:
+          type: string
+          title: Name
+          description: The category's name
+      type: object
+      required:
+      - id
+      - name
+      title: CustomFieldCategory
   securitySchemes:
     APIKeyHeader:
       type: apiKey

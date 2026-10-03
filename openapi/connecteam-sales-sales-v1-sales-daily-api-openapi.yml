@@ -62,27 +62,17 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
-    ValidationError:
+    APIResponse_DailySalesGetResponse_:
       properties:
-        loc:
-          items:
-            anyOf:
-            - type: string
-            - type: integer
-          type: array
-          title: Location
-        msg:
+        requestId:
           type: string
-          title: Message
-        type:
-          type: string
-          title: Error Type
+          title: Requestid
+        data:
+          $ref: '#/components/schemas/DailySalesGetResponse'
       type: object
       required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
+      - data
+      title: APIResponse[DailySalesGetResponse]
     DailySalesEntry:
       properties:
         date:
@@ -127,17 +117,27 @@ components:
           title: Detail
       type: object
       title: HTTPValidationError
-    APIResponse_DailySalesGetResponse_:
+    ValidationError:
       properties:
-        requestId:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
           type: string
-          title: Requestid
-        data:
-          $ref: '#/components/schemas/DailySalesGetResponse'
+          title: Message
+        type:
+          type: string
+          title: Error Type
       type: object
       required:
-      - data
-      title: APIResponse[DailySalesGetResponse]
+      - loc
+      - msg
+      - type
+      title: ValidationError
   securitySchemes:
     APIKeyHeader:
       type: apiKey

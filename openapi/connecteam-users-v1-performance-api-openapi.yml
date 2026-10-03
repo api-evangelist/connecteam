@@ -61,6 +61,56 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
+    PerformanceDataRequest:
+      properties:
+        items:
+          items:
+            $ref: '#/components/schemas/PerformanceDataValue'
+          type: array
+          title: Items
+          description: List of performance data values to update
+      type: object
+      required:
+      - items
+      title: PerformanceDataRequest
+      description: Request model for updating performance data.
+    APIResponse_PerformanceUpdateResponse_:
+      properties:
+        requestId:
+          type: string
+          title: Requestid
+        data:
+          $ref: '#/components/schemas/PerformanceUpdateResponse'
+      type: object
+      required:
+      - data
+      title: APIResponse[PerformanceUpdateResponse]
+    PerformanceDataValue:
+      properties:
+        indicatorId:
+          type: integer
+          minimum: 1.0
+          title: Indicatorid
+          description: ID of the performance indicator/metric
+        value:
+          type: number
+          title: Value
+          description: Value for the performance indicator/metric
+      type: object
+      required:
+      - indicatorId
+      - value
+      title: PerformanceDataValue
+      description: Model for a single performance data value.
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
     ValidationError:
       properties:
         loc:
@@ -82,36 +132,6 @@ components:
       - msg
       - type
       title: ValidationError
-    PerformanceDataRequest:
-      properties:
-        items:
-          items:
-            $ref: '#/components/schemas/PerformanceDataValue'
-          type: array
-          title: Items
-          description: List of performance data values to update
-      type: object
-      required:
-      - items
-      title: PerformanceDataRequest
-      description: Request model for updating performance data.
-    PerformanceDataValue:
-      properties:
-        indicatorId:
-          type: integer
-          minimum: 1.0
-          title: Indicatorid
-          description: ID of the performance indicator/metric
-        value:
-          type: number
-          title: Value
-          description: Value for the performance indicator/metric
-      type: object
-      required:
-      - indicatorId
-      - value
-      title: PerformanceDataValue
-      description: Model for a single performance data value.
     PerformanceUpdateResponse:
       properties:
         recordsAffected:
@@ -123,26 +143,6 @@ components:
       - recordsAffected
       title: PerformanceUpdateResponse
       description: Response model for performance data update endpoint.
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
-    APIResponse_PerformanceUpdateResponse_:
-      properties:
-        requestId:
-          type: string
-          title: Requestid
-        data:
-          $ref: '#/components/schemas/PerformanceUpdateResponse'
-      type: object
-      required:
-      - data
-      title: APIResponse[PerformanceUpdateResponse]
   securitySchemes:
     APIKeyHeader:
       type: apiKey

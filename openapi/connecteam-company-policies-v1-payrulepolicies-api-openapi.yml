@@ -33,6 +33,42 @@ paths:
         - company_policies.read
 components:
   schemas:
+    PayRulePoliciesResponse:
+      properties:
+        payRulesPolicies:
+          items:
+            $ref: '#/components/schemas/PayRulePolicy'
+          type: array
+          title: Payrulespolicies
+          description: List of company pay rule policies
+      type: object
+      required:
+      - payRulesPolicies
+      title: PayRulePoliciesResponse
+    PayRulePolicy:
+      properties:
+        id:
+          type: integer
+          title: Id
+          description: The pay rule policy id
+        name:
+          type: string
+          title: Name
+          description: The pay rule policy name
+      type: object
+      required:
+      - id
+      - name
+      title: PayRulePolicy
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
     ValidationError:
       properties:
         loc:
@@ -54,42 +90,6 @@ components:
       - msg
       - type
       title: ValidationError
-    PayRulePoliciesResponse:
-      properties:
-        payRulesPolicies:
-          items:
-            $ref: '#/components/schemas/PayRulePolicy'
-          type: array
-          title: Payrulespolicies
-          description: List of company pay rule policies
-      type: object
-      required:
-      - payRulesPolicies
-      title: PayRulePoliciesResponse
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
-    PayRulePolicy:
-      properties:
-        id:
-          type: integer
-          title: Id
-          description: The pay rule policy id
-        name:
-          type: string
-          title: Name
-          description: The pay rule policy name
-      type: object
-      required:
-      - id
-      - name
-      title: PayRulePolicy
     APIResponse_PayRulePoliciesResponse_:
       properties:
         requestId:

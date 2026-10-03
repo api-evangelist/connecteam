@@ -33,30 +33,26 @@ paths:
         - onboarding.read
 components:
   schemas:
-    PackResponse:
+    APIResponse_PacksListResponse_:
       properties:
-        id:
-          type: integer
-          title: Id
-          description: Pack ID
-        name:
+        requestId:
           type: string
-          title: Name
-          description: Pack name
-        description:
-          type: string
-          title: Description
-          description: Pack description
-        isDefault:
-          type: boolean
-          title: Isdefault
-          description: Whether this is the default pack
+          title: Requestid
+        data:
+          $ref: '#/components/schemas/PacksListResponse'
       type: object
       required:
-      - id
-      - name
-      - isDefault
-      title: PackResponse
+      - data
+      title: APIResponse[PacksListResponse]
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
     ValidationError:
       properties:
         loc:
@@ -90,26 +86,30 @@ components:
       required:
       - packs
       title: PacksListResponse
-    APIResponse_PacksListResponse_:
+    PackResponse:
       properties:
-        requestId:
+        id:
+          type: integer
+          title: Id
+          description: Pack ID
+        name:
           type: string
-          title: Requestid
-        data:
-          $ref: '#/components/schemas/PacksListResponse'
+          title: Name
+          description: Pack name
+        description:
+          type: string
+          title: Description
+          description: Pack description
+        isDefault:
+          type: boolean
+          title: Isdefault
+          description: Whether this is the default pack
       type: object
       required:
-      - data
-      title: APIResponse[PacksListResponse]
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
+      - id
+      - name
+      - isDefault
+      title: PackResponse
   securitySchemes:
     APIKeyHeader:
       type: apiKey

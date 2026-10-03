@@ -104,31 +104,17 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
-    APIResponse_BreadcrumbsReportStatusResponse_:
+    BreadcrumbsReportRequest:
       properties:
-        requestId:
+        date:
           type: string
-          title: Requestid
-        data:
-          $ref: '#/components/schemas/BreadcrumbsReportStatusResponse'
+          format: date
+          title: Date
+          description: Date for which to generate breadcrumbs report (YYYY-MM-DD)
       type: object
       required:
-      - data
-      title: APIResponse[BreadcrumbsReportStatusResponse]
-    BreadcrumbsReportStatusResponse:
-      properties:
-        status:
-          type: string
-          title: Status
-          description: 'Task status: in_queue, in_progress, completed, error, or canceled'
-        errorMsg:
-          type: string
-          title: Errormsg
-          description: Error message when status is error
-      type: object
-      required:
-      - status
-      title: BreadcrumbsReportStatusResponse
+      - date
+      title: BreadcrumbsReportRequest
     BreadcrumbsReportResponse:
       properties:
         fileId:
@@ -150,6 +136,40 @@ components:
       required:
       - data
       title: APIResponse[BreadcrumbsReportResponse]
+    BreadcrumbsReportStatusResponse:
+      properties:
+        status:
+          type: string
+          title: Status
+          description: 'Task status: in_queue, in_progress, completed, error, or canceled'
+        errorMsg:
+          type: string
+          title: Errormsg
+          description: Error message when status is error
+      type: object
+      required:
+      - status
+      title: BreadcrumbsReportStatusResponse
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    APIResponse_BreadcrumbsReportStatusResponse_:
+      properties:
+        requestId:
+          type: string
+          title: Requestid
+        data:
+          $ref: '#/components/schemas/BreadcrumbsReportStatusResponse'
+      type: object
+      required:
+      - data
+      title: APIResponse[BreadcrumbsReportStatusResponse]
     ValidationError:
       properties:
         loc:
@@ -171,26 +191,6 @@ components:
       - msg
       - type
       title: ValidationError
-    BreadcrumbsReportRequest:
-      properties:
-        date:
-          type: string
-          format: date
-          title: Date
-          description: Date for which to generate breadcrumbs report (YYYY-MM-DD)
-      type: object
-      required:
-      - date
-      title: BreadcrumbsReportRequest
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
   securitySchemes:
     APIKeyHeader:
       type: apiKey

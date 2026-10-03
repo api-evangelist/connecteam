@@ -63,6 +63,26 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
+    ? v2__features__shiftscheduler__external_api__v1__schedulers__scheduler__custom_fields__models__shift_custom_field_settings_response__DropdownOptionResponse
+    : properties:
+        id:
+          type: integer
+          title: Id
+          description: The dropdown option unique id
+        value:
+          type: string
+          title: Value
+          description: The dropdown option value
+        isDeleted:
+          type: boolean
+          title: Isdeleted
+          description: Whether the option is deleted
+          default: false
+      type: object
+      required:
+      - id
+      - value
+      title: DropdownOptionResponse
     GetShiftCustomFieldsSettingsResponse:
       properties:
         customFields:
@@ -77,6 +97,66 @@ components:
       required:
       - customFields
       title: GetShiftCustomFieldsSettingsResponse
+    ShiftCustomFieldSettingsResponse:
+      properties:
+        id:
+          type: string
+          title: Id
+          description: The shift custom field id
+        name:
+          type: string
+          title: Name
+          description: The name of the custom field
+        type:
+          $ref: '#/components/schemas/ShiftCustomFields'
+          description: 'The type of the custom field: String or Dropdown'
+      type: object
+      required:
+      - id
+      - name
+      - type
+      title: ShiftCustomFieldSettingsResponse
+    PagingResponseModelV2:
+      properties:
+        offset:
+          type: integer
+          minimum: 0.0
+          title: Offset
+          description: The resource offset of the last successfully read resource will be returned as the paging.offset JSON property of a paginated response containing more results
+        total:
+          anyOf:
+          - type: integer
+            minimum: 0.0
+          - type: 'null'
+          title: Total
+          description: Total number of resources matching the request, ignoring pagination. Use this to retrieve the full count without paginating through every page. Only populated by endpoints that compute it.
+      type: object
+      required:
+      - offset
+      title: PagingResponseModelV2
+    PaginatedBaseResponseV2_GetShiftCustomFieldsSettingsResponse_:
+      properties:
+        requestId:
+          type: string
+          title: Requestid
+        data:
+          $ref: '#/components/schemas/GetShiftCustomFieldsSettingsResponse'
+        paging:
+          $ref: '#/components/schemas/PagingResponseModelV2'
+      type: object
+      required:
+      - data
+      - paging
+      title: PaginatedBaseResponseV2[GetShiftCustomFieldsSettingsResponse]
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
     ValidationError:
       properties:
         loc:
@@ -98,74 +178,6 @@ components:
       - msg
       - type
       title: ValidationError
-    ShiftCustomFieldSettingsResponse:
-      properties:
-        id:
-          type: string
-          title: Id
-          description: The shift custom field id
-        name:
-          type: string
-          title: Name
-          description: The name of the custom field
-        type:
-          $ref: '#/components/schemas/ShiftCustomFields'
-          description: 'The type of the custom field: String or Dropdown'
-      type: object
-      required:
-      - id
-      - name
-      - type
-      title: ShiftCustomFieldSettingsResponse
-    PaginatedBaseResponseV2_GetShiftCustomFieldsSettingsResponse_:
-      properties:
-        requestId:
-          type: string
-          title: Requestid
-        data:
-          $ref: '#/components/schemas/GetShiftCustomFieldsSettingsResponse'
-        paging:
-          $ref: '#/components/schemas/PagingResponseModelV2'
-      type: object
-      required:
-      - data
-      - paging
-      title: PaginatedBaseResponseV2[GetShiftCustomFieldsSettingsResponse]
-    ShiftCustomFields:
-      type: string
-      enum:
-      - str
-      - dropdown
-      title: ShiftCustomFields
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
-    ? v2__features__shiftscheduler__external_api__v1__schedulers__scheduler__custom_fields__models__shift_custom_field_settings_response__DropdownOptionResponse
-    : properties:
-        id:
-          type: integer
-          title: Id
-          description: The dropdown option unique id
-        value:
-          type: string
-          title: Value
-          description: The dropdown option value
-        isDeleted:
-          type: boolean
-          title: Isdeleted
-          description: Whether the option is deleted
-          default: false
-      type: object
-      required:
-      - id
-      - value
-      title: DropdownOptionResponse
     DropdownShiftCustomFieldSettingsResponse:
       properties:
         id:
@@ -197,24 +209,12 @@ components:
       - id
       - name
       title: DropdownShiftCustomFieldSettingsResponse
-    PagingResponseModelV2:
-      properties:
-        offset:
-          type: integer
-          minimum: 0.0
-          title: Offset
-          description: The resource offset of the last successfully read resource will be returned as the paging.offset JSON property of a paginated response containing more results
-        total:
-          anyOf:
-          - type: integer
-            minimum: 0.0
-          - type: 'null'
-          title: Total
-          description: Total number of resources matching the request, ignoring pagination. Use this to retrieve the full count without paginating through every page. Only populated by endpoints that compute it.
-      type: object
-      required:
-      - offset
-      title: PagingResponseModelV2
+    ShiftCustomFields:
+      type: string
+      enum:
+      - str
+      - dropdown
+      title: ShiftCustomFields
   securitySchemes:
     APIKeyHeader:
       type: apiKey

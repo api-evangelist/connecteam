@@ -42,49 +42,6 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
-    ShiftAttachmentDropDownListItemSettingsResponse:
-      properties:
-        id:
-          type: string
-          title: Id
-          description: The ID of the dropdown list item
-        name:
-          type: string
-          title: Name
-          description: The name of the dropdown list item
-        isEnabled:
-          type: boolean
-          title: Isenabled
-          description: Whether the dropdown list item is enabled
-      type: object
-      required:
-      - id
-      - name
-      - isEnabled
-      title: ShiftAttachmentDropDownListItemSettingsResponse
-    ShiftAttachmentsGetResponse:
-      properties:
-        shiftAttachments:
-          items:
-            anyOf:
-            - $ref: '#/components/schemas/ShiftAttachmentDropDownListSettingsResponse'
-            - $ref: '#/components/schemas/ShiftAttachmentSettingsResponse'
-          type: array
-          title: Shiftattachments
-          description: The shift attachments
-      type: object
-      required:
-      - shiftAttachments
-      title: ShiftAttachmentsGetResponse
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
     ShiftAttachmentDropDownListSettingsResponse:
       properties:
         id:
@@ -122,17 +79,6 @@ components:
       - isEnabled
       - items
       title: ShiftAttachmentDropDownListSettingsResponse
-    ShiftAttachmentType:
-      type: string
-      enum:
-      - freeText
-      - dropdownList
-      - number
-      - image
-      - file
-      - signature
-      title: ShiftAttachmentType
-      description: An enumeration.
     ValidationError:
       properties:
         loc:
@@ -154,17 +100,6 @@ components:
       - msg
       - type
       title: ValidationError
-    APIResponse_ShiftAttachmentsGetResponse_:
-      properties:
-        requestId:
-          type: string
-          title: Requestid
-        data:
-          $ref: '#/components/schemas/ShiftAttachmentsGetResponse'
-      type: object
-      required:
-      - data
-      title: APIResponse[ShiftAttachmentsGetResponse]
     ShiftAttachmentSettingsResponse:
       properties:
         id:
@@ -195,6 +130,71 @@ components:
       - isRequired
       - isEnabled
       title: ShiftAttachmentSettingsResponse
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    ShiftAttachmentsGetResponse:
+      properties:
+        shiftAttachments:
+          items:
+            anyOf:
+            - $ref: '#/components/schemas/ShiftAttachmentDropDownListSettingsResponse'
+            - $ref: '#/components/schemas/ShiftAttachmentSettingsResponse'
+          type: array
+          title: Shiftattachments
+          description: The shift attachments
+      type: object
+      required:
+      - shiftAttachments
+      title: ShiftAttachmentsGetResponse
+    ShiftAttachmentDropDownListItemSettingsResponse:
+      properties:
+        id:
+          type: string
+          title: Id
+          description: The ID of the dropdown list item
+        name:
+          type: string
+          title: Name
+          description: The name of the dropdown list item
+        isEnabled:
+          type: boolean
+          title: Isenabled
+          description: Whether the dropdown list item is enabled
+      type: object
+      required:
+      - id
+      - name
+      - isEnabled
+      title: ShiftAttachmentDropDownListItemSettingsResponse
+    ShiftAttachmentType:
+      type: string
+      enum:
+      - freeText
+      - dropdownList
+      - number
+      - image
+      - file
+      - signature
+      title: ShiftAttachmentType
+      description: An enumeration.
+    APIResponse_ShiftAttachmentsGetResponse_:
+      properties:
+        requestId:
+          type: string
+          title: Requestid
+        data:
+          $ref: '#/components/schemas/ShiftAttachmentsGetResponse'
+      type: object
+      required:
+      - data
+      title: APIResponse[ShiftAttachmentsGetResponse]
   securitySchemes:
     APIKeyHeader:
       type: apiKey

@@ -44,6 +44,31 @@ components:
       required:
       - data
       title: APIResponse[TimeOffGetPolicyTypesResponse]
+    TimeOffPolicy:
+      properties:
+        id:
+          type: string
+          title: Id
+          description: The policy id
+        name:
+          type: string
+          title: Name
+          description: The policy name
+        unit:
+          type: string
+          title: Unit
+          description: The units for this policy (hours or days)
+        accrualType:
+          type: string
+          title: Accrualtype
+          description: 'The policy accrual type: fixed, hourly, or unlimited'
+      type: object
+      required:
+      - id
+      - name
+      - unit
+      - accrualType
+      title: TimeOffPolicy
     TimeOffGetPolicyTypesResponse:
       properties:
         policyTypes:
@@ -56,15 +81,6 @@ components:
       required:
       - policyTypes
       title: TimeOffGetPolicyTypesResponse
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
     ValidationError:
       properties:
         loc:
@@ -107,31 +123,15 @@ components:
       - id
       - name
       title: TimeOffPolicyType
-    TimeOffPolicy:
+    HTTPValidationError:
       properties:
-        id:
-          type: string
-          title: Id
-          description: The policy id
-        name:
-          type: string
-          title: Name
-          description: The policy name
-        unit:
-          type: string
-          title: Unit
-          description: The units for this policy (hours or days)
-        accrualType:
-          type: string
-          title: Accrualtype
-          description: 'The policy accrual type: fixed, hourly, or unlimited'
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
       type: object
-      required:
-      - id
-      - name
-      - unit
-      - accrualType
-      title: TimeOffPolicy
+      title: HTTPValidationError
   securitySchemes:
     APIKeyHeader:
       type: apiKey

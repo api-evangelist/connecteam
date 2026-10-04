@@ -50,47 +50,17 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
-    PayslipCreateResponse:
+    APIResponse_PayslipCreateResponse_:
       properties:
-        id:
+        requestId:
           type: string
-          title: Id
-          description: The unique identifier of the created payslip
+          title: Requestid
+        data:
+          $ref: '#/components/schemas/PayslipCreateResponse'
       type: object
       required:
-      - id
-      title: PayslipCreateResponse
-      description: Response model for payslip creation
-    PayslipCreateRequest:
-      properties:
-        fileId:
-          type: string
-          title: Fileid
-          description: The unique identifier of the payslip attachment
-        startDate:
-          type: string
-          title: Startdate
-          description: The start date for the payslip in ISO 8601 format (YYYY-MM-DD)
-        endDate:
-          type: string
-          title: Enddate
-          description: The end date for the payslip in ISO 8601 format (YYYY-MM-DD)
-      type: object
-      required:
-      - fileId
-      - startDate
-      - endDate
-      title: PayslipCreateRequest
-      description: Request model for creating a payslip
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
+      - data
+      title: APIResponse[PayslipCreateResponse]
     ValidationError:
       properties:
         loc:
@@ -112,17 +82,47 @@ components:
       - msg
       - type
       title: ValidationError
-    APIResponse_PayslipCreateResponse_:
+    HTTPValidationError:
       properties:
-        requestId:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    PayslipCreateRequest:
+      properties:
+        fileId:
           type: string
-          title: Requestid
-        data:
-          $ref: '#/components/schemas/PayslipCreateResponse'
+          title: Fileid
+          description: The unique identifier of the payslip attachment
+        startDate:
+          type: string
+          title: Startdate
+          description: The start date for the payslip in ISO 8601 format (YYYY-MM-DD)
+        endDate:
+          type: string
+          title: Enddate
+          description: The end date for the payslip in ISO 8601 format (YYYY-MM-DD)
       type: object
       required:
-      - data
-      title: APIResponse[PayslipCreateResponse]
+      - fileId
+      - startDate
+      - endDate
+      title: PayslipCreateRequest
+      description: Request model for creating a payslip
+    PayslipCreateResponse:
+      properties:
+        id:
+          type: string
+          title: Id
+          description: The unique identifier of the created payslip
+      type: object
+      required:
+      - id
+      title: PayslipCreateResponse
+      description: Response model for payslip creation
   securitySchemes:
     APIKeyHeader:
       type: apiKey

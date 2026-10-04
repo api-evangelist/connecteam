@@ -227,6 +227,21 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
+    BaseCustomField:
+      properties:
+        customFieldId:
+          type: integer
+          minimum: 1.0
+          title: Customfieldid
+          description: The custom field unique id
+        value:
+          title: Value
+          description: 'The value of the custom field. Our real-time API documentation experience does not support custom fields of the dropdown type.To update dropdown fields value(s), pass an array of objects with the IDs of the selected dropdown values (e.g., [{id: 1}, {id: 2}]).'
+      type: object
+      required:
+      - customFieldId
+      - value
+      title: BaseCustomField
     PendingUserStatusRequest:
       properties:
         id:
@@ -242,6 +257,79 @@ components:
       - id
       - status
       title: PendingUserStatusRequest
+    APIResponse_BaseResponse_:
+      properties:
+        requestId:
+          type: string
+          title: Requestid
+        data:
+          $ref: '#/components/schemas/BaseResponse'
+      type: object
+      required:
+      - data
+      title: APIResponse[BaseResponse]
+    APIResponse_UpdatePendingUserResponse_:
+      properties:
+        requestId:
+          type: string
+          title: Requestid
+        data:
+          $ref: '#/components/schemas/UpdatePendingUserResponse'
+      type: object
+      required:
+      - data
+      title: APIResponse[UpdatePendingUserResponse]
+    PendingUsersRequest:
+      properties:
+        users:
+          items:
+            $ref: '#/components/schemas/PendingUserRequest'
+          type: array
+          title: Users
+          description: list of pending users
+      type: object
+      required:
+      - users
+      title: PendingUsersRequest
+    DeletePendingUsersRequest:
+      properties:
+        ids:
+          items:
+            type: integer
+          type: array
+          title: Ids
+          description: List of pending user IDs to delete
+      type: object
+      required:
+      - ids
+      title: DeletePendingUsersRequest
+    BaseResponse:
+      properties: {}
+      type: object
+      title: BaseResponse
+    APIResponse_GetPendingUsersResponse_:
+      properties:
+        requestId:
+          type: string
+          title: Requestid
+        data:
+          $ref: '#/components/schemas/GetPendingUsersResponse'
+      type: object
+      required:
+      - data
+      title: APIResponse[GetPendingUsersResponse]
+    GetPendingUsersResponse:
+      properties:
+        pendingUsers:
+          items:
+            $ref: '#/components/schemas/PendingUserDataResponse'
+          type: array
+          title: Pendingusers
+          description: List of pending user data
+      type: object
+      required:
+      - pendingUsers
+      title: GetPendingUsersResponse
     UpdatePendingUserRequest:
       properties:
         firstName:
@@ -314,17 +402,15 @@ components:
       - firstName
       - lastName
       title: UpdatePendingUserRequest
-    APIResponse_PendingUsersResponse_:
+    HTTPValidationError:
       properties:
-        requestId:
-          type: string
-          title: Requestid
-        data:
-          $ref: '#/components/schemas/PendingUsersResponse'
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
       type: object
-      required:
-      - data
-      title: APIResponse[PendingUsersResponse]
+      title: HTTPValidationError
     PendingUsersResponse:
       properties:
         ids:
@@ -338,178 +424,6 @@ components:
       - ids
       title: PendingUsersResponse
       description: Response model for creating user pending requests.
-    PendingUsersRequest:
-      properties:
-        users:
-          items:
-            $ref: '#/components/schemas/PendingUserRequest'
-          type: array
-          title: Users
-          description: list of pending users
-      type: object
-      required:
-      - users
-      title: PendingUsersRequest
-    GetPendingUsersResponse:
-      properties:
-        pendingUsers:
-          items:
-            $ref: '#/components/schemas/PendingUserDataResponse'
-          type: array
-          title: Pendingusers
-          description: List of pending user data
-      type: object
-      required:
-      - pendingUsers
-      title: GetPendingUsersResponse
-    PendingUserDataResponse:
-      properties:
-        id:
-          type: integer
-          title: Id
-          description: Pending user request ID
-        userFields:
-          type: object
-          title: Userfields
-          description: User profile fields submitted with the request
-        rawFields:
-          type: object
-          title: Rawfields
-          description: Raw unprocessed fields from the source
-        source:
-          type: string
-          title: Source
-          description: Origin source of the pending user request
-        sourceIcon:
-          type: string
-          title: Sourceicon
-          description: Icon representing the request source
-        userId:
-          type: integer
-          title: Userid
-          description: Associated user ID if the request was approved
-        externalUserId:
-          type: string
-          title: Externaluserid
-          description: External system user identifier
-        suggestedUserId:
-          type: integer
-          title: Suggesteduserid
-          description: Suggested matching user ID
-        integrationId:
-          type: integer
-          title: Integrationid
-          description: Integration that created this request
-        linkId:
-          type: integer
-          title: Linkid
-          description: Invite link ID associated with this request
-        status:
-          type: string
-          title: Status
-          description: Current status of the pending user request
-      type: object
-      required:
-      - id
-      - userFields
-      - status
-      title: PendingUserDataResponse
-    UpdatePendingUsersStatusRequest:
-      properties:
-        requests:
-          items:
-            $ref: '#/components/schemas/PendingUserStatusRequest'
-          type: array
-          title: Requests
-          description: List of status updates to apply
-      type: object
-      required:
-      - requests
-      title: UpdatePendingUsersStatusRequest
-    APIResponse_BaseResponse_:
-      properties:
-        requestId:
-          type: string
-          title: Requestid
-        data:
-          $ref: '#/components/schemas/BaseResponse'
-      type: object
-      required:
-      - data
-      title: APIResponse[BaseResponse]
-    UserJoinRequestStatus:
-      type: string
-      enum:
-      - approved
-      - declined
-      - pending
-      title: UserJoinRequestStatus
-    APIResponse_GetPendingUsersResponse_:
-      properties:
-        requestId:
-          type: string
-          title: Requestid
-        data:
-          $ref: '#/components/schemas/GetPendingUsersResponse'
-      type: object
-      required:
-      - data
-      title: APIResponse[GetPendingUsersResponse]
-    ValidationError:
-      properties:
-        loc:
-          items:
-            anyOf:
-            - type: string
-            - type: integer
-          type: array
-          title: Location
-        msg:
-          type: string
-          title: Message
-        type:
-          type: string
-          title: Error Type
-      type: object
-      required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
-    BaseResponse:
-      properties: {}
-      type: object
-      title: BaseResponse
-    APIResponse_UpdatePendingUserResponse_:
-      properties:
-        requestId:
-          type: string
-          title: Requestid
-        data:
-          $ref: '#/components/schemas/UpdatePendingUserResponse'
-      type: object
-      required:
-      - data
-      title: APIResponse[UpdatePendingUserResponse]
-    BaseCustomField:
-      properties:
-        customFieldId:
-          type: integer
-          minimum: 1.0
-          title: Customfieldid
-          description: The custom field unique id
-        value:
-          title: Value
-          description: 'The value of the custom field. Our real-time API documentation experience does not support custom fields of the dropdown type.To update dropdown fields value(s), pass an array of objects with the IDs of the selected dropdown values (e.g., [{id: 1}, {id: 2}]).'
-      type: object
-      required:
-      - customFieldId
-      - value
-      title: BaseCustomField
-    UpdatePendingUserResponse:
-      properties: {}
-      type: object
-      title: UpdatePendingUserResponse
     PendingUserRequest:
       properties:
         firstName:
@@ -582,27 +496,113 @@ components:
       - firstName
       - lastName
       title: PendingUserRequest
-    DeletePendingUsersRequest:
+    APIResponse_PendingUsersResponse_:
       properties:
-        ids:
-          items:
-            type: integer
-          type: array
-          title: Ids
-          description: List of pending user IDs to delete
+        requestId:
+          type: string
+          title: Requestid
+        data:
+          $ref: '#/components/schemas/PendingUsersResponse'
       type: object
       required:
-      - ids
-      title: DeletePendingUsersRequest
-    HTTPValidationError:
+      - data
+      title: APIResponse[PendingUsersResponse]
+    UpdatePendingUsersStatusRequest:
       properties:
-        detail:
+        requests:
           items:
-            $ref: '#/components/schemas/ValidationError'
+            $ref: '#/components/schemas/PendingUserStatusRequest'
           type: array
-          title: Detail
+          title: Requests
+          description: List of status updates to apply
       type: object
-      title: HTTPValidationError
+      required:
+      - requests
+      title: UpdatePendingUsersStatusRequest
+    UserJoinRequestStatus:
+      type: string
+      enum:
+      - approved
+      - declined
+      - pending
+      title: UserJoinRequestStatus
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    PendingUserDataResponse:
+      properties:
+        id:
+          type: integer
+          title: Id
+          description: Pending user request ID
+        userFields:
+          type: object
+          title: Userfields
+          description: User profile fields submitted with the request
+        rawFields:
+          type: object
+          title: Rawfields
+          description: Raw unprocessed fields from the source
+        source:
+          type: string
+          title: Source
+          description: Origin source of the pending user request
+        sourceIcon:
+          type: string
+          title: Sourceicon
+          description: Icon representing the request source
+        userId:
+          type: integer
+          title: Userid
+          description: Associated user ID if the request was approved
+        externalUserId:
+          type: string
+          title: Externaluserid
+          description: External system user identifier
+        suggestedUserId:
+          type: integer
+          title: Suggesteduserid
+          description: Suggested matching user ID
+        integrationId:
+          type: integer
+          title: Integrationid
+          description: Integration that created this request
+        linkId:
+          type: integer
+          title: Linkid
+          description: Invite link ID associated with this request
+        status:
+          type: string
+          title: Status
+          description: Current status of the pending user request
+      type: object
+      required:
+      - id
+      - userFields
+      - status
+      title: PendingUserDataResponse
+    UpdatePendingUserResponse:
+      properties: {}
+      type: object
+      title: UpdatePendingUserResponse
   securitySchemes:
     APIKeyHeader:
       type: apiKey

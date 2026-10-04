@@ -74,43 +74,6 @@ components:
       - items
       title: PerformanceDataRequest
       description: Request model for updating performance data.
-    APIResponse_PerformanceUpdateResponse_:
-      properties:
-        requestId:
-          type: string
-          title: Requestid
-        data:
-          $ref: '#/components/schemas/PerformanceUpdateResponse'
-      type: object
-      required:
-      - data
-      title: APIResponse[PerformanceUpdateResponse]
-    PerformanceDataValue:
-      properties:
-        indicatorId:
-          type: integer
-          minimum: 1.0
-          title: Indicatorid
-          description: ID of the performance indicator/metric
-        value:
-          type: number
-          title: Value
-          description: Value for the performance indicator/metric
-      type: object
-      required:
-      - indicatorId
-      - value
-      title: PerformanceDataValue
-      description: Model for a single performance data value.
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
     ValidationError:
       properties:
         loc:
@@ -143,6 +106,43 @@ components:
       - recordsAffected
       title: PerformanceUpdateResponse
       description: Response model for performance data update endpoint.
+    APIResponse_PerformanceUpdateResponse_:
+      properties:
+        requestId:
+          type: string
+          title: Requestid
+        data:
+          $ref: '#/components/schemas/PerformanceUpdateResponse'
+      type: object
+      required:
+      - data
+      title: APIResponse[PerformanceUpdateResponse]
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    PerformanceDataValue:
+      properties:
+        indicatorId:
+          type: integer
+          minimum: 1.0
+          title: Indicatorid
+          description: ID of the performance indicator/metric
+        value:
+          type: number
+          title: Value
+          description: Value for the performance indicator/metric
+      type: object
+      required:
+      - indicatorId
+      - value
+      title: PerformanceDataValue
+      description: Model for a single performance data value.
   securitySchemes:
     APIKeyHeader:
       type: apiKey

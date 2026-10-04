@@ -33,35 +33,17 @@ paths:
         - quick_tasks.read
 components:
   schemas:
-    HTTPValidationError:
+    APIResponse_GetTasksBoardsResponse_:
       properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
-    TasksBoard:
-      properties:
-        id:
-          type: integer
-          title: Id
-          description: The ID of the tasks board
-        name:
+        requestId:
           type: string
-          title: Name
-          description: The name of the tasks board
-        isArchived:
-          type: boolean
-          title: Isarchived
-          description: Whether the tasks board is archived
+          title: Requestid
+        data:
+          $ref: '#/components/schemas/GetTasksBoardsResponse'
       type: object
       required:
-      - id
-      - name
-      - isArchived
-      title: TasksBoard
+      - data
+      title: APIResponse[GetTasksBoardsResponse]
     ValidationError:
       properties:
         loc:
@@ -83,17 +65,26 @@ components:
       - msg
       - type
       title: ValidationError
-    APIResponse_GetTasksBoardsResponse_:
+    TasksBoard:
       properties:
-        requestId:
+        id:
+          type: integer
+          title: Id
+          description: The ID of the tasks board
+        name:
           type: string
-          title: Requestid
-        data:
-          $ref: '#/components/schemas/GetTasksBoardsResponse'
+          title: Name
+          description: The name of the tasks board
+        isArchived:
+          type: boolean
+          title: Isarchived
+          description: Whether the tasks board is archived
       type: object
       required:
-      - data
-      title: APIResponse[GetTasksBoardsResponse]
+      - id
+      - name
+      - isArchived
+      title: TasksBoard
     GetTasksBoardsResponse:
       properties:
         taskBoards:
@@ -106,6 +97,15 @@ components:
       required:
       - taskBoards
       title: GetTasksBoardsResponse
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
   securitySchemes:
     APIKeyHeader:
       type: apiKey

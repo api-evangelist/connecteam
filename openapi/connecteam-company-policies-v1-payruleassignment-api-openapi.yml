@@ -50,25 +50,6 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
-    PayRuleAssignmentResponse:
-      properties:
-        assignmentId:
-          type: integer
-          title: Assignmentid
-          description: The unique identifier of the assignment record
-      type: object
-      required:
-      - assignmentId
-      title: PayRuleAssignmentResponse
     ValidationError:
       properties:
         loc:
@@ -90,17 +71,25 @@ components:
       - msg
       - type
       title: ValidationError
-    APIResponse_PayRuleAssignmentResponse_:
+    PayRuleAssignmentResponse:
       properties:
-        requestId:
-          type: string
-          title: Requestid
-        data:
-          $ref: '#/components/schemas/PayRuleAssignmentResponse'
+        assignmentId:
+          type: integer
+          title: Assignmentid
+          description: The unique identifier of the assignment record
       type: object
       required:
-      - data
-      title: APIResponse[PayRuleAssignmentResponse]
+      - assignmentId
+      title: PayRuleAssignmentResponse
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
     PayRuleAssignmentRequest:
       properties:
         userId:
@@ -117,6 +106,17 @@ components:
       - userId
       - effectiveDate
       title: PayRuleAssignmentRequest
+    APIResponse_PayRuleAssignmentResponse_:
+      properties:
+        requestId:
+          type: string
+          title: Requestid
+        data:
+          $ref: '#/components/schemas/PayRuleAssignmentResponse'
+      type: object
+      required:
+      - data
+      title: APIResponse[PayRuleAssignmentResponse]
   securitySchemes:
     APIKeyHeader:
       type: apiKey

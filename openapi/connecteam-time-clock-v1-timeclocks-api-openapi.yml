@@ -45,36 +45,6 @@ components:
       required:
       - timeClocks
       title: TimeClocksResponse
-    TimeClock:
-      properties:
-        id:
-          type: integer
-          minimum: 1.0
-          title: Id
-          description: The ID of the time clock
-        name:
-          type: string
-          title: Name
-          description: The name of the time clock
-        isArchived:
-          type: boolean
-          title: Isarchived
-          description: Whether the time clock is archived
-      type: object
-      required:
-      - id
-      - name
-      - isArchived
-      title: TimeClock
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
     ValidationError:
       properties:
         loc:
@@ -96,6 +66,27 @@ components:
       - msg
       - type
       title: ValidationError
+    TimeClock:
+      properties:
+        id:
+          type: integer
+          minimum: 1.0
+          title: Id
+          description: The ID of the time clock
+        name:
+          type: string
+          title: Name
+          description: The name of the time clock
+        isArchived:
+          type: boolean
+          title: Isarchived
+          description: Whether the time clock is archived
+      type: object
+      required:
+      - id
+      - name
+      - isArchived
+      title: TimeClock
     APIResponse_TimeClocksResponse_:
       properties:
         requestId:
@@ -107,6 +98,15 @@ components:
       required:
       - data
       title: APIResponse[TimeClocksResponse]
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
   securitySchemes:
     APIKeyHeader:
       type: apiKey

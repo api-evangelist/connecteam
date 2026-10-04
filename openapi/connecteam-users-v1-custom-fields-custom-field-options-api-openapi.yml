@@ -209,6 +209,74 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
+    APIResponse_DropdownCustomFieldOptionResponse_:
+      properties:
+        requestId:
+          type: string
+          title: Requestid
+        data:
+          $ref: '#/components/schemas/DropdownCustomFieldOptionResponse'
+      type: object
+      required:
+      - data
+      title: APIResponse[DropdownCustomFieldOptionResponse]
+    APIResponse_BaseResponse_:
+      properties:
+        requestId:
+          type: string
+          title: Requestid
+        data:
+          $ref: '#/components/schemas/BaseResponse'
+      type: object
+      required:
+      - data
+      title: APIResponse[BaseResponse]
+    CustomFieldOptionsResponse:
+      properties:
+        options:
+          items:
+            $ref: '#/components/schemas/DropdownCustomFieldOptionResponse'
+          type: array
+          title: Options
+          description: The custom field options
+      type: object
+      required:
+      - options
+      title: CustomFieldOptionsResponse
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    EditSingleDropdownCustomFieldOption:
+      properties:
+        value:
+          type: string
+          title: Value
+          description: The value to be added as the option
+        isDisabled:
+          type: boolean
+          title: Isdisabled
+          description: Indicates if this option is disabled
+          default: false
+      type: object
+      title: EditSingleDropdownCustomFieldOption
     PagingResponseModel:
       properties:
         offset:
@@ -225,53 +293,6 @@ components:
       required:
       - offset
       title: PagingResponseModel
-    APIResponse_BaseResponse_:
-      properties:
-        requestId:
-          type: string
-          title: Requestid
-        data:
-          $ref: '#/components/schemas/BaseResponse'
-      type: object
-      required:
-      - data
-      title: APIResponse[BaseResponse]
-    APIResponse_DropdownCustomFieldOptionResponse_:
-      properties:
-        requestId:
-          type: string
-          title: Requestid
-        data:
-          $ref: '#/components/schemas/DropdownCustomFieldOptionResponse'
-      type: object
-      required:
-      - data
-      title: APIResponse[DropdownCustomFieldOptionResponse]
-    CustomFieldOptionsResponse:
-      properties:
-        options:
-          items:
-            $ref: '#/components/schemas/DropdownCustomFieldOptionResponse'
-          type: array
-          title: Options
-          description: The custom field options
-      type: object
-      required:
-      - options
-      title: CustomFieldOptionsResponse
-    EditSingleDropdownCustomFieldOption:
-      properties:
-        value:
-          type: string
-          title: Value
-          description: The value to be added as the option
-        isDisabled:
-          type: boolean
-          title: Isdisabled
-          description: Indicates if this option is disabled
-          default: false
-      type: object
-      title: EditSingleDropdownCustomFieldOption
     PaginatedBaseResponse_CustomFieldOptionsResponse_:
       properties:
         requestId:
@@ -295,27 +316,6 @@ components:
           title: Detail
       type: object
       title: HTTPValidationError
-    ValidationError:
-      properties:
-        loc:
-          items:
-            anyOf:
-            - type: string
-            - type: integer
-          type: array
-          title: Location
-        msg:
-          type: string
-          title: Message
-        type:
-          type: string
-          title: Error Type
-      type: object
-      required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
     DropdownCustomFieldOptionResponse:
       properties:
         id:

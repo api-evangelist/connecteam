@@ -51,6 +51,16 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
+    SmartGroupInstance:
+      properties:
+        id:
+          type: string
+          title: Id
+          description: Smart group id
+      type: object
+      required:
+      - id
+      title: SmartGroupInstance
     AssetInstance:
       properties:
         id:
@@ -66,25 +76,24 @@ components:
       - type
       - id
       title: AssetInstance
-    LpidWithCoursesDisplayName:
-      type: string
-      enum:
-      - quickTasks
-      - events
-      - quiz
-      - knowledgeBase
-      - updates
-      - directory
-      - timeClock
-      - shiftscheduler
-      - workflows
-      - surveys
-      - customize
-      - suggestions
-      - library
-      - timeOff
-      title: LpidWithCoursesDisplayName
-      description: An enumeration.
+    AssignmentsResponse:
+      properties:
+        smartGroups:
+          items:
+            $ref: '#/components/schemas/SmartGroupInstance'
+          type: array
+          title: Smartgroups
+          description: The unique identifiers of the smart group Ids the user is assigned to
+          default: []
+        assets:
+          items:
+            $ref: '#/components/schemas/AssetInstance'
+          type: array
+          title: Assets
+          description: The unique identifiers for the specified assets
+          default: []
+      type: object
+      title: AssignmentsResponse
     ValidationError:
       properties:
         loc:
@@ -106,6 +115,25 @@ components:
       - msg
       - type
       title: ValidationError
+    LpidWithCoursesDisplayName:
+      type: string
+      enum:
+      - quickTasks
+      - events
+      - quiz
+      - knowledgeBase
+      - updates
+      - directory
+      - timeClock
+      - shiftscheduler
+      - workflows
+      - surveys
+      - customize
+      - suggestions
+      - library
+      - timeOff
+      title: LpidWithCoursesDisplayName
+      description: An enumeration.
     HTTPValidationError:
       properties:
         detail:
@@ -126,34 +154,6 @@ components:
       required:
       - data
       title: APIResponse[AssignmentsResponse]
-    AssignmentsResponse:
-      properties:
-        smartGroups:
-          items:
-            $ref: '#/components/schemas/SmartGroupInstance'
-          type: array
-          title: Smartgroups
-          description: The unique identifiers of the smart group Ids the user is assigned to
-          default: []
-        assets:
-          items:
-            $ref: '#/components/schemas/AssetInstance'
-          type: array
-          title: Assets
-          description: The unique identifiers for the specified assets
-          default: []
-      type: object
-      title: AssignmentsResponse
-    SmartGroupInstance:
-      properties:
-        id:
-          type: string
-          title: Id
-          description: Smart group id
-      type: object
-      required:
-      - id
-      title: SmartGroupInstance
   securitySchemes:
     APIKeyHeader:
       type: apiKey

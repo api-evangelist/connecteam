@@ -42,25 +42,22 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
-    AssetAssignments:
+    AssetPermissions:
       properties:
-        userIds:
-          items:
-            type: integer
-          type: array
-          title: Userids
-          description: The unique identifiers of the assigned users to the asset
-        smartGroups:
-          items:
-            type: string
-          type: array
-          title: Smartgroups
-          description: The unique identifiers of the assigned smart groups to the asset
+        userId:
+          type: integer
+          title: Userid
+          description: The unique identifiers who have permissions to the asset
+        deepPermission:
+          additionalProperties:
+            type: boolean
+          type: object
+          title: Deeppermission
+          description: Granular per-feature permissions for this user on this asset. Keys depend on the feature (e.g. shift scheduler exposes view, add_and_edit_shifts, publish_shifts, edit_settings). Omitted entirely for assets whose feature has no granular permissions. Owners always receive a full-access object (every flag = true).
       type: object
       required:
-      - userIds
-      - smartGroups
-      title: AssetAssignments
+      - userId
+      title: AssetPermissions
     ValidationError:
       properties:
         loc:
@@ -82,15 +79,6 @@ components:
       - msg
       - type
       title: ValidationError
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
     APIResponse_AssetResponse_:
       properties:
         requestId:
@@ -102,6 +90,25 @@ components:
       required:
       - data
       title: APIResponse[AssetResponse]
+    AssetAssignments:
+      properties:
+        userIds:
+          items:
+            type: integer
+          type: array
+          title: Userids
+          description: The unique identifiers of the assigned users to the asset
+        smartGroups:
+          items:
+            type: string
+          type: array
+          title: Smartgroups
+          description: The unique identifiers of the assigned smart groups to the asset
+      type: object
+      required:
+      - userIds
+      - smartGroups
+      title: AssetAssignments
     AssetResponse:
       properties:
         permissions:
@@ -120,22 +127,15 @@ components:
       required:
       - assignments
       title: AssetResponse
-    AssetPermissions:
+    HTTPValidationError:
       properties:
-        userId:
-          type: integer
-          title: Userid
-          description: The unique identifiers who have permissions to the asset
-        deepPermission:
-          additionalProperties:
-            type: boolean
-          type: object
-          title: Deeppermission
-          description: Granular per-feature permissions for this user on this asset. Keys depend on the feature (e.g. shift scheduler exposes view, add_and_edit_shifts, publish_shifts, edit_settings). Omitted entirely for assets whose feature has no granular permissions. Owners always receive a full-access object (every flag = true).
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
       type: object
-      required:
-      - userId
-      title: AssetPermissions
+      title: HTTPValidationError
   securitySchemes:
     APIKeyHeader:
       type: apiKey

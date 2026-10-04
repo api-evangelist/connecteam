@@ -122,6 +122,39 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
+    TransactionCreateItem:
+      properties:
+        locationId:
+          type: integer
+          title: Locationid
+          description: The unique identifier of the location
+        saleType:
+          allOf:
+          - $ref: '#/components/schemas/SaleType'
+          description: 'The type of the sale. Current options are: SALE,VOID,REFUND,SPLIT,TRANSFER'
+        createdAt:
+          type: integer
+          title: Createdat
+          description: The timestamp of the sale in UNIX format (UTC)
+        finalSaleAmount:
+          type: number
+          title: Finalsaleamount
+          description: The final sale amount of the transaction after discounts/changes and without applicable taxes
+        taxAmount:
+          type: number
+          title: Taxamount
+          description: The tax amount to be added in absolute number (not in percentage)
+        currency:
+          type: string
+          title: Currency
+          description: The currency of the transaction
+      type: object
+      required:
+      - locationId
+      - saleType
+      - createdAt
+      - finalSaleAmount
+      title: TransactionCreateItem
     APIResponse_BaseResponse_:
       properties:
         requestId:
@@ -133,17 +166,32 @@ components:
       required:
       - data
       title: APIResponse[BaseResponse]
-    APIResponse_TransactionCreateResponse_:
+    TransactionCreateResponse:
       properties:
-        requestId:
-          type: string
-          title: Requestid
-        data:
-          $ref: '#/components/schemas/TransactionCreateResponse'
+        transactions:
+          items:
+            $ref: '#/components/schemas/TransactionData'
+          type: array
+          title: Transactions
+          description: List of created transactions
       type: object
       required:
-      - data
-      title: APIResponse[TransactionCreateResponse]
+      - transactions
+      title: TransactionCreateResponse
+    TransactionCreateRequest:
+      properties:
+        transactionsCreateRequest:
+          items:
+            $ref: '#/components/schemas/TransactionCreateItem'
+          type: array
+          maxItems: 100
+          minItems: 1
+          title: Transactionscreaterequest
+          description: List of transactions to create
+      type: object
+      required:
+      - transactionsCreateRequest
+      title: TransactionCreateRequest
     ValidationError:
       properties:
         loc:
@@ -229,69 +277,21 @@ components:
           title: Detail
       type: object
       title: HTTPValidationError
-    TransactionCreateRequest:
-      properties:
-        transactionsCreateRequest:
-          items:
-            $ref: '#/components/schemas/TransactionCreateItem'
-          type: array
-          maxItems: 100
-          minItems: 1
-          title: Transactionscreaterequest
-          description: List of transactions to create
-      type: object
-      required:
-      - transactionsCreateRequest
-      title: TransactionCreateRequest
-    TransactionCreateItem:
-      properties:
-        locationId:
-          type: integer
-          title: Locationid
-          description: The unique identifier of the location
-        saleType:
-          allOf:
-          - $ref: '#/components/schemas/SaleType'
-          description: 'The type of the sale. Current options are: SALE,VOID,REFUND,SPLIT,TRANSFER'
-        createdAt:
-          type: integer
-          title: Createdat
-          description: The timestamp of the sale in UNIX format (UTC)
-        finalSaleAmount:
-          type: number
-          title: Finalsaleamount
-          description: The final sale amount of the transaction after discounts/changes and without applicable taxes
-        taxAmount:
-          type: number
-          title: Taxamount
-          description: The tax amount to be added in absolute number (not in percentage)
-        currency:
-          type: string
-          title: Currency
-          description: The currency of the transaction
-      type: object
-      required:
-      - locationId
-      - saleType
-      - createdAt
-      - finalSaleAmount
-      title: TransactionCreateItem
-    TransactionCreateResponse:
-      properties:
-        transactions:
-          items:
-            $ref: '#/components/schemas/TransactionData'
-          type: array
-          title: Transactions
-          description: List of created transactions
-      type: object
-      required:
-      - transactions
-      title: TransactionCreateResponse
     BaseResponse:
       properties: {}
       type: object
       title: BaseResponse
+    APIResponse_TransactionCreateResponse_:
+      properties:
+        requestId:
+          type: string
+          title: Requestid
+        data:
+          $ref: '#/components/schemas/TransactionCreateResponse'
+      type: object
+      required:
+      - data
+      title: APIResponse[TransactionCreateResponse]
   securitySchemes:
     APIKeyHeader:
       type: apiKey

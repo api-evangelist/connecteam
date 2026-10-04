@@ -92,42 +92,6 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
-    PagingResponseModel:
-      properties:
-        offset:
-          type: integer
-          minimum: 0.0
-          title: Offset
-          description: The resource offset of the last successfully read resource will be returned as the paging.offset JSON property of a paginated response containing more results
-        total:
-          type: integer
-          minimum: 0.0
-          title: Total
-          description: Total number of resources matching the request, ignoring pagination. Use this to retrieve the full count without paginating through every page. Only populated by endpoints that compute it.
-      type: object
-      required:
-      - offset
-      title: PagingResponseModel
-    PaginatedBaseResponse_CustomFieldCategoriesResponse_:
-      properties:
-        requestId:
-          type: string
-          title: Requestid
-        data:
-          $ref: '#/components/schemas/CustomFieldCategoriesResponse'
-        paging:
-          $ref: '#/components/schemas/PagingResponseModel'
-      type: object
-      required:
-      - data
-      - paging
-      title: PaginatedBaseResponse[CustomFieldCategoriesResponse]
-    CustomFieldCategoriesSortExternal:
-      enum:
-      - id
-      - name
-      title: CustomFieldCategoriesSortExternal
-      description: An enumeration.
     ValidationError:
       properties:
         loc:
@@ -149,21 +113,36 @@ components:
       - msg
       - type
       title: ValidationError
-    SortOrder:
-      type: string
-      enum:
-      - asc
-      - desc
-      title: SortOrder
-    HTTPValidationError:
+    PaginatedBaseResponse_CustomFieldCategoriesResponse_:
       properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
+        requestId:
+          type: string
+          title: Requestid
+        data:
+          $ref: '#/components/schemas/CustomFieldCategoriesResponse'
+        paging:
+          $ref: '#/components/schemas/PagingResponseModel'
       type: object
-      title: HTTPValidationError
+      required:
+      - data
+      - paging
+      title: PaginatedBaseResponse[CustomFieldCategoriesResponse]
+    PagingResponseModel:
+      properties:
+        offset:
+          type: integer
+          minimum: 0.0
+          title: Offset
+          description: The resource offset of the last successfully read resource will be returned as the paging.offset JSON property of a paginated response containing more results
+        total:
+          type: integer
+          minimum: 0.0
+          title: Total
+          description: Total number of resources matching the request, ignoring pagination. Use this to retrieve the full count without paginating through every page. Only populated by endpoints that compute it.
+      type: object
+      required:
+      - offset
+      title: PagingResponseModel
     CustomFieldCategoriesResponse:
       properties:
         categories:
@@ -191,6 +170,27 @@ components:
       - id
       - name
       title: CustomFieldCategory
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    SortOrder:
+      type: string
+      enum:
+      - asc
+      - desc
+      title: SortOrder
+    CustomFieldCategoriesSortExternal:
+      enum:
+      - id
+      - name
+      title: CustomFieldCategoriesSortExternal
+      description: An enumeration.
   securitySchemes:
     APIKeyHeader:
       type: apiKey

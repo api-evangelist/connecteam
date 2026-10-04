@@ -117,6 +117,68 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
+    APIResponseV2_JobResponse_:
+      properties:
+        requestId:
+          type: string
+          title: Requestid
+        data:
+          $ref: '#/components/schemas/JobResponse'
+      type: object
+      required:
+      - data
+      title: APIResponseV2[JobResponse]
+    AssignDataApi:
+      properties:
+        type:
+          anyOf:
+          - $ref: '#/components/schemas/AssignDataTypes'
+          - type: 'null'
+          description: The type of the assign data (users, groups, both), default is both.
+          default: both
+        userIds:
+          anyOf:
+          - items:
+              type: integer
+            type: array
+          - type: 'null'
+          title: Userids
+          description: The user ids to assign to this entity (if assigning type is users).
+        groupIds:
+          anyOf:
+          - items:
+              type: integer
+            type: array
+          - type: 'null'
+          title: Groupids
+          description: The group ids to assign to this entity (if assigning type is groups).
+      type: object
+      title: AssignDataApi
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    DeleteJobResponse:
+      properties: {}
+      type: object
+      title: DeleteJobResponse
     BaseJobResponse:
       properties:
         jobId:
@@ -201,6 +263,113 @@ components:
       - description
       - assign
       title: BaseJobResponse
+    JobResponse:
+      properties:
+        job:
+          $ref: '#/components/schemas/BaseJobResponse'
+          description: The job
+      type: object
+      required:
+      - job
+      title: JobResponse
+    CustomFieldResponseV2:
+      properties:
+        customFieldId:
+          type: integer
+          minimum: 1.0
+          title: Customfieldid
+          description: The custom field unique id
+        value:
+          title: Value
+          description: The custom field value
+        type:
+          $ref: '#/components/schemas/UserCustomFields'
+          description: The custom field type
+        name:
+          type: string
+          title: Name
+          description: The custom field name
+      type: object
+      required:
+      - customFieldId
+      - value
+      - type
+      - name
+      title: CustomFieldResponseV2
+    AssignDataTypes:
+      type: string
+      enum:
+      - users
+      - groups
+      - both
+      title: AssignDataTypes
+    SubJobUpdateRequest:
+      properties:
+        title:
+          type: string
+          title: Title
+          description: The title of the job
+        code:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Code
+          description: The code of the job
+          default: ''
+        description:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Description
+          description: The description of the job
+          default: ''
+        fenceSize:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Fencesize
+          description: The geofence size of the job
+        gps:
+          anyOf:
+          - $ref: '#/components/schemas/GpsDataV2'
+          - type: 'null'
+          description: The GPS data of the job
+        assign:
+          anyOf:
+          - $ref: '#/components/schemas/AssignDataIn'
+          - type: 'null'
+          description: Data related to job assignment
+        customFields:
+          items:
+            $ref: '#/components/schemas/BaseCustomFieldV2'
+          type: array
+          title: Customfields
+          description: The job's custom fields
+        parentId:
+          type: string
+          title: Parentid
+          description: The ID of the parent job, if any
+        useParentData:
+          type: boolean
+          title: Useparentdata
+          description: Indicates whether to use the parent job's data or not
+      type: object
+      required:
+      - title
+      - parentId
+      - useParentData
+      title: SubJobUpdateRequest
+    APIResponseV2_DeleteJobResponse_:
+      properties:
+        requestId:
+          type: string
+          title: Requestid
+        data:
+          $ref: '#/components/schemas/DeleteJobResponse'
+      type: object
+      required:
+      - data
+      title: APIResponseV2[DeleteJobResponse]
     BaseCustomFieldV2:
       properties:
         customFieldId:
@@ -216,6 +385,71 @@ components:
       - customFieldId
       - value
       title: BaseCustomFieldV2
+    AssignDataIn:
+      properties:
+        type:
+          $ref: '#/components/schemas/AssignDataTypes'
+          description: The type of the assign data (users, groups, both), default is both.
+          default: both
+        userIds:
+          anyOf:
+          - items:
+              type: integer
+              minimum: 1.0
+              description: Integer with minimum value of 1
+            type: array
+          - type: 'null'
+          title: Userids
+          description: The user ids to assign to this entity (if assigning type is users).
+        groupIds:
+          anyOf:
+          - items:
+              type: integer
+              minimum: 1.0
+              description: Integer with minimum value of 1
+            type: array
+          - type: 'null'
+          title: Groupids
+          description: The group ids to assign to this entity (if assigning type is groups).
+      type: object
+      title: AssignDataIn
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    GpsDataV2:
+      properties:
+        address:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Address
+          description: The address associated with the GPS data.
+        longitude:
+          anyOf:
+          - type: number
+            maximum: 180.0
+            minimum: -180.0
+            description: The longitude coordinate.
+          - type: 'null'
+          title: Longitude
+          description: The longitude coordinate.
+        latitude:
+          anyOf:
+          - type: number
+            maximum: 90.0
+            minimum: -90.0
+            description: The latitude coordinate.
+          - type: 'null'
+          title: Latitude
+          description: The latitude coordinate.
+      type: object
+      title: GpsDataV2
     JobUpdateRequest:
       properties:
         title:
@@ -275,86 +509,6 @@ components:
       required:
       - title
       title: JobUpdateRequest
-    SubJobUpdateRequest:
-      properties:
-        title:
-          type: string
-          title: Title
-          description: The title of the job
-        code:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Code
-          description: The code of the job
-          default: ''
-        description:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Description
-          description: The description of the job
-          default: ''
-        fenceSize:
-          anyOf:
-          - type: integer
-          - type: 'null'
-          title: Fencesize
-          description: The geofence size of the job
-        gps:
-          anyOf:
-          - $ref: '#/components/schemas/GpsDataV2'
-          - type: 'null'
-          description: The GPS data of the job
-        assign:
-          anyOf:
-          - $ref: '#/components/schemas/AssignDataIn'
-          - type: 'null'
-          description: Data related to job assignment
-        customFields:
-          items:
-            $ref: '#/components/schemas/BaseCustomFieldV2'
-          type: array
-          title: Customfields
-          description: The job's custom fields
-        parentId:
-          type: string
-          title: Parentid
-          description: The ID of the parent job, if any
-        useParentData:
-          type: boolean
-          title: Useparentdata
-          description: Indicates whether to use the parent job's data or not
-      type: object
-      required:
-      - title
-      - parentId
-      - useParentData
-      title: SubJobUpdateRequest
-    CustomFieldResponseV2:
-      properties:
-        customFieldId:
-          type: integer
-          minimum: 1.0
-          title: Customfieldid
-          description: The custom field unique id
-        value:
-          title: Value
-          description: The custom field value
-        type:
-          $ref: '#/components/schemas/UserCustomFields'
-          description: The custom field type
-        name:
-          type: string
-          title: Name
-          description: The custom field name
-      type: object
-      required:
-      - customFieldId
-      - value
-      - type
-      - name
-      title: CustomFieldResponseV2
     UserCustomFields:
       type: string
       enum:
@@ -370,160 +524,6 @@ components:
       - link
       - location
       title: UserCustomFields
-    JobResponse:
-      properties:
-        job:
-          $ref: '#/components/schemas/BaseJobResponse'
-          description: The job
-      type: object
-      required:
-      - job
-      title: JobResponse
-    ValidationError:
-      properties:
-        loc:
-          items:
-            anyOf:
-            - type: string
-            - type: integer
-          type: array
-          title: Location
-        msg:
-          type: string
-          title: Message
-        type:
-          type: string
-          title: Error Type
-      type: object
-      required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
-    AssignDataTypes:
-      type: string
-      enum:
-      - users
-      - groups
-      - both
-      title: AssignDataTypes
-    APIResponseV2_JobResponse_:
-      properties:
-        requestId:
-          type: string
-          title: Requestid
-        data:
-          $ref: '#/components/schemas/JobResponse'
-      type: object
-      required:
-      - data
-      title: APIResponseV2[JobResponse]
-    AssignDataApi:
-      properties:
-        type:
-          anyOf:
-          - $ref: '#/components/schemas/AssignDataTypes'
-          - type: 'null'
-          description: The type of the assign data (users, groups, both), default is both.
-          default: both
-        userIds:
-          anyOf:
-          - items:
-              type: integer
-            type: array
-          - type: 'null'
-          title: Userids
-          description: The user ids to assign to this entity (if assigning type is users).
-        groupIds:
-          anyOf:
-          - items:
-              type: integer
-            type: array
-          - type: 'null'
-          title: Groupids
-          description: The group ids to assign to this entity (if assigning type is groups).
-      type: object
-      title: AssignDataApi
-    DeleteJobResponse:
-      properties: {}
-      type: object
-      title: DeleteJobResponse
-    GpsDataV2:
-      properties:
-        address:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Address
-          description: The address associated with the GPS data.
-        longitude:
-          anyOf:
-          - type: number
-            maximum: 180.0
-            minimum: -180.0
-            description: The longitude coordinate.
-          - type: 'null'
-          title: Longitude
-          description: The longitude coordinate.
-        latitude:
-          anyOf:
-          - type: number
-            maximum: 90.0
-            minimum: -90.0
-            description: The latitude coordinate.
-          - type: 'null'
-          title: Latitude
-          description: The latitude coordinate.
-      type: object
-      title: GpsDataV2
-    AssignDataIn:
-      properties:
-        type:
-          $ref: '#/components/schemas/AssignDataTypes'
-          description: The type of the assign data (users, groups, both), default is both.
-          default: both
-        userIds:
-          anyOf:
-          - items:
-              type: integer
-              minimum: 1.0
-              description: Integer with minimum value of 1
-            type: array
-          - type: 'null'
-          title: Userids
-          description: The user ids to assign to this entity (if assigning type is users).
-        groupIds:
-          anyOf:
-          - items:
-              type: integer
-              minimum: 1.0
-              description: Integer with minimum value of 1
-            type: array
-          - type: 'null'
-          title: Groupids
-          description: The group ids to assign to this entity (if assigning type is groups).
-      type: object
-      title: AssignDataIn
-    APIResponseV2_DeleteJobResponse_:
-      properties:
-        requestId:
-          type: string
-          title: Requestid
-        data:
-          $ref: '#/components/schemas/DeleteJobResponse'
-      type: object
-      required:
-      - data
-      title: APIResponseV2[DeleteJobResponse]
   securitySchemes:
     APIKeyHeader:
       type: apiKey

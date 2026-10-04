@@ -33,18 +33,27 @@ paths:
         - company_policies.read
 components:
   schemas:
-    PayRulePoliciesResponse:
+    ValidationError:
       properties:
-        payRulesPolicies:
+        loc:
           items:
-            $ref: '#/components/schemas/PayRulePolicy'
+            anyOf:
+            - type: string
+            - type: integer
           type: array
-          title: Payrulespolicies
-          description: List of company pay rule policies
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
       type: object
       required:
-      - payRulesPolicies
-      title: PayRulePoliciesResponse
+      - loc
+      - msg
+      - type
+      title: ValidationError
     PayRulePolicy:
       properties:
         id:
@@ -69,27 +78,18 @@ components:
           title: Detail
       type: object
       title: HTTPValidationError
-    ValidationError:
+    PayRulePoliciesResponse:
       properties:
-        loc:
+        payRulesPolicies:
           items:
-            anyOf:
-            - type: string
-            - type: integer
+            $ref: '#/components/schemas/PayRulePolicy'
           type: array
-          title: Location
-        msg:
-          type: string
-          title: Message
-        type:
-          type: string
-          title: Error Type
+          title: Payrulespolicies
+          description: List of company pay rule policies
       type: object
       required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
+      - payRulesPolicies
+      title: PayRulePoliciesResponse
     APIResponse_PayRulePoliciesResponse_:
       properties:
         requestId:

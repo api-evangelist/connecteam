@@ -51,17 +51,10 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
-    APIResponse_TimeOffAssignPolicyResponse_:
-      properties:
-        requestId:
-          type: string
-          title: Requestid
-        data:
-          $ref: '#/components/schemas/TimeOffAssignPolicyResponse'
+    TimeOffAssignPolicyResponse:
+      properties: {}
       type: object
-      required:
-      - data
-      title: APIResponse[TimeOffAssignPolicyResponse]
+      title: TimeOffAssignPolicyResponse
     TimeOffAssignPolicyRequest:
       properties:
         userId:
@@ -80,26 +73,6 @@ components:
       required:
       - userId
       title: TimeOffAssignPolicyRequest
-    TimeOffAssignPolicyResponse:
-      properties: {}
-      type: object
-      title: TimeOffAssignPolicyResponse
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
-    PolicyUnitsEnum:
-      type: string
-      enum:
-      - hours
-      - days
-      title: PolicyUnitsEnum
-      description: An enumeration.
     ValidationError:
       properties:
         loc:
@@ -121,6 +94,33 @@ components:
       - msg
       - type
       title: ValidationError
+    APIResponse_TimeOffAssignPolicyResponse_:
+      properties:
+        requestId:
+          type: string
+          title: Requestid
+        data:
+          $ref: '#/components/schemas/TimeOffAssignPolicyResponse'
+      type: object
+      required:
+      - data
+      title: APIResponse[TimeOffAssignPolicyResponse]
+    PolicyUnitsEnum:
+      type: string
+      enum:
+      - hours
+      - days
+      title: PolicyUnitsEnum
+      description: An enumeration.
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
   securitySchemes:
     APIKeyHeader:
       type: apiKey

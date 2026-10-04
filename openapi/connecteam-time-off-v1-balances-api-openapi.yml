@@ -125,68 +125,6 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
-    PagingResponseModel:
-      properties:
-        offset:
-          type: integer
-          minimum: 0.0
-          title: Offset
-          description: The resource offset of the last successfully read resource will be returned as the paging.offset JSON property of a paginated response containing more results
-        total:
-          type: integer
-          minimum: 0.0
-          title: Total
-          description: Total number of resources matching the request, ignoring pagination. Use this to retrieve the full count without paginating through every page. Only populated by endpoints that compute it.
-      type: object
-      required:
-      - offset
-      title: PagingResponseModel
-    PaginatedBaseResponse_TimeOffGetUserBalancesResponse_:
-      properties:
-        requestId:
-          type: string
-          title: Requestid
-        data:
-          $ref: '#/components/schemas/TimeOffGetUserBalancesResponse'
-        paging:
-          $ref: '#/components/schemas/PagingResponseModel'
-      type: object
-      required:
-      - data
-      - paging
-      title: PaginatedBaseResponse[TimeOffGetUserBalancesResponse]
-    TimeOffPutUserBalanceResponse:
-      properties:
-        balance:
-          allOf:
-          - $ref: '#/components/schemas/TimeOffUserBalance'
-          title: Balance
-          description: The updated user balance
-      type: object
-      required:
-      - balance
-      title: TimeOffPutUserBalanceResponse
-    TimeOffGetUserBalancesResponse:
-      properties:
-        balances:
-          items:
-            $ref: '#/components/schemas/TimeOffUserBalance'
-          type: array
-          title: Balances
-          description: List of user balances of the policy type
-      type: object
-      required:
-      - balances
-      title: TimeOffGetUserBalancesResponse
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
     TimeOffUserBalance:
       properties:
         userId:
@@ -212,13 +150,6 @@ components:
       - balance
       - policyId
       title: TimeOffUserBalance
-    PolicyUnitsEnum:
-      type: string
-      enum:
-      - hours
-      - days
-      title: PolicyUnitsEnum
-      description: An enumeration.
     ValidationError:
       properties:
         loc:
@@ -240,16 +171,6 @@ components:
       - msg
       - type
       title: ValidationError
-    TimeOffUpdateUserBalanceRequest:
-      properties:
-        balance:
-          type: number
-          title: Balance
-          description: The balance to update to
-      type: object
-      required:
-      - balance
-      title: TimeOffUpdateUserBalanceRequest
     APIResponse_TimeOffPutUserBalanceResponse_:
       properties:
         requestId:
@@ -261,6 +182,85 @@ components:
       required:
       - data
       title: APIResponse[TimeOffPutUserBalanceResponse]
+    TimeOffGetUserBalancesResponse:
+      properties:
+        balances:
+          items:
+            $ref: '#/components/schemas/TimeOffUserBalance'
+          type: array
+          title: Balances
+          description: List of user balances of the policy type
+      type: object
+      required:
+      - balances
+      title: TimeOffGetUserBalancesResponse
+    PagingResponseModel:
+      properties:
+        offset:
+          type: integer
+          minimum: 0.0
+          title: Offset
+          description: The resource offset of the last successfully read resource will be returned as the paging.offset JSON property of a paginated response containing more results
+        total:
+          type: integer
+          minimum: 0.0
+          title: Total
+          description: Total number of resources matching the request, ignoring pagination. Use this to retrieve the full count without paginating through every page. Only populated by endpoints that compute it.
+      type: object
+      required:
+      - offset
+      title: PagingResponseModel
+    PolicyUnitsEnum:
+      type: string
+      enum:
+      - hours
+      - days
+      title: PolicyUnitsEnum
+      description: An enumeration.
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    TimeOffPutUserBalanceResponse:
+      properties:
+        balance:
+          allOf:
+          - $ref: '#/components/schemas/TimeOffUserBalance'
+          title: Balance
+          description: The updated user balance
+      type: object
+      required:
+      - balance
+      title: TimeOffPutUserBalanceResponse
+    PaginatedBaseResponse_TimeOffGetUserBalancesResponse_:
+      properties:
+        requestId:
+          type: string
+          title: Requestid
+        data:
+          $ref: '#/components/schemas/TimeOffGetUserBalancesResponse'
+        paging:
+          $ref: '#/components/schemas/PagingResponseModel'
+      type: object
+      required:
+      - data
+      - paging
+      title: PaginatedBaseResponse[TimeOffGetUserBalancesResponse]
+    TimeOffUpdateUserBalanceRequest:
+      properties:
+        balance:
+          type: number
+          title: Balance
+          description: The balance to update to
+      type: object
+      required:
+      - balance
+      title: TimeOffUpdateUserBalanceRequest
   securitySchemes:
     APIKeyHeader:
       type: apiKey

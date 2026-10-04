@@ -121,6 +121,48 @@ components:
       required:
       - autoAssignRequestId
       title: AutoAssignStatusResponse
+    APIResponseV2_AutoAssignResponse_:
+      properties:
+        requestId:
+          type: string
+          title: Requestid
+        data:
+          $ref: '#/components/schemas/AutoAssignResponse'
+      type: object
+      required:
+      - data
+      title: APIResponseV2[AutoAssignResponse]
+    AutoAssignResponse:
+      properties:
+        autoAssignRequestId:
+          type: string
+          title: Autoassignrequestid
+          description: The unique identifier of the auto assign request
+      type: object
+      required:
+      - autoAssignRequestId
+      title: AutoAssignResponse
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
     AutoAssignRequest:
       properties:
         shiftsIds:
@@ -181,48 +223,6 @@ components:
           title: Detail
       type: object
       title: HTTPValidationError
-    AutoAssignResponse:
-      properties:
-        autoAssignRequestId:
-          type: string
-          title: Autoassignrequestid
-          description: The unique identifier of the auto assign request
-      type: object
-      required:
-      - autoAssignRequestId
-      title: AutoAssignResponse
-    ValidationError:
-      properties:
-        loc:
-          items:
-            anyOf:
-            - type: string
-            - type: integer
-          type: array
-          title: Location
-        msg:
-          type: string
-          title: Message
-        type:
-          type: string
-          title: Error Type
-      type: object
-      required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
-    APIResponseV2_AutoAssignResponse_:
-      properties:
-        requestId:
-          type: string
-          title: Requestid
-        data:
-          $ref: '#/components/schemas/AutoAssignResponse'
-      type: object
-      required:
-      - data
-      title: APIResponseV2[AutoAssignResponse]
   securitySchemes:
     APIKeyHeader:
       type: apiKey

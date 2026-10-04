@@ -164,6 +164,40 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
+    APIResponse_GeoFenceWithFenceIdEntity_:
+      properties:
+        requestId:
+          type: string
+          title: Requestid
+        data:
+          $ref: '#/components/schemas/GeoFenceWithFenceIdEntity'
+      type: object
+      required:
+      - data
+      title: APIResponse[GeoFenceWithFenceIdEntity]
+    GeoFencesGetResponse:
+      properties:
+        geofences:
+          items:
+            $ref: '#/components/schemas/GeoFenceWithFenceIdEntity'
+          type: array
+          title: Geofences
+          description: Geofences list
+      type: object
+      required:
+      - geofences
+      title: GeoFencesGetResponse
+    APIResponse_BaseResponse_:
+      properties:
+        requestId:
+          type: string
+          title: Requestid
+        data:
+          $ref: '#/components/schemas/BaseResponse'
+      type: object
+      required:
+      - data
+      title: APIResponse[BaseResponse]
     GeoFenceCreatedEntity:
       properties:
         fenceId:
@@ -179,29 +213,6 @@ components:
       - fenceId
       - name
       title: GeoFenceCreatedEntity
-    GeoFencesCreatedResponse:
-      properties:
-        geofences:
-          items:
-            $ref: '#/components/schemas/GeoFenceCreatedEntity'
-          type: array
-          title: Geofences
-          description: Geofences list
-      type: object
-      required:
-      - geofences
-      title: GeoFencesCreatedResponse
-    APIResponse_BaseResponse_:
-      properties:
-        requestId:
-          type: string
-          title: Requestid
-        data:
-          $ref: '#/components/schemas/BaseResponse'
-      type: object
-      required:
-      - data
-      title: APIResponse[BaseResponse]
     GpsLocation:
       properties:
         address:
@@ -222,17 +233,27 @@ components:
       - latitude
       - longitude
       title: GpsLocation
-    APIResponse_GeoFencesCreatedResponse_:
+    ValidationError:
       properties:
-        requestId:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
           type: string
-          title: Requestid
-        data:
-          $ref: '#/components/schemas/GeoFencesCreatedResponse'
+          title: Message
+        type:
+          type: string
+          title: Error Type
       type: object
       required:
-      - data
-      title: APIResponse[GeoFencesCreatedResponse]
+      - loc
+      - msg
+      - type
+      title: ValidationError
     APIResponse_GeoFencesGetResponse_:
       properties:
         requestId:
@@ -244,6 +265,29 @@ components:
       required:
       - data
       title: APIResponse[GeoFencesGetResponse]
+    APIResponse_GeoFencesCreatedResponse_:
+      properties:
+        requestId:
+          type: string
+          title: Requestid
+        data:
+          $ref: '#/components/schemas/GeoFencesCreatedResponse'
+      type: object
+      required:
+      - data
+      title: APIResponse[GeoFencesCreatedResponse]
+    GeoFencesCreatedResponse:
+      properties:
+        geofences:
+          items:
+            $ref: '#/components/schemas/GeoFenceCreatedEntity'
+          type: array
+          title: Geofences
+          description: Geofences list
+      type: object
+      required:
+      - geofences
+      title: GeoFencesCreatedResponse
     GeoFencesCreateRequest:
       properties:
         geofences:
@@ -257,14 +301,6 @@ components:
       required:
       - geofences
       title: GeoFencesCreateRequest
-    ExitGeofenceAction:
-      type: string
-      enum:
-      - noAction
-      - sendNotification
-      - autoClockOut
-      title: ExitGeofenceAction
-      description: An enumeration.
     HTTPValidationError:
       properties:
         detail:
@@ -274,18 +310,6 @@ components:
           title: Detail
       type: object
       title: HTTPValidationError
-    GeoFencesGetResponse:
-      properties:
-        geofences:
-          items:
-            $ref: '#/components/schemas/GeoFenceWithFenceIdEntity'
-          type: array
-          title: Geofences
-          description: Geofences list
-      type: object
-      required:
-      - geofences
-      title: GeoFencesGetResponse
     GeoFenceWithFenceIdEntity:
       properties:
         id:
@@ -331,38 +355,18 @@ components:
       - name
       - location
       title: GeoFenceWithFenceIdEntity
-    ValidationError:
-      properties:
-        loc:
-          items:
-            anyOf:
-            - type: string
-            - type: integer
-          type: array
-          title: Location
-        msg:
-          type: string
-          title: Message
-        type:
-          type: string
-          title: Error Type
+    BaseResponse:
+      properties: {}
       type: object
-      required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
-    APIResponse_GeoFenceWithFenceIdEntity_:
-      properties:
-        requestId:
-          type: string
-          title: Requestid
-        data:
-          $ref: '#/components/schemas/GeoFenceWithFenceIdEntity'
-      type: object
-      required:
-      - data
-      title: APIResponse[GeoFenceWithFenceIdEntity]
+      title: BaseResponse
+    ExitGeofenceAction:
+      type: string
+      enum:
+      - noAction
+      - sendNotification
+      - autoClockOut
+      title: ExitGeofenceAction
+      description: An enumeration.
     GeoFenceEntity:
       properties:
         name:
@@ -403,10 +407,6 @@ components:
       - name
       - location
       title: GeoFenceEntity
-    BaseResponse:
-      properties: {}
-      type: object
-      title: BaseResponse
   securitySchemes:
     APIKeyHeader:
       type: apiKey

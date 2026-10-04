@@ -53,36 +53,6 @@ components:
       required:
       - data
       title: APIResponse[BaseResponse]
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
-    InviteAdminsRequest:
-      properties:
-        userId:
-          type: integer
-          minimum: 1.0
-          title: Userid
-          description: The unique identifier of the user to be promoted to admin
-        email:
-          type: string
-          title: Email
-          description: The email address of the user to be promoted. An invitation link will be sent to the specified email. Once the user acknowledges the email, the user will become an admin of the account.
-        title:
-          type: string
-          title: Title
-          description: The title of the user to be promoted
-      type: object
-      required:
-      - userId
-      - email
-      - title
-      title: InviteAdminsRequest
     ValidationError:
       properties:
         loc:
@@ -104,10 +74,40 @@ components:
       - msg
       - type
       title: ValidationError
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
     BaseResponse:
       properties: {}
       type: object
       title: BaseResponse
+    InviteAdminsRequest:
+      properties:
+        userId:
+          type: integer
+          minimum: 1.0
+          title: Userid
+          description: The unique identifier of the user to be promoted to admin
+        email:
+          type: string
+          title: Email
+          description: The email address of the user to be promoted. An invitation link will be sent to the specified email. Once the user acknowledges the email, the user will become an admin of the account.
+        title:
+          type: string
+          title: Title
+          description: The title of the user to be promoted
+      type: object
+      required:
+      - userId
+      - email
+      - title
+      title: InviteAdminsRequest
   securitySchemes:
     APIKeyHeader:
       type: apiKey

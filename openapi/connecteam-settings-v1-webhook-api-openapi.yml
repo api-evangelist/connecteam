@@ -199,6 +199,18 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
+    WebhookListResponse:
+      properties:
+        webhooks:
+          items:
+            $ref: '#/components/schemas/WebhookResponse'
+          type: array
+          title: Webhooks
+          description: List of webhooks
+      type: object
+      required:
+      - webhooks
+      title: WebhookListResponse
     PublicBaseWebhookResponse:
       properties:
         id:
@@ -271,45 +283,20 @@ components:
       - retryLimit
       - eventTypes
       title: PublicBaseWebhookResponse
-    WebhookDeleteResponse:
-      properties: {}
-      type: object
-      title: WebhookDeleteResponse
-    APIResponseV2_PublicBaseWebhookResponse_:
+    PaginatedBaseResponseV2_WebhookListResponse_:
       properties:
         requestId:
           type: string
           title: Requestid
         data:
-          $ref: '#/components/schemas/PublicBaseWebhookResponse'
+          $ref: '#/components/schemas/WebhookListResponse'
+        paging:
+          $ref: '#/components/schemas/PagingResponseModelV2'
       type: object
       required:
       - data
-      title: APIResponseV2[PublicBaseWebhookResponse]
-    PagingResponseModelV2:
-      properties:
-        offset:
-          type: integer
-          minimum: 0.0
-          title: Offset
-          description: The resource offset of the last successfully read resource will be returned as the paging.offset JSON property of a paginated response containing more results
-        total:
-          anyOf:
-          - type: integer
-            minimum: 0.0
-          - type: 'null'
-          title: Total
-          description: Total number of resources matching the request, ignoring pagination. Use this to retrieve the full count without paginating through every page. Only populated by endpoints that compute it.
-      type: object
-      required:
-      - offset
-      title: PagingResponseModelV2
-    WebhookOrigin:
-      type: string
-      enum:
-      - organic
-      - integration
-      title: WebhookOrigin
+      - paging
+      title: PaginatedBaseResponseV2[WebhookListResponse]
     ValidationError:
       properties:
         loc:
@@ -331,29 +318,23 @@ components:
       - msg
       - type
       title: ValidationError
-    WebhookListResponse:
-      properties:
-        webhooks:
-          items:
-            $ref: '#/components/schemas/WebhookResponse'
-          type: array
-          title: Webhooks
-          description: List of webhooks
-      type: object
-      required:
-      - webhooks
-      title: WebhookListResponse
-    APIResponseV2_WebhookDeleteResponse_:
+    APIResponseV2_PublicBaseWebhookResponse_:
       properties:
         requestId:
           type: string
           title: Requestid
         data:
-          $ref: '#/components/schemas/WebhookDeleteResponse'
+          $ref: '#/components/schemas/PublicBaseWebhookResponse'
       type: object
       required:
       - data
-      title: APIResponseV2[WebhookDeleteResponse]
+      title: APIResponseV2[PublicBaseWebhookResponse]
+    WebhookOrigin:
+      type: string
+      enum:
+      - organic
+      - integration
+      title: WebhookOrigin
     HTTPValidationError:
       properties:
         detail:
@@ -439,20 +420,17 @@ components:
       - retryLimit
       - eventTypes
       title: WebhookResponse
-    PaginatedBaseResponseV2_WebhookListResponse_:
+    APIResponseV2_WebhookDeleteResponse_:
       properties:
         requestId:
           type: string
           title: Requestid
         data:
-          $ref: '#/components/schemas/WebhookListResponse'
-        paging:
-          $ref: '#/components/schemas/PagingResponseModelV2'
+          $ref: '#/components/schemas/WebhookDeleteResponse'
       type: object
       required:
       - data
-      - paging
-      title: PaginatedBaseResponseV2[WebhookListResponse]
+      title: APIResponseV2[WebhookDeleteResponse]
     WebhookUpdateRequest:
       properties:
         name:
@@ -517,6 +495,28 @@ components:
           description: The version of the webhook payload schema.
       type: object
       title: WebhookUpdateRequest
+    PagingResponseModelV2:
+      properties:
+        offset:
+          type: integer
+          minimum: 0.0
+          title: Offset
+          description: The resource offset of the last successfully read resource will be returned as the paging.offset JSON property of a paginated response containing more results
+        total:
+          anyOf:
+          - type: integer
+            minimum: 0.0
+          - type: 'null'
+          title: Total
+          description: Total number of resources matching the request, ignoring pagination. Use this to retrieve the full count without paginating through every page. Only populated by endpoints that compute it.
+      type: object
+      required:
+      - offset
+      title: PagingResponseModelV2
+    WebhookDeleteResponse:
+      properties: {}
+      type: object
+      title: WebhookDeleteResponse
     WebhookCreateRequest:
       properties:
         name:

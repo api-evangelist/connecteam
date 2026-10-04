@@ -122,18 +122,29 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
-    ResourceResponse:
+    StartTimeResponse:
       properties:
-        resourceId:
+        timestamp:
+          type: integer
+          minimum: 1.0
+          title: Timestamp
+          description: The start time of the shift
+        timezone:
           type: string
-          title: Resourceid
-          description: The unique identifier of the resource/job
-        subResourceId:
-          type: string
-          title: Subresourceid
-          description: The unique identifier of the sub resource/job
+          title: Timezone
+          description: The timezone of the shift
+        locationData:
+          allOf:
+          - $ref: '#/components/schemas/GpsData'
+          title: Locationdata
+          description: The location data
+        source:
+          allOf:
+          - $ref: '#/components/schemas/PunchSourceResponse'
+          title: Source
+          description: Describes the origin from which the punch was created
       type: object
-      title: ResourceResponse
+      title: StartTimeResponse
     DailyRecordResponse:
       properties:
         date:
@@ -198,88 +209,13 @@ components:
       - payItems
       - records
       title: DailyRecordResponse
-    TimesheetTotalHoursGetResponse:
-      properties:
-        startDate:
-          type: string
-          title: Startdate
-          description: The start date of the reporting period
-        endDate:
-          type: string
-          title: Enddate
-          description: The end date of the reporting period
-        users:
-          items:
-            $ref: '#/components/schemas/UserHoursSummaryResponse'
-          type: array
-          title: Users
-          description: The users and their hour summaries
-      type: object
-      required:
-      - startDate
-      - endDate
-      - users
-      title: TimesheetTotalHoursGetResponse
-    APIResponse_TimesheetTotalHoursGetResponse_:
-      properties:
-        requestId:
-          type: string
-          title: Requestid
-        data:
-          $ref: '#/components/schemas/TimesheetTotalHoursGetResponse'
-      type: object
-      required:
-      - data
-      title: APIResponse[TimesheetTotalHoursGetResponse]
-    PunchSourceType:
-      type: string
-      enum:
-      - autoClockOut
-      - nfc
-      - mobile
-      - pc
-      - kiosk
-      - api
-      - admin
-      title: PunchSourceType
-      description: An enumeration.
-    PayRuleResponse:
-      properties:
-        id:
-          type: string
-          title: Id
-          description: The unique identifier of the pay rule
-        code:
-          type: string
-          title: Code
-          description: The code of the pay rule
-        type:
-          type: string
-          title: Type
-          description: The type of the pay rule
-      type: object
-      required:
-      - id
-      - code
-      - type
-      title: PayRuleResponse
-    ScheduledShiftDetailResponse:
-      properties:
-        id:
-          type: string
-          title: Id
-          description: The unique identifier of the planned/scheduled shift
-      type: object
-      required:
-      - id
-      title: ScheduledShiftDetailResponse
-    StartTimeResponse:
+    EndTimeResponse:
       properties:
         timestamp:
           type: integer
           minimum: 1.0
           title: Timestamp
-          description: The start time of the shift
+          description: The end time of the shift
         timezone:
           type: string
           title: Timezone
@@ -295,25 +231,7 @@ components:
           title: Source
           description: Describes the origin from which the punch was created
       type: object
-      title: StartTimeResponse
-    UserHoursSummaryResponse:
-      properties:
-        userId:
-          type: integer
-          minimum: 1.0
-          title: Userid
-          description: The unique identifier of the user
-        dailyRecords:
-          items:
-            $ref: '#/components/schemas/DailyRecordResponse'
-          type: array
-          title: Dailyrecords
-          description: The daily breakdown of hours
-      type: object
-      required:
-      - userId
-      - dailyRecords
-      title: UserHoursSummaryResponse
+      title: EndTimeResponse
     ValidationError:
       properties:
         loc:
@@ -335,6 +253,16 @@ components:
       - msg
       - type
       title: ValidationError
+    ScheduledShiftDetailResponse:
+      properties:
+        id:
+          type: string
+          title: Id
+          description: The unique identifier of the planned/scheduled shift
+      type: object
+      required:
+      - id
+      title: ScheduledShiftDetailResponse
     PunchSourceResponse:
       properties:
         id:
@@ -384,15 +312,24 @@ components:
       - disabledGpsPermission
       title: AutoClockOutModeType
       description: An enumeration.
-    HTTPValidationError:
+    UserHoursSummaryResponse:
       properties:
-        detail:
+        userId:
+          type: integer
+          minimum: 1.0
+          title: Userid
+          description: The unique identifier of the user
+        dailyRecords:
           items:
-            $ref: '#/components/schemas/ValidationError'
+            $ref: '#/components/schemas/DailyRecordResponse'
           type: array
-          title: Detail
+          title: Dailyrecords
+          description: The daily breakdown of hours
       type: object
-      title: HTTPValidationError
+      required:
+      - userId
+      - dailyRecords
+      title: UserHoursSummaryResponse
     PayItemResponse:
       properties:
         hours:
@@ -417,6 +354,86 @@ components:
       - hours
       - payRule
       title: PayItemResponse
+    PayRuleResponse:
+      properties:
+        id:
+          type: string
+          title: Id
+          description: The unique identifier of the pay rule
+        code:
+          type: string
+          title: Code
+          description: The code of the pay rule
+        type:
+          type: string
+          title: Type
+          description: The type of the pay rule
+      type: object
+      required:
+      - id
+      - code
+      - type
+      title: PayRuleResponse
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    PunchSourceType:
+      type: string
+      enum:
+      - autoClockOut
+      - nfc
+      - mobile
+      - pc
+      - kiosk
+      - api
+      - admin
+      title: PunchSourceType
+      description: An enumeration.
+    DailyScheduledDetailsResponse:
+      properties:
+        dailyScheduledHours:
+          type: number
+          title: Dailyscheduledhours
+          description: Total planned/scheduled hours for the day
+        dailyScheduledDifferenceHours:
+          type: number
+          title: Dailyscheduleddifferencehours
+          description: Difference between timesheet paid hours and planned hours for the day
+        dailyScheduledShifts:
+          type: integer
+          title: Dailyscheduledshifts
+          description: Number of planned/scheduled shifts for the day
+        shifts:
+          items:
+            $ref: '#/components/schemas/ScheduledShiftDetailResponse'
+          type: array
+          title: Shifts
+          description: Planned/scheduled shift details for the day. Currently includes only the shift id.
+      type: object
+      required:
+      - dailyScheduledHours
+      - dailyScheduledDifferenceHours
+      - dailyScheduledShifts
+      - shifts
+      title: DailyScheduledDetailsResponse
+    ResourceResponse:
+      properties:
+        resourceId:
+          type: string
+          title: Resourceid
+          description: The unique identifier of the resource/job
+        subResourceId:
+          type: string
+          title: Subresourceid
+          description: The unique identifier of the sub resource/job
+      type: object
+      title: ResourceResponse
     ShiftEntryResponse:
       properties:
         timeActivityId:
@@ -450,56 +467,39 @@ components:
       - end
       - resources
       title: ShiftEntryResponse
-    DailyScheduledDetailsResponse:
+    TimesheetTotalHoursGetResponse:
       properties:
-        dailyScheduledHours:
-          type: number
-          title: Dailyscheduledhours
-          description: Total planned/scheduled hours for the day
-        dailyScheduledDifferenceHours:
-          type: number
-          title: Dailyscheduleddifferencehours
-          description: Difference between timesheet paid hours and planned hours for the day
-        dailyScheduledShifts:
-          type: integer
-          title: Dailyscheduledshifts
-          description: Number of planned/scheduled shifts for the day
-        shifts:
+        startDate:
+          type: string
+          title: Startdate
+          description: The start date of the reporting period
+        endDate:
+          type: string
+          title: Enddate
+          description: The end date of the reporting period
+        users:
           items:
-            $ref: '#/components/schemas/ScheduledShiftDetailResponse'
+            $ref: '#/components/schemas/UserHoursSummaryResponse'
           type: array
-          title: Shifts
-          description: Planned/scheduled shift details for the day. Currently includes only the shift id.
+          title: Users
+          description: The users and their hour summaries
       type: object
       required:
-      - dailyScheduledHours
-      - dailyScheduledDifferenceHours
-      - dailyScheduledShifts
-      - shifts
-      title: DailyScheduledDetailsResponse
-    EndTimeResponse:
+      - startDate
+      - endDate
+      - users
+      title: TimesheetTotalHoursGetResponse
+    APIResponse_TimesheetTotalHoursGetResponse_:
       properties:
-        timestamp:
-          type: integer
-          minimum: 1.0
-          title: Timestamp
-          description: The end time of the shift
-        timezone:
+        requestId:
           type: string
-          title: Timezone
-          description: The timezone of the shift
-        locationData:
-          allOf:
-          - $ref: '#/components/schemas/GpsData'
-          title: Locationdata
-          description: The location data
-        source:
-          allOf:
-          - $ref: '#/components/schemas/PunchSourceResponse'
-          title: Source
-          description: Describes the origin from which the punch was created
+          title: Requestid
+        data:
+          $ref: '#/components/schemas/TimesheetTotalHoursGetResponse'
       type: object
-      title: EndTimeResponse
+      required:
+      - data
+      title: APIResponse[TimesheetTotalHoursGetResponse]
   securitySchemes:
     APIKeyHeader:
       type: apiKey

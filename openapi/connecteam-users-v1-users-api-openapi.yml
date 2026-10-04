@@ -342,18 +342,68 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
-    UsersResponse:
+    BaseCustomField:
       properties:
-        users:
+        customFieldId:
+          type: integer
+          minimum: 1.0
+          title: Customfieldid
+          description: The custom field unique id
+        value:
+          title: Value
+          description: 'The value of the custom field. Our real-time API documentation experience does not support custom fields of the dropdown type.To update dropdown fields value(s), pass an array of objects with the IDs of the selected dropdown values (e.g., [{id: 1}, {id: 2}]).'
+      type: object
+      required:
+      - customFieldId
+      - value
+      title: BaseCustomField
+    ArchiveUsersResponse:
+      properties:
+        success:
+          type: boolean
+          title: Success
+          description: Whether the users were deleted successfully.
+      type: object
+      required:
+      - success
+      title: ArchiveUsersResponse
+    APIResponse_ArchiveUsersResponse_:
+      properties:
+        requestId:
+          type: string
+          title: Requestid
+        data:
+          $ref: '#/components/schemas/ArchiveUsersResponse'
+      type: object
+      required:
+      - data
+      title: APIResponse[ArchiveUsersResponse]
+    PaginatedBaseResponse_UsersResponse_:
+      properties:
+        requestId:
+          type: string
+          title: Requestid
+        data:
+          $ref: '#/components/schemas/UsersResponse'
+        paging:
+          $ref: '#/components/schemas/PagingResponseModel'
+      type: object
+      required:
+      - data
+      - paging
+      title: PaginatedBaseResponse[UsersResponse]
+    CreateUsersResponse:
+      properties:
+        results:
           items:
             $ref: '#/components/schemas/User'
           type: array
-          title: Users
-          description: The users.
+          title: Results
+          description: The created users.
       type: object
       required:
-      - users
-      title: UsersResponse
+      - results
+      title: CreateUsersResponse
     CustomFieldResponse:
       properties:
         customFieldId:
@@ -481,31 +531,6 @@ components:
       - userType
       - userId
       title: User
-    APIResponse_EditUsersResponse_:
-      properties:
-        requestId:
-          type: string
-          title: Requestid
-        data:
-          $ref: '#/components/schemas/EditUsersResponse'
-      type: object
-      required:
-      - data
-      title: APIResponse[EditUsersResponse]
-    PaginatedBaseResponse_UsersResponse_:
-      properties:
-        requestId:
-          type: string
-          title: Requestid
-        data:
-          $ref: '#/components/schemas/UsersResponse'
-        paging:
-          $ref: '#/components/schemas/PagingResponseModel'
-      type: object
-      required:
-      - data
-      - paging
-      title: PaginatedBaseResponse[UsersResponse]
     UserCreateRequest:
       properties:
         firstName:
@@ -553,38 +578,18 @@ components:
       - phoneNumber
       - userType
       title: UserCreateRequest
-    APIResponse_ArchiveUsersResponse_:
+    UsersResponse:
       properties:
-        requestId:
-          type: string
-          title: Requestid
-        data:
-          $ref: '#/components/schemas/ArchiveUsersResponse'
-      type: object
-      required:
-      - data
-      title: APIResponse[ArchiveUsersResponse]
-    ValidationError:
-      properties:
-        loc:
+        users:
           items:
-            anyOf:
-            - type: string
-            - type: integer
+            $ref: '#/components/schemas/User'
           type: array
-          title: Location
-        msg:
-          type: string
-          title: Message
-        type:
-          type: string
-          title: Error Type
+          title: Users
+          description: The users.
       type: object
       required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
+      - users
+      title: UsersResponse
     UserEditRequest:
       properties:
         firstName:
@@ -631,11 +636,82 @@ components:
           description: The file ID obtained from the upload attachment endpoint (POST /attachments/v1/files/generate-upload-url) with featureType set to 'users'. Send an empty string to remove the current profile picture.
       type: object
       title: UserEditRequest
-    UsersSortKeysExternal:
+    APIResponse_EditUsersResponse_:
+      properties:
+        requestId:
+          type: string
+          title: Requestid
+        data:
+          $ref: '#/components/schemas/EditUsersResponse'
+      type: object
+      required:
+      - data
+      title: APIResponse[EditUsersResponse]
+    APIResponse_CreateUsersResponse_:
+      properties:
+        requestId:
+          type: string
+          title: Requestid
+        data:
+          $ref: '#/components/schemas/CreateUsersResponse'
+      type: object
+      required:
+      - data
+      title: APIResponse[CreateUsersResponse]
+    PagingResponseModel:
+      properties:
+        offset:
+          type: integer
+          minimum: 0.0
+          title: Offset
+          description: The resource offset of the last successfully read resource will be returned as the paging.offset JSON property of a paginated response containing more results
+        total:
+          type: integer
+          minimum: 0.0
+          title: Total
+          description: Total number of resources matching the request, ignoring pagination. Use this to retrieve the full count without paginating through every page. Only populated by endpoints that compute it.
+      type: object
+      required:
+      - offset
+      title: PagingResponseModel
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    SortOrder:
+      type: string
       enum:
-      - created_at
-      title: UsersSortKeysExternal
+      - asc
+      - desc
+      title: SortOrder
+    UserStatus:
+      type: string
+      enum:
+      - active
+      - archived
+      - all
+      title: UserStatus
       description: An enumeration.
+    UserCustomFields:
+      type: string
+      enum:
+      - email
+      - date
+      - phone
+      - number
+      - str
+      - dropdown
+      - file
+      - directManager
+      - birthday
+      - link
+      - location
+      title: UserCustomFields
     EditUsersResponse:
       properties:
         count:
@@ -661,12 +737,27 @@ components:
       - owner
       title: UserType
       description: An enumeration.
-    SortOrder:
-      type: string
-      enum:
-      - asc
-      - desc
-      title: SortOrder
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
     DeletionType:
       type: string
       enum:
@@ -674,101 +765,10 @@ components:
       - delete
       title: DeletionType
       description: Deletion type for user deletion endpoint
-    UserCustomFields:
-      type: string
+    UsersSortKeysExternal:
       enum:
-      - email
-      - date
-      - phone
-      - number
-      - str
-      - dropdown
-      - file
-      - directManager
-      - birthday
-      - link
-      - location
-      title: UserCustomFields
-    BaseCustomField:
-      properties:
-        customFieldId:
-          type: integer
-          minimum: 1.0
-          title: Customfieldid
-          description: The custom field unique id
-        value:
-          title: Value
-          description: 'The value of the custom field. Our real-time API documentation experience does not support custom fields of the dropdown type.To update dropdown fields value(s), pass an array of objects with the IDs of the selected dropdown values (e.g., [{id: 1}, {id: 2}]).'
-      type: object
-      required:
-      - customFieldId
-      - value
-      title: BaseCustomField
-    PagingResponseModel:
-      properties:
-        offset:
-          type: integer
-          minimum: 0.0
-          title: Offset
-          description: The resource offset of the last successfully read resource will be returned as the paging.offset JSON property of a paginated response containing more results
-        total:
-          type: integer
-          minimum: 0.0
-          title: Total
-          description: Total number of resources matching the request, ignoring pagination. Use this to retrieve the full count without paginating through every page. Only populated by endpoints that compute it.
-      type: object
-      required:
-      - offset
-      title: PagingResponseModel
-    ArchiveUsersResponse:
-      properties:
-        success:
-          type: boolean
-          title: Success
-          description: Whether the users were deleted successfully.
-      type: object
-      required:
-      - success
-      title: ArchiveUsersResponse
-    APIResponse_CreateUsersResponse_:
-      properties:
-        requestId:
-          type: string
-          title: Requestid
-        data:
-          $ref: '#/components/schemas/CreateUsersResponse'
-      type: object
-      required:
-      - data
-      title: APIResponse[CreateUsersResponse]
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
-    CreateUsersResponse:
-      properties:
-        results:
-          items:
-            $ref: '#/components/schemas/User'
-          type: array
-          title: Results
-          description: The created users.
-      type: object
-      required:
-      - results
-      title: CreateUsersResponse
-    UserStatus:
-      type: string
-      enum:
-      - active
-      - archived
-      - all
-      title: UserStatus
+      - created_at
+      title: UsersSortKeysExternal
       description: An enumeration.
   securitySchemes:
     APIKeyHeader:

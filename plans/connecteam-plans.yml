@@ -82,3 +82,41 @@ api_access_by_hub:
   label: Documents
   hubs: [HR & Skills]
   status: coming soon
+x-canonical:
+  generated: '2026-10-08'
+  vocabulary: all/0-working/economics/plans-canonical.yml
+  models:
+  - free
+  - subscription
+  units: []
+  plans:
+  - name: Small Business Plan
+    access: other
+    model: free
+    model_how: derived
+    units: []
+    periods: []
+  - name: Basic
+    access: other
+    model: subscription
+    model_how: derived
+    units: []
+    periods: []
+  - name: Advanced
+    access: other
+    model: subscription
+    model_how: derived
+    units: []
+    periods: []
+  - name: Expert
+    access: other
+    model: subscription
+    model_how: derived
+    units: []
+    periods: []
+  - name: Enterprise
+    access: other
+    model: unstated
+    model_how: derived
+    units: []
+    periods: []

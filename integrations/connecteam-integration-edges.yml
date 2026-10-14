@@ -1,6 +1,8 @@
 generated: '2026-10-13'
 method: searched
 checked:
+- adp/integrations/adp-integration-edges.yml
+- bamboohr/integrations/bamboohr-integration-edges.yml
 - https://azuremarketplace.microsoft.com/
 marketplace_apps: []
 edges:
@@ -19,3 +21,43 @@ edges:
   seller_name: Connecteam Inc
   detected_by: sweep-cloud-marketplaces.py
   detected: '2026-10-13'
+- partner_name: ADP (own)
+  partner: adp
+  partner_match: mirror
+  mirror_match: domain+verified
+  type: marketplace
+  relationship: platform-app
+  direction: third-party
+  channel: partner-built
+  marketplace: own
+  evidence: https://apps.adp.com/apps/469962/connecteam-connector-for-run-powered-by-adp
+  mirror_of: adp/integrations/adp-integration-edges.yml
+  apps:
+  - Connecteam Connector for RUN Powered by ADP®
+  - Connecteam for RUN Powered by ADP®
+  - Connecteam Connector for ADP Workforce Now®
+  - Connecteam Connector for ADP Workforce Now® Next Generation
+  listing_count: 4
+  detected: '2026-10-14'
+  detected_by: mirror-platform-listings.py
+  category: RUN.CompleteHR
+- partner_name: BambooHR (own)
+  partner: bamboohr
+  partner_match: mirror
+  mirror_match: domain
+  type: marketplace
+  relationship: platform-app
+  direction: third-party
+  channel: partner-built
+  marketplace: own
+  evidence: https://www.bamboohr.com/integrations/listings/connecteam
+  mirror_of: bamboohr/integrations/bamboohr-integration-edges.yml
+  apps:
+  - Connecteam
+  listing_count: 1
+  detected: '2026-10-14'
+  detected_by: mirror-platform-listings.py
+  category: Time Tracking & Scheduling
+source:
+- adp/integrations/adp-integration-edges.yml
+- bamboohr/integrations/bamboohr-integration-edges.yml

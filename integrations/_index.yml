@@ -15,3 +15,29 @@
   relationship: distribution-channel
   status: not-a-workflow
   arazzo: null
+- slug: connecteam-adp-own
+  label: ADP (own)
+  partner: adp
+  partner_name: ADP (own)
+  category: RUN.CompleteHR
+  type: marketplace
+  marketplace: own
+  channel: partner-built
+  evidence: https://apps.adp.com/apps/469962/connecteam-connector-for-run-powered-by-adp
+  source: edge
+  relationship: platform-app
+  status: not-a-workflow
+  arazzo: null
+- slug: connecteam-bamboohr-own
+  label: BambooHR (own)
+  partner: bamboohr
+  partner_name: BambooHR (own)
+  category: Time Tracking & Scheduling
+  type: marketplace
+  marketplace: own
+  channel: partner-built
+  evidence: https://www.bamboohr.com/integrations/listings/connecteam
+  source: edge
+  relationship: platform-app
+  status: not-a-workflow
+  arazzo: null

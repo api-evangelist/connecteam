@@ -33,39 +33,17 @@ paths:
         - time_clock.read
 components:
   schemas:
-    TimeClocksResponse:
+    APIResponse_TimeClocksResponse_:
       properties:
-        timeClocks:
-          items:
-            $ref: '#/components/schemas/TimeClock'
-          type: array
-          title: Timeclocks
-          description: The time clocks
+        requestId:
+          type: string
+          title: Requestid
+        data:
+          $ref: '#/components/schemas/TimeClocksResponse'
       type: object
       required:
-      - timeClocks
-      title: TimeClocksResponse
-    ValidationError:
-      properties:
-        loc:
-          items:
-            anyOf:
-            - type: string
-            - type: integer
-          type: array
-          title: Location
-        msg:
-          type: string
-          title: Message
-        type:
-          type: string
-          title: Error Type
-      type: object
-      required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
+      - data
+      title: APIResponse[TimeClocksResponse]
     TimeClock:
       properties:
         id:
@@ -87,17 +65,27 @@ components:
       - name
       - isArchived
       title: TimeClock
-    APIResponse_TimeClocksResponse_:
+    ValidationError:
       properties:
-        requestId:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
           type: string
-          title: Requestid
-        data:
-          $ref: '#/components/schemas/TimeClocksResponse'
+          title: Message
+        type:
+          type: string
+          title: Error Type
       type: object
       required:
-      - data
-      title: APIResponse[TimeClocksResponse]
+      - loc
+      - msg
+      - type
+      title: ValidationError
     HTTPValidationError:
       properties:
         detail:
@@ -107,6 +95,18 @@ components:
           title: Detail
       type: object
       title: HTTPValidationError
+    TimeClocksResponse:
+      properties:
+        timeClocks:
+          items:
+            $ref: '#/components/schemas/TimeClock'
+          type: array
+          title: Timeclocks
+          description: The time clocks
+      type: object
+      required:
+      - timeClocks
+      title: TimeClocksResponse
   securitySchemes:
     APIKeyHeader:
       type: apiKey

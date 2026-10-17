@@ -91,6 +91,17 @@ components:
           title: Detail
       type: object
       title: HTTPValidationError
+    PayslipCreateResponse:
+      properties:
+        id:
+          type: string
+          title: Id
+          description: The unique identifier of the created payslip
+      type: object
+      required:
+      - id
+      title: PayslipCreateResponse
+      description: Response model for payslip creation
     PayslipCreateRequest:
       properties:
         fileId:
@@ -112,17 +123,6 @@ components:
       - endDate
       title: PayslipCreateRequest
       description: Request model for creating a payslip
-    PayslipCreateResponse:
-      properties:
-        id:
-          type: string
-          title: Id
-          description: The unique identifier of the created payslip
-      type: object
-      required:
-      - id
-      title: PayslipCreateResponse
-      description: Response model for payslip creation
   securitySchemes:
     APIKeyHeader:
       type: apiKey

@@ -73,6 +73,18 @@ components:
       required:
       - data
       title: APIResponse[DailySalesGetResponse]
+    DailySalesGetResponse:
+      properties:
+        dailySales:
+          items:
+            $ref: '#/components/schemas/DailySalesEntry'
+          type: array
+          title: Dailysales
+          description: List of daily sales entries. Only days with stored aggregation data are included; the list is not a full calendar grid for every location in the range.
+      type: object
+      required:
+      - dailySales
+      title: DailySalesGetResponse
     ValidationError:
       properties:
         loc:
@@ -126,18 +138,6 @@ components:
       - date
       - locationId
       title: DailySalesEntry
-    DailySalesGetResponse:
-      properties:
-        dailySales:
-          items:
-            $ref: '#/components/schemas/DailySalesEntry'
-          type: array
-          title: Dailysales
-          description: List of daily sales entries. Only days with stored aggregation data are included; the list is not a full calendar grid for every location in the range.
-      type: object
-      required:
-      - dailySales
-      title: DailySalesGetResponse
   securitySchemes:
     APIKeyHeader:
       type: apiKey

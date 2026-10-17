@@ -33,17 +33,18 @@ paths:
         - onboarding.read
 components:
   schemas:
-    APIResponse_PacksListResponse_:
+    PacksListResponse:
       properties:
-        requestId:
-          type: string
-          title: Requestid
-        data:
-          $ref: '#/components/schemas/PacksListResponse'
+        packs:
+          items:
+            $ref: '#/components/schemas/PackResponse'
+          type: array
+          title: Packs
+          description: List of onboarding packs
       type: object
       required:
-      - data
-      title: APIResponse[PacksListResponse]
+      - packs
+      title: PacksListResponse
     ValidationError:
       properties:
         loc:
@@ -65,18 +66,6 @@ components:
       - msg
       - type
       title: ValidationError
-    PacksListResponse:
-      properties:
-        packs:
-          items:
-            $ref: '#/components/schemas/PackResponse'
-          type: array
-          title: Packs
-          description: List of onboarding packs
-      type: object
-      required:
-      - packs
-      title: PacksListResponse
     HTTPValidationError:
       properties:
         detail:
@@ -110,6 +99,17 @@ components:
       - name
       - isDefault
       title: PackResponse
+    APIResponse_PacksListResponse_:
+      properties:
+        requestId:
+          type: string
+          title: Requestid
+        data:
+          $ref: '#/components/schemas/PacksListResponse'
+      type: object
+      required:
+      - data
+      title: APIResponse[PacksListResponse]
   securitySchemes:
     APIKeyHeader:
       type: apiKey

@@ -239,39 +239,6 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
-    ValidationError:
-      properties:
-        loc:
-          items:
-            anyOf:
-            - type: string
-            - type: integer
-          type: array
-          title: Location
-        msg:
-          type: string
-          title: Message
-        type:
-          type: string
-          title: Error Type
-      type: object
-      required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
-    AddDropdownOptionsResponse:
-      properties:
-        options:
-          items:
-            $ref: '#/components/schemas/v2__features__workflow__external_api__v1__form_dropdown_options__models__dropdown_options__DropdownOptionResponse'
-          type: array
-          title: Options
-          description: The dropdown options.
-      type: object
-      required:
-      - options
-      title: AddDropdownOptionsResponse
     v2__features__workflow__external_api__v1__form_dropdown_options__models__dropdown_options__DropdownOptionResponse:
       properties:
         id:
@@ -308,6 +275,94 @@ components:
       required:
       - offset
       title: PagingResponseModel
+    AddDropdownOption:
+      properties:
+        value:
+          type: string
+          title: Value
+          description: The dropdown value
+      type: object
+      required:
+      - value
+      title: AddDropdownOption
+    APIResponse_UpdateDropdownOptionResponse_:
+      properties:
+        requestId:
+          type: string
+          title: Requestid
+        data:
+          $ref: '#/components/schemas/UpdateDropdownOptionResponse'
+      type: object
+      required:
+      - data
+      title: APIResponse[UpdateDropdownOptionResponse]
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    PaginatedBaseResponse_GetDropdownOptionsResponse_:
+      properties:
+        requestId:
+          type: string
+          title: Requestid
+        data:
+          $ref: '#/components/schemas/GetDropdownOptionsResponse'
+        paging:
+          $ref: '#/components/schemas/PagingResponseModel'
+      type: object
+      required:
+      - data
+      - paging
+      title: PaginatedBaseResponse[GetDropdownOptionsResponse]
+    APIResponse_AddDropdownOptionsResponse_:
+      properties:
+        requestId:
+          type: string
+          title: Requestid
+        data:
+          $ref: '#/components/schemas/AddDropdownOptionsResponse'
+      type: object
+      required:
+      - data
+      title: APIResponse[AddDropdownOptionsResponse]
+    AddDropdownOptionRequest:
+      properties:
+        dropdownOptions:
+          items:
+            $ref: '#/components/schemas/AddDropdownOption'
+          type: array
+          title: Dropdownoptions
+          description: The dropdown options
+      type: object
+      required:
+      - dropdownOptions
+      title: AddDropdownOptionRequest
     UpdateDropdownOptionResponse:
       properties:
         id:
@@ -323,51 +378,6 @@ components:
       - id
       - value
       title: UpdateDropdownOptionResponse
-    APIResponse_UpdateDropdownOptionResponse_:
-      properties:
-        requestId:
-          type: string
-          title: Requestid
-        data:
-          $ref: '#/components/schemas/UpdateDropdownOptionResponse'
-      type: object
-      required:
-      - data
-      title: APIResponse[UpdateDropdownOptionResponse]
-    UpdateDropdownOptionRequest:
-      properties:
-        value:
-          type: string
-          title: Value
-          description: The dropdown value
-      type: object
-      required:
-      - value
-      title: UpdateDropdownOptionRequest
-    AddDropdownOption:
-      properties:
-        value:
-          type: string
-          title: Value
-          description: The dropdown value
-      type: object
-      required:
-      - value
-      title: AddDropdownOption
-    PaginatedBaseResponse_GetDropdownOptionsResponse_:
-      properties:
-        requestId:
-          type: string
-          title: Requestid
-        data:
-          $ref: '#/components/schemas/GetDropdownOptionsResponse'
-        paging:
-          $ref: '#/components/schemas/PagingResponseModel'
-      type: object
-      required:
-      - data
-      - paging
-      title: PaginatedBaseResponse[GetDropdownOptionsResponse]
     DeleteDropdownOptionResponse:
       properties: {}
       type: object
@@ -384,26 +394,6 @@ components:
       required:
       - options
       title: GetDropdownOptionsResponse
-    APIResponse_AddDropdownOptionsResponse_:
-      properties:
-        requestId:
-          type: string
-          title: Requestid
-        data:
-          $ref: '#/components/schemas/AddDropdownOptionsResponse'
-      type: object
-      required:
-      - data
-      title: APIResponse[AddDropdownOptionsResponse]
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
     APIResponse_DeleteDropdownOptionResponse_:
       properties:
         requestId:
@@ -415,18 +405,28 @@ components:
       required:
       - data
       title: APIResponse[DeleteDropdownOptionResponse]
-    AddDropdownOptionRequest:
+    UpdateDropdownOptionRequest:
       properties:
-        dropdownOptions:
-          items:
-            $ref: '#/components/schemas/AddDropdownOption'
-          type: array
-          title: Dropdownoptions
-          description: The dropdown options
+        value:
+          type: string
+          title: Value
+          description: The dropdown value
       type: object
       required:
-      - dropdownOptions
-      title: AddDropdownOptionRequest
+      - value
+      title: UpdateDropdownOptionRequest
+    AddDropdownOptionsResponse:
+      properties:
+        options:
+          items:
+            $ref: '#/components/schemas/v2__features__workflow__external_api__v1__form_dropdown_options__models__dropdown_options__DropdownOptionResponse'
+          type: array
+          title: Options
+          description: The dropdown options.
+      type: object
+      required:
+      - options
+      title: AddDropdownOptionsResponse
   securitySchemes:
     APIKeyHeader:
       type: apiKey

@@ -421,16 +421,180 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
-    ImageNoteDataOut:
+    UserCustomFields:
+      type: string
+      enum:
+      - email
+      - date
+      - phone
+      - number
+      - str
+      - dropdown
+      - file
+      - directManager
+      - birthday
+      - link
+      - location
+      title: UserCustomFields
+    FileNoteDataOut:
       properties:
         url:
           type: string
           title: Url
           description: The url of the file to upload
+        type:
+          type: string
+          title: Type
+          description: URL note type
+          default: file
+        name:
+          type: string
+          title: Name
+          description: The name of the file
       type: object
       required:
       - url
-      title: ImageNoteDataOut
+      - name
+      title: FileNoteDataOut
+    ShiftDetailsOutput:
+      properties:
+        shiftLayers:
+          items:
+            $ref: '#/components/schemas/ShiftLayerOutput'
+          type: array
+          title: Shiftlayers
+          description: The various layers of information associated with the shift
+        shiftSource:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Shiftsource
+          description: The source of the shift
+      type: object
+      title: ShiftDetailsOutput
+    APIResponseV2_ShiftResponse_:
+      properties:
+        requestId:
+          type: string
+          title: Requestid
+        data:
+          $ref: '#/components/schemas/v2__features__shiftscheduler__external_api__v1__schedulers__scheduler__shifts__models__shift_response__ShiftResponse'
+      type: object
+      required:
+      - data
+      title: APIResponseV2[ShiftResponse]
+    GpsDataV2:
+      properties:
+        address:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Address
+          description: The address associated with the GPS data.
+        longitude:
+          anyOf:
+          - type: number
+            maximum: 180.0
+            minimum: -180.0
+            description: The longitude coordinate.
+          - type: 'null'
+          title: Longitude
+          description: The longitude coordinate.
+        latitude:
+          anyOf:
+          - type: number
+            maximum: 90.0
+            minimum: -90.0
+            description: The latitude coordinate.
+          - type: 'null'
+          title: Latitude
+          description: The latitude coordinate.
+      type: object
+      title: GpsDataV2
+    BaseCustomFieldV2:
+      properties:
+        customFieldId:
+          type: integer
+          minimum: 1.0
+          title: Customfieldid
+          description: The custom field unique id
+        value:
+          title: Value
+          description: 'The value of the custom field. Our real-time API documentation experience does not support custom fields of the dropdown type.To update dropdown fields value(s), pass an array of objects with the IDs of the selected dropdown values (e.g., [{id: 1}, {id: 2}]).'
+      type: object
+      required:
+      - customFieldId
+      - value
+      title: BaseCustomFieldV2
+    AlbumNoteDataOut:
+      properties:
+        type:
+          type: string
+          title: Type
+          description: Album note type
+          default: album
+        album:
+          items:
+            $ref: '#/components/schemas/ImageNoteDataOut'
+          type: array
+          title: Album
+          description: The list of images in the album
+      type: object
+      required:
+      - album
+      title: AlbumNoteDataOut
+    ShiftLayerInput:
+      properties:
+        id:
+          type: string
+          title: Id
+          description: The unique identifier of the shift layer
+        value:
+          $ref: '#/components/schemas/ShiftLayerInstanceInput'
+          description: The value of the shift layer
+      type: object
+      required:
+      - id
+      - value
+      title: ShiftLayerInput
+    ShiftBulkResponse:
+      properties:
+        shifts:
+          items:
+            $ref: '#/components/schemas/v2__features__shiftscheduler__external_api__v1__schedulers__scheduler__shifts__models__shift_response__ShiftResponse'
+          type: array
+          title: Shifts
+          description: The shifts
+      type: object
+      required:
+      - shifts
+      title: ShiftBulkResponse
+    StatusDataCreate:
+      properties:
+        note:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Note
+          description: The note of the status
+        gps:
+          anyOf:
+          - $ref: '#/components/schemas/GpsDataV2'
+          - type: 'null'
+          description: The GPS data of the status
+        shouldOverridePreviousStatuses:
+          type: boolean
+          title: Shouldoverridepreviousstatuses
+          description: Indicates whether to override previous statuses
+          default: true
+      type: object
+      title: StatusDataCreate
+    SortOrder:
+      type: string
+      enum:
+      - asc
+      - desc
+      title: SortOrder
     ShiftUpdateRequest:
       properties:
         shiftId:
@@ -551,52 +715,152 @@ components:
       required:
       - shiftId
       title: ShiftUpdateRequest
-    ShiftLayerInstanceOutput:
+    ShiftLayerOutput:
       properties:
         id:
           type: string
           title: Id
-          description: The unique identifier of the value
-        displayName:
+          description: The unique identifier of the shift layer
+        title:
           type: string
-          title: Displayname
-          description: The name of the value
+          title: Title
+          description: The name of the shift layer
+        value:
+          $ref: '#/components/schemas/ShiftLayerInstanceOutput'
+          description: The value of the shift layer
       type: object
       required:
       - id
-      - displayName
-      title: ShiftLayerInstanceOutput
-    APIResponseV2_ShiftBulkDeleteResponse_:
+      - title
+      - value
+      title: ShiftLayerOutput
+    ShiftBulkDeleteResponse:
       properties:
-        requestId:
-          type: string
-          title: Requestid
-        data:
-          $ref: '#/components/schemas/ShiftBulkDeleteResponse'
+        shiftsIds:
+          items:
+            type: string
+          type: array
+          title: Shiftsids
+          description: The IDs of the deleted shifts
       type: object
       required:
-      - data
-      title: APIResponseV2[ShiftBulkDeleteResponse]
-    PaginatedBaseResponseV2_ShiftBulkResponse_:
+      - shiftsIds
+      title: ShiftBulkDeleteResponse
+    ImageNoteDataOut:
       properties:
-        requestId:
+        url:
           type: string
-          title: Requestid
-        data:
-          $ref: '#/components/schemas/ShiftBulkResponse'
-        paging:
-          $ref: '#/components/schemas/PagingResponseModelV2'
+          title: Url
+          description: The url of the file to upload
       type: object
       required:
-      - data
-      - paging
-      title: PaginatedBaseResponseV2[ShiftBulkResponse]
-    ShiftBreakTypeAPI:
-      type: string
-      enum:
-      - paid
-      - unpaid
-      title: ShiftBreakTypeAPI
+      - url
+      title: ImageNoteDataOut
+    ShiftCreateBreakDataApi:
+      properties:
+        name:
+          type: string
+          title: Name
+          description: The name of the break.
+        type:
+          $ref: '#/components/schemas/ShiftBreakTypeAPI'
+          description: The type of the break (paid/unpaid)
+        startTime:
+          anyOf:
+          - type: integer
+            minimum: 0.0
+            description: Integer with minimum value of 0
+          - type: 'null'
+          title: Starttime
+          description: The time the break starts, counted in minutes from the beginning of the day
+        duration:
+          type: integer
+          minimum: 0.0
+          title: Duration
+          description: The time the break lasts in minutes
+      type: object
+      required:
+      - name
+      - type
+      - duration
+      title: ShiftCreateBreakDataApi
+    ShiftBulkDeleteRequest:
+      properties:
+        shiftsIds:
+          items:
+            type: string
+          type: array
+          maxItems: 20
+          title: Shiftsids
+          description: The unique identifiers of the shifts to delete
+      type: object
+      required:
+      - shiftsIds
+      title: ShiftBulkDeleteRequest
+    StatusData:
+      properties:
+        statusId:
+          type: string
+          title: Statusid
+          description: The ID of the status
+        status:
+          $ref: '#/components/schemas/StatusTypesAPI'
+          description: 'The status of the shift, valid values:
+
+            accepted, checked_in, completed, rejected, claimed, claim_requested, unclaimed, unclaim_requested, cancel_claim_request, reset'
+        note:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Note
+          description: The note of the status
+        attachments:
+          anyOf:
+          - items:
+              type: string
+            type: array
+          - type: 'null'
+          title: Attachments
+          description: The attachments of the status
+        creationTime:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Creationtime
+          description: The creation time of the status
+        updateTime:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Updatetime
+          description: The update time of the status
+        creatingUserId:
+          type: integer
+          title: Creatinguserid
+          description: The ID of the user who created the status
+        modifyingUserId:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Modifyinguserid
+          description: The ID of the user who modified the status
+        gps:
+          anyOf:
+          - $ref: '#/components/schemas/GpsDataV2'
+          - type: 'null'
+          description: The GPS data of the status
+        assignedUserId:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Assigneduserid
+          description: The ID of the user assigned to the status
+      type: object
+      required:
+      - statusId
+      - status
+      - creatingUserId
+      title: StatusData
     APIResponseV2_ShiftBulkResponse_:
       properties:
         requestId:
@@ -608,38 +872,6 @@ components:
       required:
       - data
       title: APIResponseV2[ShiftBulkResponse]
-    AlbumNoteDataOut:
-      properties:
-        type:
-          type: string
-          title: Type
-          description: Album note type
-          default: album
-        album:
-          items:
-            $ref: '#/components/schemas/ImageNoteDataOut'
-          type: array
-          title: Album
-          description: The list of images in the album
-      type: object
-      required:
-      - album
-      title: AlbumNoteDataOut
-    BaseCustomFieldV2:
-      properties:
-        customFieldId:
-          type: integer
-          minimum: 1.0
-          title: Customfieldid
-          description: The custom field unique id
-        value:
-          title: Value
-          description: 'The value of the custom field. Our real-time API documentation experience does not support custom fields of the dropdown type.To update dropdown fields value(s), pass an array of objects with the IDs of the selected dropdown values (e.g., [{id: 1}, {id: 2}]).'
-      type: object
-      required:
-      - customFieldId
-      - value
-      title: BaseCustomFieldV2
     ShiftBreakDataApi:
       properties:
         id:
@@ -673,6 +905,21 @@ components:
       - type
       - duration
       title: ShiftBreakDataApi
+    LocationDataAPI:
+      properties:
+        isReferencedToJob:
+          type: boolean
+          title: Isreferencedtojob
+          description: Indicates whether the location is referenced to a job. can only be true if job id isn't empty
+        gps:
+          anyOf:
+          - $ref: '#/components/schemas/GpsDataV2'
+          - type: 'null'
+          description: GPS data associated with the location.
+      type: object
+      required:
+      - isReferencedToJob
+      title: LocationDataAPI
     ShiftUpdateBreakDataApi:
       properties:
         id:
@@ -707,6 +954,103 @@ components:
       - type
       - duration
       title: ShiftUpdateBreakDataApi
+    StatusTypesAPI:
+      type: string
+      enum:
+      - accepted
+      - checked_in
+      - completed
+      - rejected
+      - claimed
+      - claim_requested
+      - unclaimed
+      - unclaim_requested
+      - cancel_claim_request
+      - reset
+      title: StatusTypesAPI
+    ShiftBreakTypeAPI:
+      type: string
+      enum:
+      - paid
+      - unpaid
+      title: ShiftBreakTypeAPI
+    PaginatedBaseResponseV2_ShiftBulkResponse_:
+      properties:
+        requestId:
+          type: string
+          title: Requestid
+        data:
+          $ref: '#/components/schemas/ShiftBulkResponse'
+        paging:
+          $ref: '#/components/schemas/PagingResponseModelV2'
+      type: object
+      required:
+      - data
+      - paging
+      title: PaginatedBaseResponseV2[ShiftBulkResponse]
+    PagingResponseModelV2:
+      properties:
+        offset:
+          type: integer
+          minimum: 0.0
+          title: Offset
+          description: The resource offset of the last successfully read resource will be returned as the paging.offset JSON property of a paginated response containing more results
+        total:
+          anyOf:
+          - type: integer
+            minimum: 0.0
+          - type: 'null'
+          title: Total
+          description: Total number of resources matching the request, ignoring pagination. Use this to retrieve the full count without paginating through every page. Only populated by endpoints that compute it.
+      type: object
+      required:
+      - offset
+      title: PagingResponseModelV2
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    ShiftLayerInstanceOutput:
+      properties:
+        id:
+          type: string
+          title: Id
+          description: The unique identifier of the value
+        displayName:
+          type: string
+          title: Displayname
+          description: The name of the value
+      type: object
+      required:
+      - id
+      - displayName
+      title: ShiftLayerInstanceOutput
     ShiftDetailsInput:
       properties:
         shiftLayers:
@@ -723,98 +1067,30 @@ components:
           description: The source of the shift
       type: object
       title: ShiftDetailsInput
-    LocationDataAPI:
+    ShiftUpdateBulkResponse:
       properties:
-        isReferencedToJob:
-          type: boolean
-          title: Isreferencedtojob
-          description: Indicates whether the location is referenced to a job. can only be true if job id isn't empty
-        gps:
-          anyOf:
-          - $ref: '#/components/schemas/GpsDataV2'
-          - type: 'null'
-          description: GPS data associated with the location.
+        shifts:
+          items:
+            $ref: '#/components/schemas/v2__features__shiftscheduler__external_api__v1__schedulers__scheduler__shifts__models__shift_response__ShiftResponse'
+          type: array
+          title: Shifts
+          description: The shifts
+        deletedShiftIds:
+          items:
+            type: string
+          type: array
+          title: Deletedshiftids
+          description: The IDs of the shifts that were deleted during the update operation
+        createdShifts:
+          items:
+            $ref: '#/components/schemas/v2__features__shiftscheduler__external_api__v1__schedulers__scheduler__shifts__models__shift_response__ShiftResponse'
+          type: array
+          title: Createdshifts
+          description: The shifts that were created during the update operation
       type: object
       required:
-      - isReferencedToJob
-      title: LocationDataAPI
-    APIResponseV2_ShiftUpdateBulkResponse_:
-      properties:
-        requestId:
-          type: string
-          title: Requestid
-        data:
-          $ref: '#/components/schemas/ShiftUpdateBulkResponse'
-      type: object
-      required:
-      - data
-      title: APIResponseV2[ShiftUpdateBulkResponse]
-    APIResponseV2_ShiftResponse_:
-      properties:
-        requestId:
-          type: string
-          title: Requestid
-        data:
-          $ref: '#/components/schemas/v2__features__shiftscheduler__external_api__v1__schedulers__scheduler__shifts__models__shift_response__ShiftResponse'
-      type: object
-      required:
-      - data
-      title: APIResponseV2[ShiftResponse]
-    APIResponseV2_ShiftDeleteResponse_:
-      properties:
-        requestId:
-          type: string
-          title: Requestid
-        data:
-          $ref: '#/components/schemas/ShiftDeleteResponse'
-      type: object
-      required:
-      - data
-      title: APIResponseV2[ShiftDeleteResponse]
-    StatusTypesAPI:
-      type: string
-      enum:
-      - accepted
-      - checked_in
-      - completed
-      - rejected
-      - claimed
-      - claim_requested
-      - unclaimed
-      - unclaim_requested
-      - cancel_claim_request
-      - reset
-      title: StatusTypesAPI
-    ShiftLayerInstanceInput:
-      properties:
-        id:
-          type: string
-          title: Id
-          description: The unique identifier of the value
-      type: object
-      required:
-      - id
-      title: ShiftLayerInstanceInput
-    StatusDataCreate:
-      properties:
-        note:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Note
-          description: The note of the status
-        gps:
-          anyOf:
-          - $ref: '#/components/schemas/GpsDataV2'
-          - type: 'null'
-          description: The GPS data of the status
-        shouldOverridePreviousStatuses:
-          type: boolean
-          title: Shouldoverridepreviousstatuses
-          description: Indicates whether to override previous statuses
-          default: true
-      type: object
-      title: StatusDataCreate
+      - shifts
+      title: ShiftUpdateBulkResponse
     v2__features__shiftscheduler__external_api__v1__schedulers__scheduler__shifts__models__shift_response__ShiftResponse:
       properties:
         id:
@@ -948,75 +1224,6 @@ components:
       - isPublished
       - shiftDetails
       title: ShiftResponse
-    HTMLNoteDataOut:
-      properties:
-        type:
-          type: string
-          title: Type
-          description: HTML note type
-          default: html
-        html:
-          type: string
-          title: Html
-          description: The HTML content of the note
-      type: object
-      required:
-      - html
-      title: HTMLNoteDataOut
-    FileNoteDataOut:
-      properties:
-        url:
-          type: string
-          title: Url
-          description: The url of the file to upload
-        type:
-          type: string
-          title: Type
-          description: URL note type
-          default: file
-        name:
-          type: string
-          title: Name
-          description: The name of the file
-      type: object
-      required:
-      - url
-      - name
-      title: FileNoteDataOut
-    ShiftUpdateBulkResponse:
-      properties:
-        shifts:
-          items:
-            $ref: '#/components/schemas/v2__features__shiftscheduler__external_api__v1__schedulers__scheduler__shifts__models__shift_response__ShiftResponse'
-          type: array
-          title: Shifts
-          description: The shifts
-        deletedShiftIds:
-          items:
-            type: string
-          type: array
-          title: Deletedshiftids
-          description: The IDs of the shifts that were deleted during the update operation
-        createdShifts:
-          items:
-            $ref: '#/components/schemas/v2__features__shiftscheduler__external_api__v1__schedulers__scheduler__shifts__models__shift_response__ShiftResponse'
-          type: array
-          title: Createdshifts
-          description: The shifts that were created during the update operation
-      type: object
-      required:
-      - shifts
-      title: ShiftUpdateBulkResponse
-    ShiftDeleteResponse:
-      properties:
-        shiftId:
-          type: string
-          title: Shiftid
-          description: The ID of the deleted shift
-      type: object
-      required:
-      - shiftId
-      title: ShiftDeleteResponse
     ShiftCreateRequest:
       properties:
         startTime:
@@ -1124,76 +1331,90 @@ components:
       - startTime
       - endTime
       title: ShiftCreateRequest
+    APIResponseV2_ShiftDeleteResponse_:
+      properties:
+        requestId:
+          type: string
+          title: Requestid
+        data:
+          $ref: '#/components/schemas/ShiftDeleteResponse'
+      type: object
+      required:
+      - data
+      title: APIResponseV2[ShiftDeleteResponse]
+    ShiftLayerInstanceInput:
+      properties:
+        id:
+          type: string
+          title: Id
+          description: The unique identifier of the value
+      type: object
+      required:
+      - id
+      title: ShiftLayerInstanceInput
     ShiftsSortKeysExternal:
       type: string
       enum:
       - created_at
       - updated_at
       title: ShiftsSortKeysExternal
-    StatusData:
+    APIResponseV2_ShiftUpdateBulkResponse_:
       properties:
-        statusId:
+        requestId:
           type: string
-          title: Statusid
-          description: The ID of the status
-        status:
-          $ref: '#/components/schemas/StatusTypesAPI'
-          description: 'The status of the shift, valid values:
-
-            accepted, checked_in, completed, rejected, claimed, claim_requested, unclaimed, unclaim_requested, cancel_claim_request, reset'
-        note:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Note
-          description: The note of the status
-        attachments:
-          anyOf:
-          - items:
-              type: string
-            type: array
-          - type: 'null'
-          title: Attachments
-          description: The attachments of the status
-        creationTime:
-          anyOf:
-          - type: integer
-          - type: 'null'
-          title: Creationtime
-          description: The creation time of the status
-        updateTime:
-          anyOf:
-          - type: integer
-          - type: 'null'
-          title: Updatetime
-          description: The update time of the status
-        creatingUserId:
-          type: integer
-          title: Creatinguserid
-          description: The ID of the user who created the status
-        modifyingUserId:
-          anyOf:
-          - type: integer
-          - type: 'null'
-          title: Modifyinguserid
-          description: The ID of the user who modified the status
-        gps:
-          anyOf:
-          - $ref: '#/components/schemas/GpsDataV2'
-          - type: 'null'
-          description: The GPS data of the status
-        assignedUserId:
-          anyOf:
-          - type: integer
-          - type: 'null'
-          title: Assigneduserid
-          description: The ID of the user assigned to the status
+          title: Requestid
+        data:
+          $ref: '#/components/schemas/ShiftUpdateBulkResponse'
       type: object
       required:
-      - statusId
-      - status
-      - creatingUserId
-      title: StatusData
+      - data
+      title: APIResponseV2[ShiftUpdateBulkResponse]
+    HTMLNoteDataOut:
+      properties:
+        type:
+          type: string
+          title: Type
+          description: HTML note type
+          default: html
+        html:
+          type: string
+          title: Html
+          description: The HTML content of the note
+      type: object
+      required:
+      - html
+      title: HTMLNoteDataOut
+    HTMLNoteData:
+      properties:
+        html:
+          type: string
+          title: Html
+          description: The HTML content of the note
+      type: object
+      required:
+      - html
+      title: HTMLNoteData
+    APIResponseV2_ShiftBulkDeleteResponse_:
+      properties:
+        requestId:
+          type: string
+          title: Requestid
+        data:
+          $ref: '#/components/schemas/ShiftBulkDeleteResponse'
+      type: object
+      required:
+      - data
+      title: APIResponseV2[ShiftBulkDeleteResponse]
+    ShiftDeleteResponse:
+      properties:
+        shiftId:
+          type: string
+          title: Shiftid
+          description: The ID of the deleted shift
+      type: object
+      required:
+      - shiftId
+      title: ShiftDeleteResponse
     CustomFieldResponseV2:
       properties:
         customFieldId:
@@ -1218,227 +1439,6 @@ components:
       - type
       - name
       title: CustomFieldResponseV2
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
-    ShiftBulkDeleteRequest:
-      properties:
-        shiftsIds:
-          items:
-            type: string
-          type: array
-          maxItems: 20
-          title: Shiftsids
-          description: The unique identifiers of the shifts to delete
-      type: object
-      required:
-      - shiftsIds
-      title: ShiftBulkDeleteRequest
-    SortOrder:
-      type: string
-      enum:
-      - asc
-      - desc
-      title: SortOrder
-    PagingResponseModelV2:
-      properties:
-        offset:
-          type: integer
-          minimum: 0.0
-          title: Offset
-          description: The resource offset of the last successfully read resource will be returned as the paging.offset JSON property of a paginated response containing more results
-        total:
-          anyOf:
-          - type: integer
-            minimum: 0.0
-          - type: 'null'
-          title: Total
-          description: Total number of resources matching the request, ignoring pagination. Use this to retrieve the full count without paginating through every page. Only populated by endpoints that compute it.
-      type: object
-      required:
-      - offset
-      title: PagingResponseModelV2
-    UserCustomFields:
-      type: string
-      enum:
-      - email
-      - date
-      - phone
-      - number
-      - str
-      - dropdown
-      - file
-      - directManager
-      - birthday
-      - link
-      - location
-      title: UserCustomFields
-    ShiftCreateBreakDataApi:
-      properties:
-        name:
-          type: string
-          title: Name
-          description: The name of the break.
-        type:
-          $ref: '#/components/schemas/ShiftBreakTypeAPI'
-          description: The type of the break (paid/unpaid)
-        startTime:
-          anyOf:
-          - type: integer
-            minimum: 0.0
-            description: Integer with minimum value of 0
-          - type: 'null'
-          title: Starttime
-          description: The time the break starts, counted in minutes from the beginning of the day
-        duration:
-          type: integer
-          minimum: 0.0
-          title: Duration
-          description: The time the break lasts in minutes
-      type: object
-      required:
-      - name
-      - type
-      - duration
-      title: ShiftCreateBreakDataApi
-    ShiftBulkResponse:
-      properties:
-        shifts:
-          items:
-            $ref: '#/components/schemas/v2__features__shiftscheduler__external_api__v1__schedulers__scheduler__shifts__models__shift_response__ShiftResponse'
-          type: array
-          title: Shifts
-          description: The shifts
-      type: object
-      required:
-      - shifts
-      title: ShiftBulkResponse
-    ShiftLayerInput:
-      properties:
-        id:
-          type: string
-          title: Id
-          description: The unique identifier of the shift layer
-        value:
-          $ref: '#/components/schemas/ShiftLayerInstanceInput'
-          description: The value of the shift layer
-      type: object
-      required:
-      - id
-      - value
-      title: ShiftLayerInput
-    ShiftBulkDeleteResponse:
-      properties:
-        shiftsIds:
-          items:
-            type: string
-          type: array
-          title: Shiftsids
-          description: The IDs of the deleted shifts
-      type: object
-      required:
-      - shiftsIds
-      title: ShiftBulkDeleteResponse
-    ValidationError:
-      properties:
-        loc:
-          items:
-            anyOf:
-            - type: string
-            - type: integer
-          type: array
-          title: Location
-        msg:
-          type: string
-          title: Message
-        type:
-          type: string
-          title: Error Type
-      type: object
-      required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
-    ShiftLayerOutput:
-      properties:
-        id:
-          type: string
-          title: Id
-          description: The unique identifier of the shift layer
-        title:
-          type: string
-          title: Title
-          description: The name of the shift layer
-        value:
-          $ref: '#/components/schemas/ShiftLayerInstanceOutput'
-          description: The value of the shift layer
-      type: object
-      required:
-      - id
-      - title
-      - value
-      title: ShiftLayerOutput
-    GpsDataV2:
-      properties:
-        address:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Address
-          description: The address associated with the GPS data.
-        longitude:
-          anyOf:
-          - type: number
-            maximum: 180.0
-            minimum: -180.0
-            description: The longitude coordinate.
-          - type: 'null'
-          title: Longitude
-          description: The longitude coordinate.
-        latitude:
-          anyOf:
-          - type: number
-            maximum: 90.0
-            minimum: -90.0
-            description: The latitude coordinate.
-          - type: 'null'
-          title: Latitude
-          description: The latitude coordinate.
-      type: object
-      title: GpsDataV2
-    ShiftDetailsOutput:
-      properties:
-        shiftLayers:
-          items:
-            $ref: '#/components/schemas/ShiftLayerOutput'
-          type: array
-          title: Shiftlayers
-          description: The various layers of information associated with the shift
-        shiftSource:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Shiftsource
-          description: The source of the shift
-      type: object
-      title: ShiftDetailsOutput
-    HTMLNoteData:
-      properties:
-        html:
-          type: string
-          title: Html
-          description: The HTML content of the note
-      type: object
-      required:
-      - html
-      title: HTMLNoteData
   securitySchemes:
     APIKeyHeader:
       type: apiKey

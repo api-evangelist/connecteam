@@ -42,17 +42,31 @@ paths:
         - users.write
 components:
   schemas:
-    APIResponse_BaseResponse_:
+    InviteAdminsRequest:
       properties:
-        requestId:
+        userId:
+          type: integer
+          minimum: 1.0
+          title: Userid
+          description: The unique identifier of the user to be promoted to admin
+        email:
           type: string
-          title: Requestid
-        data:
-          $ref: '#/components/schemas/BaseResponse'
+          title: Email
+          description: The email address of the user to be promoted. An invitation link will be sent to the specified email. Once the user acknowledges the email, the user will become an admin of the account.
+        title:
+          type: string
+          title: Title
+          description: The title of the user to be promoted
       type: object
       required:
-      - data
-      title: APIResponse[BaseResponse]
+      - userId
+      - email
+      - title
+      title: InviteAdminsRequest
+    BaseResponse:
+      properties: {}
+      type: object
+      title: BaseResponse
     ValidationError:
       properties:
         loc:
@@ -83,31 +97,17 @@ components:
           title: Detail
       type: object
       title: HTTPValidationError
-    BaseResponse:
-      properties: {}
-      type: object
-      title: BaseResponse
-    InviteAdminsRequest:
+    APIResponse_BaseResponse_:
       properties:
-        userId:
-          type: integer
-          minimum: 1.0
-          title: Userid
-          description: The unique identifier of the user to be promoted to admin
-        email:
+        requestId:
           type: string
-          title: Email
-          description: The email address of the user to be promoted. An invitation link will be sent to the specified email. Once the user acknowledges the email, the user will become an admin of the account.
-        title:
-          type: string
-          title: Title
-          description: The title of the user to be promoted
+          title: Requestid
+        data:
+          $ref: '#/components/schemas/BaseResponse'
       type: object
       required:
-      - userId
-      - email
-      - title
-      title: InviteAdminsRequest
+      - data
+      title: APIResponse[BaseResponse]
   securitySchemes:
     APIKeyHeader:
       type: apiKey

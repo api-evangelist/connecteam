@@ -44,6 +44,69 @@ components:
       required:
       - data
       title: APIResponse[TimeOffGetPolicyTypesResponse]
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    TimeOffGetPolicyTypesResponse:
+      properties:
+        policyTypes:
+          items:
+            $ref: '#/components/schemas/TimeOffPolicyType'
+          type: array
+          title: Policytypes
+          description: List of the company policy types
+      type: object
+      required:
+      - policyTypes
+      title: TimeOffGetPolicyTypesResponse
+    TimeOffPolicyType:
+      properties:
+        id:
+          type: string
+          title: Id
+          description: The policy type id
+        name:
+          type: string
+          title: Name
+          description: The policy type name
+        policies:
+          items:
+            $ref: '#/components/schemas/TimeOffPolicy'
+          type: array
+          title: Policies
+          description: List of policies within this policy type
+      type: object
+      required:
+      - id
+      - name
+      title: TimeOffPolicyType
     TimeOffPolicy:
       properties:
         id:
@@ -69,69 +132,6 @@ components:
       - unit
       - accrualType
       title: TimeOffPolicy
-    TimeOffGetPolicyTypesResponse:
-      properties:
-        policyTypes:
-          items:
-            $ref: '#/components/schemas/TimeOffPolicyType'
-          type: array
-          title: Policytypes
-          description: List of the company policy types
-      type: object
-      required:
-      - policyTypes
-      title: TimeOffGetPolicyTypesResponse
-    ValidationError:
-      properties:
-        loc:
-          items:
-            anyOf:
-            - type: string
-            - type: integer
-          type: array
-          title: Location
-        msg:
-          type: string
-          title: Message
-        type:
-          type: string
-          title: Error Type
-      type: object
-      required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
-    TimeOffPolicyType:
-      properties:
-        id:
-          type: string
-          title: Id
-          description: The policy type id
-        name:
-          type: string
-          title: Name
-          description: The policy type name
-        policies:
-          items:
-            $ref: '#/components/schemas/TimeOffPolicy'
-          type: array
-          title: Policies
-          description: List of policies within this policy type
-      type: object
-      required:
-      - id
-      - name
-      title: TimeOffPolicyType
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
   securitySchemes:
     APIKeyHeader:
       type: apiKey

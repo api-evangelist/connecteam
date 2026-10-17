@@ -51,31 +51,25 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
-    SmartGroupInstance:
-      properties:
-        id:
-          type: string
-          title: Id
-          description: Smart group id
-      type: object
-      required:
-      - id
-      title: SmartGroupInstance
-    AssetInstance:
-      properties:
-        id:
-          type: integer
-          title: Id
-          description: Asset id
-        type:
-          type: string
-          title: Type
-          description: Asset type
-      type: object
-      required:
-      - type
-      - id
-      title: AssetInstance
+    LpidWithCoursesDisplayName:
+      type: string
+      enum:
+      - quickTasks
+      - events
+      - quiz
+      - knowledgeBase
+      - updates
+      - directory
+      - timeClock
+      - shiftscheduler
+      - workflows
+      - surveys
+      - customize
+      - suggestions
+      - library
+      - timeOff
+      title: LpidWithCoursesDisplayName
+      description: An enumeration.
     AssignmentsResponse:
       properties:
         smartGroups:
@@ -115,25 +109,6 @@ components:
       - msg
       - type
       title: ValidationError
-    LpidWithCoursesDisplayName:
-      type: string
-      enum:
-      - quickTasks
-      - events
-      - quiz
-      - knowledgeBase
-      - updates
-      - directory
-      - timeClock
-      - shiftscheduler
-      - workflows
-      - surveys
-      - customize
-      - suggestions
-      - library
-      - timeOff
-      title: LpidWithCoursesDisplayName
-      description: An enumeration.
     HTTPValidationError:
       properties:
         detail:
@@ -143,6 +118,31 @@ components:
           title: Detail
       type: object
       title: HTTPValidationError
+    SmartGroupInstance:
+      properties:
+        id:
+          type: string
+          title: Id
+          description: Smart group id
+      type: object
+      required:
+      - id
+      title: SmartGroupInstance
+    AssetInstance:
+      properties:
+        id:
+          type: integer
+          title: Id
+          description: Asset id
+        type:
+          type: string
+          title: Type
+          description: Asset type
+      type: object
+      required:
+      - type
+      - id
+      title: AssetInstance
     APIResponse_AssignmentsResponse_:
       properties:
         requestId:

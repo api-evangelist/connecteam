@@ -55,32 +55,22 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
-    PublishersResponse:
+    PagingResponseModel:
       properties:
-        publishers:
-          items:
-            $ref: '#/components/schemas/PublisherResponse'
-          type: array
-          title: Publishers
-          description: The list of publishers
+        offset:
+          type: integer
+          minimum: 0.0
+          title: Offset
+          description: The resource offset of the last successfully read resource will be returned as the paging.offset JSON property of a paginated response containing more results
+        total:
+          type: integer
+          minimum: 0.0
+          title: Total
+          description: Total number of resources matching the request, ignoring pagination. Use this to retrieve the full count without paginating through every page. Only populated by endpoints that compute it.
       type: object
       required:
-      - publishers
-      title: PublishersResponse
-    PaginatedBaseResponse_PublishersResponse_:
-      properties:
-        requestId:
-          type: string
-          title: Requestid
-        data:
-          $ref: '#/components/schemas/PublishersResponse'
-        paging:
-          $ref: '#/components/schemas/PagingResponseModel'
-      type: object
-      required:
-      - data
-      - paging
-      title: PaginatedBaseResponse[PublishersResponse]
+      - offset
+      title: PagingResponseModel
     ValidationError:
       properties:
         loc:
@@ -102,6 +92,15 @@ components:
       - msg
       - type
       title: ValidationError
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
     PublisherResponse:
       properties:
         id:
@@ -122,31 +121,32 @@ components:
       - name
       - imageUrl
       title: PublisherResponse
-    PagingResponseModel:
+    PaginatedBaseResponse_PublishersResponse_:
       properties:
-        offset:
-          type: integer
-          minimum: 0.0
-          title: Offset
-          description: The resource offset of the last successfully read resource will be returned as the paging.offset JSON property of a paginated response containing more results
-        total:
-          type: integer
-          minimum: 0.0
-          title: Total
-          description: Total number of resources matching the request, ignoring pagination. Use this to retrieve the full count without paginating through every page. Only populated by endpoints that compute it.
+        requestId:
+          type: string
+          title: Requestid
+        data:
+          $ref: '#/components/schemas/PublishersResponse'
+        paging:
+          $ref: '#/components/schemas/PagingResponseModel'
       type: object
       required:
-      - offset
-      title: PagingResponseModel
-    HTTPValidationError:
+      - data
+      - paging
+      title: PaginatedBaseResponse[PublishersResponse]
+    PublishersResponse:
       properties:
-        detail:
+        publishers:
           items:
-            $ref: '#/components/schemas/ValidationError'
+            $ref: '#/components/schemas/PublisherResponse'
           type: array
-          title: Detail
+          title: Publishers
+          description: The list of publishers
       type: object
-      title: HTTPValidationError
+      required:
+      - publishers
+      title: PublishersResponse
   securitySchemes:
     APIKeyHeader:
       type: apiKey

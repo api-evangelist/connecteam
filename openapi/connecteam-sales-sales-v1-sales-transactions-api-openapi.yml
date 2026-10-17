@@ -122,6 +122,31 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
+    TransactionCreateRequest:
+      properties:
+        transactionsCreateRequest:
+          items:
+            $ref: '#/components/schemas/TransactionCreateItem'
+          type: array
+          maxItems: 100
+          minItems: 1
+          title: Transactionscreaterequest
+          description: List of transactions to create
+      type: object
+      required:
+      - transactionsCreateRequest
+      title: TransactionCreateRequest
+    APIResponse_TransactionCreateResponse_:
+      properties:
+        requestId:
+          type: string
+          title: Requestid
+        data:
+          $ref: '#/components/schemas/TransactionCreateResponse'
+      type: object
+      required:
+      - data
+      title: APIResponse[TransactionCreateResponse]
     TransactionCreateItem:
       properties:
         locationId:
@@ -155,17 +180,6 @@ components:
       - createdAt
       - finalSaleAmount
       title: TransactionCreateItem
-    APIResponse_BaseResponse_:
-      properties:
-        requestId:
-          type: string
-          title: Requestid
-        data:
-          $ref: '#/components/schemas/BaseResponse'
-      type: object
-      required:
-      - data
-      title: APIResponse[BaseResponse]
     TransactionCreateResponse:
       properties:
         transactions:
@@ -178,20 +192,10 @@ components:
       required:
       - transactions
       title: TransactionCreateResponse
-    TransactionCreateRequest:
-      properties:
-        transactionsCreateRequest:
-          items:
-            $ref: '#/components/schemas/TransactionCreateItem'
-          type: array
-          maxItems: 100
-          minItems: 1
-          title: Transactionscreaterequest
-          description: List of transactions to create
+    BaseResponse:
+      properties: {}
       type: object
-      required:
-      - transactionsCreateRequest
-      title: TransactionCreateRequest
+      title: BaseResponse
     ValidationError:
       properties:
         loc:
@@ -213,23 +217,15 @@ components:
       - msg
       - type
       title: ValidationError
-    SaleType:
-      type: string
-      enum:
-      - SALE
-      - VOID
-      - RECALL
-      - REFUND
-      - SPLIT
-      - UPDATE
-      - TRANSFER
-      - FLOAT
-      - TRANSITORY
-      - CROSS_BL
-      - CANCEL
-      - MANUAL
-      title: SaleType
-      description: An enumeration.
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
     TransactionData:
       properties:
         transactionId:
@@ -268,30 +264,34 @@ components:
       - createdAt
       - finalSaleAmount
       title: TransactionData
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
-    BaseResponse:
-      properties: {}
-      type: object
-      title: BaseResponse
-    APIResponse_TransactionCreateResponse_:
+    APIResponse_BaseResponse_:
       properties:
         requestId:
           type: string
           title: Requestid
         data:
-          $ref: '#/components/schemas/TransactionCreateResponse'
+          $ref: '#/components/schemas/BaseResponse'
       type: object
       required:
       - data
-      title: APIResponse[TransactionCreateResponse]
+      title: APIResponse[BaseResponse]
+    SaleType:
+      type: string
+      enum:
+      - SALE
+      - VOID
+      - RECALL
+      - REFUND
+      - SPLIT
+      - UPDATE
+      - TRANSFER
+      - FLOAT
+      - TRANSITORY
+      - CROSS_BL
+      - CANCEL
+      - MANUAL
+      title: SaleType
+      description: An enumeration.
   securitySchemes:
     APIKeyHeader:
       type: apiKey

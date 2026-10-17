@@ -111,20 +111,6 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
-    PaginatedBaseResponse_GetResourceCustomFieldsSettingsResponse_:
-      properties:
-        requestId:
-          type: string
-          title: Requestid
-        data:
-          $ref: '#/components/schemas/GetResourceCustomFieldsSettingsResponse'
-        paging:
-          $ref: '#/components/schemas/PagingResponseModel'
-      type: object
-      required:
-      - data
-      - paging
-      title: PaginatedBaseResponse[GetResourceCustomFieldsSettingsResponse]
     GetResourceCustomFieldsSettingsResponse:
       properties:
         customFields:
@@ -139,6 +125,121 @@ components:
       required:
       - customFields
       title: GetResourceCustomFieldsSettingsResponse
+    UserCustomFields:
+      type: string
+      enum:
+      - email
+      - date
+      - phone
+      - number
+      - str
+      - dropdown
+      - file
+      - directManager
+      - birthday
+      - link
+      - location
+      title: UserCustomFields
+    PagingResponseModel:
+      properties:
+        offset:
+          type: integer
+          minimum: 0.0
+          title: Offset
+          description: The resource offset of the last successfully read resource will be returned as the paging.offset JSON property of a paginated response containing more results
+        total:
+          type: integer
+          minimum: 0.0
+          title: Total
+          description: Total number of resources matching the request, ignoring pagination. Use this to retrieve the full count without paginating through every page. Only populated by endpoints that compute it.
+      type: object
+      required:
+      - offset
+      title: PagingResponseModel
+    PaginatedBaseResponse_GetResourceCustomFieldsSettingsResponse_:
+      properties:
+        requestId:
+          type: string
+          title: Requestid
+        data:
+          $ref: '#/components/schemas/GetResourceCustomFieldsSettingsResponse'
+        paging:
+          $ref: '#/components/schemas/PagingResponseModel'
+      type: object
+      required:
+      - data
+      - paging
+      title: PaginatedBaseResponse[GetResourceCustomFieldsSettingsResponse]
+    ResourceCustomFieldSettingsResponse:
+      properties:
+        id:
+          type: integer
+          title: Id
+          description: The resource custom field id
+        name:
+          type: string
+          maxLength: 100
+          title: Name
+          description: The name of the custom field
+        isRequired:
+          type: boolean
+          title: Isrequired
+          description: Indicates whether the custom field is required
+        categoryId:
+          type: integer
+          title: Categoryid
+          description: The unique identifier of the custom field category
+        isVisibleToAllAdmins:
+          type: boolean
+          title: Isvisibletoalladmins
+          description: Indicates whether the custom field is visible to all admins
+        viewAccessAdminIds:
+          items:
+            type: integer
+            minimum: 1.0
+          type: array
+          title: Viewaccessadminids
+          description: 'A list of unique identifiers of the admins who will be granted access to view this custom field, owners can always see all custom fields.
+
+            Applicable only to custom fields that are not visible to all admins.'
+        isEditableForAllAdmins:
+          type: boolean
+          title: Iseditableforalladmins
+          description: Indicates whether the custom field is editable by all admins
+        editAccessAdminIds:
+          items:
+            type: integer
+            minimum: 1.0
+          type: array
+          title: Editaccessadminids
+          description: 'A list of unique identifiers of the admins who will be granted access to edit this custom field, owners can always edit all custom fields.
+
+            Applicable only to custom fields that are not editable by all admins.'
+        isVisibleToUsers:
+          type: boolean
+          title: Isvisibletousers
+          description: Indicates whether the custom field is visible to users
+        isEditableForUsers:
+          type: boolean
+          title: Iseditableforusers
+          description: 'Indicates whether the custom field is editable by users.
+
+            Applicable only to custom fields that are visible to users.'
+        type:
+          allOf:
+          - $ref: '#/components/schemas/UserCustomFields'
+          description: 'The type of the custom field: Text, Phone number, Dropdown.'
+      type: object
+      required:
+      - name
+      - isRequired
+      - isVisibleToAllAdmins
+      - isEditableForAllAdmins
+      - isVisibleToUsers
+      - isEditableForUsers
+      - id
+      - type
+      title: ResourceCustomFieldSettingsResponse
     ValidationError:
       properties:
         loc:
@@ -160,29 +261,14 @@ components:
       - msg
       - type
       title: ValidationError
-    ResourceCustomFieldsSortExternal:
+    ResourceCustomFields:
       type: string
       enum:
-      - name
-      - type
-      title: ResourceCustomFieldsSortExternal
+      - str
+      - phone
+      - dropdown
+      title: ResourceCustomFields
       description: An enumeration.
-    PagingResponseModel:
-      properties:
-        offset:
-          type: integer
-          minimum: 0.0
-          title: Offset
-          description: The resource offset of the last successfully read resource will be returned as the paging.offset JSON property of a paginated response containing more results
-        total:
-          type: integer
-          minimum: 0.0
-          title: Total
-          description: Total number of resources matching the request, ignoring pagination. Use this to retrieve the full count without paginating through every page. Only populated by endpoints that compute it.
-      type: object
-      required:
-      - offset
-      title: PagingResponseModel
     HTTPValidationError:
       properties:
         detail:
@@ -192,14 +278,6 @@ components:
           title: Detail
       type: object
       title: HTTPValidationError
-    ResourceCustomFields:
-      type: string
-      enum:
-      - str
-      - phone
-      - dropdown
-      title: ResourceCustomFields
-      description: An enumeration.
     DropdownResourceCustomFieldSettingsResponse:
       properties:
         id:
@@ -288,12 +366,6 @@ components:
       - dropdownOptions
       - id
       title: DropdownResourceCustomFieldSettingsResponse
-    SortOrder:
-      type: string
-      enum:
-      - asc
-      - desc
-      title: SortOrder
     DropdownCustomFieldOption:
       properties:
         id:
@@ -321,91 +393,19 @@ components:
       - id
       - value
       title: DropdownCustomFieldOption
-    ResourceCustomFieldSettingsResponse:
-      properties:
-        id:
-          type: integer
-          title: Id
-          description: The resource custom field id
-        name:
-          type: string
-          maxLength: 100
-          title: Name
-          description: The name of the custom field
-        isRequired:
-          type: boolean
-          title: Isrequired
-          description: Indicates whether the custom field is required
-        categoryId:
-          type: integer
-          title: Categoryid
-          description: The unique identifier of the custom field category
-        isVisibleToAllAdmins:
-          type: boolean
-          title: Isvisibletoalladmins
-          description: Indicates whether the custom field is visible to all admins
-        viewAccessAdminIds:
-          items:
-            type: integer
-            minimum: 1.0
-          type: array
-          title: Viewaccessadminids
-          description: 'A list of unique identifiers of the admins who will be granted access to view this custom field, owners can always see all custom fields.
-
-            Applicable only to custom fields that are not visible to all admins.'
-        isEditableForAllAdmins:
-          type: boolean
-          title: Iseditableforalladmins
-          description: Indicates whether the custom field is editable by all admins
-        editAccessAdminIds:
-          items:
-            type: integer
-            minimum: 1.0
-          type: array
-          title: Editaccessadminids
-          description: 'A list of unique identifiers of the admins who will be granted access to edit this custom field, owners can always edit all custom fields.
-
-            Applicable only to custom fields that are not editable by all admins.'
-        isVisibleToUsers:
-          type: boolean
-          title: Isvisibletousers
-          description: Indicates whether the custom field is visible to users
-        isEditableForUsers:
-          type: boolean
-          title: Iseditableforusers
-          description: 'Indicates whether the custom field is editable by users.
-
-            Applicable only to custom fields that are visible to users.'
-        type:
-          allOf:
-          - $ref: '#/components/schemas/UserCustomFields'
-          description: 'The type of the custom field: Text, Phone number, Dropdown.'
-      type: object
-      required:
-      - name
-      - isRequired
-      - isVisibleToAllAdmins
-      - isEditableForAllAdmins
-      - isVisibleToUsers
-      - isEditableForUsers
-      - id
-      - type
-      title: ResourceCustomFieldSettingsResponse
-    UserCustomFields:
+    SortOrder:
       type: string
       enum:
-      - email
-      - date
-      - phone
-      - number
-      - str
-      - dropdown
-      - file
-      - directManager
-      - birthday
-      - link
-      - location
-      title: UserCustomFields
+      - asc
+      - desc
+      title: SortOrder
+    ResourceCustomFieldsSortExternal:
+      type: string
+      enum:
+      - name
+      - type
+      title: ResourceCustomFieldsSortExternal
+      description: An enumeration.
   securitySchemes:
     APIKeyHeader:
       type: apiKey

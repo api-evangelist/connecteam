@@ -52,6 +52,17 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
+    APIResponse_ProjectedSalesUpdateResponse_:
+      properties:
+        requestId:
+          type: string
+          title: Requestid
+        data:
+          $ref: '#/components/schemas/ProjectedSalesUpdateResponse'
+      type: object
+      required:
+      - data
+      title: APIResponse[ProjectedSalesUpdateResponse]
     ProjectedSalesUpdateRequest:
       properties:
         updates:
@@ -127,17 +138,6 @@ components:
           title: Detail
       type: object
       title: HTTPValidationError
-    APIResponse_ProjectedSalesUpdateResponse_:
-      properties:
-        requestId:
-          type: string
-          title: Requestid
-        data:
-          $ref: '#/components/schemas/ProjectedSalesUpdateResponse'
-      type: object
-      required:
-      - data
-      title: APIResponse[ProjectedSalesUpdateResponse]
     DailySalesEntry:
       properties:
         date:

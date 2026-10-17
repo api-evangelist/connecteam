@@ -63,53 +63,6 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
-    ? v2__features__shiftscheduler__external_api__v1__schedulers__scheduler__custom_fields__models__shift_custom_field_settings_response__DropdownOptionResponse
-    : properties:
-        id:
-          type: integer
-          title: Id
-          description: The dropdown option unique id
-        value:
-          type: string
-          title: Value
-          description: The dropdown option value
-        isDeleted:
-          type: boolean
-          title: Isdeleted
-          description: Whether the option is deleted
-          default: false
-      type: object
-      required:
-      - id
-      - value
-      title: DropdownOptionResponse
-    ValidationError:
-      properties:
-        loc:
-          items:
-            anyOf:
-            - type: string
-            - type: integer
-          type: array
-          title: Location
-        msg:
-          type: string
-          title: Message
-        type:
-          type: string
-          title: Error Type
-      type: object
-      required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
-    ShiftCustomFields:
-      type: string
-      enum:
-      - str
-      - dropdown
-      title: ShiftCustomFields
     GetShiftCustomFieldsSettingsResponse:
       properties:
         customFields:
@@ -124,60 +77,6 @@ components:
       required:
       - customFields
       title: GetShiftCustomFieldsSettingsResponse
-    PaginatedBaseResponseV2_GetShiftCustomFieldsSettingsResponse_:
-      properties:
-        requestId:
-          type: string
-          title: Requestid
-        data:
-          $ref: '#/components/schemas/GetShiftCustomFieldsSettingsResponse'
-        paging:
-          $ref: '#/components/schemas/PagingResponseModelV2'
-      type: object
-      required:
-      - data
-      - paging
-      title: PaginatedBaseResponseV2[GetShiftCustomFieldsSettingsResponse]
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
-    DropdownShiftCustomFieldSettingsResponse:
-      properties:
-        id:
-          type: string
-          title: Id
-          description: The shift custom field id
-        name:
-          type: string
-          title: Name
-          description: The name of the custom field
-        type:
-          type: string
-          title: Type
-          description: 'The type of the custom field: Dropdown'
-          default: dropdown
-        isMultiSelect:
-          type: boolean
-          title: Ismultiselect
-          description: Whether the dropdown allows multiple selections
-          default: false
-        dropdownOptions:
-          items:
-            $ref: '#/components/schemas/v2__features__shiftscheduler__external_api__v1__schedulers__scheduler__custom_fields__models__shift_custom_field_settings_response__DropdownOptionResponse'
-          type: array
-          title: Dropdownoptions
-          description: The dropdown options
-      type: object
-      required:
-      - id
-      - name
-      title: DropdownShiftCustomFieldSettingsResponse
     PagingResponseModelV2:
       properties:
         offset:
@@ -215,6 +114,107 @@ components:
       - name
       - type
       title: ShiftCustomFieldSettingsResponse
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    ShiftCustomFields:
+      type: string
+      enum:
+      - str
+      - dropdown
+      title: ShiftCustomFields
+    ? v2__features__shiftscheduler__external_api__v1__schedulers__scheduler__custom_fields__models__shift_custom_field_settings_response__DropdownOptionResponse
+    : properties:
+        id:
+          type: integer
+          title: Id
+          description: The dropdown option unique id
+        value:
+          type: string
+          title: Value
+          description: The dropdown option value
+        isDeleted:
+          type: boolean
+          title: Isdeleted
+          description: Whether the option is deleted
+          default: false
+      type: object
+      required:
+      - id
+      - value
+      title: DropdownOptionResponse
+    PaginatedBaseResponseV2_GetShiftCustomFieldsSettingsResponse_:
+      properties:
+        requestId:
+          type: string
+          title: Requestid
+        data:
+          $ref: '#/components/schemas/GetShiftCustomFieldsSettingsResponse'
+        paging:
+          $ref: '#/components/schemas/PagingResponseModelV2'
+      type: object
+      required:
+      - data
+      - paging
+      title: PaginatedBaseResponseV2[GetShiftCustomFieldsSettingsResponse]
+    DropdownShiftCustomFieldSettingsResponse:
+      properties:
+        id:
+          type: string
+          title: Id
+          description: The shift custom field id
+        name:
+          type: string
+          title: Name
+          description: The name of the custom field
+        type:
+          type: string
+          title: Type
+          description: 'The type of the custom field: Dropdown'
+          default: dropdown
+        isMultiSelect:
+          type: boolean
+          title: Ismultiselect
+          description: Whether the dropdown allows multiple selections
+          default: false
+        dropdownOptions:
+          items:
+            $ref: '#/components/schemas/v2__features__shiftscheduler__external_api__v1__schedulers__scheduler__custom_fields__models__shift_custom_field_settings_response__DropdownOptionResponse'
+          type: array
+          title: Dropdownoptions
+          description: The dropdown options
+      type: object
+      required:
+      - id
+      - name
+      title: DropdownShiftCustomFieldSettingsResponse
   securitySchemes:
     APIKeyHeader:
       type: apiKey

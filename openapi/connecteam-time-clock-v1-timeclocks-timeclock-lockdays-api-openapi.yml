@@ -145,27 +145,6 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
-    ValidationError:
-      properties:
-        loc:
-          items:
-            anyOf:
-            - type: string
-            - type: integer
-          type: array
-          title: Location
-        msg:
-          type: string
-          title: Message
-        type:
-          type: string
-          title: Error Type
-      type: object
-      required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
     ValidationErrorResponse:
       properties:
         details:
@@ -193,40 +172,27 @@ components:
       type: object
       title: ValidationErrorResponse
       description: "All errors responses should include:\nrequest_id,\nConnecteam error code and error message,\nthe url path,\nthe request body,\nand error data which can be a pydantic class or a dict and should look something like this:\n`{\n    \"error.path\": \"the gist of the error\"\n}`\n\nfor example if the user doesn't exist it should look something like this:\n`{\n    \"user.id\": \"user doesn't exist\"\n}`"
-    LockDaysPutResponse:
+    ValidationError:
       properties:
-        userId:
-          type: integer
-          minimum: 1.0
-          title: Userid
-          description: The unique identifier of the user (echoed from the path).
-        isLocked:
-          type: boolean
-          title: Islocked
-          description: The state applied. Echoes the request value (true if locked, false if unlocked).
-        dates:
+        loc:
           items:
-            type: string
+            anyOf:
+            - type: string
+            - type: integer
           type: array
-          title: Dates
-          description: Final state for the requested dates, in YYYY-MM-DD format. When isLocked is true, every date is now locked (including dates that were already locked). When isLocked is false, every date is now unlocked (including dates that were already unlocked).
-      type: object
-      required:
-      - userId
-      - isLocked
-      - dates
-      title: LockDaysPutResponse
-    APIResponse_LockDaysPutResponse_:
-      properties:
-        requestId:
+          title: Location
+        msg:
           type: string
-          title: Requestid
-        data:
-          $ref: '#/components/schemas/LockDaysPutResponse'
+          title: Message
+        type:
+          type: string
+          title: Error Type
       type: object
       required:
-      - data
-      title: APIResponse[LockDaysPutResponse]
+      - loc
+      - msg
+      - type
+      title: ValidationError
     HTTPValidationError:
       properties:
         detail:
@@ -255,6 +221,40 @@ components:
       required:
       - dates
       title: LockDaysPutRequest
+    APIResponse_LockDaysPutResponse_:
+      properties:
+        requestId:
+          type: string
+          title: Requestid
+        data:
+          $ref: '#/components/schemas/LockDaysPutResponse'
+      type: object
+      required:
+      - data
+      title: APIResponse[LockDaysPutResponse]
+    LockDaysPutResponse:
+      properties:
+        userId:
+          type: integer
+          minimum: 1.0
+          title: Userid
+          description: The unique identifier of the user (echoed from the path).
+        isLocked:
+          type: boolean
+          title: Islocked
+          description: The state applied. Echoes the request value (true if locked, false if unlocked).
+        dates:
+          items:
+            type: string
+          type: array
+          title: Dates
+          description: Final state for the requested dates, in YYYY-MM-DD format. When isLocked is true, every date is now locked (including dates that were already locked). When isLocked is false, every date is now unlocked (including dates that were already unlocked).
+      type: object
+      required:
+      - userId
+      - isLocked
+      - dates
+      title: LockDaysPutResponse
     ErrorParing:
       properties:
         error_message:

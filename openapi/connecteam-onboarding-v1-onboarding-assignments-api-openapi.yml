@@ -82,6 +82,17 @@ paths:
           description: Validation error
 components:
   schemas:
+    APIResponse_AssignmentsGetResponse_:
+      properties:
+        requestId:
+          type: string
+          title: Requestid
+        data:
+          $ref: '#/components/schemas/AssignmentsGetResponse'
+      type: object
+      required:
+      - data
+      title: APIResponse[AssignmentsGetResponse]
     AssignmentsCreateRequest:
       properties:
         userIds:
@@ -95,64 +106,22 @@ components:
       required:
       - userIds
       title: AssignmentsCreateRequest
-    ValidationError:
+    AssignmentsCreateResponse:
+      properties: {}
+      type: object
+      title: AssignmentsCreateResponse
+    AssignmentsGetResponse:
       properties:
-        loc:
+        assignments:
           items:
-            anyOf:
-            - type: string
-            - type: integer
+            $ref: '#/components/schemas/AssignmentResponse'
           type: array
-          title: Location
-        msg:
-          type: string
-          title: Message
-        type:
-          type: string
-          title: Error Type
+          title: Assignments
+          description: List of pack assignments
       type: object
       required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
-    APIResponse_AssignmentsGetResponse_:
-      properties:
-        requestId:
-          type: string
-          title: Requestid
-        data:
-          $ref: '#/components/schemas/AssignmentsGetResponse'
-      type: object
-      required:
-      - data
-      title: APIResponse[AssignmentsGetResponse]
-    OnboardingStatus:
-      enum:
-      - in_progress
-      - completed
-      title: OnboardingStatus
-      description: An enumeration.
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
-    APIResponse_AssignmentsCreateResponse_:
-      properties:
-        requestId:
-          type: string
-          title: Requestid
-        data:
-          $ref: '#/components/schemas/AssignmentsCreateResponse'
-      type: object
-      required:
-      - data
-      title: APIResponse[AssignmentsCreateResponse]
+      - assignments
+      title: AssignmentsGetResponse
     AssignmentResponse:
       properties:
         id:
@@ -178,22 +147,53 @@ components:
       - status
       - isWaitingApproval
       title: AssignmentResponse
-    AssignmentsGetResponse:
+    ValidationError:
       properties:
-        assignments:
+        loc:
           items:
-            $ref: '#/components/schemas/AssignmentResponse'
+            anyOf:
+            - type: string
+            - type: integer
           type: array
-          title: Assignments
-          description: List of pack assignments
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
       type: object
       required:
-      - assignments
-      title: AssignmentsGetResponse
-    AssignmentsCreateResponse:
-      properties: {}
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
       type: object
-      title: AssignmentsCreateResponse
+      title: HTTPValidationError
+    APIResponse_AssignmentsCreateResponse_:
+      properties:
+        requestId:
+          type: string
+          title: Requestid
+        data:
+          $ref: '#/components/schemas/AssignmentsCreateResponse'
+      type: object
+      required:
+      - data
+      title: APIResponse[AssignmentsCreateResponse]
+    OnboardingStatus:
+      enum:
+      - in_progress
+      - completed
+      title: OnboardingStatus
+      description: An enumeration.
   securitySchemes:
     APIKeyHeader:
       type: apiKey

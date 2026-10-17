@@ -125,63 +125,6 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
-    TimeOffUserBalance:
-      properties:
-        userId:
-          type: integer
-          title: Userid
-          description: The user id
-        units:
-          allOf:
-          - $ref: '#/components/schemas/PolicyUnitsEnum'
-          description: The user balance units
-        balance:
-          type: number
-          title: Balance
-          description: The remaining user balance
-        policyId:
-          type: string
-          title: Policyid
-          description: The id of the policy this balance belongs to
-      type: object
-      required:
-      - userId
-      - units
-      - balance
-      - policyId
-      title: TimeOffUserBalance
-    ValidationError:
-      properties:
-        loc:
-          items:
-            anyOf:
-            - type: string
-            - type: integer
-          type: array
-          title: Location
-        msg:
-          type: string
-          title: Message
-        type:
-          type: string
-          title: Error Type
-      type: object
-      required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
-    APIResponse_TimeOffPutUserBalanceResponse_:
-      properties:
-        requestId:
-          type: string
-          title: Requestid
-        data:
-          $ref: '#/components/schemas/TimeOffPutUserBalanceResponse'
-      type: object
-      required:
-      - data
-      title: APIResponse[TimeOffPutUserBalanceResponse]
     TimeOffGetUserBalancesResponse:
       properties:
         balances:
@@ -217,6 +160,48 @@ components:
       - days
       title: PolicyUnitsEnum
       description: An enumeration.
+    APIResponse_TimeOffPutUserBalanceResponse_:
+      properties:
+        requestId:
+          type: string
+          title: Requestid
+        data:
+          $ref: '#/components/schemas/TimeOffPutUserBalanceResponse'
+      type: object
+      required:
+      - data
+      title: APIResponse[TimeOffPutUserBalanceResponse]
+    TimeOffUpdateUserBalanceRequest:
+      properties:
+        balance:
+          type: number
+          title: Balance
+          description: The balance to update to
+      type: object
+      required:
+      - balance
+      title: TimeOffUpdateUserBalanceRequest
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
     HTTPValidationError:
       properties:
         detail:
@@ -226,17 +211,6 @@ components:
           title: Detail
       type: object
       title: HTTPValidationError
-    TimeOffPutUserBalanceResponse:
-      properties:
-        balance:
-          allOf:
-          - $ref: '#/components/schemas/TimeOffUserBalance'
-          title: Balance
-          description: The updated user balance
-      type: object
-      required:
-      - balance
-      title: TimeOffPutUserBalanceResponse
     PaginatedBaseResponse_TimeOffGetUserBalancesResponse_:
       properties:
         requestId:
@@ -251,16 +225,42 @@ components:
       - data
       - paging
       title: PaginatedBaseResponse[TimeOffGetUserBalancesResponse]
-    TimeOffUpdateUserBalanceRequest:
+    TimeOffPutUserBalanceResponse:
       properties:
         balance:
-          type: number
+          allOf:
+          - $ref: '#/components/schemas/TimeOffUserBalance'
           title: Balance
-          description: The balance to update to
+          description: The updated user balance
       type: object
       required:
       - balance
-      title: TimeOffUpdateUserBalanceRequest
+      title: TimeOffPutUserBalanceResponse
+    TimeOffUserBalance:
+      properties:
+        userId:
+          type: integer
+          title: Userid
+          description: The user id
+        units:
+          allOf:
+          - $ref: '#/components/schemas/PolicyUnitsEnum'
+          description: The user balance units
+        balance:
+          type: number
+          title: Balance
+          description: The remaining user balance
+        policyId:
+          type: string
+          title: Policyid
+          description: The id of the policy this balance belongs to
+      type: object
+      required:
+      - userId
+      - units
+      - balance
+      - policyId
+      title: TimeOffUserBalance
   securitySchemes:
     APIKeyHeader:
       type: apiKey

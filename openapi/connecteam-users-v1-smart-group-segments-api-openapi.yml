@@ -121,31 +121,26 @@ components:
       - msg
       - type
       title: ValidationError
-    SmartGroupSegmentCreateResponse:
+    HTTPValidationError:
       properties:
-        id:
-          type: integer
-          title: Id
-          description: The unique identifier of the smart group segment
-        name:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    APIResponse_SmartGroupSegmentsResponse_:
+      properties:
+        requestId:
           type: string
-          title: Name
-          description: The name of the smart group segment
-        color:
-          type: string
-          title: Color
-          description: The color hex code of the smart group segment
-        sortOrder:
-          type: integer
-          title: Sortorder
-          description: The sort order of the smart group segment
+          title: Requestid
+        data:
+          $ref: '#/components/schemas/SmartGroupSegmentsResponse'
       type: object
       required:
-      - id
-      - name
-      - color
-      - sortOrder
-      title: SmartGroupSegmentCreateResponse
+      - data
+      title: APIResponse[SmartGroupSegmentsResponse]
     SmartGroupSegmentsResponse:
       properties:
         segments:
@@ -183,15 +178,31 @@ components:
       - color
       - sortOrder
       title: SmartGroupSegment
-    HTTPValidationError:
+    SmartGroupSegmentCreateResponse:
       properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
+        id:
+          type: integer
+          title: Id
+          description: The unique identifier of the smart group segment
+        name:
+          type: string
+          title: Name
+          description: The name of the smart group segment
+        color:
+          type: string
+          title: Color
+          description: The color hex code of the smart group segment
+        sortOrder:
+          type: integer
+          title: Sortorder
+          description: The sort order of the smart group segment
       type: object
-      title: HTTPValidationError
+      required:
+      - id
+      - name
+      - color
+      - sortOrder
+      title: SmartGroupSegmentCreateResponse
     APIResponse_SmartGroupSegmentCreateResponse_:
       properties:
         requestId:
@@ -203,17 +214,6 @@ components:
       required:
       - data
       title: APIResponse[SmartGroupSegmentCreateResponse]
-    APIResponse_SmartGroupSegmentsResponse_:
-      properties:
-        requestId:
-          type: string
-          title: Requestid
-        data:
-          $ref: '#/components/schemas/SmartGroupSegmentsResponse'
-      type: object
-      required:
-      - data
-      title: APIResponse[SmartGroupSegmentsResponse]
   securitySchemes:
     APIKeyHeader:
       type: apiKey

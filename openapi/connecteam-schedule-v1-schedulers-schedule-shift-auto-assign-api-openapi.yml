@@ -89,6 +89,97 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
+    AutoAssignResponse:
+      properties:
+        autoAssignRequestId:
+          type: string
+          title: Autoassignrequestid
+          description: The unique identifier of the auto assign request
+      type: object
+      required:
+      - autoAssignRequestId
+      title: AutoAssignResponse
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    APIResponseV2_AutoAssignStatusResponse_:
+      properties:
+        requestId:
+          type: string
+          title: Requestid
+        data:
+          $ref: '#/components/schemas/AutoAssignStatusResponse'
+      type: object
+      required:
+      - data
+      title: APIResponseV2[AutoAssignStatusResponse]
+    AutoAssignRequest:
+      properties:
+        shiftsIds:
+          items:
+            type: string
+          type: array
+          title: Shiftsids
+          description: List of shift IDs to start a request to auto assign. The shifts must be within the same week period (according to the schedule settings).
+        isForceQualification:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          title: Isforcequalification
+          description: Determines whether to take into consideration the qualifications of users.
+          default: true
+        isForceUnavailability:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          title: Isforceunavailability
+          description: Determines whether to consider users' unavailabilities.
+          default: true
+        isForceLimitations:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          title: Isforcelimitations
+          description: Determines whether to consider users' limitations.
+          default: true
+        isForceOpenShiftRequests:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          title: Isforceopenshiftrequests
+          description: Determines whether to assign open shifts exclusively to requesters. If set to false, it first prioritizes requesters, then assigns the remaining.
+          default: false
+      type: object
+      required:
+      - shiftsIds
+      title: AutoAssignRequest
     AutoAssignStatusResponse:
       properties:
         autoAssignRequestId:
@@ -132,97 +223,6 @@ components:
       required:
       - data
       title: APIResponseV2[AutoAssignResponse]
-    AutoAssignResponse:
-      properties:
-        autoAssignRequestId:
-          type: string
-          title: Autoassignrequestid
-          description: The unique identifier of the auto assign request
-      type: object
-      required:
-      - autoAssignRequestId
-      title: AutoAssignResponse
-    ValidationError:
-      properties:
-        loc:
-          items:
-            anyOf:
-            - type: string
-            - type: integer
-          type: array
-          title: Location
-        msg:
-          type: string
-          title: Message
-        type:
-          type: string
-          title: Error Type
-      type: object
-      required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
-    AutoAssignRequest:
-      properties:
-        shiftsIds:
-          items:
-            type: string
-          type: array
-          title: Shiftsids
-          description: List of shift IDs to start a request to auto assign. The shifts must be within the same week period (according to the schedule settings).
-        isForceQualification:
-          anyOf:
-          - type: boolean
-          - type: 'null'
-          title: Isforcequalification
-          description: Determines whether to take into consideration the qualifications of users.
-          default: true
-        isForceUnavailability:
-          anyOf:
-          - type: boolean
-          - type: 'null'
-          title: Isforceunavailability
-          description: Determines whether to consider users' unavailabilities.
-          default: true
-        isForceLimitations:
-          anyOf:
-          - type: boolean
-          - type: 'null'
-          title: Isforcelimitations
-          description: Determines whether to consider users' limitations.
-          default: true
-        isForceOpenShiftRequests:
-          anyOf:
-          - type: boolean
-          - type: 'null'
-          title: Isforceopenshiftrequests
-          description: Determines whether to assign open shifts exclusively to requesters. If set to false, it first prioritizes requesters, then assigns the remaining.
-          default: false
-      type: object
-      required:
-      - shiftsIds
-      title: AutoAssignRequest
-    APIResponseV2_AutoAssignStatusResponse_:
-      properties:
-        requestId:
-          type: string
-          title: Requestid
-        data:
-          $ref: '#/components/schemas/AutoAssignStatusResponse'
-      type: object
-      required:
-      - data
-      title: APIResponseV2[AutoAssignStatusResponse]
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
   securitySchemes:
     APIKeyHeader:
       type: apiKey

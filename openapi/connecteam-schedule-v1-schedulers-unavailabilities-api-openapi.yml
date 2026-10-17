@@ -58,6 +58,17 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
+    APIResponseV2_GetUnavailabilitiesResponse_:
+      properties:
+        requestId:
+          type: string
+          title: Requestid
+        data:
+          $ref: '#/components/schemas/GetUnavailabilitiesResponse'
+      type: object
+      required:
+      - data
+      title: APIResponseV2[GetUnavailabilitiesResponse]
     SingleAbsence:
       properties:
         id:
@@ -98,17 +109,42 @@ components:
       - endTime
       - note
       title: SingleAbsence
-    APIResponseV2_GetUnavailabilitiesResponse_:
+    ValidationError:
       properties:
-        requestId:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
           type: string
-          title: Requestid
-        data:
-          $ref: '#/components/schemas/GetUnavailabilitiesResponse'
+          title: Message
+        type:
+          type: string
+          title: Error Type
       type: object
       required:
-      - data
-      title: APIResponseV2[GetUnavailabilitiesResponse]
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    AbsenceType:
+      type: string
+      enum:
+      - unavailability
+      - timeOff
+      title: AbsenceType
     UserUnavailabilityItem:
       properties:
         userId:
@@ -134,6 +170,18 @@ components:
       - unavailabilities
       - shifts
       title: UserUnavailabilityItem
+    GetUnavailabilitiesResponse:
+      properties:
+        userUnavailabilities:
+          items:
+            $ref: '#/components/schemas/UserUnavailabilityItem'
+          type: array
+          title: Userunavailabilities
+          description: List of users with unavailabilities
+      type: object
+      required:
+      - userUnavailabilities
+      title: GetUnavailabilitiesResponse
     SingleShift:
       properties:
         id:
@@ -157,27 +205,6 @@ components:
       - endTime
       - instanceId
       title: SingleShift
-    ValidationError:
-      properties:
-        loc:
-          items:
-            anyOf:
-            - type: string
-            - type: integer
-          type: array
-          title: Location
-        msg:
-          type: string
-          title: Message
-        type:
-          type: string
-          title: Error Type
-      type: object
-      required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
     TimestampWithTimezone:
       properties:
         timestamp:
@@ -194,33 +221,6 @@ components:
       - timestamp
       - timezone
       title: TimestampWithTimezone
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
-    AbsenceType:
-      type: string
-      enum:
-      - unavailability
-      - timeOff
-      title: AbsenceType
-    GetUnavailabilitiesResponse:
-      properties:
-        userUnavailabilities:
-          items:
-            $ref: '#/components/schemas/UserUnavailabilityItem'
-          type: array
-          title: Userunavailabilities
-          description: List of users with unavailabilities
-      type: object
-      required:
-      - userUnavailabilities
-      title: GetUnavailabilitiesResponse
   securitySchemes:
     APIKeyHeader:
       type: apiKey

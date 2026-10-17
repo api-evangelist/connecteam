@@ -209,6 +209,22 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
+    PagingResponseModel:
+      properties:
+        offset:
+          type: integer
+          minimum: 0.0
+          title: Offset
+          description: The resource offset of the last successfully read resource will be returned as the paging.offset JSON property of a paginated response containing more results
+        total:
+          type: integer
+          minimum: 0.0
+          title: Total
+          description: Total number of resources matching the request, ignoring pagination. Use this to retrieve the full count without paginating through every page. Only populated by endpoints that compute it.
+      type: object
+      required:
+      - offset
+      title: PagingResponseModel
     APIResponse_DropdownCustomFieldOptionResponse_:
       properties:
         requestId:
@@ -220,17 +236,24 @@ components:
       required:
       - data
       title: APIResponse[DropdownCustomFieldOptionResponse]
-    APIResponse_BaseResponse_:
+    BaseResponse:
+      properties: {}
+      type: object
+      title: BaseResponse
+    PaginatedBaseResponse_CustomFieldOptionsResponse_:
       properties:
         requestId:
           type: string
           title: Requestid
         data:
-          $ref: '#/components/schemas/BaseResponse'
+          $ref: '#/components/schemas/CustomFieldOptionsResponse'
+        paging:
+          $ref: '#/components/schemas/PagingResponseModel'
       type: object
       required:
       - data
-      title: APIResponse[BaseResponse]
+      - paging
+      title: PaginatedBaseResponse[CustomFieldOptionsResponse]
     CustomFieldOptionsResponse:
       properties:
         options:
@@ -264,6 +287,30 @@ components:
       - msg
       - type
       title: ValidationError
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    CreateDropdownCustomFieldOption:
+      properties:
+        value:
+          type: string
+          title: Value
+          description: The value to be added as the option
+        isDisabled:
+          type: boolean
+          title: Isdisabled
+          description: Indicates if this option is disabled
+          default: false
+      type: object
+      required:
+      - value
+      title: CreateDropdownCustomFieldOption
     EditSingleDropdownCustomFieldOption:
       properties:
         value:
@@ -277,45 +324,6 @@ components:
           default: false
       type: object
       title: EditSingleDropdownCustomFieldOption
-    PagingResponseModel:
-      properties:
-        offset:
-          type: integer
-          minimum: 0.0
-          title: Offset
-          description: The resource offset of the last successfully read resource will be returned as the paging.offset JSON property of a paginated response containing more results
-        total:
-          type: integer
-          minimum: 0.0
-          title: Total
-          description: Total number of resources matching the request, ignoring pagination. Use this to retrieve the full count without paginating through every page. Only populated by endpoints that compute it.
-      type: object
-      required:
-      - offset
-      title: PagingResponseModel
-    PaginatedBaseResponse_CustomFieldOptionsResponse_:
-      properties:
-        requestId:
-          type: string
-          title: Requestid
-        data:
-          $ref: '#/components/schemas/CustomFieldOptionsResponse'
-        paging:
-          $ref: '#/components/schemas/PagingResponseModel'
-      type: object
-      required:
-      - data
-      - paging
-      title: PaginatedBaseResponse[CustomFieldOptionsResponse]
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
     DropdownCustomFieldOptionResponse:
       properties:
         id:
@@ -343,25 +351,17 @@ components:
       - id
       - value
       title: DropdownCustomFieldOptionResponse
-    BaseResponse:
-      properties: {}
-      type: object
-      title: BaseResponse
-    CreateDropdownCustomFieldOption:
+    APIResponse_BaseResponse_:
       properties:
-        value:
+        requestId:
           type: string
-          title: Value
-          description: The value to be added as the option
-        isDisabled:
-          type: boolean
-          title: Isdisabled
-          description: Indicates if this option is disabled
-          default: false
+          title: Requestid
+        data:
+          $ref: '#/components/schemas/BaseResponse'
       type: object
       required:
-      - value
-      title: CreateDropdownCustomFieldOption
+      - data
+      title: APIResponse[BaseResponse]
   securitySchemes:
     APIKeyHeader:
       type: apiKey

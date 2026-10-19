@@ -1397,6 +1397,118 @@ apis:
     url: asyncapi/connecteam-events-webhooks.yml
   - type: ToolCrosswalk
     url: mcp/connecteam-tool-crosswalk.yml
+- aid: connecteam:connecteam-company-policies-v1-payrulepolicypayrules-api
+  name: Connecteam Company Policies:v1:PayRulePolicyPayRules API
+  description: >-
+    The Company Policies:v1:PayRulePolicyPayRules API from Connecteam — 1 operation(s) for company policies:v1:payrulepolicypayrules.
+  humanURL: https://developer.connecteam.com/
+  baseURL: https://api.connecteam.com
+  tags:
+  - Company Policies:v1:PayRulePolicyPayRules
+  properties:
+  - type: OpenAPI
+    url: openapi/connecteam-company-policies-v1-payrulepolicypayrules-api-openapi.yml
+- aid: connecteam:connecteam-company-policies-v1-payrules-api
+  name: Connecteam Company Policies:v1:PayRules API
+  description: >-
+    The Company Policies:v1:PayRules API from Connecteam — 1 operation(s) for company policies:v1:payrules.
+  humanURL: https://developer.connecteam.com/
+  baseURL: https://api.connecteam.com
+  tags:
+  - Company Policies:v1:PayRules
+  properties:
+  - type: OpenAPI
+    url: openapi/connecteam-company-policies-v1-payrules-api-openapi.yml
+- aid: connecteam:connecteam-company-policies-v1-schedulingruleassignment-api
+  name: Connecteam Company Policies:v1:SchedulingRuleAssignment API
+  description: >-
+    The Company Policies:v1:SchedulingRuleAssignment API from Connecteam — 1 operation(s) for company
+    policies:v1:schedulingruleassignment.
+  humanURL: https://developer.connecteam.com/
+  baseURL: https://api.connecteam.com
+  tags:
+  - Company Policies:v1:SchedulingRuleAssignment
+  properties:
+  - type: OpenAPI
+    url: openapi/connecteam-company-policies-v1-schedulingruleassignment-api-openapi.yml
+- aid: connecteam:connecteam-company-policies-v1-schedulingrulepolicies-api
+  name: Connecteam Company Policies:v1:SchedulingRulePolicies API
+  description: >-
+    The Company Policies:v1:SchedulingRulePolicies API from Connecteam — 1 operation(s) for company policies:v1:schedulingrulepolicies.
+  humanURL: https://developer.connecteam.com/
+  baseURL: https://api.connecteam.com
+  tags:
+  - Company Policies:v1:SchedulingRulePolicies
+  properties:
+  - type: OpenAPI
+    url: openapi/connecteam-company-policies-v1-schedulingrulepolicies-api-openapi.yml
+- aid: connecteam:connecteam-company-policies-v1-schedulingrulepolicy-api
+  name: Connecteam Company Policies:v1:SchedulingRulePolicy API
+  description: >-
+    The Company Policies:v1:SchedulingRulePolicy API from Connecteam — 1 operation(s) for company policies:v1:schedulingrulepolicy.
+  humanURL: https://developer.connecteam.com/
+  baseURL: https://api.connecteam.com
+  tags:
+  - Company Policies:v1:SchedulingRulePolicy
+  properties:
+  - type: OpenAPI
+    url: openapi/connecteam-company-policies-v1-schedulingrulepolicy-api-openapi.yml
+- aid: connecteam:connecteam-company-policies-v1-usercustomschedulingrulepolicies-api
+  name: Connecteam Company Policies:v1:UserCustomSchedulingRulePolicies API
+  description: >-
+    The Company Policies:v1:UserCustomSchedulingRulePolicies API from Connecteam — 1 operation(s) for
+    company policies:v1:usercustomschedulingrulepolicies.
+  humanURL: https://developer.connecteam.com/
+  baseURL: https://api.connecteam.com
+  tags:
+  - Company Policies:v1:UserCustomSchedulingRulePolicies
+  properties:
+  - type: OpenAPI
+    url: openapi/connecteam-company-policies-v1-usercustomschedulingrulepolicies-api-openapi.yml
+- aid: connecteam:connecteam-company-policies-v1-userworkinghours-api
+  name: Connecteam Company Policies:v1:UserWorkingHours API
+  description: >-
+    The Company Policies:v1:UserWorkingHours API from Connecteam — 1 operation(s) for company policies:v1:userworkinghours.
+  humanURL: https://developer.connecteam.com/
+  baseURL: https://api.connecteam.com
+  tags:
+  - Company Policies:v1:UserWorkingHours
+  properties:
+  - type: OpenAPI
+    url: openapi/connecteam-company-policies-v1-userworkinghours-api-openapi.yml
+- aid: connecteam:connecteam-company-policies-v1-workinghoursassignment-api
+  name: Connecteam Company Policies:v1:WorkingHoursAssignment API
+  description: >-
+    The Company Policies:v1:WorkingHoursAssignment API from Connecteam — 2 operation(s) for company policies:v1:workinghoursassignment.
+  humanURL: https://developer.connecteam.com/
+  baseURL: https://api.connecteam.com
+  tags:
+  - Company Policies:v1:WorkingHoursAssignment
+  properties:
+  - type: OpenAPI
+    url: openapi/connecteam-company-policies-v1-workinghoursassignment-api-openapi.yml
+- aid: connecteam:connecteam-company-policies-v1-workinghourspolicies-api
+  name: Connecteam Company Policies:v1:WorkingHoursPolicies API
+  description: >-
+    The Company Policies:v1:WorkingHoursPolicies API from Connecteam — 1 operation(s) for company policies:v1:workinghourspolicies.
+  humanURL: https://developer.connecteam.com/
+  baseURL: https://api.connecteam.com
+  tags:
+  - Company Policies:v1:WorkingHoursPolicies
+  properties:
+  - type: OpenAPI
+    url: openapi/connecteam-company-policies-v1-workinghourspolicies-api-openapi.yml
+- aid: connecteam:connecteam-documents-v1-documents-api
+  name: Connecteam Documents:v1:Documents API
+  description: >-
+    The Documents:v1:Documents API from Connecteam — 3 operation(s) for documents:v1:documents.
+  humanURL: https://developer.connecteam.com/
+  baseURL: https://api.connecteam.com
+  tags:
+  - Documents:v1:Documents
+  properties:
+  - type: OpenAPI
+    url: openapi/connecteam-documents-v1-documents-api-openapi.yml
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com

@@ -18,9 +18,7 @@ paths:
         content:
           application/json:
             schema:
-              allOf:
-              - $ref: '#/components/schemas/DailyNoteCreateRequest'
-              title: Note Request
+              $ref: '#/components/schemas/DailyNoteCreateRequest'
               description: Request model for the new note
         required: true
       responses:
@@ -29,7 +27,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/APIResponse_DailyNoteResponse_'
+                $ref: '#/components/schemas/APIResponseV2_DailyNoteResponse_'
         '422':
           description: Validation Error
           content:
@@ -42,6 +40,26 @@ paths:
         - daily_note.write
 components:
   schemas:
+    APIResponseV2_DailyNoteResponse_:
+      properties:
+        requestId:
+          type: string
+          title: Requestid
+        data:
+          $ref: '#/components/schemas/DailyNoteResponse'
+      type: object
+      required:
+      - data
+      title: APIResponseV2[DailyNoteResponse]
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
     DailyNoteCreateRequest:
       properties:
         title:
@@ -98,26 +116,6 @@ components:
       - msg
       - type
       title: ValidationError
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
-    APIResponse_DailyNoteResponse_:
-      properties:
-        requestId:
-          type: string
-          title: Requestid
-        data:
-          $ref: '#/components/schemas/DailyNoteResponse'
-      type: object
-      required:
-      - data
-      title: APIResponse[DailyNoteResponse]
     DailyNoteResponse:
       properties:
         id:
@@ -229,6 +227,8 @@ components:
             company_checklist.write: company checklist - write
             recognitions.read: recognitions - read
             celebrations.read: celebrations - read
+            documents.read: documents - read
+            documents.write: documents - write
           tokenUrl: /oauth/v1/token
     HTTPBasic:
       type: http

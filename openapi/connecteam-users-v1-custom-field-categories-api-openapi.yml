@@ -92,6 +92,44 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
+    PaginatedBaseResponse_CustomFieldCategoriesResponse_:
+      properties:
+        requestId:
+          type: string
+          title: Requestid
+        data:
+          $ref: '#/components/schemas/CustomFieldCategoriesResponse'
+        paging:
+          $ref: '#/components/schemas/PagingResponseModel'
+      type: object
+      required:
+      - data
+      - paging
+      title: PaginatedBaseResponse[CustomFieldCategoriesResponse]
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    CustomFieldCategory:
+      properties:
+        id:
+          type: integer
+          title: Id
+          description: The category's id
+        name:
+          type: string
+          title: Name
+          description: The category's name
+      type: object
+      required:
+      - id
+      - name
+      title: CustomFieldCategory
     PagingResponseModel:
       properties:
         offset:
@@ -108,21 +146,12 @@ components:
       required:
       - offset
       title: PagingResponseModel
-    CustomFieldCategory:
-      properties:
-        id:
-          type: integer
-          title: Id
-          description: The category's id
-        name:
-          type: string
-          title: Name
-          description: The category's name
-      type: object
-      required:
-      - id
-      - name
-      title: CustomFieldCategory
+    SortOrder:
+      type: string
+      enum:
+      - asc
+      - desc
+      title: SortOrder
     ValidationError:
       properties:
         loc:
@@ -144,21 +173,6 @@ components:
       - msg
       - type
       title: ValidationError
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
-    CustomFieldCategoriesSortExternal:
-      enum:
-      - id
-      - name
-      title: CustomFieldCategoriesSortExternal
-      description: An enumeration.
     CustomFieldCategoriesResponse:
       properties:
         categories:
@@ -171,26 +185,12 @@ components:
       required:
       - categories
       title: CustomFieldCategoriesResponse
-    PaginatedBaseResponse_CustomFieldCategoriesResponse_:
-      properties:
-        requestId:
-          type: string
-          title: Requestid
-        data:
-          $ref: '#/components/schemas/CustomFieldCategoriesResponse'
-        paging:
-          $ref: '#/components/schemas/PagingResponseModel'
-      type: object
-      required:
-      - data
-      - paging
-      title: PaginatedBaseResponse[CustomFieldCategoriesResponse]
-    SortOrder:
-      type: string
+    CustomFieldCategoriesSortExternal:
       enum:
-      - asc
-      - desc
-      title: SortOrder
+      - id
+      - name
+      title: CustomFieldCategoriesSortExternal
+      description: An enumeration.
   securitySchemes:
     APIKeyHeader:
       type: apiKey
@@ -265,6 +265,8 @@ components:
             company_checklist.write: company checklist - write
             recognitions.read: recognitions - read
             celebrations.read: celebrations - read
+            documents.read: documents - read
+            documents.write: documents - write
           tokenUrl: /oauth/v1/token
     HTTPBasic:
       type: http

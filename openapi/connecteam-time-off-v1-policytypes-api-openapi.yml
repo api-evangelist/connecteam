@@ -33,6 +33,15 @@ paths:
         - time_off.read
 components:
   schemas:
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
     APIResponse_TimeOffGetPolicyTypesResponse_:
       properties:
         requestId:
@@ -65,15 +74,6 @@ components:
       - msg
       - type
       title: ValidationError
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
     TimeOffGetPolicyTypesResponse:
       properties:
         policyTypes:
@@ -86,27 +86,6 @@ components:
       required:
       - policyTypes
       title: TimeOffGetPolicyTypesResponse
-    TimeOffPolicyType:
-      properties:
-        id:
-          type: string
-          title: Id
-          description: The policy type id
-        name:
-          type: string
-          title: Name
-          description: The policy type name
-        policies:
-          items:
-            $ref: '#/components/schemas/TimeOffPolicy'
-          type: array
-          title: Policies
-          description: List of policies within this policy type
-      type: object
-      required:
-      - id
-      - name
-      title: TimeOffPolicyType
     TimeOffPolicy:
       properties:
         id:
@@ -132,6 +111,27 @@ components:
       - unit
       - accrualType
       title: TimeOffPolicy
+    TimeOffPolicyType:
+      properties:
+        id:
+          type: string
+          title: Id
+          description: The policy type id
+        name:
+          type: string
+          title: Name
+          description: The policy type name
+        policies:
+          items:
+            $ref: '#/components/schemas/TimeOffPolicy'
+          type: array
+          title: Policies
+          description: List of policies within this policy type
+      type: object
+      required:
+      - id
+      - name
+      title: TimeOffPolicyType
   securitySchemes:
     APIKeyHeader:
       type: apiKey
@@ -206,6 +206,8 @@ components:
             company_checklist.write: company checklist - write
             recognitions.read: recognitions - read
             celebrations.read: celebrations - read
+            documents.read: documents - read
+            documents.write: documents - write
           tokenUrl: /oauth/v1/token
     HTTPBasic:
       type: http

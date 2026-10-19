@@ -23,25 +23,23 @@ paths:
         in: path
         required: true
         schema:
-          title: Locationid
-          description: Unique identifier of the location (from the Get locations endpoint).
           type: integer
+          description: Unique identifier of the location (from the Get locations endpoint).
+          title: Locationid
         description: Unique identifier of the location (from the Get locations endpoint).
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              title: Request
-              allOf:
-              - $ref: '#/components/schemas/ProjectedSalesUpdateRequest'
+              $ref: '#/components/schemas/ProjectedSalesUpdateRequest'
       responses:
         '200':
           description: Successful Response
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/APIResponse_ProjectedSalesUpdateResponse_'
+                $ref: '#/components/schemas/APIResponseV2_ProjectedSalesUpdateResponse_'
         '400':
           description: Invalid parameters (e.g. location not found, duplicate dates in updates).
         '422':
@@ -52,30 +50,42 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
-    APIResponse_ProjectedSalesUpdateResponse_:
+    HTTPValidationError:
       properties:
-        requestId:
-          type: string
-          title: Requestid
-        data:
-          $ref: '#/components/schemas/ProjectedSalesUpdateResponse'
-      type: object
-      required:
-      - data
-      title: APIResponse[ProjectedSalesUpdateResponse]
-    ProjectedSalesUpdateRequest:
-      properties:
-        updates:
+        detail:
           items:
-            $ref: '#/components/schemas/ProjectedSalesUpdateItem'
+            $ref: '#/components/schemas/ValidationError'
           type: array
-          minItems: 1
-          title: Updates
-          description: List of projected sales updates for this location. Minimum one item. Each date may appear only once in the request.
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    DailySalesEntry:
+      properties:
+        date:
+          type: string
+          title: Date
+          description: Calendar date for the entry, in ISO 8601 format (YYYY-MM-DD).
+        locationId:
+          type: integer
+          title: Locationid
+          description: Unique identifier of the location (from the Get locations endpoint).
+        totalSales:
+          anyOf:
+          - type: number
+          - type: 'null'
+          title: Totalsales
+          description: Total sales for the day, aggregated from transactions. May be null when no transactions exist for that day. To change this value, use the Create transactions endpoint.
+        projectedSales:
+          anyOf:
+          - type: number
+          - type: 'null'
+          title: Projectedsales
+          description: Projected sales target for the day. Set via Set projected sales. May be null if not set.
       type: object
       required:
-      - updates
-      title: ProjectedSalesUpdateRequest
+      - date
+      - locationId
+      title: DailySalesEntry
     ProjectedSalesUpdateResponse:
       properties:
         daysAffected:
@@ -93,6 +103,17 @@ components:
       - daysAffected
       - updatedDays
       title: ProjectedSalesUpdateResponse
+    APIResponseV2_ProjectedSalesUpdateResponse_:
+      properties:
+        requestId:
+          type: string
+          title: Requestid
+        data:
+          $ref: '#/components/schemas/ProjectedSalesUpdateResponse'
+      type: object
+      required:
+      - data
+      title: APIResponseV2[ProjectedSalesUpdateResponse]
     ValidationError:
       properties:
         loc:
@@ -129,38 +150,19 @@ components:
       - date
       - projectedSales
       title: ProjectedSalesUpdateItem
-    HTTPValidationError:
+    ProjectedSalesUpdateRequest:
       properties:
-        detail:
+        updates:
           items:
-            $ref: '#/components/schemas/ValidationError'
+            $ref: '#/components/schemas/ProjectedSalesUpdateItem'
           type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
-    DailySalesEntry:
-      properties:
-        date:
-          type: string
-          title: Date
-          description: Calendar date for the entry, in ISO 8601 format (YYYY-MM-DD).
-        locationId:
-          type: integer
-          title: Locationid
-          description: Unique identifier of the location (from the Get locations endpoint).
-        totalSales:
-          type: number
-          title: Totalsales
-          description: Total sales for the day, aggregated from transactions. May be null when no transactions exist for that day. To change this value, use the Create transactions endpoint.
-        projectedSales:
-          type: number
-          title: Projectedsales
-          description: Projected sales target for the day. Set via Set projected sales. May be null if not set.
+          minItems: 1
+          title: Updates
+          description: List of projected sales updates for this location. Minimum one item. Each date may appear only once in the request.
       type: object
       required:
-      - date
-      - locationId
-      title: DailySalesEntry
+      - updates
+      title: ProjectedSalesUpdateRequest
   securitySchemes:
     APIKeyHeader:
       type: apiKey
@@ -235,6 +237,8 @@ components:
             company_checklist.write: company checklist - write
             recognitions.read: recognitions - read
             celebrations.read: celebrations - read
+            documents.read: documents - read
+            documents.write: documents - write
           tokenUrl: /oauth/v1/token
     HTTPBasic:
       type: http

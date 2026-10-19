@@ -33,7 +33,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/APIResponse_DailyNoteResponse_'
+                $ref: '#/components/schemas/APIResponseV2_DailyNoteResponse_'
         '422':
           description: Validation Error
           content:
@@ -64,16 +64,14 @@ paths:
         content:
           application/json:
             schema:
-              title: Note Request
-              allOf:
-              - $ref: '#/components/schemas/DailyNoteUpdateRequest'
+              $ref: '#/components/schemas/DailyNoteUpdateRequest'
       responses:
         '200':
           description: Successful Response
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/APIResponse_DailyNoteResponse_'
+                $ref: '#/components/schemas/APIResponseV2_DailyNoteResponse_'
         '422':
           description: Validation Error
           content:
@@ -105,7 +103,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/APIResponse_DeleteDailyNoteResponse_'
+                $ref: '#/components/schemas/APIResponseV2_DeleteDailyNoteResponse_'
         '422':
           description: Validation Error
           content:
@@ -114,31 +112,68 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
-    DeleteDailyNoteResponse:
-      properties: {}
+    APIResponseV2_DailyNoteResponse_:
+      properties:
+        requestId:
+          type: string
+          title: Requestid
+        data:
+          $ref: '#/components/schemas/DailyNoteResponse'
       type: object
-      title: DeleteDailyNoteResponse
+      required:
+      - data
+      title: APIResponseV2[DailyNoteResponse]
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
     DailyNoteUpdateRequest:
       properties:
         title:
-          type: string
+          anyOf:
+          - type: string
+          - type: 'null'
           title: Title
           description: The title of the note
         qualifiedUserIds:
-          items:
-            type: integer
-            minimum: 1.0
-          type: array
+          anyOf:
+          - items:
+              type: integer
+              minimum: 1.0
+            type: array
+          - type: 'null'
           title: Qualifieduserids
           description: The users qualified to see the note
         qualifiedGroupIds:
-          items:
-            type: integer
-          type: array
+          anyOf:
+          - items:
+              type: integer
+            type: array
+          - type: 'null'
           title: Qualifiedgroupids
           description: The groups qualified to see the note
       type: object
       title: DailyNoteUpdateRequest
+    DeleteDailyNoteResponse:
+      properties: {}
+      type: object
+      title: DeleteDailyNoteResponse
+    APIResponseV2_DeleteDailyNoteResponse_:
+      properties:
+        requestId:
+          type: string
+          title: Requestid
+        data:
+          $ref: '#/components/schemas/DeleteDailyNoteResponse'
+      type: object
+      required:
+      - data
+      title: APIResponseV2[DeleteDailyNoteResponse]
     ValidationError:
       properties:
         loc:
@@ -160,37 +195,6 @@ components:
       - msg
       - type
       title: ValidationError
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
-    APIResponse_DeleteDailyNoteResponse_:
-      properties:
-        requestId:
-          type: string
-          title: Requestid
-        data:
-          $ref: '#/components/schemas/DeleteDailyNoteResponse'
-      type: object
-      required:
-      - data
-      title: APIResponse[DeleteDailyNoteResponse]
-    APIResponse_DailyNoteResponse_:
-      properties:
-        requestId:
-          type: string
-          title: Requestid
-        data:
-          $ref: '#/components/schemas/DailyNoteResponse'
-      type: object
-      required:
-      - data
-      title: APIResponse[DailyNoteResponse]
     DailyNoteResponse:
       properties:
         id:
@@ -302,6 +306,8 @@ components:
             company_checklist.write: company checklist - write
             recognitions.read: recognitions - read
             celebrations.read: celebrations - read
+            documents.read: documents - read
+            documents.write: documents - write
           tokenUrl: /oauth/v1/token
     HTTPBasic:
       type: http

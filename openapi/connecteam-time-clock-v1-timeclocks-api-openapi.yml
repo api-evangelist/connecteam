@@ -33,6 +33,15 @@ paths:
         - time_clock.read
 components:
   schemas:
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
     APIResponse_TimeClocksResponse_:
       properties:
         requestId:
@@ -44,6 +53,18 @@ components:
       required:
       - data
       title: APIResponse[TimeClocksResponse]
+    TimeClocksResponse:
+      properties:
+        timeClocks:
+          items:
+            $ref: '#/components/schemas/TimeClock'
+          type: array
+          title: Timeclocks
+          description: The time clocks
+      type: object
+      required:
+      - timeClocks
+      title: TimeClocksResponse
     TimeClock:
       properties:
         id:
@@ -86,27 +107,6 @@ components:
       - msg
       - type
       title: ValidationError
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
-    TimeClocksResponse:
-      properties:
-        timeClocks:
-          items:
-            $ref: '#/components/schemas/TimeClock'
-          type: array
-          title: Timeclocks
-          description: The time clocks
-      type: object
-      required:
-      - timeClocks
-      title: TimeClocksResponse
   securitySchemes:
     APIKeyHeader:
       type: apiKey
@@ -181,6 +181,8 @@ components:
             company_checklist.write: company checklist - write
             recognitions.read: recognitions - read
             celebrations.read: celebrations - read
+            documents.read: documents - read
+            documents.write: documents - write
           tokenUrl: /oauth/v1/token
     HTTPBasic:
       type: http

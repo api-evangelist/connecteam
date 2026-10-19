@@ -12,7 +12,7 @@ paths:
       tags:
       - Time Clock:v1:TimeClocks:TimeClock:GeoFences
       summary: Create geofences
-      description: Create new geofences site under a specified time clock. The geofence can be associated with multiple job IDs that are assigned to the time clock only
+      description: Create one or more geofences for the specified time clock. Use jobIdsMode with jobIds to control which jobs each geofence applies to (all jobs, only listed jobs, or all jobs except listed ones). Job IDs must belong to that time clock.
       operationId: create_geofences_time_clock_v1_time_clocks__timeClockId__geofences_post
       security:
       - APIKeyHeader: []
@@ -164,17 +164,88 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
-    APIResponse_GeoFencesGetResponse_:
+    GpsLocation:
+      properties:
+        address:
+          type: string
+          title: Address
+          description: address
+        latitude:
+          type: string
+          title: Latitude
+          description: latitude, number format
+        longitude:
+          type: string
+          title: Longitude
+          description: longitude, number format
+      type: object
+      required:
+      - address
+      - latitude
+      - longitude
+      title: GpsLocation
+    BaseResponse:
+      properties: {}
+      type: object
+      title: BaseResponse
+    GeoFenceCreatedEntity:
+      properties:
+        fenceId:
+          type: string
+          title: Fenceid
+          description: Geo fence resource ID
+        name:
+          type: string
+          title: Name
+          description: Geo fence name
+      type: object
+      required:
+      - fenceId
+      - name
+      title: GeoFenceCreatedEntity
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    APIResponse_GeoFencesCreatedResponse_:
       properties:
         requestId:
           type: string
           title: Requestid
         data:
-          $ref: '#/components/schemas/GeoFencesGetResponse'
+          $ref: '#/components/schemas/GeoFencesCreatedResponse'
       type: object
       required:
       - data
-      title: APIResponse[GeoFencesGetResponse]
+      title: APIResponse[GeoFencesCreatedResponse]
+    APIResponse_GeoFenceWithFenceIdEntity_:
+      properties:
+        requestId:
+          type: string
+          title: Requestid
+        data:
+          $ref: '#/components/schemas/GeoFenceWithFenceIdEntity'
+      type: object
+      required:
+      - data
+      title: APIResponse[GeoFenceWithFenceIdEntity]
+    GeoFencesGetResponse:
+      properties:
+        geofences:
+          items:
+            $ref: '#/components/schemas/GeoFenceWithFenceIdEntity'
+          type: array
+          title: Geofences
+          description: Geofences list
+      type: object
+      required:
+      - geofences
+      title: GeoFencesGetResponse
     GeoFenceEntity:
       properties:
         name:
@@ -199,7 +270,12 @@ components:
           type: array
           maxItems: 100
           title: Jobids
-          description: List of job IDs to apply the geofence. If the job contains sub-jobs, pass only the parent job ID. If jobs are not required in the account settings, pass an empty array.(It is empty by default)
+          description: Job IDs used with jobIdsMode. For 'specific', the geofence applies only to these jobs. For 'anyExcept', these jobs are excluded. For 'any', pass an empty array. If a job has sub-jobs, pass only the parent job ID. Jobs must belong to the time clock.
+        jobIdsMode:
+          allOf:
+          - $ref: '#/components/schemas/GeoFenceJobIdsMode'
+          description: 'Controls which jobs this geofence applies to: ''any'' applies to all jobs (jobIds is ignored), ''specific'' applies only to the jobs in jobIds, ''anyExcept'' applies to all jobs except those in jobIds (including jobs added later). Defaults to ''specific''.'
+          default: specific
         onGeofenceExitAction:
           allOf:
           - $ref: '#/components/schemas/ExitGeofenceAction'
@@ -215,110 +291,17 @@ components:
       - name
       - location
       title: GeoFenceEntity
-    BaseResponse:
-      properties: {}
-      type: object
-      title: BaseResponse
-    APIResponse_GeoFenceWithFenceIdEntity_:
+    APIResponse_GeoFencesGetResponse_:
       properties:
         requestId:
           type: string
           title: Requestid
         data:
-          $ref: '#/components/schemas/GeoFenceWithFenceIdEntity'
+          $ref: '#/components/schemas/GeoFencesGetResponse'
       type: object
       required:
       - data
-      title: APIResponse[GeoFenceWithFenceIdEntity]
-    ValidationError:
-      properties:
-        loc:
-          items:
-            anyOf:
-            - type: string
-            - type: integer
-          type: array
-          title: Location
-        msg:
-          type: string
-          title: Message
-        type:
-          type: string
-          title: Error Type
-      type: object
-      required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
-    APIResponse_GeoFencesCreatedResponse_:
-      properties:
-        requestId:
-          type: string
-          title: Requestid
-        data:
-          $ref: '#/components/schemas/GeoFencesCreatedResponse'
-      type: object
-      required:
-      - data
-      title: APIResponse[GeoFencesCreatedResponse]
-    GpsLocation:
-      properties:
-        address:
-          type: string
-          title: Address
-          description: address
-        latitude:
-          type: string
-          title: Latitude
-          description: latitude, number format
-        longitude:
-          type: string
-          title: Longitude
-          description: longitude, number format
-      type: object
-      required:
-      - address
-      - latitude
-      - longitude
-      title: GpsLocation
-    GeoFencesCreateRequest:
-      properties:
-        geofences:
-          items:
-            $ref: '#/components/schemas/GeoFenceEntity'
-          type: array
-          maxItems: 1000
-          title: Geofences
-          description: List of geo fences to create
-      type: object
-      required:
-      - geofences
-      title: GeoFencesCreateRequest
-    GeoFenceCreatedEntity:
-      properties:
-        fenceId:
-          type: string
-          title: Fenceid
-          description: Geo fence resource ID
-        name:
-          type: string
-          title: Name
-          description: Geo fence name
-      type: object
-      required:
-      - fenceId
-      - name
-      title: GeoFenceCreatedEntity
+      title: APIResponse[GeoFencesGetResponse]
     ExitGeofenceAction:
       type: string
       enum:
@@ -327,29 +310,14 @@ components:
       - autoClockOut
       title: ExitGeofenceAction
       description: An enumeration.
-    GeoFencesGetResponse:
-      properties:
-        geofences:
-          items:
-            $ref: '#/components/schemas/GeoFenceWithFenceIdEntity'
-          type: array
-          title: Geofences
-          description: Geofences list
-      type: object
-      required:
-      - geofences
-      title: GeoFencesGetResponse
-    APIResponse_BaseResponse_:
-      properties:
-        requestId:
-          type: string
-          title: Requestid
-        data:
-          $ref: '#/components/schemas/BaseResponse'
-      type: object
-      required:
-      - data
-      title: APIResponse[BaseResponse]
+    GeoFenceJobIdsMode:
+      type: string
+      enum:
+      - any
+      - specific
+      - anyExcept
+      title: GeoFenceJobIdsMode
+      description: An enumeration.
     GeoFenceWithFenceIdEntity:
       properties:
         id:
@@ -378,7 +346,12 @@ components:
           type: array
           maxItems: 100
           title: Jobids
-          description: List of job IDs to apply the geofence. If the job contains sub-jobs, pass only the parent job ID. If jobs are not required in the account settings, pass an empty array.(It is empty by default)
+          description: Job IDs used with jobIdsMode. For 'specific', the geofence applies only to these jobs. For 'anyExcept', these jobs are excluded. For 'any', pass an empty array. If a job has sub-jobs, pass only the parent job ID. Jobs must belong to the time clock.
+        jobIdsMode:
+          allOf:
+          - $ref: '#/components/schemas/GeoFenceJobIdsMode'
+          description: 'Controls which jobs this geofence applies to: ''any'' applies to all jobs (jobIds is ignored), ''specific'' applies only to the jobs in jobIds, ''anyExcept'' applies to all jobs except those in jobIds (including jobs added later). Defaults to ''specific''.'
+          default: specific
         onGeofenceExitAction:
           allOf:
           - $ref: '#/components/schemas/ExitGeofenceAction'
@@ -395,6 +368,38 @@ components:
       - name
       - location
       title: GeoFenceWithFenceIdEntity
+    APIResponse_BaseResponse_:
+      properties:
+        requestId:
+          type: string
+          title: Requestid
+        data:
+          $ref: '#/components/schemas/BaseResponse'
+      type: object
+      required:
+      - data
+      title: APIResponse[BaseResponse]
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
     GeoFencesCreatedResponse:
       properties:
         geofences:
@@ -407,6 +412,19 @@ components:
       required:
       - geofences
       title: GeoFencesCreatedResponse
+    GeoFencesCreateRequest:
+      properties:
+        geofences:
+          items:
+            $ref: '#/components/schemas/GeoFenceEntity'
+          type: array
+          maxItems: 1000
+          title: Geofences
+          description: List of geo fences to create
+      type: object
+      required:
+      - geofences
+      title: GeoFencesCreateRequest
   securitySchemes:
     APIKeyHeader:
       type: apiKey
@@ -481,6 +499,8 @@ components:
             company_checklist.write: company checklist - write
             recognitions.read: recognitions - read
             celebrations.read: celebrations - read
+            documents.read: documents - read
+            documents.write: documents - write
           tokenUrl: /oauth/v1/token
     HTTPBasic:
       type: http

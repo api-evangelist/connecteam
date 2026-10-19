@@ -50,22 +50,26 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
-    NoteCreateRequest:
+    HTTPValidationError:
       properties:
-        title:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    APIResponse_NoteCreateResponse_:
+      properties:
+        requestId:
           type: string
-          title: Title
-          description: The title of the user note to be created
-        text:
-          type: string
-          maxLength: 1000
-          minLength: 1
-          title: Text
-          description: The text of the user note to be created
+          title: Requestid
+        data:
+          $ref: '#/components/schemas/NoteCreateResponse'
       type: object
       required:
-      - text
-      title: NoteCreateRequest
+      - data
+      title: APIResponse[NoteCreateResponse]
     NoteCreateResponse:
       properties:
         id:
@@ -105,6 +109,22 @@ components:
       - createdAt
       - modifiedAt
       title: NoteCreateResponse
+    NoteCreateRequest:
+      properties:
+        title:
+          type: string
+          title: Title
+          description: The title of the user note to be created
+        text:
+          type: string
+          maxLength: 1000
+          minLength: 1
+          title: Text
+          description: The text of the user note to be created
+      type: object
+      required:
+      - text
+      title: NoteCreateRequest
     ValidationError:
       properties:
         loc:
@@ -126,26 +146,6 @@ components:
       - msg
       - type
       title: ValidationError
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
-    APIResponse_NoteCreateResponse_:
-      properties:
-        requestId:
-          type: string
-          title: Requestid
-        data:
-          $ref: '#/components/schemas/NoteCreateResponse'
-      type: object
-      required:
-      - data
-      title: APIResponse[NoteCreateResponse]
   securitySchemes:
     APIKeyHeader:
       type: apiKey
@@ -220,6 +220,8 @@ components:
             company_checklist.write: company checklist - write
             recognitions.read: recognitions - read
             celebrations.read: celebrations - read
+            documents.read: documents - read
+            documents.write: documents - write
           tokenUrl: /oauth/v1/token
     HTTPBasic:
       type: http

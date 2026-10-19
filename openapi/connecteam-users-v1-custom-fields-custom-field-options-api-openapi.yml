@@ -209,22 +209,19 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
-    PagingResponseModel:
-      properties:
-        offset:
-          type: integer
-          minimum: 0.0
-          title: Offset
-          description: The resource offset of the last successfully read resource will be returned as the paging.offset JSON property of a paginated response containing more results
-        total:
-          type: integer
-          minimum: 0.0
-          title: Total
-          description: Total number of resources matching the request, ignoring pagination. Use this to retrieve the full count without paginating through every page. Only populated by endpoints that compute it.
+    BaseResponse:
+      properties: {}
       type: object
-      required:
-      - offset
-      title: PagingResponseModel
+      title: BaseResponse
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
     APIResponse_DropdownCustomFieldOptionResponse_:
       properties:
         requestId:
@@ -236,66 +233,6 @@ components:
       required:
       - data
       title: APIResponse[DropdownCustomFieldOptionResponse]
-    BaseResponse:
-      properties: {}
-      type: object
-      title: BaseResponse
-    PaginatedBaseResponse_CustomFieldOptionsResponse_:
-      properties:
-        requestId:
-          type: string
-          title: Requestid
-        data:
-          $ref: '#/components/schemas/CustomFieldOptionsResponse'
-        paging:
-          $ref: '#/components/schemas/PagingResponseModel'
-      type: object
-      required:
-      - data
-      - paging
-      title: PaginatedBaseResponse[CustomFieldOptionsResponse]
-    CustomFieldOptionsResponse:
-      properties:
-        options:
-          items:
-            $ref: '#/components/schemas/DropdownCustomFieldOptionResponse'
-          type: array
-          title: Options
-          description: The custom field options
-      type: object
-      required:
-      - options
-      title: CustomFieldOptionsResponse
-    ValidationError:
-      properties:
-        loc:
-          items:
-            anyOf:
-            - type: string
-            - type: integer
-          type: array
-          title: Location
-        msg:
-          type: string
-          title: Message
-        type:
-          type: string
-          title: Error Type
-      type: object
-      required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
     CreateDropdownCustomFieldOption:
       properties:
         value:
@@ -311,19 +248,20 @@ components:
       required:
       - value
       title: CreateDropdownCustomFieldOption
-    EditSingleDropdownCustomFieldOption:
+    PaginatedBaseResponse_CustomFieldOptionsResponse_:
       properties:
-        value:
+        requestId:
           type: string
-          title: Value
-          description: The value to be added as the option
-        isDisabled:
-          type: boolean
-          title: Isdisabled
-          description: Indicates if this option is disabled
-          default: false
+          title: Requestid
+        data:
+          $ref: '#/components/schemas/CustomFieldOptionsResponse'
+        paging:
+          $ref: '#/components/schemas/PagingResponseModel'
       type: object
-      title: EditSingleDropdownCustomFieldOption
+      required:
+      - data
+      - paging
+      title: PaginatedBaseResponse[CustomFieldOptionsResponse]
     DropdownCustomFieldOptionResponse:
       properties:
         id:
@@ -351,6 +289,35 @@ components:
       - id
       - value
       title: DropdownCustomFieldOptionResponse
+    EditSingleDropdownCustomFieldOption:
+      properties:
+        value:
+          type: string
+          title: Value
+          description: The value to be added as the option
+        isDisabled:
+          type: boolean
+          title: Isdisabled
+          description: Indicates if this option is disabled
+          default: false
+      type: object
+      title: EditSingleDropdownCustomFieldOption
+    PagingResponseModel:
+      properties:
+        offset:
+          type: integer
+          minimum: 0.0
+          title: Offset
+          description: The resource offset of the last successfully read resource will be returned as the paging.offset JSON property of a paginated response containing more results
+        total:
+          type: integer
+          minimum: 0.0
+          title: Total
+          description: Total number of resources matching the request, ignoring pagination. Use this to retrieve the full count without paginating through every page. Only populated by endpoints that compute it.
+      type: object
+      required:
+      - offset
+      title: PagingResponseModel
     APIResponse_BaseResponse_:
       properties:
         requestId:
@@ -362,6 +329,39 @@ components:
       required:
       - data
       title: APIResponse[BaseResponse]
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    CustomFieldOptionsResponse:
+      properties:
+        options:
+          items:
+            $ref: '#/components/schemas/DropdownCustomFieldOptionResponse'
+          type: array
+          title: Options
+          description: The custom field options
+      type: object
+      required:
+      - options
+      title: CustomFieldOptionsResponse
   securitySchemes:
     APIKeyHeader:
       type: apiKey
@@ -436,6 +436,8 @@ components:
             company_checklist.write: company checklist - write
             recognitions.read: recognitions - read
             celebrations.read: celebrations - read
+            documents.read: documents - read
+            documents.write: documents - write
           tokenUrl: /oauth/v1/token
     HTTPBasic:
       type: http

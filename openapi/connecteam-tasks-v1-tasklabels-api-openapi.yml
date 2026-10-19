@@ -71,6 +71,41 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    PaginatedBaseResponse_TaskLabelsResponse_:
+      properties:
+        requestId:
+          type: string
+          title: Requestid
+        data:
+          $ref: '#/components/schemas/TaskLabelsResponse'
+        paging:
+          $ref: '#/components/schemas/PagingResponseModel'
+      type: object
+      required:
+      - data
+      - paging
+      title: PaginatedBaseResponse[TaskLabelsResponse]
+    TaskLabelsResponse:
+      properties:
+        labels:
+          items:
+            $ref: '#/components/schemas/TaskLabel'
+          type: array
+          title: Labels
+          description: List of task labels
+      type: object
+      required:
+      - labels
+      title: TaskLabelsResponse
     PagingResponseModel:
       properties:
         offset:
@@ -107,20 +142,6 @@ components:
       - name
       - color
       title: TaskLabel
-    PaginatedBaseResponse_TaskLabelsResponse_:
-      properties:
-        requestId:
-          type: string
-          title: Requestid
-        data:
-          $ref: '#/components/schemas/TaskLabelsResponse'
-        paging:
-          $ref: '#/components/schemas/PagingResponseModel'
-      type: object
-      required:
-      - data
-      - paging
-      title: PaginatedBaseResponse[TaskLabelsResponse]
     ValidationError:
       properties:
         loc:
@@ -142,27 +163,6 @@ components:
       - msg
       - type
       title: ValidationError
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
-    TaskLabelsResponse:
-      properties:
-        labels:
-          items:
-            $ref: '#/components/schemas/TaskLabel'
-          type: array
-          title: Labels
-          description: List of task labels
-      type: object
-      required:
-      - labels
-      title: TaskLabelsResponse
   securitySchemes:
     APIKeyHeader:
       type: apiKey
@@ -237,6 +237,8 @@ components:
             company_checklist.write: company checklist - write
             recognitions.read: recognitions - read
             celebrations.read: celebrations - read
+            documents.read: documents - read
+            documents.write: documents - write
           tokenUrl: /oauth/v1/token
     HTTPBasic:
       type: http

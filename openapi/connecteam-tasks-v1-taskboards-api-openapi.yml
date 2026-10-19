@@ -33,6 +33,15 @@ paths:
         - quick_tasks.read
 components:
   schemas:
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
     APIResponse_GetTasksBoardsResponse_:
       properties:
         requestId:
@@ -44,26 +53,6 @@ components:
       required:
       - data
       title: APIResponse[GetTasksBoardsResponse]
-    TasksBoard:
-      properties:
-        id:
-          type: integer
-          title: Id
-          description: The ID of the tasks board
-        name:
-          type: string
-          title: Name
-          description: The name of the tasks board
-        isArchived:
-          type: boolean
-          title: Isarchived
-          description: Whether the tasks board is archived
-      type: object
-      required:
-      - id
-      - name
-      - isArchived
-      title: TasksBoard
     ValidationError:
       properties:
         loc:
@@ -85,15 +74,26 @@ components:
       - msg
       - type
       title: ValidationError
-    HTTPValidationError:
+    TasksBoard:
       properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
+        id:
+          type: integer
+          title: Id
+          description: The ID of the tasks board
+        name:
+          type: string
+          title: Name
+          description: The name of the tasks board
+        isArchived:
+          type: boolean
+          title: Isarchived
+          description: Whether the tasks board is archived
       type: object
-      title: HTTPValidationError
+      required:
+      - id
+      - name
+      - isArchived
+      title: TasksBoard
     GetTasksBoardsResponse:
       properties:
         taskBoards:
@@ -180,6 +180,8 @@ components:
             company_checklist.write: company checklist - write
             recognitions.read: recognitions - read
             celebrations.read: celebrations - read
+            documents.read: documents - read
+            documents.write: documents - write
           tokenUrl: /oauth/v1/token
     HTTPBasic:
       type: http

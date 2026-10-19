@@ -1,0 +1,601 @@
+openapi: 3.2.0
+info:
+  title: Connecteam API documentation Documents:v1:Documents API
+  version: v1
+servers:
+- url: https://api.connecteam.com/
+tags:
+- name: Documents:v1:Documents
+paths:
+  /documents/v1/documents:
+    get:
+      tags:
+      - Documents:v1:Documents
+      summary: Get documents
+      description: Retrieve the document templates the caller is authorized to view, with each document's type and expiration configuration. Join on documentId against the user-documents endpoint.
+      operationId: get_documents_documents_v1_documents_get
+      security:
+      - APIKeyHeader: []
+      - OAuth2:
+        - documents.read
+      parameters:
+      - name: documentIds
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: array
+            items:
+              type: integer
+              minimum: 1
+              description: Integer with minimum value of 1
+          - type: 'null'
+          description: Only include these document ids
+          title: Documentids
+        description: Only include these document ids
+      - name: limit
+        in: query
+        required: false
+        schema:
+          type: integer
+          maximum: 200
+          minimum: 1
+          description: The maximum number of results to display per page
+          default: 50
+          title: Limit
+        description: The maximum number of results to display per page
+      - name: offset
+        in: query
+        required: false
+        schema:
+          type: integer
+          minimum: 0
+          description: The resource offset of the last successfully read resource will be returned as the paging.offset JSON property of a paginated response containing more results
+          default: 0
+          title: Offset
+        description: The resource offset of the last successfully read resource will be returned as the paging.offset JSON property of a paginated response containing more results
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedBaseResponseV2_DocumentsData_'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /documents/v1/user-documents:
+    get:
+      tags:
+      - Documents:v1:Documents
+      summary: Get user documents
+      description: Retrieve which documents are assigned to which users, through document packs the caller is authorized to view, together with each user's status on each document. Filter by document id to see who a document is assigned to and where each user stands, or by user id to see one employee's assigned documents and compliance state. At least one filter is required.
+      operationId: get_user_documents_documents_v1_user_documents_get
+      security:
+      - APIKeyHeader: []
+      - OAuth2:
+        - documents.read
+      parameters:
+      - name: documentIds
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: array
+            items:
+              type: integer
+              minimum: 1
+              description: Integer with minimum value of 1
+            maxItems: 100
+          - type: 'null'
+          description: Only include these document ids, up to 100
+          title: Documentids
+        description: Only include these document ids, up to 100
+      - name: userIds
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: array
+            items:
+              type: integer
+              minimum: 1
+              description: Integer with minimum value of 1
+            maxItems: 100
+          - type: 'null'
+          description: Only include these user ids, up to 100
+          title: Userids
+        description: Only include these user ids, up to 100
+      - name: status
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - $ref: '#/components/schemas/ApiDocumentStatus'
+          - type: 'null'
+          description: Only include documents with this status
+          title: Status
+        description: Only include documents with this status
+      - name: expiringBefore
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: integer
+            minimum: 0
+            description: Integer with minimum value of 0
+          - type: 'null'
+          description: Only include documents whose expiration date is set and earlier than this epoch-seconds timestamp. Covers both entry-level and document-level expiration
+          title: Expiringbefore
+        description: Only include documents whose expiration date is set and earlier than this epoch-seconds timestamp. Covers both entry-level and document-level expiration
+      - name: limit
+        in: query
+        required: false
+        schema:
+          type: integer
+          maximum: 200
+          minimum: 1
+          description: The maximum number of results to display per page
+          default: 50
+          title: Limit
+        description: The maximum number of results to display per page
+      - name: offset
+        in: query
+        required: false
+        schema:
+          type: integer
+          minimum: 0
+          description: The resource offset of the last successfully read resource will be returned as the paging.offset JSON property of a paginated response containing more results
+          default: 0
+          title: Offset
+        description: The resource offset of the last successfully read resource will be returned as the paging.offset JSON property of a paginated response containing more results
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedBaseResponseV2_UserDocumentsListData_'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /documents/v1/users/{userId}/documents/{documentId}/entry:
+    put:
+      tags:
+      - Documents:v1:Documents
+      summary: Push a document onto a user
+      description: Upload a document entry for a user against a specified document. The file must be uploaded first via the attachments endpoints with featureType set to documents. The resulting status is approved when the caller holds approve permission on the document's pack, pendingApproval when the caller holds only upload permission.
+      operationId: put_user_document_entry_documents_v1_users__userId__documents__documentId__entry_put
+      security:
+      - APIKeyHeader: []
+      - OAuth2:
+        - documents.write
+      parameters:
+      - name: documentId
+        in: path
+        required: true
+        schema:
+          type: integer
+          description: The unique identifier of the document
+          title: Documentid
+        description: The unique identifier of the document
+      - name: userId
+        in: path
+        required: true
+        schema:
+          title: Userid
+          description: The ID of the user whose data is being accessed or modified
+          minimum: 1
+          type: integer
+        description: The ID of the user whose data is being accessed or modified
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserDocumentEntryPutRequest'
+              description: The entry to record for this user.
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIResponseV2_UserDocumentResponse_'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+components:
+  schemas:
+    UserDocumentsListData:
+      properties:
+        documents:
+          items:
+            $ref: '#/components/schemas/UserDocumentResponse'
+          type: array
+          title: Documents
+          description: Per-user document rows for documents assigned through document packs
+      type: object
+      required:
+      - documents
+      title: UserDocumentsListData
+    ApiDocumentType:
+      type: string
+      enum:
+      - document
+      - eSign
+      - governmentDocument
+      title: ApiDocumentType
+      description: 'Member names mirror DocumentType; the values differ because internally "esign" is the
+
+        government forms system and "esign_v2" is the custom e-sign one.'
+    DocumentResponse:
+      properties:
+        documentId:
+          type: integer
+          minimum: 1.0
+          title: Documentid
+          description: The unique identifier of the document
+        name:
+          type: string
+          minLength: 1
+          title: Name
+          description: The name of the document
+        description:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Description
+          description: The description of the document. Omitted when not set
+        documentType:
+          $ref: '#/components/schemas/ApiDocumentType'
+          description: document (plain upload), eSign or governmentDocument
+        templateType:
+          anyOf:
+          - $ref: '#/components/schemas/ApiTemplateType'
+          - type: 'null'
+          description: The underlying template. Omitted for document type
+        isReviewRequired:
+          type: boolean
+          title: Isreviewrequired
+          description: Whether an employee's upload needs admin approval before it becomes Approved
+        expiration:
+          anyOf:
+          - $ref: '#/components/schemas/DocumentExpiration'
+          - type: 'null'
+          description: The expiration configuration. Omitted when the document does not expire
+        createdAt:
+          type: integer
+          minimum: 0.0
+          title: Createdat
+          description: When the document was created, epoch seconds
+        modifiedAt:
+          type: integer
+          minimum: 0.0
+          title: Modifiedat
+          description: When the document was last modified, epoch seconds
+      type: object
+      required:
+      - documentId
+      - name
+      - documentType
+      - isReviewRequired
+      - createdAt
+      - modifiedAt
+      title: DocumentResponse
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    UserDocumentResponse:
+      properties:
+        userId:
+          type: integer
+          minimum: 1.0
+          title: Userid
+          description: The unique identifier of the user the document is assigned to
+        documentId:
+          type: integer
+          minimum: 1.0
+          title: Documentid
+          description: The unique identifier of the document
+        documentType:
+          $ref: '#/components/schemas/ApiDocumentType'
+          description: document (plain upload), eSign or governmentDocument
+        status:
+          $ref: '#/components/schemas/ApiDocumentStatus'
+          description: 'Where this user''s document stands: pendingUserUpload (nothing submitted), pendingUserFilling (waiting for the user to fill or sign), pendingAdminFilling (waiting for an admin to sign), pendingYourCompletion (waiting for the caller to sign), pendingApproval (waiting for admin approval), approved or rejected'
+        uploadedAt:
+          anyOf:
+          - type: integer
+            minimum: 0.0
+            description: Integer with minimum value of 0
+          - type: 'null'
+          title: Uploadedat
+          description: When the entry was uploaded, epoch seconds. Omitted when nothing has been submitted
+        signedAt:
+          anyOf:
+          - type: integer
+            minimum: 0.0
+            description: Integer with minimum value of 0
+          - type: 'null'
+          title: Signedat
+          description: When the final signature was applied, epoch seconds. Only for eSign and governmentDocument documents whose signing flow is complete
+        expiresAt:
+          anyOf:
+          - type: integer
+            minimum: 0.0
+            description: Integer with minimum value of 0
+          - type: 'null'
+          title: Expiresat
+          description: When this user's document expires, epoch seconds. The shared cycle date for a document-level expiration, or the date on this user's own entry. Omitted when the document has no expiration configured, and when the mode is per-entry but no date was set
+      type: object
+      required:
+      - userId
+      - documentId
+      - documentType
+      - status
+      title: UserDocumentResponse
+    ApiFrequency:
+      type: string
+      enum:
+      - biWeekly
+      - monthly
+      - yearly
+      title: ApiFrequency
+    PaginatedBaseResponseV2_DocumentsData_:
+      properties:
+        requestId:
+          type: string
+          title: Requestid
+        data:
+          $ref: '#/components/schemas/DocumentsData'
+        paging:
+          $ref: '#/components/schemas/PagingResponseModelV2'
+      type: object
+      required:
+      - data
+      - paging
+      title: PaginatedBaseResponseV2[DocumentsData]
+    DocumentExpiration:
+      properties:
+        type:
+          $ref: '#/components/schemas/ApiExpirationType'
+          description: document when the document expires for everyone on a shared recurring cycle, entry when each user's own entry carries its own date
+        frequency:
+          anyOf:
+          - $ref: '#/components/schemas/ApiFrequency'
+          - type: 'null'
+          description: The recurrence. Present only when type is document
+        nextExpiresAt:
+          anyOf:
+          - type: integer
+            minimum: 0.0
+            description: Integer with minimum value of 0
+          - type: 'null'
+          title: Nextexpiresat
+          description: The next shared expiration date in epoch seconds, the same for every assigned user. Present only when type is document, and rolls forward automatically each cycle
+      type: object
+      required:
+      - type
+      title: DocumentExpiration
+    ApiTemplateType:
+      type: string
+      enum:
+      - sameForAll
+      - perUser
+      - w4
+      - w9
+      - i9
+      title: ApiTemplateType
+    UserDocumentEntryPutRequest:
+      properties:
+        fileIds:
+          items:
+            type: string
+            format: uuid4
+          type: array
+          maxItems: 10
+          minItems: 1
+          title: Fileids
+          description: The files that make up this entry, in display order. Upload each file first through the attachments endpoints with featureType set to documents
+        expiresAt:
+          anyOf:
+          - type: integer
+            minimum: 0.0
+            description: Integer with minimum value of 0
+          - type: 'null'
+          title: Expiresat
+          description: When this entry expires, epoch seconds, in the future. Allowed only for documents whose expiration type is entry; omit it otherwise
+      type: object
+      required:
+      - fileIds
+      title: UserDocumentEntryPutRequest
+    ApiDocumentStatus:
+      type: string
+      enum:
+      - pendingUserUpload
+      - pendingUserFilling
+      - pendingAdminFilling
+      - pendingYourCompletion
+      - pendingApproval
+      - approved
+      - rejected
+      title: ApiDocumentStatus
+    DocumentsData:
+      properties:
+        documents:
+          items:
+            $ref: '#/components/schemas/DocumentResponse'
+          type: array
+          title: Documents
+          description: The documents visible to the caller
+      type: object
+      required:
+      - documents
+      title: DocumentsData
+    APIResponseV2_UserDocumentResponse_:
+      properties:
+        requestId:
+          type: string
+          title: Requestid
+        data:
+          $ref: '#/components/schemas/UserDocumentResponse'
+      type: object
+      required:
+      - data
+      title: APIResponseV2[UserDocumentResponse]
+    ApiExpirationType:
+      type: string
+      enum:
+      - document
+      - entry
+      title: ApiExpirationType
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    PagingResponseModelV2:
+      properties:
+        offset:
+          type: integer
+          minimum: 0.0
+          title: Offset
+          description: The resource offset of the last successfully read resource will be returned as the paging.offset JSON property of a paginated response containing more results
+        total:
+          anyOf:
+          - type: integer
+            minimum: 0.0
+          - type: 'null'
+          title: Total
+          description: Total number of resources matching the request, ignoring pagination. Use this to retrieve the full count without paginating through every page. Only populated by endpoints that compute it.
+      type: object
+      required:
+      - offset
+      title: PagingResponseModelV2
+    PaginatedBaseResponseV2_UserDocumentsListData_:
+      properties:
+        requestId:
+          type: string
+          title: Requestid
+        data:
+          $ref: '#/components/schemas/UserDocumentsListData'
+        paging:
+          $ref: '#/components/schemas/PagingResponseModelV2'
+      type: object
+      required:
+      - data
+      - paging
+      title: PaginatedBaseResponseV2[UserDocumentsListData]
+  securitySchemes:
+    APIKeyHeader:
+      type: apiKey
+      description: The Api key of the company given by Connecteam
+      in: header
+      name: X-API-KEY
+    OAuth2:
+      type: oauth2
+      description: OAuth2 Bearer token
+      flows:
+        clientCredentials:
+          scopes:
+            account_information.read: account information - read
+            account_information.write: account information - write
+            account_information.delete: account information - delete
+            company_policies.read: company policies - read
+            company_policies.write: company policies - write
+            company_policies.delete: company policies - delete
+            company_insights.read: company insights - read
+            users.read: users - read
+            users.write: users - write
+            users.delete: users - delete
+            assets.read: assets - read
+            assets.write: assets - write
+            assets.delete: assets - delete
+            sales_data.read: sales data - read
+            sales_data.write: sales data - write
+            sales_data.delete: sales data - delete
+            attachments.read: attachments - read
+            attachments.write: attachments - write
+            attachments.delete: attachments - delete
+            quick_tasks.read: quick tasks - read
+            quick_tasks.write: quick tasks - write
+            quick_tasks.delete: quick tasks - delete
+            publishers.read: publishers - read
+            publishers.write: publishers - write
+            publishers.delete: publishers - delete
+            chat.read: chat - read
+            chat.write: chat - write
+            chat.delete: chat - delete
+            jobs.read: jobs - read
+            jobs.write: jobs - write
+            jobs.delete: jobs - delete
+            schedule.read: schedule - read
+            schedule.write: schedule - write
+            schedule.delete: schedule - delete
+            daily_note.read: daily note - read
+            daily_note.write: daily note - write
+            daily_note.delete: daily note - delete
+            time_clock.read: time clock - read
+            time_clock.write: time clock - write
+            time_clock.delete: time clock - delete
+            nfc.read: nfc - read
+            nfc.write: nfc - write
+            nfc.delete: nfc - delete
+            time_off.read: time off - read
+            time_off.write: time off - write
+            time_off.delete: time off - delete
+            pay_rates.read: pay rates - read
+            pay_rates.write: pay rates - write
+            pay_rates.delete: pay rates - delete
+            forms.read: forms - read
+            forms.write: forms - write
+            forms.delete: forms - delete
+            onboarding.read: onboarding - read
+            onboarding.write: onboarding - write
+            onboarding.delete: onboarding - delete
+            settings.read: settings - read
+            settings.write: settings - write
+            settings.delete: settings - delete
+            company_checklist.read: company checklist - read
+            company_checklist.write: company checklist - write
+            recognitions.read: recognitions - read
+            celebrations.read: celebrations - read
+            documents.read: documents - read
+            documents.write: documents - write
+          tokenUrl: /oauth/v1/token
+    HTTPBasic:
+      type: http
+      description: Use client_id as Username and client_secret as Password
+      scheme: basic

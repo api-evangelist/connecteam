@@ -33,7 +33,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/APIResponse_AssignmentsGetResponse_'
+                $ref: '#/components/schemas/APIResponseV2_AssignmentsGetResponse_'
         '404':
           description: Onboarding pack not found
         '422':
@@ -66,23 +66,36 @@ paths:
         content:
           application/json:
             schema:
-              title: Request
-              allOf:
-              - $ref: '#/components/schemas/AssignmentsCreateRequest'
+              $ref: '#/components/schemas/AssignmentsCreateRequest'
       responses:
         '200':
           description: Successful Response
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/APIResponse_AssignmentsCreateResponse_'
+                $ref: '#/components/schemas/APIResponseV2_AssignmentsCreateResponse_'
         '404':
           description: Onboarding pack not found
         '422':
           description: Validation error
 components:
   schemas:
-    APIResponse_AssignmentsGetResponse_:
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    OnboardingStatus:
+      type: string
+      enum:
+      - in_progress
+      - completed
+      title: OnboardingStatus
+    APIResponseV2_AssignmentsGetResponse_:
       properties:
         requestId:
           type: string
@@ -92,7 +105,35 @@ components:
       type: object
       required:
       - data
-      title: APIResponse[AssignmentsGetResponse]
+      title: APIResponseV2[AssignmentsGetResponse]
+    AssignmentResponse:
+      properties:
+        id:
+          type: integer
+          title: Id
+          description: Assignment ID
+        userId:
+          type: integer
+          title: Userid
+          description: Assigned user ID
+        status:
+          $ref: '#/components/schemas/OnboardingStatus'
+          description: 'Onboarding status: "in_progress", "completed"'
+        isWaitingApproval:
+          type: boolean
+          title: Iswaitingapproval
+          description: 'True when the user has completed all required steps and is waiting for admin approval. '
+      type: object
+      required:
+      - id
+      - userId
+      - status
+      - isWaitingApproval
+      title: AssignmentResponse
+    AssignmentsCreateResponse:
+      properties: {}
+      type: object
+      title: AssignmentsCreateResponse
     AssignmentsCreateRequest:
       properties:
         userIds:
@@ -106,10 +147,6 @@ components:
       required:
       - userIds
       title: AssignmentsCreateRequest
-    AssignmentsCreateResponse:
-      properties: {}
-      type: object
-      title: AssignmentsCreateResponse
     AssignmentsGetResponse:
       properties:
         assignments:
@@ -122,31 +159,6 @@ components:
       required:
       - assignments
       title: AssignmentsGetResponse
-    AssignmentResponse:
-      properties:
-        id:
-          type: integer
-          title: Id
-          description: Assignment ID
-        userId:
-          type: integer
-          title: Userid
-          description: Assigned user ID
-        status:
-          allOf:
-          - $ref: '#/components/schemas/OnboardingStatus'
-          description: 'Onboarding status: "in_progress", "completed"'
-        isWaitingApproval:
-          type: boolean
-          title: Iswaitingapproval
-          description: 'True when the user has completed all required steps and is waiting for admin approval. '
-      type: object
-      required:
-      - id
-      - userId
-      - status
-      - isWaitingApproval
-      title: AssignmentResponse
     ValidationError:
       properties:
         loc:
@@ -168,16 +180,7 @@ components:
       - msg
       - type
       title: ValidationError
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
-    APIResponse_AssignmentsCreateResponse_:
+    APIResponseV2_AssignmentsCreateResponse_:
       properties:
         requestId:
           type: string
@@ -187,13 +190,7 @@ components:
       type: object
       required:
       - data
-      title: APIResponse[AssignmentsCreateResponse]
-    OnboardingStatus:
-      enum:
-      - in_progress
-      - completed
-      title: OnboardingStatus
-      description: An enumeration.
+      title: APIResponseV2[AssignmentsCreateResponse]
   securitySchemes:
     APIKeyHeader:
       type: apiKey
@@ -268,6 +265,8 @@ components:
             company_checklist.write: company checklist - write
             recognitions.read: recognitions - read
             celebrations.read: celebrations - read
+            documents.read: documents - read
+            documents.write: documents - write
           tokenUrl: /oauth/v1/token
     HTTPBasic:
       type: http

@@ -23,27 +23,29 @@ paths:
         in: query
         required: true
         schema:
-          title: Startdate
-          description: Start of the date range, inclusive, in ISO 8601 format (YYYY-MM-DD). Must be used with endDate.
           type: string
+          description: Start of the date range, inclusive, in ISO 8601 format (YYYY-MM-DD). Must be used with endDate.
+          title: Startdate
         description: Start of the date range, inclusive, in ISO 8601 format (YYYY-MM-DD). Must be used with endDate.
       - name: endDate
         in: query
         required: true
         schema:
-          title: Enddate
-          description: End of the date range, inclusive, in ISO 8601 format (YYYY-MM-DD). Must be on or after startDate.
           type: string
+          description: End of the date range, inclusive, in ISO 8601 format (YYYY-MM-DD). Must be on or after startDate.
+          title: Enddate
         description: End of the date range, inclusive, in ISO 8601 format (YYYY-MM-DD). Must be on or after startDate.
       - name: locationIds
         in: query
         required: false
         schema:
-          title: Locationids
+          anyOf:
+          - type: array
+            items:
+              type: integer
+          - type: 'null'
           description: Filter by location IDs from the Get locations endpoint. Omit to include all account locations. If any ID is invalid, the request fails.
-          type: array
-          items:
-            type: integer
+          title: Locationids
         description: Filter by location IDs from the Get locations endpoint. Omit to include all account locations. If any ID is invalid, the request fails.
       responses:
         '200':
@@ -51,7 +53,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/APIResponse_DailySalesGetResponse_'
+                $ref: '#/components/schemas/APIResponseV2_DailySalesGetResponse_'
         '400':
           description: Invalid parameters (e.g. endDate before startDate, unknown locationIds).
         '422':
@@ -62,17 +64,15 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
-    APIResponse_DailySalesGetResponse_:
+    HTTPValidationError:
       properties:
-        requestId:
-          type: string
-          title: Requestid
-        data:
-          $ref: '#/components/schemas/DailySalesGetResponse'
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
       type: object
-      required:
-      - data
-      title: APIResponse[DailySalesGetResponse]
+      title: HTTPValidationError
     DailySalesGetResponse:
       properties:
         dailySales:
@@ -85,6 +85,33 @@ components:
       required:
       - dailySales
       title: DailySalesGetResponse
+    DailySalesEntry:
+      properties:
+        date:
+          type: string
+          title: Date
+          description: Calendar date for the entry, in ISO 8601 format (YYYY-MM-DD).
+        locationId:
+          type: integer
+          title: Locationid
+          description: Unique identifier of the location (from the Get locations endpoint).
+        totalSales:
+          anyOf:
+          - type: number
+          - type: 'null'
+          title: Totalsales
+          description: Total sales for the day, aggregated from transactions. May be null when no transactions exist for that day. To change this value, use the Create transactions endpoint.
+        projectedSales:
+          anyOf:
+          - type: number
+          - type: 'null'
+          title: Projectedsales
+          description: Projected sales target for the day. Set via Set projected sales. May be null if not set.
+      type: object
+      required:
+      - date
+      - locationId
+      title: DailySalesEntry
     ValidationError:
       properties:
         loc:
@@ -106,38 +133,17 @@ components:
       - msg
       - type
       title: ValidationError
-    HTTPValidationError:
+    APIResponseV2_DailySalesGetResponse_:
       properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
-    DailySalesEntry:
-      properties:
-        date:
+        requestId:
           type: string
-          title: Date
-          description: Calendar date for the entry, in ISO 8601 format (YYYY-MM-DD).
-        locationId:
-          type: integer
-          title: Locationid
-          description: Unique identifier of the location (from the Get locations endpoint).
-        totalSales:
-          type: number
-          title: Totalsales
-          description: Total sales for the day, aggregated from transactions. May be null when no transactions exist for that day. To change this value, use the Create transactions endpoint.
-        projectedSales:
-          type: number
-          title: Projectedsales
-          description: Projected sales target for the day. Set via Set projected sales. May be null if not set.
+          title: Requestid
+        data:
+          $ref: '#/components/schemas/DailySalesGetResponse'
       type: object
       required:
-      - date
-      - locationId
-      title: DailySalesEntry
+      - data
+      title: APIResponseV2[DailySalesGetResponse]
   securitySchemes:
     APIKeyHeader:
       type: apiKey
@@ -212,6 +218,8 @@ components:
             company_checklist.write: company checklist - write
             recognitions.read: recognitions - read
             celebrations.read: celebrations - read
+            documents.read: documents - read
+            documents.write: documents - write
           tokenUrl: /oauth/v1/token
     HTTPBasic:
       type: http

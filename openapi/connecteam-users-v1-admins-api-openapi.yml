@@ -42,6 +42,19 @@ paths:
         - users.write
 components:
   schemas:
+    BaseResponse:
+      properties: {}
+      type: object
+      title: BaseResponse
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
     InviteAdminsRequest:
       properties:
         userId:
@@ -63,10 +76,17 @@ components:
       - email
       - title
       title: InviteAdminsRequest
-    BaseResponse:
-      properties: {}
+    APIResponse_BaseResponse_:
+      properties:
+        requestId:
+          type: string
+          title: Requestid
+        data:
+          $ref: '#/components/schemas/BaseResponse'
       type: object
-      title: BaseResponse
+      required:
+      - data
+      title: APIResponse[BaseResponse]
     ValidationError:
       properties:
         loc:
@@ -88,26 +108,6 @@ components:
       - msg
       - type
       title: ValidationError
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
-    APIResponse_BaseResponse_:
-      properties:
-        requestId:
-          type: string
-          title: Requestid
-        data:
-          $ref: '#/components/schemas/BaseResponse'
-      type: object
-      required:
-      - data
-      title: APIResponse[BaseResponse]
   securitySchemes:
     APIKeyHeader:
       type: apiKey
@@ -182,6 +182,8 @@ components:
             company_checklist.write: company checklist - write
             recognitions.read: recognitions - read
             celebrations.read: celebrations - read
+            documents.read: documents - read
+            documents.write: documents - write
           tokenUrl: /oauth/v1/token
     HTTPBasic:
       type: http

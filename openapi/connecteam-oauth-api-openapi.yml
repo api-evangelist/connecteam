@@ -42,35 +42,6 @@ paths:
       - HTTPBasic: []
 components:
   schemas:
-    OAuthTokenResponse:
-      properties:
-        access_token:
-          type: string
-          title: Access Token
-          description: The access token issued by the authorization server
-        token_type:
-          type: string
-          title: Token Type
-          description: The type of token issued (always 'bearer')
-        expires_in:
-          type: integer
-          title: Expires In
-          description: The lifetime in seconds of the access token
-        scope:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Scope
-          description: Space-separated list of scopes granted
-      type: object
-      required:
-      - access_token
-      - token_type
-      - expires_in
-      title: OAuthTokenResponse
-      description: 'OAuth2 token response following RFC 6749.
-
-        Overrides alias_generator to keep snake_case field names (not camelCase).'
     ValidationError:
       properties:
         loc:
@@ -92,15 +63,6 @@ components:
       - msg
       - type
       title: ValidationError
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
     Body_oauth_token_docs_oauth_v1_token_post:
       properties:
         grant_type:
@@ -116,6 +78,50 @@ components:
           description: Space-separated list of requested scopes
       type: object
       title: Body_oauth_token_docs_oauth_v1_token_post
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    OAuthTokenResponse:
+      properties:
+        access_token:
+          type: string
+          title: Access Token
+          description: The access token issued by the authorization server
+        token_type:
+          type: string
+          title: Token Type
+          description: The type of token issued (always 'bearer')
+        expires_in:
+          type: integer
+          title: Expires In
+          description: The lifetime in seconds of the access token
+        scope:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Scope
+          description: Space-separated list of scopes granted
+        refresh_token:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Refresh Token
+          description: Rotating refresh token, issued for user-delegated grants
+      type: object
+      required:
+      - access_token
+      - token_type
+      - expires_in
+      title: OAuthTokenResponse
+      description: 'OAuth2 token response following RFC 6749.
+
+        Overrides alias_generator to keep snake_case field names (not camelCase).'
   securitySchemes:
     APIKeyHeader:
       type: apiKey
@@ -190,6 +196,8 @@ components:
             company_checklist.write: company checklist - write
             recognitions.read: recognitions - read
             celebrations.read: celebrations - read
+            documents.read: documents - read
+            documents.write: documents - write
           tokenUrl: /oauth/v1/token
     HTTPBasic:
       type: http

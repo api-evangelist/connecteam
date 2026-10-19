@@ -42,70 +42,6 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
-    ShiftAttachmentSettingsResponse:
-      properties:
-        id:
-          type: string
-          title: Id
-          description: The ID of the shift attachment
-        type:
-          allOf:
-          - $ref: '#/components/schemas/ShiftAttachmentType'
-          description: The type of the shift attachment
-        name:
-          type: string
-          title: Name
-          description: The name of the shift attachment
-        isRequired:
-          type: boolean
-          title: Isrequired
-          description: Whether the shift attachment is required
-        isEnabled:
-          type: boolean
-          title: Isenabled
-          description: Whether the shift attachment is enabled
-      type: object
-      required:
-      - id
-      - type
-      - name
-      - isRequired
-      - isEnabled
-      title: ShiftAttachmentSettingsResponse
-    ShiftAttachmentsGetResponse:
-      properties:
-        shiftAttachments:
-          items:
-            anyOf:
-            - $ref: '#/components/schemas/ShiftAttachmentDropDownListSettingsResponse'
-            - $ref: '#/components/schemas/ShiftAttachmentSettingsResponse'
-          type: array
-          title: Shiftattachments
-          description: The shift attachments
-      type: object
-      required:
-      - shiftAttachments
-      title: ShiftAttachmentsGetResponse
-    ShiftAttachmentDropDownListItemSettingsResponse:
-      properties:
-        id:
-          type: string
-          title: Id
-          description: The ID of the dropdown list item
-        name:
-          type: string
-          title: Name
-          description: The name of the dropdown list item
-        isEnabled:
-          type: boolean
-          title: Isenabled
-          description: Whether the dropdown list item is enabled
-      type: object
-      required:
-      - id
-      - name
-      - isEnabled
-      title: ShiftAttachmentDropDownListItemSettingsResponse
     HTTPValidationError:
       properties:
         detail:
@@ -115,27 +51,17 @@ components:
           title: Detail
       type: object
       title: HTTPValidationError
-    ValidationError:
-      properties:
-        loc:
-          items:
-            anyOf:
-            - type: string
-            - type: integer
-          type: array
-          title: Location
-        msg:
-          type: string
-          title: Message
-        type:
-          type: string
-          title: Error Type
-      type: object
-      required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
+    ShiftAttachmentType:
+      type: string
+      enum:
+      - freeText
+      - dropdownList
+      - number
+      - image
+      - file
+      - signature
+      title: ShiftAttachmentType
+      description: An enumeration.
     ShiftAttachmentDropDownListSettingsResponse:
       properties:
         id:
@@ -173,17 +99,26 @@ components:
       - isEnabled
       - items
       title: ShiftAttachmentDropDownListSettingsResponse
-    ShiftAttachmentType:
-      type: string
-      enum:
-      - freeText
-      - dropdownList
-      - number
-      - image
-      - file
-      - signature
-      title: ShiftAttachmentType
-      description: An enumeration.
+    ShiftAttachmentDropDownListItemSettingsResponse:
+      properties:
+        id:
+          type: string
+          title: Id
+          description: The ID of the dropdown list item
+        name:
+          type: string
+          title: Name
+          description: The name of the dropdown list item
+        isEnabled:
+          type: boolean
+          title: Isenabled
+          description: Whether the dropdown list item is enabled
+      type: object
+      required:
+      - id
+      - name
+      - isEnabled
+      title: ShiftAttachmentDropDownListItemSettingsResponse
     APIResponse_ShiftAttachmentsGetResponse_:
       properties:
         requestId:
@@ -195,6 +130,71 @@ components:
       required:
       - data
       title: APIResponse[ShiftAttachmentsGetResponse]
+    ShiftAttachmentSettingsResponse:
+      properties:
+        id:
+          type: string
+          title: Id
+          description: The ID of the shift attachment
+        type:
+          allOf:
+          - $ref: '#/components/schemas/ShiftAttachmentType'
+          description: The type of the shift attachment
+        name:
+          type: string
+          title: Name
+          description: The name of the shift attachment
+        isRequired:
+          type: boolean
+          title: Isrequired
+          description: Whether the shift attachment is required
+        isEnabled:
+          type: boolean
+          title: Isenabled
+          description: Whether the shift attachment is enabled
+      type: object
+      required:
+      - id
+      - type
+      - name
+      - isRequired
+      - isEnabled
+      title: ShiftAttachmentSettingsResponse
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    ShiftAttachmentsGetResponse:
+      properties:
+        shiftAttachments:
+          items:
+            anyOf:
+            - $ref: '#/components/schemas/ShiftAttachmentDropDownListSettingsResponse'
+            - $ref: '#/components/schemas/ShiftAttachmentSettingsResponse'
+          type: array
+          title: Shiftattachments
+          description: The shift attachments
+      type: object
+      required:
+      - shiftAttachments
+      title: ShiftAttachmentsGetResponse
   securitySchemes:
     APIKeyHeader:
       type: apiKey
@@ -269,6 +269,8 @@ components:
             company_checklist.write: company checklist - write
             recognitions.read: recognitions - read
             celebrations.read: celebrations - read
+            documents.read: documents - read
+            documents.write: documents - write
           tokenUrl: /oauth/v1/token
     HTTPBasic:
       type: http

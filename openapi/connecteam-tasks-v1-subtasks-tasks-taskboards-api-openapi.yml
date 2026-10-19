@@ -234,10 +234,133 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
+    SubTaskUpdateRequest:
+      properties:
+        title:
+          type: string
+          title: Title
+          description: The title of the sub task
+        isCompleted:
+          type: boolean
+          title: Iscompleted
+          description: Indicates whether the status of the sub-task is set to completed.
+      type: object
+      title: SubTaskUpdateRequest
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    APIResponse_SubTaskCreateResponse_:
+      properties:
+        requestId:
+          type: string
+          title: Requestid
+        data:
+          $ref: '#/components/schemas/SubTaskCreateResponse'
+      type: object
+      required:
+      - data
+      title: APIResponse[SubTaskCreateResponse]
+    APIResponse_SubTaskUpdateResponse_:
+      properties:
+        requestId:
+          type: string
+          title: Requestid
+        data:
+          $ref: '#/components/schemas/SubTaskUpdateResponse'
+      type: object
+      required:
+      - data
+      title: APIResponse[SubTaskUpdateResponse]
+    PaginatedBaseResponse_SubTasksResponse_:
+      properties:
+        requestId:
+          type: string
+          title: Requestid
+        data:
+          $ref: '#/components/schemas/SubTasksResponse'
+        paging:
+          $ref: '#/components/schemas/PagingResponseModel'
+      type: object
+      required:
+      - data
+      - paging
+      title: PaginatedBaseResponse[SubTasksResponse]
+    SubTaskUpdateResponse:
+      properties:
+        id:
+          type: string
+          title: Id
+          description: The unique identifier of the subtask
+        title:
+          type: string
+          title: Title
+          description: The title of the sub task
+        isCompleted:
+          type: boolean
+          title: Iscompleted
+          description: Indicates whether the status of the sub-task is set to completed.
+      type: object
+      required:
+      - id
+      - title
+      - isCompleted
+      title: SubTaskUpdateResponse
+    SubTaskCreateResponse:
+      properties:
+        id:
+          type: string
+          title: Id
+          description: The unique identifier of the subtask
+        title:
+          type: string
+          title: Title
+          description: The title of the sub task
+        isCompleted:
+          type: boolean
+          title: Iscompleted
+          description: Indicates whether the status of the sub-task is set to completed.
+      type: object
+      required:
+      - id
+      - title
+      - isCompleted
+      title: SubTaskCreateResponse
+    APIResponse_SubTaskDeleteResponse_:
+      properties:
+        requestId:
+          type: string
+          title: Requestid
+        data:
+          $ref: '#/components/schemas/SubTaskDeleteResponse'
+      type: object
+      required:
+      - data
+      title: APIResponse[SubTaskDeleteResponse]
     SubTaskDeleteResponse:
       properties: {}
       type: object
       title: SubTaskDeleteResponse
+    SubTaskCreateRequest:
+      properties:
+        title:
+          type: string
+          title: Title
+          description: The title of the sub task
+        isCompleted:
+          type: boolean
+          title: Iscompleted
+          description: Indicates whether the status of the sub-task is set to completed.
+          default: false
+      type: object
+      required:
+      - title
+      title: SubTaskCreateRequest
     PagingResponseModel:
       properties:
         offset:
@@ -254,6 +377,26 @@ components:
       required:
       - offset
       title: PagingResponseModel
+    SubTaskResponse:
+      properties:
+        id:
+          type: string
+          title: Id
+          description: The unique identifier of the subtask
+        title:
+          type: string
+          title: Title
+          description: The title of the subtask
+        isCompleted:
+          type: boolean
+          title: Iscompleted
+          description: Whether the subtask is completed
+      type: object
+      required:
+      - id
+      - title
+      - isCompleted
+      title: SubTaskResponse
     SubTasksResponse:
       properties:
         subTasks:
@@ -266,32 +409,6 @@ components:
       required:
       - subTasks
       title: SubTasksResponse
-    SubTaskCreateRequest:
-      properties:
-        title:
-          type: string
-          title: Title
-          description: The title of the sub task
-        isCompleted:
-          type: boolean
-          title: Iscompleted
-          description: Indicates whether the status of the sub-task is set to completed.
-          default: false
-      type: object
-      required:
-      - title
-      title: SubTaskCreateRequest
-    APIResponse_SubTaskUpdateResponse_:
-      properties:
-        requestId:
-          type: string
-          title: Requestid
-        data:
-          $ref: '#/components/schemas/SubTaskUpdateResponse'
-      type: object
-      required:
-      - data
-      title: APIResponse[SubTaskUpdateResponse]
     ValidationError:
       properties:
         loc:
@@ -313,123 +430,6 @@ components:
       - msg
       - type
       title: ValidationError
-    SubTaskCreateResponse:
-      properties:
-        id:
-          type: string
-          title: Id
-          description: The unique identifier of the subtask
-        title:
-          type: string
-          title: Title
-          description: The title of the sub task
-        isCompleted:
-          type: boolean
-          title: Iscompleted
-          description: Indicates whether the status of the sub-task is set to completed.
-      type: object
-      required:
-      - id
-      - title
-      - isCompleted
-      title: SubTaskCreateResponse
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
-    APIResponse_SubTaskCreateResponse_:
-      properties:
-        requestId:
-          type: string
-          title: Requestid
-        data:
-          $ref: '#/components/schemas/SubTaskCreateResponse'
-      type: object
-      required:
-      - data
-      title: APIResponse[SubTaskCreateResponse]
-    APIResponse_SubTaskDeleteResponse_:
-      properties:
-        requestId:
-          type: string
-          title: Requestid
-        data:
-          $ref: '#/components/schemas/SubTaskDeleteResponse'
-      type: object
-      required:
-      - data
-      title: APIResponse[SubTaskDeleteResponse]
-    SubTaskUpdateRequest:
-      properties:
-        title:
-          type: string
-          title: Title
-          description: The title of the sub task
-        isCompleted:
-          type: boolean
-          title: Iscompleted
-          description: Indicates whether the status of the sub-task is set to completed.
-      type: object
-      title: SubTaskUpdateRequest
-    SubTaskUpdateResponse:
-      properties:
-        id:
-          type: string
-          title: Id
-          description: The unique identifier of the subtask
-        title:
-          type: string
-          title: Title
-          description: The title of the sub task
-        isCompleted:
-          type: boolean
-          title: Iscompleted
-          description: Indicates whether the status of the sub-task is set to completed.
-      type: object
-      required:
-      - id
-      - title
-      - isCompleted
-      title: SubTaskUpdateResponse
-    PaginatedBaseResponse_SubTasksResponse_:
-      properties:
-        requestId:
-          type: string
-          title: Requestid
-        data:
-          $ref: '#/components/schemas/SubTasksResponse'
-        paging:
-          $ref: '#/components/schemas/PagingResponseModel'
-      type: object
-      required:
-      - data
-      - paging
-      title: PaginatedBaseResponse[SubTasksResponse]
-    SubTaskResponse:
-      properties:
-        id:
-          type: string
-          title: Id
-          description: The unique identifier of the subtask
-        title:
-          type: string
-          title: Title
-          description: The title of the subtask
-        isCompleted:
-          type: boolean
-          title: Iscompleted
-          description: Whether the subtask is completed
-      type: object
-      required:
-      - id
-      - title
-      - isCompleted
-      title: SubTaskResponse
   securitySchemes:
     APIKeyHeader:
       type: apiKey
@@ -504,6 +504,8 @@ components:
             company_checklist.write: company checklist - write
             recognitions.read: recognitions - read
             celebrations.read: celebrations - read
+            documents.read: documents - read
+            documents.write: documents - write
           tokenUrl: /oauth/v1/token
     HTTPBasic:
       type: http

@@ -342,186 +342,23 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
-    UserCustomFields:
-      type: string
-      enum:
-      - email
-      - date
-      - phone
-      - number
-      - str
-      - dropdown
-      - file
-      - directManager
-      - birthday
-      - link
-      - location
-      title: UserCustomFields
-    PagingResponseModel:
+    EditUsersResponse:
       properties:
-        offset:
+        count:
           type: integer
-          minimum: 0.0
-          title: Offset
-          description: The resource offset of the last successfully read resource will be returned as the paging.offset JSON property of a paginated response containing more results
-        total:
-          type: integer
-          minimum: 0.0
-          title: Total
-          description: Total number of resources matching the request, ignoring pagination. Use this to retrieve the full count without paginating through every page. Only populated by endpoints that compute it.
-      type: object
-      required:
-      - offset
-      title: PagingResponseModel
-    APIResponse_ArchiveUsersResponse_:
-      properties:
-        requestId:
-          type: string
-          title: Requestid
-        data:
-          $ref: '#/components/schemas/ArchiveUsersResponse'
-      type: object
-      required:
-      - data
-      title: APIResponse[ArchiveUsersResponse]
-    UserType:
-      type: string
-      enum:
-      - user
-      - manager
-      - owner
-      title: UserType
-      description: An enumeration.
-    PaginatedBaseResponse_UsersResponse_:
-      properties:
-        requestId:
-          type: string
-          title: Requestid
-        data:
-          $ref: '#/components/schemas/UsersResponse'
-        paging:
-          $ref: '#/components/schemas/PagingResponseModel'
-      type: object
-      required:
-      - data
-      - paging
-      title: PaginatedBaseResponse[UsersResponse]
-    APIResponse_CreateUsersResponse_:
-      properties:
-        requestId:
-          type: string
-          title: Requestid
-        data:
-          $ref: '#/components/schemas/CreateUsersResponse'
-      type: object
-      required:
-      - data
-      title: APIResponse[CreateUsersResponse]
-    UserEditRequest:
-      properties:
-        firstName:
-          type: string
-          maxLength: 100
-          title: Firstname
-          description: The user's first name
-        lastName:
-          type: string
-          maxLength: 100
-          title: Lastname
-          description: The user's last name
-        phoneNumber:
-          type: string
-          title: Phonenumber
-          description: The user's phone number
-        userType:
-          allOf:
-          - $ref: '#/components/schemas/UserType'
-          description: The type of the user is 'user' by default. To promote a user to 'admin', first create the user and then use the users/v1/admins endpoint to send an invite by mail. On edit (PUT /users), only 'manager' <-> 'owner' transitions are supported via this field; transitions that cross the user/manager boundary are rejected with 400 and must go through the /admins endpoint.
-        email:
-          type: string
-          title: Email
-          description: The user's email (mandatory for managers and owners)
-        customFields:
-          items:
-            $ref: '#/components/schemas/BaseCustomField'
-          type: array
-          title: Customfields
-          description: The user's custom fields
-          default: []
-        isArchived:
-          type: boolean
-          title: Isarchived
-          description: The user status.Note that restoring a user is not applicable with the editUserByPhone field (you must provide the user ID).
-        userId:
-          type: integer
-          minimum: 1.0
-          title: Userid
-          description: The user's unique id
-        profilePictureFileId:
-          type: string
-          title: Profilepicturefileid
-          description: The file ID obtained from the upload attachment endpoint (POST /attachments/v1/files/generate-upload-url) with featureType set to 'users'. Send an empty string to remove the current profile picture.
-      type: object
-      title: UserEditRequest
-    SortOrder:
-      type: string
-      enum:
-      - asc
-      - desc
-      title: SortOrder
-    ArchiveUsersResponse:
-      properties:
-        success:
-          type: boolean
-          title: Success
-          description: Whether the users were deleted successfully.
-      type: object
-      required:
-      - success
-      title: ArchiveUsersResponse
-    UsersSortKeysExternal:
-      enum:
-      - created_at
-      title: UsersSortKeysExternal
-      description: An enumeration.
-    APIResponse_EditUsersResponse_:
-      properties:
-        requestId:
-          type: string
-          title: Requestid
-        data:
-          $ref: '#/components/schemas/EditUsersResponse'
-      type: object
-      required:
-      - data
-      title: APIResponse[EditUsersResponse]
-    DeletionType:
-      type: string
-      enum:
-      - archive
-      - delete
-      title: DeletionType
-      description: Deletion type for user deletion endpoint
-    CreateUsersResponse:
-      properties:
-        results:
+          title: Count
+          description: The number of users edited.
+        users:
           items:
             $ref: '#/components/schemas/User'
           type: array
-          title: Results
-          description: The created users.
+          title: Users
+          description: The edited users.
       type: object
       required:
-      - results
-      title: CreateUsersResponse
-    UserStatus:
-      type: string
-      enum:
-      - active
-      - archived
-      - all
-      title: UserStatus
-      description: An enumeration.
+      - count
+      - users
+      title: EditUsersResponse
     UsersResponse:
       properties:
         users:
@@ -534,98 +371,19 @@ components:
       required:
       - users
       title: UsersResponse
-    ValidationError:
-      properties:
-        loc:
-          items:
-            anyOf:
-            - type: string
-            - type: integer
-          type: array
-          title: Location
-        msg:
-          type: string
-          title: Message
-        type:
-          type: string
-          title: Error Type
-      type: object
-      required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
-    UserCreateRequest:
-      properties:
-        firstName:
-          type: string
-          maxLength: 100
-          title: Firstname
-          description: The user's first name
-        lastName:
-          type: string
-          maxLength: 100
-          title: Lastname
-          description: The user's last name
-        phoneNumber:
-          type: string
-          title: Phonenumber
-          description: The user's phone number
-        userType:
-          allOf:
-          - $ref: '#/components/schemas/UserType'
-          description: The type of the user is 'user' by default. To promote a user to 'admin', first create the user and then use the users/v1/admins endpoint to send an invite by mail. On edit (PUT /users), only 'manager' <-> 'owner' transitions are supported via this field; transitions that cross the user/manager boundary are rejected with 400 and must go through the /admins endpoint.
-        email:
-          type: string
-          title: Email
-          description: The user's email (mandatory for managers and owners)
-        customFields:
-          items:
-            $ref: '#/components/schemas/BaseCustomField'
-          type: array
-          title: Customfields
-          description: The user's custom fields
-          default: []
-        isArchived:
-          type: boolean
-          title: Isarchived
-          description: The user's archived status
-          default: false
-        profilePictureFileId:
-          type: string
-          title: Profilepicturefileid
-          description: 'The file ID obtained from the upload attachment endpoint (POST /attachments/v1/files/generate-upload-url) with featureType set to ''users''. The file must be finalized via the complete-upload endpoint before use. Supported image formats: JPEG, PNG, BMP, TIFF, WEBP, AVIF.'
-      type: object
-      required:
-      - firstName
-      - lastName
-      - phoneNumber
-      - userType
-      title: UserCreateRequest
-    BaseCustomField:
-      properties:
-        customFieldId:
-          type: integer
-          minimum: 1.0
-          title: Customfieldid
-          description: The custom field unique id
-        value:
-          title: Value
-          description: 'The value of the custom field. Our real-time API documentation experience does not support custom fields of the dropdown type.To update dropdown fields value(s), pass an array of objects with the IDs of the selected dropdown values (e.g., [{id: 1}, {id: 2}]).'
-      type: object
-      required:
-      - customFieldId
-      - value
-      title: BaseCustomField
+    UsersSortKeysExternal:
+      enum:
+      - created_at
+      title: UsersSortKeysExternal
+      description: An enumeration.
+    UserType:
+      type: string
+      enum:
+      - user
+      - manager
+      - owner
+      title: UserType
+      description: An enumeration.
     User:
       properties:
         firstName:
@@ -639,7 +397,7 @@ components:
         phoneNumber:
           type: string
           title: Phonenumber
-          description: The user's phone number
+          description: The user's phone number. Empty for a user that was created without one (cannot log in)
         userType:
           allOf:
           - $ref: '#/components/schemas/UserType'
@@ -720,6 +478,10 @@ components:
           type: string
           title: Mobiledeviceid
           description: Unique identifier of the user's mobile device, as reported by the Connecteam app. null if the user has never logged in from the mobile app.
+        deviceLocale:
+          type: string
+          title: Devicelocale
+          description: Language the user's Connecteam app runs in, as reported at their last login (mobile or web dashboard), e.g. 'en', 'he', 'pt-BR'. null if the user has never logged in.
       type: object
       required:
       - firstName
@@ -728,6 +490,93 @@ components:
       - userType
       - userId
       title: User
+    UserCreateRequest:
+      properties:
+        firstName:
+          type: string
+          maxLength: 100
+          title: Firstname
+          description: The user's first name
+        lastName:
+          type: string
+          maxLength: 100
+          title: Lastname
+          description: The user's last name
+        phoneNumber:
+          type: string
+          title: Phonenumber
+          description: The user's phone number
+        userType:
+          allOf:
+          - $ref: '#/components/schemas/UserType'
+          description: The type of the user is 'user' by default. To promote a user to 'admin', first create the user and then use the users/v1/admins endpoint to send an invite by mail. On edit (PUT /users), only 'manager' <-> 'owner' transitions are supported via this field; transitions that cross the user/manager boundary are rejected with 400 and must go through the /admins endpoint.
+        email:
+          type: string
+          title: Email
+          description: The user's email (mandatory for managers and owners)
+        customFields:
+          items:
+            $ref: '#/components/schemas/BaseCustomField'
+          type: array
+          title: Customfields
+          description: The user's custom fields
+          default: []
+        isArchived:
+          type: boolean
+          title: Isarchived
+          description: The user's archived status
+          default: false
+        profilePictureFileId:
+          type: string
+          title: Profilepicturefileid
+          description: 'The file ID obtained from the upload attachment endpoint (POST /attachments/v1/files/generate-upload-url) with featureType set to ''users''. The file must be finalized via the complete-upload endpoint before use. Supported image formats: JPEG, PNG, BMP, TIFF, WEBP, AVIF.'
+      type: object
+      required:
+      - firstName
+      - lastName
+      - phoneNumber
+      - userType
+      title: UserCreateRequest
+    APIResponse_EditUsersResponse_:
+      properties:
+        requestId:
+          type: string
+          title: Requestid
+        data:
+          $ref: '#/components/schemas/EditUsersResponse'
+      type: object
+      required:
+      - data
+      title: APIResponse[EditUsersResponse]
+    PaginatedBaseResponse_UsersResponse_:
+      properties:
+        requestId:
+          type: string
+          title: Requestid
+        data:
+          $ref: '#/components/schemas/UsersResponse'
+        paging:
+          $ref: '#/components/schemas/PagingResponseModel'
+      type: object
+      required:
+      - data
+      - paging
+      title: PaginatedBaseResponse[UsersResponse]
+    UserCustomFields:
+      type: string
+      enum:
+      - email
+      - date
+      - phone
+      - number
+      - str
+      - dropdown
+      - file
+      - directManager
+      - birthday
+      - link
+      - location
+      title: UserCustomFields
     CustomFieldResponse:
       properties:
         customFieldId:
@@ -753,23 +602,178 @@ components:
       - type
       - name
       title: CustomFieldResponse
-    EditUsersResponse:
+    PagingResponseModel:
       properties:
-        count:
+        offset:
           type: integer
-          title: Count
-          description: The number of users edited.
-        users:
+          minimum: 0.0
+          title: Offset
+          description: The resource offset of the last successfully read resource will be returned as the paging.offset JSON property of a paginated response containing more results
+        total:
+          type: integer
+          minimum: 0.0
+          title: Total
+          description: Total number of resources matching the request, ignoring pagination. Use this to retrieve the full count without paginating through every page. Only populated by endpoints that compute it.
+      type: object
+      required:
+      - offset
+      title: PagingResponseModel
+    DeletionType:
+      type: string
+      enum:
+      - archive
+      - delete
+      title: DeletionType
+      description: Deletion type for user deletion endpoint
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    UserEditRequest:
+      properties:
+        firstName:
+          type: string
+          maxLength: 100
+          title: Firstname
+          description: The user's first name
+        lastName:
+          type: string
+          maxLength: 100
+          title: Lastname
+          description: The user's last name
+        phoneNumber:
+          type: string
+          title: Phonenumber
+          description: The user's phone number
+        userType:
+          allOf:
+          - $ref: '#/components/schemas/UserType'
+          description: The type of the user is 'user' by default. To promote a user to 'admin', first create the user and then use the users/v1/admins endpoint to send an invite by mail. On edit (PUT /users), only 'manager' <-> 'owner' transitions are supported via this field; transitions that cross the user/manager boundary are rejected with 400 and must go through the /admins endpoint.
+        email:
+          type: string
+          title: Email
+          description: The user's email (mandatory for managers and owners)
+        customFields:
+          items:
+            $ref: '#/components/schemas/BaseCustomField'
+          type: array
+          title: Customfields
+          description: The user's custom fields
+          default: []
+        isArchived:
+          type: boolean
+          title: Isarchived
+          description: The user status.Note that restoring a user is not applicable with the editUserByPhone field (you must provide the user ID).
+        userId:
+          type: integer
+          minimum: 1.0
+          title: Userid
+          description: The user's unique id
+        profilePictureFileId:
+          type: string
+          title: Profilepicturefileid
+          description: The file ID obtained from the upload attachment endpoint (POST /attachments/v1/files/generate-upload-url) with featureType set to 'users'. Send an empty string to remove the current profile picture.
+      type: object
+      title: UserEditRequest
+    SortOrder:
+      type: string
+      enum:
+      - asc
+      - desc
+      title: SortOrder
+    UserStatus:
+      type: string
+      enum:
+      - active
+      - archived
+      - all
+      title: UserStatus
+      description: An enumeration.
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    CreateUsersResponse:
+      properties:
+        results:
           items:
             $ref: '#/components/schemas/User'
           type: array
-          title: Users
-          description: The edited users.
+          title: Results
+          description: The created users.
       type: object
       required:
-      - count
-      - users
-      title: EditUsersResponse
+      - results
+      title: CreateUsersResponse
+    BaseCustomField:
+      properties:
+        customFieldId:
+          type: integer
+          minimum: 1.0
+          title: Customfieldid
+          description: The custom field unique id
+        value:
+          title: Value
+          description: 'The value of the custom field. Our real-time API documentation experience does not support custom fields of the dropdown type.To update dropdown fields value(s), pass an array of objects with the IDs of the selected dropdown values (e.g., [{id: 1}, {id: 2}]).'
+      type: object
+      required:
+      - customFieldId
+      - value
+      title: BaseCustomField
+    ArchiveUsersResponse:
+      properties:
+        success:
+          type: boolean
+          title: Success
+          description: Whether the users were deleted successfully.
+      type: object
+      required:
+      - success
+      title: ArchiveUsersResponse
+    APIResponse_ArchiveUsersResponse_:
+      properties:
+        requestId:
+          type: string
+          title: Requestid
+        data:
+          $ref: '#/components/schemas/ArchiveUsersResponse'
+      type: object
+      required:
+      - data
+      title: APIResponse[ArchiveUsersResponse]
+    APIResponse_CreateUsersResponse_:
+      properties:
+        requestId:
+          type: string
+          title: Requestid
+        data:
+          $ref: '#/components/schemas/CreateUsersResponse'
+      type: object
+      required:
+      - data
+      title: APIResponse[CreateUsersResponse]
   securitySchemes:
     APIKeyHeader:
       type: apiKey
@@ -844,6 +848,8 @@ components:
             company_checklist.write: company checklist - write
             recognitions.read: recognitions - read
             celebrations.read: celebrations - read
+            documents.read: documents - read
+            documents.write: documents - write
           tokenUrl: /oauth/v1/token
     HTTPBasic:
       type: http

@@ -47,7 +47,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/APIResponse_GetPendingUsersResponse_'
+                $ref: '#/components/schemas/APIResponseV2_GetPendingUsersResponse_'
         '422':
           description: Validation Error
           content:
@@ -69,17 +69,15 @@ paths:
         content:
           application/json:
             schema:
-              title: Pending Users
+              $ref: '#/components/schemas/PendingUsersRequest'
               description: List of users to create.
-              allOf:
-              - $ref: '#/components/schemas/PendingUsersRequest'
       responses:
         '200':
           description: Successful Response
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/APIResponse_PendingUsersResponse_'
+                $ref: '#/components/schemas/APIResponseV2_PendingUsersResponse_'
         '422':
           description: Validation Error
           content:
@@ -101,10 +99,8 @@ paths:
         content:
           application/json:
             schema:
-              title: Request
+              $ref: '#/components/schemas/DeletePendingUsersRequest'
               description: List of pending user IDs to delete.
-              allOf:
-              - $ref: '#/components/schemas/DeletePendingUsersRequest'
       responses:
         '200':
           description: Successful Response
@@ -129,9 +125,7 @@ paths:
         content:
           application/json:
             schema:
-              allOf:
-              - $ref: '#/components/schemas/UpdatePendingUsersStatusRequest'
-              title: Request
+              $ref: '#/components/schemas/UpdatePendingUsersStatusRequest'
               description: Status update request.
         required: true
       responses:
@@ -176,17 +170,15 @@ paths:
         content:
           application/json:
             schema:
-              title: Pending User
+              $ref: '#/components/schemas/UpdatePendingUserRequest'
               description: User data to update.
-              allOf:
-              - $ref: '#/components/schemas/UpdatePendingUserRequest'
       responses:
         '200':
           description: Successful Response
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/APIResponse_UpdatePendingUserResponse_'
+                $ref: '#/components/schemas/APIResponseV2_UpdatePendingUserResponse_'
         '422':
           description: Validation Error
           content:
@@ -227,36 +219,7 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
-    PendingUsersRequest:
-      properties:
-        users:
-          items:
-            $ref: '#/components/schemas/PendingUserRequest'
-          type: array
-          title: Users
-          description: list of pending users
-      type: object
-      required:
-      - users
-      title: PendingUsersRequest
-    PendingUsersResponse:
-      properties:
-        ids:
-          items:
-            type: integer
-          type: array
-          title: Ids
-          description: new pending users
-      type: object
-      required:
-      - ids
-      title: PendingUsersResponse
-      description: Response model for creating user pending requests.
-    BaseResponse:
-      properties: {}
-      type: object
-      title: BaseResponse
-    APIResponse_UpdatePendingUserResponse_:
+    APIResponseV2_UpdatePendingUserResponse_:
       properties:
         requestId:
           type: string
@@ -266,102 +229,18 @@ components:
       type: object
       required:
       - data
-      title: APIResponse[UpdatePendingUserResponse]
-    APIResponse_PendingUsersResponse_:
+      title: APIResponseV2[UpdatePendingUserResponse]
+    APIResponseV2_GetPendingUsersResponse_:
       properties:
         requestId:
           type: string
           title: Requestid
         data:
-          $ref: '#/components/schemas/PendingUsersResponse'
+          $ref: '#/components/schemas/GetPendingUsersResponse'
       type: object
       required:
       - data
-      title: APIResponse[PendingUsersResponse]
-    UpdatePendingUsersStatusRequest:
-      properties:
-        requests:
-          items:
-            $ref: '#/components/schemas/PendingUserStatusRequest'
-          type: array
-          title: Requests
-          description: List of status updates to apply
-      type: object
-      required:
-      - requests
-      title: UpdatePendingUsersStatusRequest
-    PendingUserRequest:
-      properties:
-        firstName:
-          type: string
-          maxLength: 100
-          title: Firstname
-          description: The user's first name
-        lastName:
-          type: string
-          maxLength: 100
-          title: Lastname
-          description: The user's last name
-        phoneNumber:
-          type: string
-          title: Phonenumber
-          description: The user's phone number
-        email:
-          type: string
-          title: Email
-          description: The user's email (mandatory for managers and owners)
-        customFields:
-          items:
-            $ref: '#/components/schemas/BaseCustomField'
-          type: array
-          title: Customfields
-          description: The user's custom fields
-          default: []
-        rawFields:
-          type: object
-          title: Rawfields
-          description: The user's raw fields
-        linkId:
-          type: integer
-          title: Linkid
-          description: The id of the invite link
-        source:
-          type: string
-          title: Source
-          description: The source of the user
-        userId:
-          type: integer
-          title: Userid
-          description: Connecteam user id of the user
-        suggestedUserId:
-          type: integer
-          title: Suggesteduserid
-          description: Connecteam user id of the user for the admin to match
-        sourceIcon:
-          type: string
-          title: Sourceicon
-          description: The icon of the external system if users come from integration
-        externalUserId:
-          type: string
-          title: Externaluserid
-          description: The user ID from external system
-        integrationId:
-          type: integer
-          title: Integrationid
-          description: The integration ID from the integration service
-        extraFields:
-          type: object
-          title: Extrafields
-          description: Extra fields from integration
-        profilePictureFileId:
-          type: string
-          title: Profilepicturefileid
-          description: The file ID obtained from the upload attachment endpoint (POST /attachments/v1/files/generate-upload-url) with featureType set to 'users'. The file must be finalized via the complete-upload endpoint before use.
-      type: object
-      required:
-      - firstName
-      - lastName
-      title: PendingUserRequest
+      title: APIResponseV2[GetPendingUsersResponse]
     DeletePendingUsersRequest:
       properties:
         ids:
@@ -374,6 +253,282 @@ components:
       required:
       - ids
       title: DeletePendingUsersRequest
+    APIResponseV2_PendingUsersResponse_:
+      properties:
+        requestId:
+          type: string
+          title: Requestid
+        data:
+          $ref: '#/components/schemas/PendingUsersResponse'
+      type: object
+      required:
+      - data
+      title: APIResponseV2[PendingUsersResponse]
+    UpdatePendingUserRequest:
+      properties:
+        firstName:
+          type: string
+          maxLength: 100
+          title: Firstname
+          description: The user's first name
+        lastName:
+          type: string
+          maxLength: 100
+          title: Lastname
+          description: The user's last name
+        phoneNumber:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Phonenumber
+          description: The user's phone number
+        email:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Email
+          description: The user's email (mandatory for managers and owners)
+        customFields:
+          items:
+            $ref: '#/components/schemas/PendingUserCustomField'
+          type: array
+          title: Customfields
+          description: The user's custom fields
+          default: []
+        rawFields:
+          anyOf:
+          - additionalProperties: true
+            type: object
+          - type: 'null'
+          title: Rawfields
+          description: The user's raw fields
+        linkId:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Linkid
+          description: The id of the invite link
+        source:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Source
+          description: The source of the user
+        userId:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Userid
+          description: Connecteam user id of the user
+        suggestedUserId:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Suggesteduserid
+          description: Connecteam user id of the user for the admin to match
+        sourceIcon:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Sourceicon
+          description: The icon of the external system if users come from integration
+        externalUserId:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Externaluserid
+          description: The user ID from external system
+        integrationId:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Integrationid
+          description: The integration ID from the integration service
+        extraFields:
+          anyOf:
+          - additionalProperties: true
+            type: object
+          - type: 'null'
+          title: Extrafields
+          description: Extra fields from integration
+        profilePictureFileId:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Profilepicturefileid
+          description: The file ID obtained from the upload attachment endpoint (POST /attachments/v1/files/generate-upload-url) with featureType set to 'users'. The file must be finalized via the complete-upload endpoint before use.
+      type: object
+      required:
+      - firstName
+      - lastName
+      title: UpdatePendingUserRequest
+    PendingUsersResponse:
+      properties:
+        ids:
+          items:
+            anyOf:
+            - type: integer
+            - type: 'null'
+          type: array
+          title: Ids
+          description: new pending users
+      type: object
+      required:
+      - ids
+      title: PendingUsersResponse
+      description: Response model for creating user pending requests.
+    PendingUsersRequest:
+      properties:
+        users:
+          items:
+            $ref: '#/components/schemas/PendingUserRequest'
+          type: array
+          title: Users
+          description: list of pending users
+      type: object
+      required:
+      - users
+      title: PendingUsersRequest
+    GetPendingUsersResponse:
+      properties:
+        pendingUsers:
+          items:
+            $ref: '#/components/schemas/PendingUserDataResponse'
+          type: array
+          title: Pendingusers
+          description: List of pending user data
+      type: object
+      required:
+      - pendingUsers
+      title: GetPendingUsersResponse
+    UpdatePendingUsersStatusRequest:
+      properties:
+        requests:
+          items:
+            $ref: '#/components/schemas/PendingUserStatusRequest'
+          type: array
+          title: Requests
+          description: List of status updates to apply
+      type: object
+      required:
+      - requests
+      title: UpdatePendingUsersStatusRequest
+    APIResponse_BaseResponse_:
+      properties:
+        requestId:
+          type: string
+          title: Requestid
+        data:
+          $ref: '#/components/schemas/BaseResponse'
+      type: object
+      required:
+      - data
+      title: APIResponse[BaseResponse]
+    PendingUserDataResponse:
+      properties:
+        id:
+          type: integer
+          title: Id
+          description: Pending user request ID
+        userFields:
+          additionalProperties: true
+          type: object
+          title: Userfields
+          description: User profile fields submitted with the request
+        rawFields:
+          anyOf:
+          - additionalProperties: true
+            type: object
+          - type: 'null'
+          title: Rawfields
+          description: Raw unprocessed fields from the source
+        source:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Source
+          description: Origin source of the pending user request
+        sourceIcon:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Sourceicon
+          description: Icon representing the request source
+        userId:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Userid
+          description: Associated user ID if the request was approved
+        externalUserId:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Externaluserid
+          description: External system user identifier
+        suggestedUserId:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Suggesteduserid
+          description: Suggested matching user ID
+        integrationId:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Integrationid
+          description: Integration that created this request
+        linkId:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Linkid
+          description: Invite link ID associated with this request
+        status:
+          type: string
+          title: Status
+          description: Current status of the pending user request
+      type: object
+      required:
+      - id
+      - userFields
+      - status
+      title: PendingUserDataResponse
+    BaseResponse:
+      properties: {}
+      type: object
+      title: BaseResponse
+    UserJoinRequestStatus:
+      type: string
+      enum:
+      - approved
+      - declined
+      - pending
+      title: UserJoinRequestStatus
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    PendingUserCustomField:
+      properties:
+        customFieldId:
+          type: integer
+          minimum: 1.0
+          title: Customfieldid
+          description: The custom field unique id
+        value:
+          title: Value
+          description: 'The value of the custom field. Our real-time API documentation experience does not support custom fields of the dropdown type.To update dropdown fields value(s), pass an array of objects with the IDs of the selected dropdown values (e.g., [{id: 1}, {id: 2}]).'
+      type: object
+      required:
+      - customFieldId
+      - value
+      title: PendingUserCustomField
     ValidationError:
       properties:
         loc:
@@ -395,139 +550,7 @@ components:
       - msg
       - type
       title: ValidationError
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
-    APIResponse_GetPendingUsersResponse_:
-      properties:
-        requestId:
-          type: string
-          title: Requestid
-        data:
-          $ref: '#/components/schemas/GetPendingUsersResponse'
-      type: object
-      required:
-      - data
-      title: APIResponse[GetPendingUsersResponse]
-    BaseCustomField:
-      properties:
-        customFieldId:
-          type: integer
-          minimum: 1.0
-          title: Customfieldid
-          description: The custom field unique id
-        value:
-          title: Value
-          description: 'The value of the custom field. Our real-time API documentation experience does not support custom fields of the dropdown type.To update dropdown fields value(s), pass an array of objects with the IDs of the selected dropdown values (e.g., [{id: 1}, {id: 2}]).'
-      type: object
-      required:
-      - customFieldId
-      - value
-      title: BaseCustomField
-    PendingUserDataResponse:
-      properties:
-        id:
-          type: integer
-          title: Id
-          description: Pending user request ID
-        userFields:
-          type: object
-          title: Userfields
-          description: User profile fields submitted with the request
-        rawFields:
-          type: object
-          title: Rawfields
-          description: Raw unprocessed fields from the source
-        source:
-          type: string
-          title: Source
-          description: Origin source of the pending user request
-        sourceIcon:
-          type: string
-          title: Sourceicon
-          description: Icon representing the request source
-        userId:
-          type: integer
-          title: Userid
-          description: Associated user ID if the request was approved
-        externalUserId:
-          type: string
-          title: Externaluserid
-          description: External system user identifier
-        suggestedUserId:
-          type: integer
-          title: Suggesteduserid
-          description: Suggested matching user ID
-        integrationId:
-          type: integer
-          title: Integrationid
-          description: Integration that created this request
-        linkId:
-          type: integer
-          title: Linkid
-          description: Invite link ID associated with this request
-        status:
-          type: string
-          title: Status
-          description: Current status of the pending user request
-      type: object
-      required:
-      - id
-      - userFields
-      - status
-      title: PendingUserDataResponse
-    PendingUserStatusRequest:
-      properties:
-        id:
-          type: integer
-          title: Id
-          description: Join request ID
-        status:
-          allOf:
-          - $ref: '#/components/schemas/UserJoinRequestStatus'
-          description: New status for the pending user
-      type: object
-      required:
-      - id
-      - status
-      title: PendingUserStatusRequest
-    UserJoinRequestStatus:
-      type: string
-      enum:
-      - approved
-      - declined
-      - pending
-      title: UserJoinRequestStatus
-    GetPendingUsersResponse:
-      properties:
-        pendingUsers:
-          items:
-            $ref: '#/components/schemas/PendingUserDataResponse'
-          type: array
-          title: Pendingusers
-          description: List of pending user data
-      type: object
-      required:
-      - pendingUsers
-      title: GetPendingUsersResponse
-    APIResponse_BaseResponse_:
-      properties:
-        requestId:
-          type: string
-          title: Requestid
-        data:
-          $ref: '#/components/schemas/BaseResponse'
-      type: object
-      required:
-      - data
-      title: APIResponse[BaseResponse]
-    UpdatePendingUserRequest:
+    PendingUserRequest:
       properties:
         firstName:
           type: string
@@ -540,69 +563,109 @@ components:
           title: Lastname
           description: The user's last name
         phoneNumber:
-          type: string
+          anyOf:
+          - type: string
+          - type: 'null'
           title: Phonenumber
           description: The user's phone number
         email:
-          type: string
+          anyOf:
+          - type: string
+          - type: 'null'
           title: Email
           description: The user's email (mandatory for managers and owners)
         customFields:
           items:
-            $ref: '#/components/schemas/BaseCustomField'
+            $ref: '#/components/schemas/PendingUserCustomField'
           type: array
           title: Customfields
           description: The user's custom fields
           default: []
         rawFields:
-          type: object
+          anyOf:
+          - additionalProperties: true
+            type: object
+          - type: 'null'
           title: Rawfields
           description: The user's raw fields
         linkId:
-          type: integer
+          anyOf:
+          - type: integer
+          - type: 'null'
           title: Linkid
           description: The id of the invite link
         source:
-          type: string
+          anyOf:
+          - type: string
+          - type: 'null'
           title: Source
           description: The source of the user
         userId:
-          type: integer
+          anyOf:
+          - type: integer
+          - type: 'null'
           title: Userid
           description: Connecteam user id of the user
         suggestedUserId:
-          type: integer
+          anyOf:
+          - type: integer
+          - type: 'null'
           title: Suggesteduserid
           description: Connecteam user id of the user for the admin to match
         sourceIcon:
-          type: string
+          anyOf:
+          - type: string
+          - type: 'null'
           title: Sourceicon
           description: The icon of the external system if users come from integration
         externalUserId:
-          type: string
+          anyOf:
+          - type: string
+          - type: 'null'
           title: Externaluserid
           description: The user ID from external system
         integrationId:
-          type: integer
+          anyOf:
+          - type: integer
+          - type: 'null'
           title: Integrationid
           description: The integration ID from the integration service
         extraFields:
-          type: object
+          anyOf:
+          - additionalProperties: true
+            type: object
+          - type: 'null'
           title: Extrafields
           description: Extra fields from integration
         profilePictureFileId:
-          type: string
+          anyOf:
+          - type: string
+          - type: 'null'
           title: Profilepicturefileid
           description: The file ID obtained from the upload attachment endpoint (POST /attachments/v1/files/generate-upload-url) with featureType set to 'users'. The file must be finalized via the complete-upload endpoint before use.
       type: object
       required:
       - firstName
       - lastName
-      title: UpdatePendingUserRequest
+      title: PendingUserRequest
     UpdatePendingUserResponse:
       properties: {}
       type: object
       title: UpdatePendingUserResponse
+    PendingUserStatusRequest:
+      properties:
+        id:
+          type: integer
+          title: Id
+          description: Join request ID
+        status:
+          $ref: '#/components/schemas/UserJoinRequestStatus'
+          description: New status for the pending user
+      type: object
+      required:
+      - id
+      - status
+      title: PendingUserStatusRequest
   securitySchemes:
     APIKeyHeader:
       type: apiKey
@@ -677,6 +740,8 @@ components:
             company_checklist.write: company checklist - write
             recognitions.read: recognitions - read
             celebrations.read: celebrations - read
+            documents.read: documents - read
+            documents.write: documents - write
           tokenUrl: /oauth/v1/token
     HTTPBasic:
       type: http

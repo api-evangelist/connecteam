@@ -46,7 +46,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/PaginatedBaseResponse_GetIndicatorsBaseResponse_'
+                $ref: '#/components/schemas/PaginatedBaseResponseV2_GetIndicatorsBaseResponse_'
         '422':
           description: Validation Error
           content:
@@ -55,43 +55,19 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
-    PagingResponseModel:
+    GetIndicatorsBaseResponse:
       properties:
-        offset:
-          type: integer
-          minimum: 0.0
-          title: Offset
-          description: The resource offset of the last successfully read resource will be returned as the paging.offset JSON property of a paginated response containing more results
-        total:
-          type: integer
-          minimum: 0.0
-          title: Total
-          description: Total number of resources matching the request, ignoring pagination. Use this to retrieve the full count without paginating through every page. Only populated by endpoints that compute it.
-      type: object
-      required:
-      - offset
-      title: PagingResponseModel
-    ValidationError:
-      properties:
-        loc:
+        indicators:
           items:
-            anyOf:
-            - type: string
-            - type: integer
+            $ref: '#/components/schemas/IndicatorResponse'
           type: array
-          title: Location
-        msg:
-          type: string
-          title: Message
-        type:
-          type: string
-          title: Error Type
+          title: Indicators
+          description: List of performance indicators
       type: object
       required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
+      - indicators
+      title: GetIndicatorsBaseResponse
+      description: Base response model for getting indicators.
     HTTPValidationError:
       properties:
         detail:
@@ -117,20 +93,7 @@ components:
       - id
       - name
       title: IndicatorResponse
-    GetIndicatorsBaseResponse:
-      properties:
-        indicators:
-          items:
-            $ref: '#/components/schemas/IndicatorResponse'
-          type: array
-          title: Indicators
-          description: List of performance indicators
-      type: object
-      required:
-      - indicators
-      title: GetIndicatorsBaseResponse
-      description: Base response model for getting indicators.
-    PaginatedBaseResponse_GetIndicatorsBaseResponse_:
+    PaginatedBaseResponseV2_GetIndicatorsBaseResponse_:
       properties:
         requestId:
           type: string
@@ -138,12 +101,51 @@ components:
         data:
           $ref: '#/components/schemas/GetIndicatorsBaseResponse'
         paging:
-          $ref: '#/components/schemas/PagingResponseModel'
+          $ref: '#/components/schemas/PagingResponseModelV2'
       type: object
       required:
       - data
       - paging
-      title: PaginatedBaseResponse[GetIndicatorsBaseResponse]
+      title: PaginatedBaseResponseV2[GetIndicatorsBaseResponse]
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    PagingResponseModelV2:
+      properties:
+        offset:
+          type: integer
+          minimum: 0.0
+          title: Offset
+          description: The resource offset of the last successfully read resource will be returned as the paging.offset JSON property of a paginated response containing more results
+        total:
+          anyOf:
+          - type: integer
+            minimum: 0.0
+          - type: 'null'
+          title: Total
+          description: Total number of resources matching the request, ignoring pagination. Use this to retrieve the full count without paginating through every page. Only populated by endpoints that compute it.
+      type: object
+      required:
+      - offset
+      title: PagingResponseModelV2
   securitySchemes:
     APIKeyHeader:
       type: apiKey
@@ -218,6 +220,8 @@ components:
             company_checklist.write: company checklist - write
             recognitions.read: recognitions - read
             celebrations.read: celebrations - read
+            documents.read: documents - read
+            documents.write: documents - write
           tokenUrl: /oauth/v1/token
     HTTPBasic:
       type: http

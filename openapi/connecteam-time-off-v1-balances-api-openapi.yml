@@ -137,6 +137,15 @@ components:
       required:
       - balances
       title: TimeOffGetUserBalancesResponse
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
     PagingResponseModel:
       properties:
         offset:
@@ -160,6 +169,31 @@ components:
       - days
       title: PolicyUnitsEnum
       description: An enumeration.
+    TimeOffPutUserBalanceResponse:
+      properties:
+        balance:
+          allOf:
+          - $ref: '#/components/schemas/TimeOffUserBalance'
+          title: Balance
+          description: The updated user balance
+      type: object
+      required:
+      - balance
+      title: TimeOffPutUserBalanceResponse
+    PaginatedBaseResponse_TimeOffGetUserBalancesResponse_:
+      properties:
+        requestId:
+          type: string
+          title: Requestid
+        data:
+          $ref: '#/components/schemas/TimeOffGetUserBalancesResponse'
+        paging:
+          $ref: '#/components/schemas/PagingResponseModel'
+      type: object
+      required:
+      - data
+      - paging
+      title: PaginatedBaseResponse[TimeOffGetUserBalancesResponse]
     APIResponse_TimeOffPutUserBalanceResponse_:
       properties:
         requestId:
@@ -171,16 +205,6 @@ components:
       required:
       - data
       title: APIResponse[TimeOffPutUserBalanceResponse]
-    TimeOffUpdateUserBalanceRequest:
-      properties:
-        balance:
-          type: number
-          title: Balance
-          description: The balance to update to
-      type: object
-      required:
-      - balance
-      title: TimeOffUpdateUserBalanceRequest
     ValidationError:
       properties:
         loc:
@@ -202,40 +226,6 @@ components:
       - msg
       - type
       title: ValidationError
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
-    PaginatedBaseResponse_TimeOffGetUserBalancesResponse_:
-      properties:
-        requestId:
-          type: string
-          title: Requestid
-        data:
-          $ref: '#/components/schemas/TimeOffGetUserBalancesResponse'
-        paging:
-          $ref: '#/components/schemas/PagingResponseModel'
-      type: object
-      required:
-      - data
-      - paging
-      title: PaginatedBaseResponse[TimeOffGetUserBalancesResponse]
-    TimeOffPutUserBalanceResponse:
-      properties:
-        balance:
-          allOf:
-          - $ref: '#/components/schemas/TimeOffUserBalance'
-          title: Balance
-          description: The updated user balance
-      type: object
-      required:
-      - balance
-      title: TimeOffPutUserBalanceResponse
     TimeOffUserBalance:
       properties:
         userId:
@@ -261,6 +251,16 @@ components:
       - balance
       - policyId
       title: TimeOffUserBalance
+    TimeOffUpdateUserBalanceRequest:
+      properties:
+        balance:
+          type: number
+          title: Balance
+          description: The balance to update to
+      type: object
+      required:
+      - balance
+      title: TimeOffUpdateUserBalanceRequest
   securitySchemes:
     APIKeyHeader:
       type: apiKey
@@ -335,6 +335,8 @@ components:
             company_checklist.write: company checklist - write
             recognitions.read: recognitions - read
             celebrations.read: celebrations - read
+            documents.read: documents - read
+            documents.write: documents - write
           tokenUrl: /oauth/v1/token
     HTTPBasic:
       type: http

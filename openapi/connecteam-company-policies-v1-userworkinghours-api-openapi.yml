@@ -1,0 +1,417 @@
+openapi: 3.2.0
+info:
+  title: Connecteam API documentation Company…
+  version: v1
+servers:
+- url: https://api.connecteam.com/
+tags:
+- name: Company Policies:v1:UserWorkingHours
+paths:
+  /company-policies/v1/users/{userId}/working-hours:
+    get:
+      tags:
+      - Company Policies:v1:UserWorkingHours
+      summary: Get user working hours
+      description: Retrieve the working hours assigned to a user. Returns an empty object when the user has no working hours
+      operationId: get_user_working_hours_company_policies_v1_users__userId__working_hours_get
+      security:
+      - APIKeyHeader: []
+      - OAuth2:
+        - company_policies.read
+      parameters:
+      - name: userId
+        in: path
+        required: true
+        schema:
+          type: integer
+          description: The unique identifier of the user
+          title: Userid
+        description: The unique identifier of the user
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIResponseV2_UserWorkingHoursResponse_'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    put:
+      tags:
+      - Company Policies:v1:UserWorkingHours
+      summary: Set user custom working hours
+      description: Create or replace custom working hours for a user. Any shared working hours assignment is replaced
+      operationId: set_user_custom_working_hours_company_policies_v1_users__userId__working_hours_put
+      security:
+      - APIKeyHeader: []
+      - OAuth2:
+        - company_policies.write
+      parameters:
+      - name: userId
+        in: path
+        required: true
+        schema:
+          type: integer
+          description: The unique identifier of the user
+          title: Userid
+        description: The unique identifier of the user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserCustomWorkingHoursRequest'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIResponseV2_UserWorkingHoursResponse_'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    delete:
+      tags:
+      - Company Policies:v1:UserWorkingHours
+      summary: Delete user custom working hours
+      description: Remove custom working hours for a user. A shared working hours assignment is kept
+      operationId: delete_user_custom_working_hours_company_policies_v1_users__userId__working_hours_delete
+      security:
+      - APIKeyHeader: []
+      - OAuth2:
+        - company_policies.delete
+      parameters:
+      - name: userId
+        in: path
+        required: true
+        schema:
+          type: integer
+          description: The unique identifier of the user
+          title: Userid
+        description: The unique identifier of the user
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIResponseV2_BaseResponseV2_'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+components:
+  schemas:
+    TimeRangeModel:
+      properties:
+        startTimeSecs:
+          type: integer
+          maximum: 86400.0
+          minimum: 0.0
+          title: Starttimesecs
+          description: Start of the working window in seconds from midnight (0–86400)
+        endTimeSecs:
+          type: integer
+          maximum: 86400.0
+          minimum: 0.0
+          title: Endtimesecs
+          description: End of the working window in seconds from midnight (0–86400). Must be after startTimeSecs; overnight windows are not supported
+      type: object
+      required:
+      - startTimeSecs
+      - endTimeSecs
+      title: TimeRangeModel
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    APIResponseV2_BaseResponseV2_:
+      properties:
+        requestId:
+          type: string
+          title: Requestid
+        data:
+          $ref: '#/components/schemas/BaseResponseV2'
+      type: object
+      required:
+      - data
+      title: APIResponseV2[BaseResponseV2]
+    APIResponseV2_UserWorkingHoursResponse_:
+      properties:
+        requestId:
+          type: string
+          title: Requestid
+        data:
+          $ref: '#/components/schemas/UserWorkingHoursResponse'
+      type: object
+      required:
+      - data
+      title: APIResponseV2[UserWorkingHoursResponse]
+    WorkScheduleModel-Output:
+      properties:
+        sunday:
+          $ref: '#/components/schemas/WorkDayModel'
+          description: Working hours for Sunday
+        monday:
+          $ref: '#/components/schemas/WorkDayModel'
+          description: Working hours for Monday
+        tuesday:
+          $ref: '#/components/schemas/WorkDayModel'
+          description: Working hours for Tuesday
+        wednesday:
+          $ref: '#/components/schemas/WorkDayModel'
+          description: Working hours for Wednesday
+        thursday:
+          $ref: '#/components/schemas/WorkDayModel'
+          description: Working hours for Thursday
+        friday:
+          $ref: '#/components/schemas/WorkDayModel'
+          description: Working hours for Friday
+        saturday:
+          $ref: '#/components/schemas/WorkDayModel'
+          description: Working hours for Saturday
+      type: object
+      required:
+      - sunday
+      - monday
+      - tuesday
+      - wednesday
+      - thursday
+      - friday
+      - saturday
+      title: WorkScheduleModel
+    WorkDayModel:
+      properties:
+        isWorkDay:
+          type: boolean
+          title: Isworkday
+          description: Whether this day is a working day
+        timeRanges:
+          items:
+            $ref: '#/components/schemas/TimeRangeModel'
+          type: array
+          title: Timeranges
+          description: Working windows for this day
+        standardWorkHoursSecs:
+          anyOf:
+          - type: integer
+            maximum: 86400.0
+            minimum: 60.0
+          - type: 'null'
+          title: Standardworkhourssecs
+          description: Expected working duration for this day in seconds (60–86400)
+      type: object
+      required:
+      - isWorkDay
+      title: WorkDayModel
+    BaseResponseV2:
+      properties: {}
+      type: object
+      title: BaseResponseV2
+      description: V2 base response model
+    WorkScheduleModel-Input:
+      properties:
+        sunday:
+          $ref: '#/components/schemas/WorkDayModel'
+          description: Working hours for Sunday
+        monday:
+          $ref: '#/components/schemas/WorkDayModel'
+          description: Working hours for Monday
+        tuesday:
+          $ref: '#/components/schemas/WorkDayModel'
+          description: Working hours for Tuesday
+        wednesday:
+          $ref: '#/components/schemas/WorkDayModel'
+          description: Working hours for Wednesday
+        thursday:
+          $ref: '#/components/schemas/WorkDayModel'
+          description: Working hours for Thursday
+        friday:
+          $ref: '#/components/schemas/WorkDayModel'
+          description: Working hours for Friday
+        saturday:
+          $ref: '#/components/schemas/WorkDayModel'
+          description: Working hours for Saturday
+      type: object
+      required:
+      - sunday
+      - monday
+      - tuesday
+      - wednesday
+      - thursday
+      - friday
+      - saturday
+      title: WorkScheduleModel
+    UserWorkingHoursResponse:
+      properties:
+        userId:
+          anyOf:
+          - type: integer
+            minimum: 1.0
+            description: Integer with minimum value of 1
+          - type: 'null'
+          title: Userid
+          description: The unique identifier of the user. Absent when no working hours are set
+        workingHoursPolicyId:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Workinghourspolicyid
+          description: The unique identifier of the assigned shared working hours policy. Omitted for custom hours
+        name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Name
+          description: The name of the assigned shared working hours policy. Omitted for custom hours
+        isCustomPolicy:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          title: Iscustompolicy
+          description: Whether these hours are a user-specific custom policy
+        timezone:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Timezone
+          description: IANA timezone used to interpret the work schedule
+        workSchedule:
+          anyOf:
+          - $ref: '#/components/schemas/WorkScheduleModel-Output'
+          - type: 'null'
+          description: Weekly working hours, keyed by day of week
+      type: object
+      title: UserWorkingHoursResponse
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    UserCustomWorkingHoursRequest:
+      properties:
+        workSchedule:
+          $ref: '#/components/schemas/WorkScheduleModel-Input'
+          description: Weekly working hours for this user. Replaces any shared working hours assignment
+        timezone:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Timezone
+          description: IANA timezone used to interpret the work schedule. Defaults to the company timezone when omitted
+      type: object
+      required:
+      - workSchedule
+      title: UserCustomWorkingHoursRequest
+  securitySchemes:
+    APIKeyHeader:
+      type: apiKey
+      description: The Api key of the company given by Connecteam
+      in: header
+      name: X-API-KEY
+    OAuth2:
+      type: oauth2
+      description: OAuth2 Bearer token
+      flows:
+        clientCredentials:
+          scopes:
+            account_information.read: account information - read
+            account_information.write: account information - write
+            account_information.delete: account information - delete
+            company_policies.read: company policies - read
+            company_policies.write: company policies - write
+            company_policies.delete: company policies - delete
+            company_insights.read: company insights - read
+            users.read: users - read
+            users.write: users - write
+            users.delete: users - delete
+            assets.read: assets - read
+            assets.write: assets - write
+            assets.delete: assets - delete
+            sales_data.read: sales data - read
+            sales_data.write: sales data - write
+            sales_data.delete: sales data - delete
+            attachments.read: attachments - read
+            attachments.write: attachments - write
+            attachments.delete: attachments - delete
+            quick_tasks.read: quick tasks - read
+            quick_tasks.write: quick tasks - write
+            quick_tasks.delete: quick tasks - delete
+            publishers.read: publishers - read
+            publishers.write: publishers - write
+            publishers.delete: publishers - delete
+            chat.read: chat - read
+            chat.write: chat - write
+            chat.delete: chat - delete
+            jobs.read: jobs - read
+            jobs.write: jobs - write
+            jobs.delete: jobs - delete
+            schedule.read: schedule - read
+            schedule.write: schedule - write
+            schedule.delete: schedule - delete
+            daily_note.read: daily note - read
+            daily_note.write: daily note - write
+            daily_note.delete: daily note - delete
+            time_clock.read: time clock - read
+            time_clock.write: time clock - write
+            time_clock.delete: time clock - delete
+            nfc.read: nfc - read
+            nfc.write: nfc - write
+            nfc.delete: nfc - delete
+            time_off.read: time off - read
+            time_off.write: time off - write
+            time_off.delete: time off - delete
+            pay_rates.read: pay rates - read
+            pay_rates.write: pay rates - write
+            pay_rates.delete: pay rates - delete
+            forms.read: forms - read
+            forms.write: forms - write
+            forms.delete: forms - delete
+            onboarding.read: onboarding - read
+            onboarding.write: onboarding - write
+            onboarding.delete: onboarding - delete
+            settings.read: settings - read
+            settings.write: settings - write
+            settings.delete: settings - delete
+            company_checklist.read: company checklist - read
+            company_checklist.write: company checklist - write
+            recognitions.read: recognitions - read
+            celebrations.read: celebrations - read
+            documents.read: documents - read
+            documents.write: documents - write
+          tokenUrl: /oauth/v1/token
+    HTTPBasic:
+      type: http
+      description: Use client_id as Username and client_secret as Password
+      scheme: basic

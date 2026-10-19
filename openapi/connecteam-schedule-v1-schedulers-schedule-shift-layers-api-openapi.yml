@@ -104,24 +104,30 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
-    PagingResponseModelV2:
+    SchedulerShiftLayerValueOutput:
       properties:
-        offset:
-          type: integer
-          minimum: 0.0
-          title: Offset
-          description: The resource offset of the last successfully read resource will be returned as the paging.offset JSON property of a paginated response containing more results
-        total:
-          anyOf:
-          - type: integer
-            minimum: 0.0
-          - type: 'null'
-          title: Total
-          description: Total number of resources matching the request, ignoring pagination. Use this to retrieve the full count without paginating through every page. Only populated by endpoints that compute it.
+        id:
+          type: string
+          title: Id
+          description: The unique identifier of the shift layer instance
+        displayName:
+          type: string
+          title: Displayname
+          description: The display name of the shift layer instance
       type: object
       required:
-      - offset
-      title: PagingResponseModelV2
+      - id
+      - displayName
+      title: SchedulerShiftLayerValueOutput
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
     APIResponseV2_GetSchedulerShiftLayersResponse_:
       properties:
         requestId:
@@ -133,18 +139,6 @@ components:
       required:
       - data
       title: APIResponseV2[GetSchedulerShiftLayersResponse]
-    GetSchedulerShiftLayerValuesResponse:
-      properties:
-        values:
-          items:
-            $ref: '#/components/schemas/SchedulerShiftLayerValueOutput'
-          type: array
-          title: Values
-          description: The values associated to the shift layer
-      type: object
-      required:
-      - values
-      title: GetSchedulerShiftLayerValuesResponse
     PaginatedBaseResponseV2_GetSchedulerShiftLayerValuesResponse_:
       properties:
         requestId:
@@ -169,6 +163,33 @@ components:
           description: The various layers of information associated with shifts in this schedule
       type: object
       title: GetSchedulerShiftLayersResponse
+    SchedulerShiftLayerOutput:
+      properties:
+        id:
+          type: string
+          title: Id
+          description: The unique identifier of the shift layer
+        title:
+          type: string
+          title: Title
+          description: The name of the shift layer
+      type: object
+      required:
+      - id
+      - title
+      title: SchedulerShiftLayerOutput
+    GetSchedulerShiftLayerValuesResponse:
+      properties:
+        values:
+          items:
+            $ref: '#/components/schemas/SchedulerShiftLayerValueOutput'
+          type: array
+          title: Values
+          description: The values associated to the shift layer
+      type: object
+      required:
+      - values
+      title: GetSchedulerShiftLayerValuesResponse
     ValidationError:
       properties:
         loc:
@@ -190,45 +211,24 @@ components:
       - msg
       - type
       title: ValidationError
-    HTTPValidationError:
+    PagingResponseModelV2:
       properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
-    SchedulerShiftLayerValueOutput:
-      properties:
-        id:
-          type: string
-          title: Id
-          description: The unique identifier of the shift layer instance
-        displayName:
-          type: string
-          title: Displayname
-          description: The display name of the shift layer instance
+        offset:
+          type: integer
+          minimum: 0.0
+          title: Offset
+          description: The resource offset of the last successfully read resource will be returned as the paging.offset JSON property of a paginated response containing more results
+        total:
+          anyOf:
+          - type: integer
+            minimum: 0.0
+          - type: 'null'
+          title: Total
+          description: Total number of resources matching the request, ignoring pagination. Use this to retrieve the full count without paginating through every page. Only populated by endpoints that compute it.
       type: object
       required:
-      - id
-      - displayName
-      title: SchedulerShiftLayerValueOutput
-    SchedulerShiftLayerOutput:
-      properties:
-        id:
-          type: string
-          title: Id
-          description: The unique identifier of the shift layer
-        title:
-          type: string
-          title: Title
-          description: The name of the shift layer
-      type: object
-      required:
-      - id
-      - title
-      title: SchedulerShiftLayerOutput
+      - offset
+      title: PagingResponseModelV2
   securitySchemes:
     APIKeyHeader:
       type: apiKey
@@ -303,6 +303,8 @@ components:
             company_checklist.write: company checklist - write
             recognitions.read: recognitions - read
             celebrations.read: celebrations - read
+            documents.read: documents - read
+            documents.write: documents - write
           tokenUrl: /oauth/v1/token
     HTTPBasic:
       type: http

@@ -23,9 +23,9 @@ paths:
         in: path
         required: true
         schema:
-          title: Assetid
-          description: The unique identifier of the asset.
           type: integer
+          description: The unique identifier of the asset.
+          title: Assetid
         description: The unique identifier of the asset.
       responses:
         '200':
@@ -33,7 +33,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/APIResponse_AssetResponse_'
+                $ref: '#/components/schemas/APIResponseV2_AssetResponse_'
         '422':
           description: Validation Error
           content:
@@ -42,7 +42,7 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
-    APIResponse_AssetResponse_:
+    APIResponseV2_AssetResponse_:
       properties:
         requestId:
           type: string
@@ -52,23 +52,32 @@ components:
       type: object
       required:
       - data
-      title: APIResponse[AssetResponse]
-    AssetPermissions:
+      title: APIResponseV2[AssetResponse]
+    HTTPValidationError:
       properties:
-        userId:
-          type: integer
-          title: Userid
-          description: The unique identifiers who have permissions to the asset
-        deepPermission:
-          additionalProperties:
-            type: boolean
-          type: object
-          title: Deeppermission
-          description: Granular per-feature permissions for this user on this asset. Keys depend on the feature (e.g. shift scheduler exposes view, add_and_edit_shifts, publish_shifts, edit_settings). Omitted entirely for assets whose feature has no granular permissions. Owners always receive a full-access object (every flag = true).
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    AssetResponse:
+      properties:
+        permissions:
+          items:
+            $ref: '#/components/schemas/AssetPermissions'
+          type: array
+          title: Permissions
+          description: The details of user IDs with access permissions to the asset.
+          default: []
+        assignments:
+          $ref: '#/components/schemas/AssetAssignments'
+          description: The details of the assignments of the asset
       type: object
       required:
-      - userId
-      title: AssetPermissions
+      - assignments
+      title: AssetResponse
     AssetAssignments:
       properties:
         userIds:
@@ -109,33 +118,24 @@ components:
       - msg
       - type
       title: ValidationError
-    HTTPValidationError:
+    AssetPermissions:
       properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
-    AssetResponse:
-      properties:
-        permissions:
-          items:
-            $ref: '#/components/schemas/AssetPermissions'
-          type: array
-          title: Permissions
-          description: The details of user IDs with access permissions to the asset.
-          default: []
-        assignments:
-          allOf:
-          - $ref: '#/components/schemas/AssetAssignments'
-          title: Assignments
-          description: The details of the assignments of the asset
+        userId:
+          type: integer
+          title: Userid
+          description: The unique identifiers who have permissions to the asset
+        deepPermission:
+          anyOf:
+          - additionalProperties:
+              type: boolean
+            type: object
+          - type: 'null'
+          title: Deeppermission
+          description: Granular per-feature permissions for this user on this asset. Keys depend on the feature (e.g. shift scheduler exposes view, add_and_edit_shifts, publish_shifts, edit_settings). Omitted entirely for assets whose feature has no granular permissions. Owners always receive a full-access object (every flag = true).
       type: object
       required:
-      - assignments
-      title: AssetResponse
+      - userId
+      title: AssetPermissions
   securitySchemes:
     APIKeyHeader:
       type: apiKey
@@ -210,6 +210,8 @@ components:
             company_checklist.write: company checklist - write
             recognitions.read: recognitions - read
             celebrations.read: celebrations - read
+            documents.read: documents - read
+            documents.write: documents - write
           tokenUrl: /oauth/v1/token
     HTTPBasic:
       type: http

@@ -111,65 +111,6 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
-    GetResourceCustomFieldsSettingsResponse:
-      properties:
-        customFields:
-          items:
-            anyOf:
-            - $ref: '#/components/schemas/DropdownResourceCustomFieldSettingsResponse'
-            - $ref: '#/components/schemas/ResourceCustomFieldSettingsResponse'
-          type: array
-          title: Customfields
-          description: The resource custom fields.
-      type: object
-      required:
-      - customFields
-      title: GetResourceCustomFieldsSettingsResponse
-    UserCustomFields:
-      type: string
-      enum:
-      - email
-      - date
-      - phone
-      - number
-      - str
-      - dropdown
-      - file
-      - directManager
-      - birthday
-      - link
-      - location
-      title: UserCustomFields
-    PagingResponseModel:
-      properties:
-        offset:
-          type: integer
-          minimum: 0.0
-          title: Offset
-          description: The resource offset of the last successfully read resource will be returned as the paging.offset JSON property of a paginated response containing more results
-        total:
-          type: integer
-          minimum: 0.0
-          title: Total
-          description: Total number of resources matching the request, ignoring pagination. Use this to retrieve the full count without paginating through every page. Only populated by endpoints that compute it.
-      type: object
-      required:
-      - offset
-      title: PagingResponseModel
-    PaginatedBaseResponse_GetResourceCustomFieldsSettingsResponse_:
-      properties:
-        requestId:
-          type: string
-          title: Requestid
-        data:
-          $ref: '#/components/schemas/GetResourceCustomFieldsSettingsResponse'
-        paging:
-          $ref: '#/components/schemas/PagingResponseModel'
-      type: object
-      required:
-      - data
-      - paging
-      title: PaginatedBaseResponse[GetResourceCustomFieldsSettingsResponse]
     ResourceCustomFieldSettingsResponse:
       properties:
         id:
@@ -240,34 +181,12 @@ components:
       - id
       - type
       title: ResourceCustomFieldSettingsResponse
-    ValidationError:
-      properties:
-        loc:
-          items:
-            anyOf:
-            - type: string
-            - type: integer
-          type: array
-          title: Location
-        msg:
-          type: string
-          title: Message
-        type:
-          type: string
-          title: Error Type
-      type: object
-      required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
-    ResourceCustomFields:
+    ResourceCustomFieldsSortExternal:
       type: string
       enum:
-      - str
-      - phone
-      - dropdown
-      title: ResourceCustomFields
+      - name
+      - type
+      title: ResourceCustomFieldsSortExternal
       description: An enumeration.
     HTTPValidationError:
       properties:
@@ -278,6 +197,28 @@ components:
           title: Detail
       type: object
       title: HTTPValidationError
+    ResourceCustomFields:
+      type: string
+      enum:
+      - str
+      - phone
+      - dropdown
+      title: ResourceCustomFields
+      description: An enumeration.
+    GetResourceCustomFieldsSettingsResponse:
+      properties:
+        customFields:
+          items:
+            anyOf:
+            - $ref: '#/components/schemas/DropdownResourceCustomFieldSettingsResponse'
+            - $ref: '#/components/schemas/ResourceCustomFieldSettingsResponse'
+          type: array
+          title: Customfields
+          description: The resource custom fields.
+      type: object
+      required:
+      - customFields
+      title: GetResourceCustomFieldsSettingsResponse
     DropdownResourceCustomFieldSettingsResponse:
       properties:
         id:
@@ -393,19 +334,78 @@ components:
       - id
       - value
       title: DropdownCustomFieldOption
+    UserCustomFields:
+      type: string
+      enum:
+      - email
+      - date
+      - phone
+      - number
+      - str
+      - dropdown
+      - file
+      - directManager
+      - birthday
+      - link
+      - location
+      title: UserCustomFields
+    PagingResponseModel:
+      properties:
+        offset:
+          type: integer
+          minimum: 0.0
+          title: Offset
+          description: The resource offset of the last successfully read resource will be returned as the paging.offset JSON property of a paginated response containing more results
+        total:
+          type: integer
+          minimum: 0.0
+          title: Total
+          description: Total number of resources matching the request, ignoring pagination. Use this to retrieve the full count without paginating through every page. Only populated by endpoints that compute it.
+      type: object
+      required:
+      - offset
+      title: PagingResponseModel
+    PaginatedBaseResponse_GetResourceCustomFieldsSettingsResponse_:
+      properties:
+        requestId:
+          type: string
+          title: Requestid
+        data:
+          $ref: '#/components/schemas/GetResourceCustomFieldsSettingsResponse'
+        paging:
+          $ref: '#/components/schemas/PagingResponseModel'
+      type: object
+      required:
+      - data
+      - paging
+      title: PaginatedBaseResponse[GetResourceCustomFieldsSettingsResponse]
     SortOrder:
       type: string
       enum:
       - asc
       - desc
       title: SortOrder
-    ResourceCustomFieldsSortExternal:
-      type: string
-      enum:
-      - name
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
       - type
-      title: ResourceCustomFieldsSortExternal
-      description: An enumeration.
+      title: ValidationError
   securitySchemes:
     APIKeyHeader:
       type: apiKey
@@ -480,6 +480,8 @@ components:
             company_checklist.write: company checklist - write
             recognitions.read: recognitions - read
             celebrations.read: celebrations - read
+            documents.read: documents - read
+            documents.write: documents - write
           tokenUrl: /oauth/v1/token
     HTTPBasic:
       type: http

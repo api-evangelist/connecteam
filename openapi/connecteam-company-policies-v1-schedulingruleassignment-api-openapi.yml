@@ -1,0 +1,319 @@
+openapi: 3.2.0
+info:
+  title: Connecteam API documentation Company…
+  version: v1
+servers:
+- url: https://api.connecteam.com/
+tags:
+- name: Company Policies:v1:SchedulingRuleAssignment
+paths:
+  /company-policies/v1/scheduling-rule-policies/{schedulingRulePolicyId}/assignments:
+    put:
+      tags:
+      - Company Policies:v1:SchedulingRuleAssignment
+      summary: Assign users to scheduling rule policy
+      description: Assign one or more users to the specified scheduling rule policy. Pass the users in the userIds array. If a user is already assigned to another scheduling rule policy, that assignment is replaced.
+      operationId: assign_users_to_policy_company_policies_v1_scheduling_rule_policies__schedulingRulePolicyId__assignments_put
+      security:
+      - APIKeyHeader: []
+      - OAuth2:
+        - company_policies.write
+      parameters:
+      - name: schedulingRulePolicyId
+        in: path
+        required: true
+        schema:
+          title: Schedulingrulepolicyid
+          description: The unique identifier of the scheduling rule policy to assign
+          type: integer
+        description: The unique identifier of the scheduling rule policy to assign
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SchedulingRuleAssignmentRequest'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIResponse_SchedulingRuleAssignmentResponse_'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    get:
+      tags:
+      - Company Policies:v1:SchedulingRuleAssignment
+      summary: List scheduling rule policy assignments
+      description: Retrieve all assignments for a specific scheduling rule policy
+      operationId: list_assignments_company_policies_v1_scheduling_rule_policies__schedulingRulePolicyId__assignments_get
+      security:
+      - APIKeyHeader: []
+      - OAuth2:
+        - company_policies.read
+      parameters:
+      - name: schedulingRulePolicyId
+        in: path
+        required: true
+        schema:
+          title: Schedulingrulepolicyid
+          description: The unique identifier of the scheduling rule policy
+          type: integer
+        description: The unique identifier of the scheduling rule policy
+      - name: userId
+        in: query
+        required: false
+        schema:
+          title: Userid
+          description: When set, return only this user's assignment on the policy
+          minimum: 1
+          type: integer
+        description: When set, return only this user's assignment on the policy
+      - name: limit
+        in: query
+        required: false
+        schema:
+          title: Limit
+          description: The maximum number of results to display per page
+          default: 100
+          minimum: 1
+          maximum: 500
+          type: integer
+        description: The maximum number of results to display per page
+      - name: offset
+        in: query
+        required: false
+        schema:
+          title: Offset
+          description: The resource offset of the last successfully read resource will be returned as the paging.offset JSON property of a paginated response containing more results
+          default: 0
+          minimum: 0
+          type: integer
+        description: The resource offset of the last successfully read resource will be returned as the paging.offset JSON property of a paginated response containing more results
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedBaseResponse_SchedulingRuleAssignmentListData_'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+components:
+  schemas:
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    PaginatedBaseResponse_SchedulingRuleAssignmentListData_:
+      properties:
+        requestId:
+          type: string
+          title: Requestid
+        data:
+          $ref: '#/components/schemas/SchedulingRuleAssignmentListData'
+        paging:
+          $ref: '#/components/schemas/PagingResponseModel'
+      type: object
+      required:
+      - data
+      - paging
+      title: PaginatedBaseResponse[SchedulingRuleAssignmentListData]
+    SchedulingRuleAssignmentListData:
+      properties:
+        assignments:
+          items:
+            $ref: '#/components/schemas/SchedulingRuleAssignmentListItem'
+          type: array
+          title: Assignments
+          description: List of assignments for the policy
+      type: object
+      required:
+      - assignments
+      title: SchedulingRuleAssignmentListData
+    SchedulingRuleAssignmentResponse:
+      properties:
+        assignments:
+          items:
+            $ref: '#/components/schemas/SchedulingRuleAssignmentListItem'
+          type: array
+          title: Assignments
+          description: List of assignments for the policy
+      type: object
+      required:
+      - assignments
+      title: SchedulingRuleAssignmentResponse
+    PagingResponseModel:
+      properties:
+        offset:
+          type: integer
+          minimum: 0.0
+          title: Offset
+          description: The resource offset of the last successfully read resource will be returned as the paging.offset JSON property of a paginated response containing more results
+        total:
+          type: integer
+          minimum: 0.0
+          title: Total
+          description: Total number of resources matching the request, ignoring pagination. Use this to retrieve the full count without paginating through every page. Only populated by endpoints that compute it.
+      type: object
+      required:
+      - offset
+      title: PagingResponseModel
+    APIResponse_SchedulingRuleAssignmentResponse_:
+      properties:
+        requestId:
+          type: string
+          title: Requestid
+        data:
+          $ref: '#/components/schemas/SchedulingRuleAssignmentResponse'
+      type: object
+      required:
+      - data
+      title: APIResponse[SchedulingRuleAssignmentResponse]
+    SchedulingRuleAssignmentRequest:
+      properties:
+        userIds:
+          items:
+            type: integer
+            minimum: 1.0
+            description: Integer with minimum value of 1
+          type: array
+          maxItems: 100
+          minItems: 1
+          title: Userids
+          description: The unique identifiers of the users to assign
+      type: object
+      required:
+      - userIds
+      title: SchedulingRuleAssignmentRequest
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    SchedulingRuleAssignmentListItem:
+      properties:
+        assignmentId:
+          type: integer
+          title: Assignmentid
+          description: The unique identifier of the assignment record
+        userId:
+          type: integer
+          title: Userid
+          description: The unique identifier of the assigned user
+      type: object
+      required:
+      - assignmentId
+      - userId
+      title: SchedulingRuleAssignmentListItem
+  securitySchemes:
+    APIKeyHeader:
+      type: apiKey
+      description: The Api key of the company given by Connecteam
+      in: header
+      name: X-API-KEY
+    OAuth2:
+      type: oauth2
+      description: OAuth2 Bearer token
+      flows:
+        clientCredentials:
+          scopes:
+            account_information.read: account information - read
+            account_information.write: account information - write
+            account_information.delete: account information - delete
+            company_policies.read: company policies - read
+            company_policies.write: company policies - write
+            company_policies.delete: company policies - delete
+            company_insights.read: company insights - read
+            users.read: users - read
+            users.write: users - write
+            users.delete: users - delete
+            assets.read: assets - read
+            assets.write: assets - write
+            assets.delete: assets - delete
+            sales_data.read: sales data - read
+            sales_data.write: sales data - write
+            sales_data.delete: sales data - delete
+            attachments.read: attachments - read
+            attachments.write: attachments - write
+            attachments.delete: attachments - delete
+            quick_tasks.read: quick tasks - read
+            quick_tasks.write: quick tasks - write
+            quick_tasks.delete: quick tasks - delete
+            publishers.read: publishers - read
+            publishers.write: publishers - write
+            publishers.delete: publishers - delete
+            chat.read: chat - read
+            chat.write: chat - write
+            chat.delete: chat - delete
+            jobs.read: jobs - read
+            jobs.write: jobs - write
+            jobs.delete: jobs - delete
+            schedule.read: schedule - read
+            schedule.write: schedule - write
+            schedule.delete: schedule - delete
+            daily_note.read: daily note - read
+            daily_note.write: daily note - write
+            daily_note.delete: daily note - delete
+            time_clock.read: time clock - read
+            time_clock.write: time clock - write
+            time_clock.delete: time clock - delete
+            nfc.read: nfc - read
+            nfc.write: nfc - write
+            nfc.delete: nfc - delete
+            time_off.read: time off - read
+            time_off.write: time off - write
+            time_off.delete: time off - delete
+            pay_rates.read: pay rates - read
+            pay_rates.write: pay rates - write
+            pay_rates.delete: pay rates - delete
+            forms.read: forms - read
+            forms.write: forms - write
+            forms.delete: forms - delete
+            onboarding.read: onboarding - read
+            onboarding.write: onboarding - write
+            onboarding.delete: onboarding - delete
+            settings.read: settings - read
+            settings.write: settings - write
+            settings.delete: settings - delete
+            company_checklist.read: company checklist - read
+            company_checklist.write: company checklist - write
+            recognitions.read: recognitions - read
+            celebrations.read: celebrations - read
+            documents.read: documents - read
+            documents.write: documents - write
+          tokenUrl: /oauth/v1/token
+    HTTPBasic:
+      type: http
+      description: Use client_id as Username and client_secret as Password
+      scheme: basic

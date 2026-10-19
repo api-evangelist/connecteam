@@ -1,0 +1,278 @@
+openapi: 3.2.0
+info:
+  title: Connecteam API documentation Company…
+  version: v1
+servers:
+- url: https://api.connecteam.com/
+tags:
+- name: Company Policies:v1:WorkingHoursAssignment
+paths:
+  /company-policies/v1/working-hours-policies/{workingHoursPolicyId}/assignments:
+    put:
+      tags:
+      - Company Policies:v1:WorkingHoursAssignment
+      summary: Assign users to working hours policy
+      description: Assign users to the specified working hours policy. Replaces custom working hours for those users
+      operationId: assign_users_to_policy_company_policies_v1_working_hours_policies__workingHoursPolicyId__assignments_put
+      security:
+      - APIKeyHeader: []
+      - OAuth2:
+        - company_policies.write
+      parameters:
+      - name: workingHoursPolicyId
+        in: path
+        required: true
+        schema:
+          type: integer
+          description: The unique identifier of the working hours policy
+          title: Workinghourspolicyid
+        description: The unique identifier of the working hours policy
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WorkingHoursAssignmentRequest'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIResponseV2_WorkingHoursAssignmentsResponse_'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /company-policies/v1/working-hours-policies/{workingHoursPolicyId}/assignments/{userId}:
+    delete:
+      tags:
+      - Company Policies:v1:WorkingHoursAssignment
+      summary: Unassign user from working hours policy
+      description: Remove a user's assignment to this working hours policy. Custom working hours are kept
+      operationId: unassign_user_from_policy_company_policies_v1_working_hours_policies__workingHoursPolicyId__assignments__userId__delete
+      security:
+      - APIKeyHeader: []
+      - OAuth2:
+        - company_policies.delete
+      parameters:
+      - name: workingHoursPolicyId
+        in: path
+        required: true
+        schema:
+          type: integer
+          description: The unique identifier of the working hours policy
+          title: Workinghourspolicyid
+        description: The unique identifier of the working hours policy
+      - name: userId
+        in: path
+        required: true
+        schema:
+          type: integer
+          description: The unique identifier of the user
+          title: Userid
+        description: The unique identifier of the user
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIResponseV2_WorkingHoursUnassignResponse_'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+components:
+  schemas:
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    WorkingHoursAssignmentItem:
+      properties:
+        assignmentId:
+          type: integer
+          title: Assignmentid
+          description: The unique identifier of the assignment record
+        userId:
+          type: integer
+          minimum: 1.0
+          title: Userid
+          description: The unique identifier of the assigned user
+      type: object
+      required:
+      - assignmentId
+      - userId
+      title: WorkingHoursAssignmentItem
+    APIResponseV2_WorkingHoursAssignmentsResponse_:
+      properties:
+        requestId:
+          type: string
+          title: Requestid
+        data:
+          $ref: '#/components/schemas/WorkingHoursAssignmentsResponse'
+      type: object
+      required:
+      - data
+      title: APIResponseV2[WorkingHoursAssignmentsResponse]
+    WorkingHoursAssignmentRequest:
+      properties:
+        userIds:
+          items:
+            type: integer
+            minimum: 1.0
+            description: Integer with minimum value of 1
+          type: array
+          maxItems: 100
+          minItems: 1
+          title: Userids
+          description: User IDs to assign to this working hours policy. Between 1 and 100 IDs
+      type: object
+      required:
+      - userIds
+      title: WorkingHoursAssignmentRequest
+    APIResponseV2_WorkingHoursUnassignResponse_:
+      properties:
+        requestId:
+          type: string
+          title: Requestid
+        data:
+          $ref: '#/components/schemas/WorkingHoursUnassignResponse'
+      type: object
+      required:
+      - data
+      title: APIResponseV2[WorkingHoursUnassignResponse]
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    WorkingHoursUnassignResponse:
+      properties:
+        success:
+          type: boolean
+          title: Success
+          description: Whether the assignment was removed successfully
+      type: object
+      required:
+      - success
+      title: WorkingHoursUnassignResponse
+    WorkingHoursAssignmentsResponse:
+      properties:
+        assignments:
+          items:
+            $ref: '#/components/schemas/WorkingHoursAssignmentItem'
+          type: array
+          title: Assignments
+          description: Assignments created or already present for the requested users
+      type: object
+      required:
+      - assignments
+      title: WorkingHoursAssignmentsResponse
+  securitySchemes:
+    APIKeyHeader:
+      type: apiKey
+      description: The Api key of the company given by Connecteam
+      in: header
+      name: X-API-KEY
+    OAuth2:
+      type: oauth2
+      description: OAuth2 Bearer token
+      flows:
+        clientCredentials:
+          scopes:
+            account_information.read: account information - read
+            account_information.write: account information - write
+            account_information.delete: account information - delete
+            company_policies.read: company policies - read
+            company_policies.write: company policies - write
+            company_policies.delete: company policies - delete
+            company_insights.read: company insights - read
+            users.read: users - read
+            users.write: users - write
+            users.delete: users - delete
+            assets.read: assets - read
+            assets.write: assets - write
+            assets.delete: assets - delete
+            sales_data.read: sales data - read
+            sales_data.write: sales data - write
+            sales_data.delete: sales data - delete
+            attachments.read: attachments - read
+            attachments.write: attachments - write
+            attachments.delete: attachments - delete
+            quick_tasks.read: quick tasks - read
+            quick_tasks.write: quick tasks - write
+            quick_tasks.delete: quick tasks - delete
+            publishers.read: publishers - read
+            publishers.write: publishers - write
+            publishers.delete: publishers - delete
+            chat.read: chat - read
+            chat.write: chat - write
+            chat.delete: chat - delete
+            jobs.read: jobs - read
+            jobs.write: jobs - write
+            jobs.delete: jobs - delete
+            schedule.read: schedule - read
+            schedule.write: schedule - write
+            schedule.delete: schedule - delete
+            daily_note.read: daily note - read
+            daily_note.write: daily note - write
+            daily_note.delete: daily note - delete
+            time_clock.read: time clock - read
+            time_clock.write: time clock - write
+            time_clock.delete: time clock - delete
+            nfc.read: nfc - read
+            nfc.write: nfc - write
+            nfc.delete: nfc - delete
+            time_off.read: time off - read
+            time_off.write: time off - write
+            time_off.delete: time off - delete
+            pay_rates.read: pay rates - read
+            pay_rates.write: pay rates - write
+            pay_rates.delete: pay rates - delete
+            forms.read: forms - read
+            forms.write: forms - write
+            forms.delete: forms - delete
+            onboarding.read: onboarding - read
+            onboarding.write: onboarding - write
+            onboarding.delete: onboarding - delete
+            settings.read: settings - read
+            settings.write: settings - write
+            settings.delete: settings - delete
+            company_checklist.read: company checklist - read
+            company_checklist.write: company checklist - write
+            recognitions.read: recognitions - read
+            celebrations.read: celebrations - read
+            documents.read: documents - read
+            documents.write: documents - write
+          tokenUrl: /oauth/v1/token
+    HTTPBasic:
+      type: http
+      description: Use client_id as Username and client_secret as Password
+      scheme: basic

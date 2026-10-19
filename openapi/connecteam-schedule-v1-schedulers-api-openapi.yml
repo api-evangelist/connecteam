@@ -33,39 +33,6 @@ paths:
         - schedule.read
 components:
   schemas:
-    SchedulersResponse:
-      properties:
-        schedulers:
-          items:
-            $ref: '#/components/schemas/SchedulerResponse'
-          type: array
-          title: Schedulers
-          description: The schedules
-      type: object
-      required:
-      - schedulers
-      title: SchedulersResponse
-    ValidationError:
-      properties:
-        loc:
-          items:
-            anyOf:
-            - type: string
-            - type: integer
-          type: array
-          title: Location
-        msg:
-          type: string
-          title: Message
-        type:
-          type: string
-          title: Error Type
-      type: object
-      required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
     HTTPValidationError:
       properties:
         detail:
@@ -112,6 +79,39 @@ components:
       - isArchived
       - timezone
       title: SchedulerResponse
+    SchedulersResponse:
+      properties:
+        schedulers:
+          items:
+            $ref: '#/components/schemas/SchedulerResponse'
+          type: array
+          title: Schedulers
+          description: The schedules
+      type: object
+      required:
+      - schedulers
+      title: SchedulersResponse
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
   securitySchemes:
     APIKeyHeader:
       type: apiKey
@@ -186,6 +186,8 @@ components:
             company_checklist.write: company checklist - write
             recognitions.read: recognitions - read
             celebrations.read: celebrations - read
+            documents.read: documents - read
+            documents.write: documents - write
           tokenUrl: /oauth/v1/token
     HTTPBasic:
       type: http

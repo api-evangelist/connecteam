@@ -113,7 +113,37 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
-    EmailQuestion:
+    LimitEntriesPerUser:
+      properties:
+        enabled:
+          type: boolean
+          title: Enabled
+          description: Is total number of entries per user limit enabled
+        limitEntriesPerUser:
+          type: integer
+          title: Limitentriesperuser
+          description: The amount of entries that can be submitted per user
+      type: object
+      required:
+      - enabled
+      - limitEntriesPerUser
+      title: LimitEntriesPerUser
+    FormYesNoOptionModel:
+      properties:
+        yesNoOptionId:
+          type: integer
+          title: Yesnooptionid
+          description: The answer option ID
+        text:
+          type: string
+          title: Text
+          description: The answer text
+      type: object
+      required:
+      - yesNoOptionId
+      - text
+      title: FormYesNoOptionModel
+    TaskQuestion:
       properties:
         questionId:
           type: string
@@ -138,7 +168,7 @@ components:
         questionType:
           type: string
           enum:
-          - emailAddress
+          - task
           title: Questiontype
           description: The type of the question
       type: object
@@ -149,7 +179,229 @@ components:
       - locationRequired
       - submissionRequired
       - questionType
-      title: EmailQuestion
+      title: TaskQuestion
+    LimitAdminsWhoCanEdit:
+      properties:
+        enabled:
+          type: boolean
+          title: Enabled
+          description: Indication if the limit of which admins can edit the Manager Field is enabled
+        directManagerPermitted:
+          type: boolean
+          title: Directmanagerpermitted
+          description: Indication if the direct manager of the user who submitted the form can edit the manager field
+        specificUsersEnabled:
+          type: boolean
+          title: Specificusersenabled
+          description: Indication if there are specific admins permitted to edit the manager field
+        adminsWhoCanEdit:
+          items:
+            type: integer
+          type: array
+          title: Adminswhocanedit
+          description: List of user IDs of admins that can change this Manager Field
+      type: object
+      required:
+      - enabled
+      - directManagerPermitted
+      - specificUsersEnabled
+      - adminsWhoCanEdit
+      title: LimitAdminsWhoCanEdit
+    DateManagerField:
+      properties:
+        managerFieldId:
+          type: string
+          title: Managerfieldid
+          description: The Manager Field's ID
+        name:
+          type: string
+          title: Name
+          description: The Manager Field's name
+        mobileUsersCanSee:
+          type: boolean
+          title: Mobileuserscansee
+          description: Indication if mobile users can see the Manager Field
+        mobileUsersNotifyWhenChanges:
+          type: boolean
+          title: Mobileusersnotifywhenchanges
+          description: Indication if mobile users will be notified if the Manager Field changes
+        adminsWhoCanEdit:
+          allOf:
+          - $ref: '#/components/schemas/LimitAdminsWhoCanEdit'
+          title: Adminswhocanedit
+          description: ' Limit the admins who can edit this manager field. Owners can always edit the manager field.'
+        managerFieldType:
+          type: string
+          enum:
+          - date
+          title: Managerfieldtype
+          description: The Manager Field's type
+      type: object
+      required:
+      - managerFieldId
+      - name
+      - mobileUsersCanSee
+      - mobileUsersNotifyWhenChanges
+      - adminsWhoCanEdit
+      - managerFieldType
+      title: DateManagerField
+    ScannerQuestion:
+      properties:
+        questionId:
+          type: string
+          title: Questionid
+          description: The question's ID
+        title:
+          type: string
+          title: Title
+          description: The question's title
+        description:
+          type: string
+          title: Description
+          description: The question's description
+        locationRequired:
+          type: boolean
+          title: Locationrequired
+          description: Indication if the gps location is required or not
+        submissionRequired:
+          type: boolean
+          title: Submissionrequired
+          description: Indication if this question needs to be filled to be able to submit the form
+        questionType:
+          type: string
+          enum:
+          - scanDocument
+          title: Questiontype
+          description: The type of the question
+        isMultipleImageUploadAllowed:
+          type: boolean
+          title: Ismultipleimageuploadallowed
+          description: Indicates if multiple uploads is enabled
+        isCameraEnabled:
+          type: boolean
+          title: Iscameraenabled
+          description: Indicates if taking a picture through camera is enabled
+        isGalleryEnabled:
+          type: boolean
+          title: Isgalleryenabled
+          description: Indicates if choosing a picture through gallery is enabled
+      type: object
+      required:
+      - questionId
+      - title
+      - description
+      - locationRequired
+      - submissionRequired
+      - questionType
+      - isMultipleImageUploadAllowed
+      - isCameraEnabled
+      - isGalleryEnabled
+      title: ScannerQuestion
+    FileManagerField:
+      properties:
+        managerFieldId:
+          type: string
+          title: Managerfieldid
+          description: The Manager Field's ID
+        name:
+          type: string
+          title: Name
+          description: The Manager Field's name
+        mobileUsersCanSee:
+          type: boolean
+          title: Mobileuserscansee
+          description: Indication if mobile users can see the Manager Field
+        mobileUsersNotifyWhenChanges:
+          type: boolean
+          title: Mobileusersnotifywhenchanges
+          description: Indication if mobile users will be notified if the Manager Field changes
+        adminsWhoCanEdit:
+          allOf:
+          - $ref: '#/components/schemas/LimitAdminsWhoCanEdit'
+          title: Adminswhocanedit
+          description: ' Limit the admins who can edit this manager field. Owners can always edit the manager field.'
+        managerFieldType:
+          type: string
+          enum:
+          - file
+          title: Managerfieldtype
+          description: The Manager Field's type
+      type: object
+      required:
+      - managerFieldId
+      - name
+      - mobileUsersCanSee
+      - mobileUsersNotifyWhenChanges
+      - adminsWhoCanEdit
+      - managerFieldType
+      title: FileManagerField
+    VideoQuestion:
+      properties:
+        questionId:
+          type: string
+          title: Questionid
+          description: The question's ID
+        title:
+          type: string
+          title: Title
+          description: The question's title
+        description:
+          type: string
+          title: Description
+          description: The question's description
+        locationRequired:
+          type: boolean
+          title: Locationrequired
+          description: Indication if the gps location is required or not
+        submissionRequired:
+          type: boolean
+          title: Submissionrequired
+          description: Indication if this question needs to be filled to be able to submit the form
+        questionType:
+          type: string
+          enum:
+          - video
+          title: Questiontype
+          description: The type of the question
+        isMultipleVideoUploadAllowed:
+          type: boolean
+          title: Ismultiplevideouploadallowed
+          description: Indicates if multiple uploads is enabled
+        isCameraEnabled:
+          type: boolean
+          title: Iscameraenabled
+          description: Indicates if recording a video through camera is enabled
+        isGalleryEnabled:
+          type: boolean
+          title: Isgalleryenabled
+          description: Indicates if choosing a video through gallery is enabled
+      type: object
+      required:
+      - questionId
+      - title
+      - description
+      - locationRequired
+      - submissionRequired
+      - questionType
+      - isMultipleVideoUploadAllowed
+      - isCameraEnabled
+      - isGalleryEnabled
+      title: VideoQuestion
+    LimitEntriesUntilTimestamp:
+      properties:
+        enabled:
+          type: boolean
+          title: Enabled
+          description: Is time limit until when entries can be submitted enabled
+        limitEntriesUntilTimestamp:
+          type: integer
+          title: Limitentriesuntiltimestamp
+          description: The time limit indicating until when entries can be submitted
+      type: object
+      required:
+      - enabled
+      - limitEntriesUntilTimestamp
+      title: LimitEntriesUntilTimestamp
     RatingQuestion:
       properties:
         questionId:
@@ -207,6 +459,48 @@ components:
       - minValueText
       - maxValueText
       title: RatingQuestion
+    FileQuestion:
+      properties:
+        questionId:
+          type: string
+          title: Questionid
+          description: The question's ID
+        title:
+          type: string
+          title: Title
+          description: The question's title
+        description:
+          type: string
+          title: Description
+          description: The question's description
+        locationRequired:
+          type: boolean
+          title: Locationrequired
+          description: Indication if the gps location is required or not
+        submissionRequired:
+          type: boolean
+          title: Submissionrequired
+          description: Indication if this question needs to be filled to be able to submit the form
+        questionType:
+          type: string
+          enum:
+          - files
+          title: Questiontype
+          description: The type of the question
+        isMultipleFileUploadAllowed:
+          type: boolean
+          title: Ismultiplefileuploadallowed
+          description: Indicates if multiple file uploads is enabled
+      type: object
+      required:
+      - questionId
+      - title
+      - description
+      - locationRequired
+      - submissionRequired
+      - questionType
+      - isMultipleFileUploadAllowed
+      title: FileQuestion
     FormulaQuestion:
       properties:
         questionId:
@@ -249,22 +543,174 @@ components:
       - questionType
       - formulaExpression
       title: FormulaQuestion
-    PagingResponseModel:
+    LocationQuestion:
       properties:
-        offset:
-          type: integer
-          minimum: 0.0
-          title: Offset
-          description: The resource offset of the last successfully read resource will be returned as the paging.offset JSON property of a paginated response containing more results
-        total:
-          type: integer
-          minimum: 0.0
-          title: Total
-          description: Total number of resources matching the request, ignoring pagination. Use this to retrieve the full count without paginating through every page. Only populated by endpoints that compute it.
+        questionId:
+          type: string
+          title: Questionid
+          description: The question's ID
+        title:
+          type: string
+          title: Title
+          description: The question's title
+        description:
+          type: string
+          title: Description
+          description: The question's description
+        locationRequired:
+          type: boolean
+          title: Locationrequired
+          description: Indication if the gps location is required or not
+        submissionRequired:
+          type: boolean
+          title: Submissionrequired
+          description: Indication if this question needs to be filled to be able to submit the form
+        questionType:
+          type: string
+          enum:
+          - location
+          title: Questiontype
+          description: The type of the question
+        canSearchLocation:
+          type: boolean
+          title: Cansearchlocation
+          description: Indication if location search is enabled
       type: object
       required:
-      - offset
-      title: PagingResponseModel
+      - questionId
+      - title
+      - description
+      - locationRequired
+      - submissionRequired
+      - questionType
+      - canSearchLocation
+      title: LocationQuestion
+    GroupQuestion:
+      properties:
+        questionId:
+          type: string
+          title: Questionid
+          description: The question's ID
+        title:
+          type: string
+          title: Title
+          description: The question's title
+        description:
+          type: string
+          title: Description
+          description: The question's description
+        questionType:
+          type: string
+          enum:
+          - group
+          title: Questiontype
+          description: The type of the question
+        isAdditionalAnswersEnabled:
+          type: boolean
+          title: Isadditionalanswersenabled
+          description: Can you submit multiple answers of this group?
+          default: false
+        questions:
+          items:
+            oneOf:
+            - $ref: '#/components/schemas/MultipleChoiceQuestion'
+            - $ref: '#/components/schemas/NumberQuestion'
+            - $ref: '#/components/schemas/PhoneNumberQuestion'
+            - $ref: '#/components/schemas/OpenEndedQuestion'
+            - $ref: '#/components/schemas/EmailQuestion'
+            - $ref: '#/components/schemas/YesNoQuestion'
+            - $ref: '#/components/schemas/ImageSelectionQuestion'
+            - $ref: '#/components/schemas/ImageQuestion'
+            - $ref: '#/components/schemas/ScannerQuestion'
+            - $ref: '#/components/schemas/LocationQuestion'
+            - $ref: '#/components/schemas/AudioRecordingQuestion'
+            - $ref: '#/components/schemas/VideoQuestion'
+            - $ref: '#/components/schemas/TaskQuestion'
+            - $ref: '#/components/schemas/DateQuestion'
+            - $ref: '#/components/schemas/RatingQuestion'
+            - $ref: '#/components/schemas/SignatureQuestion'
+            - $ref: '#/components/schemas/FileQuestion'
+            - $ref: '#/components/schemas/SliderQuestion'
+            - $ref: '#/components/schemas/FormulaQuestion'
+            - $ref: '#/components/schemas/DescriptionQuestion'
+            discriminator:
+              propertyName: questionType
+              mapping:
+                multipleChoice: '#/components/schemas/MultipleChoiceQuestion'
+                number: '#/components/schemas/NumberQuestion'
+                phoneNumber: '#/components/schemas/PhoneNumberQuestion'
+                openEnded: '#/components/schemas/OpenEndedQuestion'
+                emailAddress: '#/components/schemas/EmailQuestion'
+                yesNo: '#/components/schemas/YesNoQuestion'
+                imageSelection: '#/components/schemas/ImageSelectionQuestion'
+                image: '#/components/schemas/ImageQuestion'
+                scanDocument: '#/components/schemas/ScannerQuestion'
+                location: '#/components/schemas/LocationQuestion'
+                audioRecording: '#/components/schemas/AudioRecordingQuestion'
+                video: '#/components/schemas/VideoQuestion'
+                task: '#/components/schemas/TaskQuestion'
+                datetime: '#/components/schemas/DateQuestion'
+                rating: '#/components/schemas/RatingQuestion'
+                signature: '#/components/schemas/SignatureQuestion'
+                files: '#/components/schemas/FileQuestion'
+                slider: '#/components/schemas/SliderQuestion'
+                formula: '#/components/schemas/FormulaQuestion'
+                description: '#/components/schemas/DescriptionQuestion'
+          type: array
+          title: Questions
+          description: The questions that are in the group
+          default: []
+      type: object
+      required:
+      - questionId
+      - title
+      - description
+      - questionType
+      title: GroupQuestion
+    YesNoQuestion:
+      properties:
+        questionId:
+          type: string
+          title: Questionid
+          description: The question's ID
+        title:
+          type: string
+          title: Title
+          description: The question's title
+        description:
+          type: string
+          title: Description
+          description: The question's description
+        locationRequired:
+          type: boolean
+          title: Locationrequired
+          description: Indication if the gps location is required or not
+        submissionRequired:
+          type: boolean
+          title: Submissionrequired
+          description: Indication if this question needs to be filled to be able to submit the form
+        questionType:
+          type: string
+          enum:
+          - yesNo
+          title: Questiontype
+          description: The type of the question
+        allAnswers:
+          items:
+            $ref: '#/components/schemas/FormYesNoOptionModel'
+          type: array
+          title: Allanswers
+          description: Lise of the answer options
+      type: object
+      required:
+      - questionId
+      - title
+      - description
+      - locationRequired
+      - submissionRequired
+      - questionType
+      - allAnswers
+      title: YesNoQuestion
     DescriptionQuestion:
       properties:
         questionId:
@@ -292,43 +738,22 @@ components:
       - description
       - questionType
       title: DescriptionQuestion
-    PhoneNumberQuestion:
+    PagingResponseModel:
       properties:
-        questionId:
-          type: string
-          title: Questionid
-          description: The question's ID
-        title:
-          type: string
-          title: Title
-          description: The question's title
-        description:
-          type: string
-          title: Description
-          description: The question's description
-        locationRequired:
-          type: boolean
-          title: Locationrequired
-          description: Indication if the gps location is required or not
-        submissionRequired:
-          type: boolean
-          title: Submissionrequired
-          description: Indication if this question needs to be filled to be able to submit the form
-        questionType:
-          type: string
-          enum:
-          - phoneNumber
-          title: Questiontype
-          description: The type of the question
+        offset:
+          type: integer
+          minimum: 0.0
+          title: Offset
+          description: The resource offset of the last successfully read resource will be returned as the paging.offset JSON property of a paginated response containing more results
+        total:
+          type: integer
+          minimum: 0.0
+          title: Total
+          description: Total number of resources matching the request, ignoring pagination. Use this to retrieve the full count without paginating through every page. Only populated by endpoints that compute it.
       type: object
       required:
-      - questionId
-      - title
-      - description
-      - locationRequired
-      - submissionRequired
-      - questionType
-      title: PhoneNumberQuestion
+      - offset
+      title: PagingResponseModel
     FormSettings:
       properties:
         enableUsersToDownloadPdf:
@@ -384,36 +809,7 @@ components:
       - isAnonymous
       - managerFields
       title: FormSettings
-    PaginatedBaseResponse_FormsGetResponse_:
-      properties:
-        requestId:
-          type: string
-          title: Requestid
-        data:
-          $ref: '#/components/schemas/FormsGetResponse'
-        paging:
-          $ref: '#/components/schemas/PagingResponseModel'
-      type: object
-      required:
-      - data
-      - paging
-      title: PaginatedBaseResponse[FormsGetResponse]
-    FormYesNoOptionModel:
-      properties:
-        yesNoOptionId:
-          type: integer
-          title: Yesnooptionid
-          description: The answer option ID
-        text:
-          type: string
-          title: Text
-          description: The answer text
-      type: object
-      required:
-      - yesNoOptionId
-      - text
-      title: FormYesNoOptionModel
-    TaskQuestion:
+    OpenEndedQuestion:
       properties:
         questionId:
           type: string
@@ -438,7 +834,7 @@ components:
         questionType:
           type: string
           enum:
-          - task
+          - openEnded
           title: Questiontype
           description: The type of the question
       type: object
@@ -449,8 +845,8 @@ components:
       - locationRequired
       - submissionRequired
       - questionType
-      title: TaskQuestion
-    YesNoQuestion:
+      title: OpenEndedQuestion
+    MultipleChoiceQuestion:
       properties:
         questionId:
           type: string
@@ -475,15 +871,23 @@ components:
         questionType:
           type: string
           enum:
-          - yesNo
+          - multipleChoice
           title: Questiontype
           description: The type of the question
         allAnswers:
           items:
-            $ref: '#/components/schemas/FormYesNoOptionModel'
+            $ref: '#/components/schemas/FormMultipleChoiceOptionModel'
           type: array
           title: Allanswers
-          description: Lise of the answer options
+          description: List of all the options, including deleted options
+        isMultipleSelect:
+          type: boolean
+          title: Ismultipleselect
+          description: Indication if multiple selection is enabled
+        displaySortedAnswers:
+          type: boolean
+          title: Displaysortedanswers
+          description: Indicates if display sorted answers is enabled
       type: object
       required:
       - questionId
@@ -493,7 +897,65 @@ components:
       - submissionRequired
       - questionType
       - allAnswers
-      title: YesNoQuestion
+      - isMultipleSelect
+      - displaySortedAnswers
+      title: MultipleChoiceQuestion
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    SliderQuestion:
+      properties:
+        questionId:
+          type: string
+          title: Questionid
+          description: The question's ID
+        title:
+          type: string
+          title: Title
+          description: The question's title
+        description:
+          type: string
+          title: Description
+          description: The question's description
+        locationRequired:
+          type: boolean
+          title: Locationrequired
+          description: Indication if the gps location is required or not
+        submissionRequired:
+          type: boolean
+          title: Submissionrequired
+          description: Indication if this question needs to be filled to be able to submit the form
+        questionType:
+          type: string
+          enum:
+          - slider
+          title: Questiontype
+          description: The type of the question
+        minValue:
+          type: integer
+          title: Minvalue
+          description: Minimum value in slider
+        maxValue:
+          type: integer
+          title: Maxvalue
+          description: Maximum value in slider
+      type: object
+      required:
+      - questionId
+      - title
+      - description
+      - locationRequired
+      - submissionRequired
+      - questionType
+      - minValue
+      - maxValue
+      title: SliderQuestion
     FormResponse:
       properties:
         formId:
@@ -577,73 +1039,6 @@ components:
       - questions
       - settings
       title: FormResponse
-    FormMultipleChoiceOptionModel:
-      properties:
-        multipleChoiceOptionId:
-          type: string
-          title: Multiplechoiceoptionid
-          description: The ID of the multiple choice option
-        text:
-          type: string
-          title: Text
-          description: The text of the option
-      type: object
-      required:
-      - multipleChoiceOptionId
-      - text
-      title: FormMultipleChoiceOptionModel
-    OpenEndedQuestion:
-      properties:
-        questionId:
-          type: string
-          title: Questionid
-          description: The question's ID
-        title:
-          type: string
-          title: Title
-          description: The question's title
-        description:
-          type: string
-          title: Description
-          description: The question's description
-        locationRequired:
-          type: boolean
-          title: Locationrequired
-          description: Indication if the gps location is required or not
-        submissionRequired:
-          type: boolean
-          title: Submissionrequired
-          description: Indication if this question needs to be filled to be able to submit the form
-        questionType:
-          type: string
-          enum:
-          - openEnded
-          title: Questiontype
-          description: The type of the question
-      type: object
-      required:
-      - questionId
-      - title
-      - description
-      - locationRequired
-      - submissionRequired
-      - questionType
-      title: OpenEndedQuestion
-    LimitEntriesUntilTimestamp:
-      properties:
-        enabled:
-          type: boolean
-          title: Enabled
-          description: Is time limit until when entries can be submitted enabled
-        limitEntriesUntilTimestamp:
-          type: integer
-          title: Limitentriesuntiltimestamp
-          description: The time limit indicating until when entries can be submitted
-      type: object
-      required:
-      - enabled
-      - limitEntriesUntilTimestamp
-      title: LimitEntriesUntilTimestamp
     v2__features__workflow__external_api__v1__models__forms_models__ManagerFieldStatus:
       properties:
         managerFieldStatusId:
@@ -664,7 +1059,7 @@ components:
       - name
       - color
       title: ManagerFieldStatus
-    SliderQuestion:
+    SignatureQuestion:
       properties:
         questionId:
           type: string
@@ -689,17 +1084,9 @@ components:
         questionType:
           type: string
           enum:
-          - slider
+          - signature
           title: Questiontype
           description: The type of the question
-        minValue:
-          type: integer
-          title: Minvalue
-          description: Minimum value in slider
-        maxValue:
-          type: integer
-          title: Maxvalue
-          description: Maximum value in slider
       type: object
       required:
       - questionId
@@ -708,370 +1095,7 @@ components:
       - locationRequired
       - submissionRequired
       - questionType
-      - minValue
-      - maxValue
-      title: SliderQuestion
-    NoteManagerField:
-      properties:
-        managerFieldId:
-          type: string
-          title: Managerfieldid
-          description: The Manager Field's ID
-        name:
-          type: string
-          title: Name
-          description: The Manager Field's name
-        mobileUsersCanSee:
-          type: boolean
-          title: Mobileuserscansee
-          description: Indication if mobile users can see the Manager Field
-        mobileUsersNotifyWhenChanges:
-          type: boolean
-          title: Mobileusersnotifywhenchanges
-          description: Indication if mobile users will be notified if the Manager Field changes
-        adminsWhoCanEdit:
-          allOf:
-          - $ref: '#/components/schemas/LimitAdminsWhoCanEdit'
-          title: Adminswhocanedit
-          description: ' Limit the admins who can edit this manager field. Owners can always edit the manager field.'
-        managerFieldType:
-          type: string
-          enum:
-          - note
-          title: Managerfieldtype
-          description: The Manager Field's type
-      type: object
-      required:
-      - managerFieldId
-      - name
-      - mobileUsersCanSee
-      - mobileUsersNotifyWhenChanges
-      - adminsWhoCanEdit
-      - managerFieldType
-      title: NoteManagerField
-    DateManagerField:
-      properties:
-        managerFieldId:
-          type: string
-          title: Managerfieldid
-          description: The Manager Field's ID
-        name:
-          type: string
-          title: Name
-          description: The Manager Field's name
-        mobileUsersCanSee:
-          type: boolean
-          title: Mobileuserscansee
-          description: Indication if mobile users can see the Manager Field
-        mobileUsersNotifyWhenChanges:
-          type: boolean
-          title: Mobileusersnotifywhenchanges
-          description: Indication if mobile users will be notified if the Manager Field changes
-        adminsWhoCanEdit:
-          allOf:
-          - $ref: '#/components/schemas/LimitAdminsWhoCanEdit'
-          title: Adminswhocanedit
-          description: ' Limit the admins who can edit this manager field. Owners can always edit the manager field.'
-        managerFieldType:
-          type: string
-          enum:
-          - date
-          title: Managerfieldtype
-          description: The Manager Field's type
-      type: object
-      required:
-      - managerFieldId
-      - name
-      - mobileUsersCanSee
-      - mobileUsersNotifyWhenChanges
-      - adminsWhoCanEdit
-      - managerFieldType
-      title: DateManagerField
-    FileManagerField:
-      properties:
-        managerFieldId:
-          type: string
-          title: Managerfieldid
-          description: The Manager Field's ID
-        name:
-          type: string
-          title: Name
-          description: The Manager Field's name
-        mobileUsersCanSee:
-          type: boolean
-          title: Mobileuserscansee
-          description: Indication if mobile users can see the Manager Field
-        mobileUsersNotifyWhenChanges:
-          type: boolean
-          title: Mobileusersnotifywhenchanges
-          description: Indication if mobile users will be notified if the Manager Field changes
-        adminsWhoCanEdit:
-          allOf:
-          - $ref: '#/components/schemas/LimitAdminsWhoCanEdit'
-          title: Adminswhocanedit
-          description: ' Limit the admins who can edit this manager field. Owners can always edit the manager field.'
-        managerFieldType:
-          type: string
-          enum:
-          - file
-          title: Managerfieldtype
-          description: The Manager Field's type
-      type: object
-      required:
-      - managerFieldId
-      - name
-      - mobileUsersCanSee
-      - mobileUsersNotifyWhenChanges
-      - adminsWhoCanEdit
-      - managerFieldType
-      title: FileManagerField
-    SignatureManagerField:
-      properties:
-        managerFieldId:
-          type: string
-          title: Managerfieldid
-          description: The Manager Field's ID
-        name:
-          type: string
-          title: Name
-          description: The Manager Field's name
-        mobileUsersCanSee:
-          type: boolean
-          title: Mobileuserscansee
-          description: Indication if mobile users can see the Manager Field
-        mobileUsersNotifyWhenChanges:
-          type: boolean
-          title: Mobileusersnotifywhenchanges
-          description: Indication if mobile users will be notified if the Manager Field changes
-        adminsWhoCanEdit:
-          allOf:
-          - $ref: '#/components/schemas/LimitAdminsWhoCanEdit'
-          title: Adminswhocanedit
-          description: ' Limit the admins who can edit this manager field. Owners can always edit the manager field.'
-        managerFieldType:
-          type: string
-          enum:
-          - signature
-          title: Managerfieldtype
-          description: The Manager Field's type
-      type: object
-      required:
-      - managerFieldId
-      - name
-      - mobileUsersCanSee
-      - mobileUsersNotifyWhenChanges
-      - adminsWhoCanEdit
-      - managerFieldType
-      title: SignatureManagerField
-    StatusManagerField:
-      properties:
-        managerFieldId:
-          type: string
-          title: Managerfieldid
-          description: The Manager Field's ID
-        name:
-          type: string
-          title: Name
-          description: The Manager Field's name
-        mobileUsersCanSee:
-          type: boolean
-          title: Mobileuserscansee
-          description: Indication if mobile users can see the Manager Field
-        mobileUsersNotifyWhenChanges:
-          type: boolean
-          title: Mobileusersnotifywhenchanges
-          description: Indication if mobile users will be notified if the Manager Field changes
-        adminsWhoCanEdit:
-          allOf:
-          - $ref: '#/components/schemas/LimitAdminsWhoCanEdit'
-          title: Adminswhocanedit
-          description: ' Limit the admins who can edit this manager field. Owners can always edit the manager field.'
-        managerFieldType:
-          type: string
-          enum:
-          - status
-          title: Managerfieldtype
-          description: The Manager Field's type
-        statuses:
-          items:
-            $ref: '#/components/schemas/v2__features__workflow__external_api__v1__models__forms_models__ManagerFieldStatus'
-          type: array
-          title: Statuses
-          description: List of Manager Field's possible statuses
-      type: object
-      required:
-      - managerFieldId
-      - name
-      - mobileUsersCanSee
-      - mobileUsersNotifyWhenChanges
-      - adminsWhoCanEdit
-      - managerFieldType
-      - statuses
-      title: StatusManagerField
-    LimitEntriesPerUser:
-      properties:
-        enabled:
-          type: boolean
-          title: Enabled
-          description: Is total number of entries per user limit enabled
-        limitEntriesPerUser:
-          type: integer
-          title: Limitentriesperuser
-          description: The amount of entries that can be submitted per user
-      type: object
-      required:
-      - enabled
-      - limitEntriesPerUser
-      title: LimitEntriesPerUser
-    FromImageSelectionOptionModel:
-      properties:
-        imageSelectionOptionId:
-          type: string
-          title: Imageselectionoptionid
-          description: The answer selection option ID
-        text:
-          type: string
-          title: Text
-          description: The option text
-        image:
-          type: string
-          title: Image
-          description: The URL to the image
-        isDeleted:
-          type: boolean
-          title: Isdeleted
-          description: Indication if this option is deleted
-      type: object
-      required:
-      - imageSelectionOptionId
-      - text
-      - image
-      - isDeleted
-      title: FromImageSelectionOptionModel
-    FormsGetResponse:
-      properties:
-        forms:
-          items:
-            $ref: '#/components/schemas/FormResponse'
-          type: array
-          title: Forms
-          description: List of company's forms
-      type: object
-      required:
-      - forms
-      title: FormsGetResponse
-    GroupQuestion:
-      properties:
-        questionId:
-          type: string
-          title: Questionid
-          description: The question's ID
-        title:
-          type: string
-          title: Title
-          description: The question's title
-        description:
-          type: string
-          title: Description
-          description: The question's description
-        questionType:
-          type: string
-          enum:
-          - group
-          title: Questiontype
-          description: The type of the question
-        isAdditionalAnswersEnabled:
-          type: boolean
-          title: Isadditionalanswersenabled
-          description: Can you submit multiple answers of this group?
-          default: false
-        questions:
-          items:
-            oneOf:
-            - $ref: '#/components/schemas/MultipleChoiceQuestion'
-            - $ref: '#/components/schemas/NumberQuestion'
-            - $ref: '#/components/schemas/PhoneNumberQuestion'
-            - $ref: '#/components/schemas/OpenEndedQuestion'
-            - $ref: '#/components/schemas/EmailQuestion'
-            - $ref: '#/components/schemas/YesNoQuestion'
-            - $ref: '#/components/schemas/ImageSelectionQuestion'
-            - $ref: '#/components/schemas/ImageQuestion'
-            - $ref: '#/components/schemas/ScannerQuestion'
-            - $ref: '#/components/schemas/LocationQuestion'
-            - $ref: '#/components/schemas/AudioRecordingQuestion'
-            - $ref: '#/components/schemas/VideoQuestion'
-            - $ref: '#/components/schemas/TaskQuestion'
-            - $ref: '#/components/schemas/DateQuestion'
-            - $ref: '#/components/schemas/RatingQuestion'
-            - $ref: '#/components/schemas/SignatureQuestion'
-            - $ref: '#/components/schemas/FileQuestion'
-            - $ref: '#/components/schemas/SliderQuestion'
-            - $ref: '#/components/schemas/FormulaQuestion'
-            - $ref: '#/components/schemas/DescriptionQuestion'
-            discriminator:
-              propertyName: questionType
-              mapping:
-                multipleChoice: '#/components/schemas/MultipleChoiceQuestion'
-                number: '#/components/schemas/NumberQuestion'
-                phoneNumber: '#/components/schemas/PhoneNumberQuestion'
-                openEnded: '#/components/schemas/OpenEndedQuestion'
-                emailAddress: '#/components/schemas/EmailQuestion'
-                yesNo: '#/components/schemas/YesNoQuestion'
-                imageSelection: '#/components/schemas/ImageSelectionQuestion'
-                image: '#/components/schemas/ImageQuestion'
-                scanDocument: '#/components/schemas/ScannerQuestion'
-                location: '#/components/schemas/LocationQuestion'
-                audioRecording: '#/components/schemas/AudioRecordingQuestion'
-                video: '#/components/schemas/VideoQuestion'
-                task: '#/components/schemas/TaskQuestion'
-                datetime: '#/components/schemas/DateQuestion'
-                rating: '#/components/schemas/RatingQuestion'
-                signature: '#/components/schemas/SignatureQuestion'
-                files: '#/components/schemas/FileQuestion'
-                slider: '#/components/schemas/SliderQuestion'
-                formula: '#/components/schemas/FormulaQuestion'
-                description: '#/components/schemas/DescriptionQuestion'
-          type: array
-          title: Questions
-          description: The questions that are in the group
-          default: []
-      type: object
-      required:
-      - questionId
-      - title
-      - description
-      - questionType
-      title: GroupQuestion
-    ValidationError:
-      properties:
-        loc:
-          items:
-            anyOf:
-            - type: string
-            - type: integer
-          type: array
-          title: Location
-        msg:
-          type: string
-          title: Message
-        type:
-          type: string
-          title: Error Type
-      type: object
-      required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
+      title: SignatureQuestion
     ImageSelectionQuestion:
       properties:
         questionId:
@@ -1121,6 +1145,43 @@ components:
       - isMultipleSelection
       - options
       title: ImageSelectionQuestion
+    EmailQuestion:
+      properties:
+        questionId:
+          type: string
+          title: Questionid
+          description: The question's ID
+        title:
+          type: string
+          title: Title
+          description: The question's title
+        description:
+          type: string
+          title: Description
+          description: The question's description
+        locationRequired:
+          type: boolean
+          title: Locationrequired
+          description: Indication if the gps location is required or not
+        submissionRequired:
+          type: boolean
+          title: Submissionrequired
+          description: Indication if this question needs to be filled to be able to submit the form
+        questionType:
+          type: string
+          enum:
+          - emailAddress
+          title: Questiontype
+          description: The type of the question
+      type: object
+      required:
+      - questionId
+      - title
+      - description
+      - locationRequired
+      - submissionRequired
+      - questionType
+      title: EmailQuestion
     DateQuestion:
       properties:
         questionId:
@@ -1168,306 +1229,51 @@ components:
       - isDateActive
       - isTimeActive
       title: DateQuestion
-    FileQuestion:
+    StatusManagerField:
       properties:
-        questionId:
+        managerFieldId:
           type: string
-          title: Questionid
-          description: The question's ID
-        title:
+          title: Managerfieldid
+          description: The Manager Field's ID
+        name:
           type: string
-          title: Title
-          description: The question's title
-        description:
-          type: string
-          title: Description
-          description: The question's description
-        locationRequired:
+          title: Name
+          description: The Manager Field's name
+        mobileUsersCanSee:
           type: boolean
-          title: Locationrequired
-          description: Indication if the gps location is required or not
-        submissionRequired:
+          title: Mobileuserscansee
+          description: Indication if mobile users can see the Manager Field
+        mobileUsersNotifyWhenChanges:
           type: boolean
-          title: Submissionrequired
-          description: Indication if this question needs to be filled to be able to submit the form
-        questionType:
+          title: Mobileusersnotifywhenchanges
+          description: Indication if mobile users will be notified if the Manager Field changes
+        adminsWhoCanEdit:
+          allOf:
+          - $ref: '#/components/schemas/LimitAdminsWhoCanEdit'
+          title: Adminswhocanedit
+          description: ' Limit the admins who can edit this manager field. Owners can always edit the manager field.'
+        managerFieldType:
           type: string
           enum:
-          - files
-          title: Questiontype
-          description: The type of the question
-        isMultipleFileUploadAllowed:
-          type: boolean
-          title: Ismultiplefileuploadallowed
-          description: Indicates if multiple file uploads is enabled
-      type: object
-      required:
-      - questionId
-      - title
-      - description
-      - locationRequired
-      - submissionRequired
-      - questionType
-      - isMultipleFileUploadAllowed
-      title: FileQuestion
-    LimitTotalEntries:
-      properties:
-        enabled:
-          type: boolean
-          title: Enabled
-          description: Is total number of entries limit enabled
-        limitTotalEntries:
-          type: integer
-          title: Limittotalentries
-          description: The amount of entries that can be submitted
-      type: object
-      required:
-      - enabled
-      - limitTotalEntries
-      title: LimitTotalEntries
-    SignatureQuestion:
-      properties:
-        questionId:
-          type: string
-          title: Questionid
-          description: The question's ID
-        title:
-          type: string
-          title: Title
-          description: The question's title
-        description:
-          type: string
-          title: Description
-          description: The question's description
-        locationRequired:
-          type: boolean
-          title: Locationrequired
-          description: Indication if the gps location is required or not
-        submissionRequired:
-          type: boolean
-          title: Submissionrequired
-          description: Indication if this question needs to be filled to be able to submit the form
-        questionType:
-          type: string
-          enum:
-          - signature
-          title: Questiontype
-          description: The type of the question
-      type: object
-      required:
-      - questionId
-      - title
-      - description
-      - locationRequired
-      - submissionRequired
-      - questionType
-      title: SignatureQuestion
-    VideoQuestion:
-      properties:
-        questionId:
-          type: string
-          title: Questionid
-          description: The question's ID
-        title:
-          type: string
-          title: Title
-          description: The question's title
-        description:
-          type: string
-          title: Description
-          description: The question's description
-        locationRequired:
-          type: boolean
-          title: Locationrequired
-          description: Indication if the gps location is required or not
-        submissionRequired:
-          type: boolean
-          title: Submissionrequired
-          description: Indication if this question needs to be filled to be able to submit the form
-        questionType:
-          type: string
-          enum:
-          - video
-          title: Questiontype
-          description: The type of the question
-        isMultipleVideoUploadAllowed:
-          type: boolean
-          title: Ismultiplevideouploadallowed
-          description: Indicates if multiple uploads is enabled
-        isCameraEnabled:
-          type: boolean
-          title: Iscameraenabled
-          description: Indicates if recording a video through camera is enabled
-        isGalleryEnabled:
-          type: boolean
-          title: Isgalleryenabled
-          description: Indicates if choosing a video through gallery is enabled
-      type: object
-      required:
-      - questionId
-      - title
-      - description
-      - locationRequired
-      - submissionRequired
-      - questionType
-      - isMultipleVideoUploadAllowed
-      - isCameraEnabled
-      - isGalleryEnabled
-      title: VideoQuestion
-    MultipleChoiceQuestion:
-      properties:
-        questionId:
-          type: string
-          title: Questionid
-          description: The question's ID
-        title:
-          type: string
-          title: Title
-          description: The question's title
-        description:
-          type: string
-          title: Description
-          description: The question's description
-        locationRequired:
-          type: boolean
-          title: Locationrequired
-          description: Indication if the gps location is required or not
-        submissionRequired:
-          type: boolean
-          title: Submissionrequired
-          description: Indication if this question needs to be filled to be able to submit the form
-        questionType:
-          type: string
-          enum:
-          - multipleChoice
-          title: Questiontype
-          description: The type of the question
-        allAnswers:
+          - status
+          title: Managerfieldtype
+          description: The Manager Field's type
+        statuses:
           items:
-            $ref: '#/components/schemas/FormMultipleChoiceOptionModel'
+            $ref: '#/components/schemas/v2__features__workflow__external_api__v1__models__forms_models__ManagerFieldStatus'
           type: array
-          title: Allanswers
-          description: List of all the options, including deleted options
-        isMultipleSelect:
-          type: boolean
-          title: Ismultipleselect
-          description: Indication if multiple selection is enabled
-        displaySortedAnswers:
-          type: boolean
-          title: Displaysortedanswers
-          description: Indicates if display sorted answers is enabled
+          title: Statuses
+          description: List of Manager Field's possible statuses
       type: object
       required:
-      - questionId
-      - title
-      - description
-      - locationRequired
-      - submissionRequired
-      - questionType
-      - allAnswers
-      - isMultipleSelect
-      - displaySortedAnswers
-      title: MultipleChoiceQuestion
-    APIResponse_FormResponse_:
-      properties:
-        requestId:
-          type: string
-          title: Requestid
-        data:
-          $ref: '#/components/schemas/FormResponse'
-      type: object
-      required:
-      - data
-      title: APIResponse[FormResponse]
-    NumberQuestion:
-      properties:
-        questionId:
-          type: string
-          title: Questionid
-          description: The question's ID
-        title:
-          type: string
-          title: Title
-          description: The question's title
-        description:
-          type: string
-          title: Description
-          description: The question's description
-        locationRequired:
-          type: boolean
-          title: Locationrequired
-          description: Indication if the gps location is required or not
-        submissionRequired:
-          type: boolean
-          title: Submissionrequired
-          description: Indication if this question needs to be filled to be able to submit the form
-        questionType:
-          type: string
-          enum:
-          - number
-          title: Questiontype
-          description: The type of the question
-      type: object
-      required:
-      - questionId
-      - title
-      - description
-      - locationRequired
-      - submissionRequired
-      - questionType
-      title: NumberQuestion
-    ScannerQuestion:
-      properties:
-        questionId:
-          type: string
-          title: Questionid
-          description: The question's ID
-        title:
-          type: string
-          title: Title
-          description: The question's title
-        description:
-          type: string
-          title: Description
-          description: The question's description
-        locationRequired:
-          type: boolean
-          title: Locationrequired
-          description: Indication if the gps location is required or not
-        submissionRequired:
-          type: boolean
-          title: Submissionrequired
-          description: Indication if this question needs to be filled to be able to submit the form
-        questionType:
-          type: string
-          enum:
-          - scanDocument
-          title: Questiontype
-          description: The type of the question
-        isMultipleImageUploadAllowed:
-          type: boolean
-          title: Ismultipleimageuploadallowed
-          description: Indicates if multiple uploads is enabled
-        isCameraEnabled:
-          type: boolean
-          title: Iscameraenabled
-          description: Indicates if taking a picture through camera is enabled
-        isGalleryEnabled:
-          type: boolean
-          title: Isgalleryenabled
-          description: Indicates if choosing a picture through gallery is enabled
-      type: object
-      required:
-      - questionId
-      - title
-      - description
-      - locationRequired
-      - submissionRequired
-      - questionType
-      - isMultipleImageUploadAllowed
-      - isCameraEnabled
-      - isGalleryEnabled
-      title: ScannerQuestion
+      - managerFieldId
+      - name
+      - mobileUsersCanSee
+      - mobileUsersNotifyWhenChanges
+      - adminsWhoCanEdit
+      - managerFieldType
+      - statuses
+      title: StatusManagerField
     ImageQuestion:
       properties:
         questionId:
@@ -1520,33 +1326,53 @@ components:
       - isCameraEnabled
       - isGalleryEnabled
       title: ImageQuestion
-    LimitAdminsWhoCanEdit:
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    LimitTotalEntries:
       properties:
         enabled:
           type: boolean
           title: Enabled
-          description: Indication if the limit of which admins can edit the Manager Field is enabled
-        directManagerPermitted:
-          type: boolean
-          title: Directmanagerpermitted
-          description: Indication if the direct manager of the user who submitted the form can edit the manager field
-        specificUsersEnabled:
-          type: boolean
-          title: Specificusersenabled
-          description: Indication if there are specific admins permitted to edit the manager field
-        adminsWhoCanEdit:
-          items:
-            type: integer
-          type: array
-          title: Adminswhocanedit
-          description: List of user IDs of admins that can change this Manager Field
+          description: Is total number of entries limit enabled
+        limitTotalEntries:
+          type: integer
+          title: Limittotalentries
+          description: The amount of entries that can be submitted
       type: object
       required:
       - enabled
-      - directManagerPermitted
-      - specificUsersEnabled
-      - adminsWhoCanEdit
-      title: LimitAdminsWhoCanEdit
+      - limitTotalEntries
+      title: LimitTotalEntries
+    APIResponse_FormResponse_:
+      properties:
+        requestId:
+          type: string
+          title: Requestid
+        data:
+          $ref: '#/components/schemas/FormResponse'
+      type: object
+      required:
+      - data
+      title: APIResponse[FormResponse]
     AudioRecordingQuestion:
       properties:
         questionId:
@@ -1584,7 +1410,7 @@ components:
       - submissionRequired
       - questionType
       title: AudioRecordingQuestion
-    LocationQuestion:
+    NumberQuestion:
       properties:
         questionId:
           type: string
@@ -1609,13 +1435,9 @@ components:
         questionType:
           type: string
           enum:
-          - location
+          - number
           title: Questiontype
           description: The type of the question
-        canSearchLocation:
-          type: boolean
-          title: Cansearchlocation
-          description: Indication if location search is enabled
       type: object
       required:
       - questionId
@@ -1624,8 +1446,58 @@ components:
       - locationRequired
       - submissionRequired
       - questionType
-      - canSearchLocation
-      title: LocationQuestion
+      title: NumberQuestion
+    PhoneNumberQuestion:
+      properties:
+        questionId:
+          type: string
+          title: Questionid
+          description: The question's ID
+        title:
+          type: string
+          title: Title
+          description: The question's title
+        description:
+          type: string
+          title: Description
+          description: The question's description
+        locationRequired:
+          type: boolean
+          title: Locationrequired
+          description: Indication if the gps location is required or not
+        submissionRequired:
+          type: boolean
+          title: Submissionrequired
+          description: Indication if this question needs to be filled to be able to submit the form
+        questionType:
+          type: string
+          enum:
+          - phoneNumber
+          title: Questiontype
+          description: The type of the question
+      type: object
+      required:
+      - questionId
+      - title
+      - description
+      - locationRequired
+      - submissionRequired
+      - questionType
+      title: PhoneNumberQuestion
+    PaginatedBaseResponse_FormsGetResponse_:
+      properties:
+        requestId:
+          type: string
+          title: Requestid
+        data:
+          $ref: '#/components/schemas/FormsGetResponse'
+        paging:
+          $ref: '#/components/schemas/PagingResponseModel'
+      type: object
+      required:
+      - data
+      - paging
+      title: PaginatedBaseResponse[FormsGetResponse]
     OwnerManagerField:
       properties:
         managerFieldId:
@@ -1664,6 +1536,134 @@ components:
       - adminsWhoCanEdit
       - managerFieldType
       title: OwnerManagerField
+    FromImageSelectionOptionModel:
+      properties:
+        imageSelectionOptionId:
+          type: string
+          title: Imageselectionoptionid
+          description: The answer selection option ID
+        text:
+          type: string
+          title: Text
+          description: The option text
+        image:
+          type: string
+          title: Image
+          description: The URL to the image
+        isDeleted:
+          type: boolean
+          title: Isdeleted
+          description: Indication if this option is deleted
+      type: object
+      required:
+      - imageSelectionOptionId
+      - text
+      - image
+      - isDeleted
+      title: FromImageSelectionOptionModel
+    FormsGetResponse:
+      properties:
+        forms:
+          items:
+            $ref: '#/components/schemas/FormResponse'
+          type: array
+          title: Forms
+          description: List of company's forms
+      type: object
+      required:
+      - forms
+      title: FormsGetResponse
+    SignatureManagerField:
+      properties:
+        managerFieldId:
+          type: string
+          title: Managerfieldid
+          description: The Manager Field's ID
+        name:
+          type: string
+          title: Name
+          description: The Manager Field's name
+        mobileUsersCanSee:
+          type: boolean
+          title: Mobileuserscansee
+          description: Indication if mobile users can see the Manager Field
+        mobileUsersNotifyWhenChanges:
+          type: boolean
+          title: Mobileusersnotifywhenchanges
+          description: Indication if mobile users will be notified if the Manager Field changes
+        adminsWhoCanEdit:
+          allOf:
+          - $ref: '#/components/schemas/LimitAdminsWhoCanEdit'
+          title: Adminswhocanedit
+          description: ' Limit the admins who can edit this manager field. Owners can always edit the manager field.'
+        managerFieldType:
+          type: string
+          enum:
+          - signature
+          title: Managerfieldtype
+          description: The Manager Field's type
+      type: object
+      required:
+      - managerFieldId
+      - name
+      - mobileUsersCanSee
+      - mobileUsersNotifyWhenChanges
+      - adminsWhoCanEdit
+      - managerFieldType
+      title: SignatureManagerField
+    NoteManagerField:
+      properties:
+        managerFieldId:
+          type: string
+          title: Managerfieldid
+          description: The Manager Field's ID
+        name:
+          type: string
+          title: Name
+          description: The Manager Field's name
+        mobileUsersCanSee:
+          type: boolean
+          title: Mobileuserscansee
+          description: Indication if mobile users can see the Manager Field
+        mobileUsersNotifyWhenChanges:
+          type: boolean
+          title: Mobileusersnotifywhenchanges
+          description: Indication if mobile users will be notified if the Manager Field changes
+        adminsWhoCanEdit:
+          allOf:
+          - $ref: '#/components/schemas/LimitAdminsWhoCanEdit'
+          title: Adminswhocanedit
+          description: ' Limit the admins who can edit this manager field. Owners can always edit the manager field.'
+        managerFieldType:
+          type: string
+          enum:
+          - note
+          title: Managerfieldtype
+          description: The Manager Field's type
+      type: object
+      required:
+      - managerFieldId
+      - name
+      - mobileUsersCanSee
+      - mobileUsersNotifyWhenChanges
+      - adminsWhoCanEdit
+      - managerFieldType
+      title: NoteManagerField
+    FormMultipleChoiceOptionModel:
+      properties:
+        multipleChoiceOptionId:
+          type: string
+          title: Multiplechoiceoptionid
+          description: The ID of the multiple choice option
+        text:
+          type: string
+          title: Text
+          description: The text of the option
+      type: object
+      required:
+      - multipleChoiceOptionId
+      - text
+      title: FormMultipleChoiceOptionModel
   securitySchemes:
     APIKeyHeader:
       type: apiKey
@@ -1738,6 +1738,8 @@ components:
             company_checklist.write: company checklist - write
             recognitions.read: recognitions - read
             celebrations.read: celebrations - read
+            documents.read: documents - read
+            documents.write: documents - write
           tokenUrl: /oauth/v1/token
     HTTPBasic:
       type: http

@@ -20,7 +20,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/APIResponse_PayRulePoliciesResponse_'
+                $ref: '#/components/schemas/APIResponseV2_PayRulePoliciesResponse_'
         '422':
           description: Validation Error
           content:
@@ -45,7 +45,31 @@ components:
       required:
       - payRulesPolicies
       title: PayRulePoliciesResponse
-    APIResponse_PayRulePoliciesResponse_:
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    PayRulePolicyPayRule:
+      properties:
+        id:
+          type: string
+          title: Id
+          description: The pay rule id
+        name:
+          type: string
+          title: Name
+          description: The pay rule name
+      type: object
+      required:
+      - id
+      - name
+      title: PayRulePolicyPayRule
+    APIResponseV2_PayRulePoliciesResponse_:
       properties:
         requestId:
           type: string
@@ -55,7 +79,7 @@ components:
       type: object
       required:
       - data
-      title: APIResponse[PayRulePoliciesResponse]
+      title: APIResponseV2[PayRulePoliciesResponse]
     ValidationError:
       properties:
         loc:
@@ -77,15 +101,6 @@ components:
       - msg
       - type
       title: ValidationError
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
     PayRulePolicy:
       properties:
         id:
@@ -96,6 +111,17 @@ components:
           type: string
           title: Name
           description: The pay rule policy name
+        isDefaultForNewUsers:
+          type: boolean
+          title: Isdefaultfornewusers
+          description: Whether the policy is assigned to new users by default
+          default: false
+        payRules:
+          items:
+            $ref: '#/components/schemas/PayRulePolicyPayRule'
+          type: array
+          title: Payrules
+          description: List of pay rules included in the policy
       type: object
       required:
       - id
@@ -175,6 +201,8 @@ components:
             company_checklist.write: company checklist - write
             recognitions.read: recognitions - read
             celebrations.read: celebrations - read
+            documents.read: documents - read
+            documents.write: documents - write
           tokenUrl: /oauth/v1/token
     HTTPBasic:
       type: http

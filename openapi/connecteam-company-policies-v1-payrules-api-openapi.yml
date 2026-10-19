@@ -1,0 +1,415 @@
+openapi: 3.2.0
+info:
+  title: Connecteam API documentation Company Policies:v1:PayRules…
+  version: v1
+servers:
+- url: https://api.connecteam.com/
+tags:
+- name: Company Policies:v1:PayRules
+paths:
+  /company-policies/v1/pay-rules:
+    get:
+      tags:
+      - Company Policies:v1:PayRules
+      summary: Get company pay rules
+      description: Retrieve a list of pay rules associated with the account.
+      operationId: get_pay_rules_company_policies_v1_pay_rules_get
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIResponseV2_PayRulesResponse_'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+      - APIKeyHeader: []
+      - OAuth2:
+        - company_policies.read
+components:
+  schemas:
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    PayRuleConditionRule:
+      type: string
+      enum:
+      - daily
+      - weekly
+      - holiday
+      - partialDay
+      - consecutiveDays
+      - payrollPeriod
+      - breaksPremium
+      title: PayRuleConditionRule
+    PayRuleWeekday:
+      type: string
+      enum:
+      - sunday
+      - monday
+      - tuesday
+      - wednesday
+      - thursday
+      - friday
+      - saturday
+      title: PayRuleWeekday
+    PayRuleResourceScopeType:
+      type: string
+      enum:
+      - allExcept
+      - only
+      title: PayRuleResourceScopeType
+    PayRuleSpreadOfHours:
+      properties:
+        thresholdHours:
+          type: integer
+          title: Thresholdhours
+          description: The pay rule applies on days where the span from the first clock-in to the last clock-out is longer than this many hours
+        premiumHours:
+          type: integer
+          title: Premiumhours
+          description: How many hours are paid at the pay rule's rate when it applies
+      type: object
+      required:
+      - thresholdHours
+      - premiumHours
+      title: PayRuleSpreadOfHours
+    PayRulesResponse:
+      properties:
+        payRules:
+          items:
+            $ref: '#/components/schemas/PayRule'
+          type: array
+          title: Payrules
+          description: List of company pay rules
+      type: object
+      required:
+      - payRules
+      title: PayRulesResponse
+    PayRule:
+      properties:
+        id:
+          type: string
+          title: Id
+          description: The pay rule id
+        name:
+          type: string
+          title: Name
+          description: The pay rule name
+        type:
+          $ref: '#/components/schemas/PayRuleType'
+          description: The pay rule type
+        calculationMode:
+          $ref: '#/components/schemas/PayRuleCalculationMode'
+          description: 'How the pay rule factor is applied: multiplier or addition'
+        factor:
+          type: number
+          title: Factor
+          description: The pay rule factor
+        code:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Code
+          description: The pay rule code
+        category:
+          anyOf:
+          - $ref: '#/components/schemas/FlatPayCategory'
+          - type: 'null'
+          description: The flat pay category, set only for flatPay rules
+        conditions:
+          items:
+            $ref: '#/components/schemas/PayRuleCondition'
+          type: array
+          title: Conditions
+          description: The conditions that trigger the pay rule, with their thresholds. Empty for rules without hour-based conditions (e.g. regular, flat pay, breaks premium and spread of hours rules)
+        conditionsOperator:
+          $ref: '#/components/schemas/Operator'
+          description: 'How multiple conditions combine: ''or'' applies the rule to hours that meet any condition; ''and'' applies it only to hours that meet every condition type at the same time'
+          default: or
+        isAppliedToAllTimeClocks:
+          type: boolean
+          title: Isappliedtoalltimeclocks
+          description: Whether the pay rule applies on every time clock. When false, it applies only on the time clocks it is limited to (see appliedTimeClockIds)
+          default: true
+        appliedTimeClockIds:
+          items:
+            type: integer
+          type: array
+          title: Appliedtimeclockids
+          description: Ids of the time clocks the pay rule is limited to, among the active time clocks you can access. Empty when the rule applies to all time clocks
+        spreadOfHours:
+          anyOf:
+          - $ref: '#/components/schemas/PayRuleSpreadOfHours'
+          - type: 'null'
+          description: The spread of hours thresholds, set only for spreadOfHours rules
+      type: object
+      required:
+      - id
+      - name
+      - type
+      - calculationMode
+      - factor
+      title: PayRule
+    PayRuleConditionJobScope:
+      properties:
+        scopeType:
+          $ref: '#/components/schemas/PayRuleResourceScopeType'
+          description: '''only'': the condition counts only hours worked on the listed jobs; ''allExcept'': the condition counts hours worked on every job except the listed ones'
+        jobIds:
+          items:
+            type: string
+          type: array
+          title: Jobids
+          description: Ids of the jobs (or parent jobs) the scope type refers to
+      type: object
+      required:
+      - scopeType
+      - jobIds
+      title: PayRuleConditionJobScope
+    Operator:
+      type: string
+      enum:
+      - or
+      - and
+      title: Operator
+    PayRuleCalculationMode:
+      type: string
+      enum:
+      - multiplier
+      - addition
+      title: PayRuleCalculationMode
+    APIResponseV2_PayRulesResponse_:
+      properties:
+        requestId:
+          type: string
+          title: Requestid
+        data:
+          $ref: '#/components/schemas/PayRulesResponse'
+      type: object
+      required:
+      - data
+      title: APIResponseV2[PayRulesResponse]
+    PayRuleType:
+      type: string
+      enum:
+      - overtime
+      - additionalHourlyRate
+      - regular
+      - breaksPremium
+      - flatPay
+      - spreadOfHours
+      - specialRate
+      title: PayRuleType
+    FlatPayCategory:
+      type: string
+      enum:
+      - bonus
+      - tips
+      - reimbursement
+      - mileage
+      - other
+      title: FlatPayCategory
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    PayRuleCondition:
+      properties:
+        id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Id
+          description: The condition id
+        name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Name
+          description: The condition name. For holiday conditions this is the holiday name
+        code:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Code
+          description: The condition code, used in payroll exports
+        rule:
+          $ref: '#/components/schemas/PayRuleConditionRule'
+          description: 'What triggers the pay rule: ''daily'' (hours worked in a day), ''weekly'' (hours worked in a work week), ''payrollPeriod'' (hours worked in a pay period), ''consecutiveDays'' (working several days in a row), ''partialDay'' (hours worked inside a time window of the day) or ''holiday'' (hours worked on a holiday)'
+        afterHours:
+          anyOf:
+          - type: number
+          - type: 'null'
+          title: Afterhours
+          description: 'Set for ''daily'', ''weekly'', ''payrollPeriod'' and ''consecutiveDays'' conditions: the pay rule applies to hours worked after this many hours in the day, work week or pay period (e.g. 8 = from the 9th hour on). For ''consecutiveDays'' it counts hours on the qualifying day, and 0 means from the first hour'
+        days:
+          anyOf:
+          - items:
+              $ref: '#/components/schemas/PayRuleWeekday'
+            type: array
+          - type: 'null'
+          title: Days
+          description: 'Set for ''daily'' and ''partialDay'' conditions: the weekdays the condition applies on'
+        consecutiveDays:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Consecutivedays
+          description: 'Set for ''consecutiveDays'' conditions: the condition applies from this consecutive worked day on (e.g. 7 = the 7th consecutive day worked and every consecutive day after it)'
+        startDate:
+          anyOf:
+          - type: string
+            format: date
+          - type: 'null'
+          title: Startdate
+          description: 'Set for ''holiday'' conditions: the first day of the holiday (ISO 8601)'
+        endDate:
+          anyOf:
+          - type: string
+            format: date
+          - type: 'null'
+          title: Enddate
+          description: 'Set for ''holiday'' conditions: the last day of the holiday, inclusive (ISO 8601)'
+        isRepeatingYearly:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          title: Isrepeatingyearly
+          description: 'Set for ''holiday'' conditions: whether the holiday repeats on the same dates every year'
+        startTimeSecs:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Starttimesecs
+          description: Time of day the condition starts, in seconds from local midnight (e.g. 79200 = 22:00). Set for 'partialDay' conditions, and for 'holiday' conditions that start at a specific time on the start date (omitted when the holiday covers whole days)
+        endTimeSecs:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Endtimesecs
+          description: Time of day the condition ends, in seconds from local midnight (e.g. 21600 = 06:00). Set for 'partialDay' conditions (an end before the start means the window crosses midnight, and 0 means midnight), and for 'holiday' conditions that end at a specific time on the end date (0 means the end of that day; omitted when the holiday covers whole days)
+        isRegularHoursOnly:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          title: Isregularhoursonly
+          description: Whether only regular hours (hours not already paid under another overtime or special rate condition) count toward this condition
+        jobScope:
+          anyOf:
+          - $ref: '#/components/schemas/PayRuleConditionJobScope'
+          - type: 'null'
+          description: Limits the condition to hours worked on specific jobs. Omitted when the condition applies to all jobs
+      type: object
+      required:
+      - rule
+      title: PayRuleCondition
+  securitySchemes:
+    APIKeyHeader:
+      type: apiKey
+      description: The Api key of the company given by Connecteam
+      in: header
+      name: X-API-KEY
+    OAuth2:
+      type: oauth2
+      description: OAuth2 Bearer token
+      flows:
+        clientCredentials:
+          scopes:
+            account_information.read: account information - read
+            account_information.write: account information - write
+            account_information.delete: account information - delete
+            company_policies.read: company policies - read
+            company_policies.write: company policies - write
+            company_policies.delete: company policies - delete
+            company_insights.read: company insights - read
+            users.read: users - read
+            users.write: users - write
+            users.delete: users - delete
+            assets.read: assets - read
+            assets.write: assets - write
+            assets.delete: assets - delete
+            sales_data.read: sales data - read
+            sales_data.write: sales data - write
+            sales_data.delete: sales data - delete
+            attachments.read: attachments - read
+            attachments.write: attachments - write
+            attachments.delete: attachments - delete
+            quick_tasks.read: quick tasks - read
+            quick_tasks.write: quick tasks - write
+            quick_tasks.delete: quick tasks - delete
+            publishers.read: publishers - read
+            publishers.write: publishers - write
+            publishers.delete: publishers - delete
+            chat.read: chat - read
+            chat.write: chat - write
+            chat.delete: chat - delete
+            jobs.read: jobs - read
+            jobs.write: jobs - write
+            jobs.delete: jobs - delete
+            schedule.read: schedule - read
+            schedule.write: schedule - write
+            schedule.delete: schedule - delete
+            daily_note.read: daily note - read
+            daily_note.write: daily note - write
+            daily_note.delete: daily note - delete
+            time_clock.read: time clock - read
+            time_clock.write: time clock - write
+            time_clock.delete: time clock - delete
+            nfc.read: nfc - read
+            nfc.write: nfc - write
+            nfc.delete: nfc - delete
+            time_off.read: time off - read
+            time_off.write: time off - write
+            time_off.delete: time off - delete
+            pay_rates.read: pay rates - read
+            pay_rates.write: pay rates - write
+            pay_rates.delete: pay rates - delete
+            forms.read: forms - read
+            forms.write: forms - write
+            forms.delete: forms - delete
+            onboarding.read: onboarding - read
+            onboarding.write: onboarding - write
+            onboarding.delete: onboarding - delete
+            settings.read: settings - read
+            settings.write: settings - write
+            settings.delete: settings - delete
+            company_checklist.read: company checklist - read
+            company_checklist.write: company checklist - write
+            recognitions.read: recognitions - read
+            celebrations.read: celebrations - read
+            documents.read: documents - read
+            documents.write: documents - write
+          tokenUrl: /oauth/v1/token
+    HTTPBasic:
+      type: http
+      description: Use client_id as Username and client_secret as Password
+      scheme: basic

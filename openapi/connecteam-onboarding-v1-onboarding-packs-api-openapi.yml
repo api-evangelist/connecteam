@@ -20,7 +20,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/APIResponse_PacksListResponse_'
+                $ref: '#/components/schemas/APIResponseV2_PacksListResponse_'
         '422':
           description: Validation Error
           content:
@@ -33,6 +33,52 @@ paths:
         - onboarding.read
 components:
   schemas:
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    PackResponse:
+      properties:
+        id:
+          type: integer
+          title: Id
+          description: Pack ID
+        name:
+          type: string
+          title: Name
+          description: Pack name
+        description:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Description
+          description: Pack description
+        isDefault:
+          type: boolean
+          title: Isdefault
+          description: Whether this is the default pack
+      type: object
+      required:
+      - id
+      - name
+      - isDefault
+      title: PackResponse
+    APIResponseV2_PacksListResponse_:
+      properties:
+        requestId:
+          type: string
+          title: Requestid
+        data:
+          $ref: '#/components/schemas/PacksListResponse'
+      type: object
+      required:
+      - data
+      title: APIResponseV2[PacksListResponse]
     PacksListResponse:
       properties:
         packs:
@@ -66,50 +112,6 @@ components:
       - msg
       - type
       title: ValidationError
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
-    PackResponse:
-      properties:
-        id:
-          type: integer
-          title: Id
-          description: Pack ID
-        name:
-          type: string
-          title: Name
-          description: Pack name
-        description:
-          type: string
-          title: Description
-          description: Pack description
-        isDefault:
-          type: boolean
-          title: Isdefault
-          description: Whether this is the default pack
-      type: object
-      required:
-      - id
-      - name
-      - isDefault
-      title: PackResponse
-    APIResponse_PacksListResponse_:
-      properties:
-        requestId:
-          type: string
-          title: Requestid
-        data:
-          $ref: '#/components/schemas/PacksListResponse'
-      type: object
-      required:
-      - data
-      title: APIResponse[PacksListResponse]
   securitySchemes:
     APIKeyHeader:
       type: apiKey
@@ -184,6 +186,8 @@ components:
             company_checklist.write: company checklist - write
             recognitions.read: recognitions - read
             celebrations.read: celebrations - read
+            documents.read: documents - read
+            documents.write: documents - write
           tokenUrl: /oauth/v1/token
     HTTPBasic:
       type: http

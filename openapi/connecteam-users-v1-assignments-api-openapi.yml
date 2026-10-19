@@ -51,6 +51,15 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
     LpidWithCoursesDisplayName:
       type: string
       enum:
@@ -88,46 +97,6 @@ components:
           default: []
       type: object
       title: AssignmentsResponse
-    ValidationError:
-      properties:
-        loc:
-          items:
-            anyOf:
-            - type: string
-            - type: integer
-          type: array
-          title: Location
-        msg:
-          type: string
-          title: Message
-        type:
-          type: string
-          title: Error Type
-      type: object
-      required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
-    SmartGroupInstance:
-      properties:
-        id:
-          type: string
-          title: Id
-          description: Smart group id
-      type: object
-      required:
-      - id
-      title: SmartGroupInstance
     AssetInstance:
       properties:
         id:
@@ -154,6 +123,37 @@ components:
       required:
       - data
       title: APIResponse[AssignmentsResponse]
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    SmartGroupInstance:
+      properties:
+        id:
+          type: string
+          title: Id
+          description: Smart group id
+      type: object
+      required:
+      - id
+      title: SmartGroupInstance
   securitySchemes:
     APIKeyHeader:
       type: apiKey
@@ -228,6 +228,8 @@ components:
             company_checklist.write: company checklist - write
             recognitions.read: recognitions - read
             celebrations.read: celebrations - read
+            documents.read: documents - read
+            documents.write: documents - write
           tokenUrl: /oauth/v1/token
     HTTPBasic:
       type: http

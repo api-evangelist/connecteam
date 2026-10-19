@@ -85,51 +85,6 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
-    SmartGroupSegmentCreateRequest:
-      properties:
-        name:
-          type: string
-          title: Name
-          description: The name of the smart group segment
-        color:
-          type: string
-          title: Color
-          description: 'The color hex code for the smart group segment (e.g. #ff5722)'
-      type: object
-      required:
-      - name
-      - color
-      title: SmartGroupSegmentCreateRequest
-    ValidationError:
-      properties:
-        loc:
-          items:
-            anyOf:
-            - type: string
-            - type: integer
-          type: array
-          title: Location
-        msg:
-          type: string
-          title: Message
-        type:
-          type: string
-          title: Error Type
-      type: object
-      required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
     APIResponse_SmartGroupSegmentsResponse_:
       properties:
         requestId:
@@ -153,31 +108,15 @@ components:
       required:
       - segments
       title: SmartGroupSegmentsResponse
-    SmartGroupSegment:
+    HTTPValidationError:
       properties:
-        id:
-          type: integer
-          title: Id
-          description: The unique identifier of the smart group segment
-        name:
-          type: string
-          title: Name
-          description: The name of the smart group segment
-        color:
-          type: string
-          title: Color
-          description: The color hex code of the smart group segment
-        sortOrder:
-          type: integer
-          title: Sortorder
-          description: The sort order of the smart group segment
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
       type: object
-      required:
-      - id
-      - name
-      - color
-      - sortOrder
-      title: SmartGroupSegment
+      title: HTTPValidationError
     SmartGroupSegmentCreateResponse:
       properties:
         id:
@@ -214,6 +153,67 @@ components:
       required:
       - data
       title: APIResponse[SmartGroupSegmentCreateResponse]
+    SmartGroupSegmentCreateRequest:
+      properties:
+        name:
+          type: string
+          title: Name
+          description: The name of the smart group segment
+        color:
+          type: string
+          title: Color
+          description: 'The color hex code for the smart group segment (e.g. #ff5722)'
+      type: object
+      required:
+      - name
+      - color
+      title: SmartGroupSegmentCreateRequest
+    SmartGroupSegment:
+      properties:
+        id:
+          type: integer
+          title: Id
+          description: The unique identifier of the smart group segment
+        name:
+          type: string
+          title: Name
+          description: The name of the smart group segment
+        color:
+          type: string
+          title: Color
+          description: The color hex code of the smart group segment
+        sortOrder:
+          type: integer
+          title: Sortorder
+          description: The sort order of the smart group segment
+      type: object
+      required:
+      - id
+      - name
+      - color
+      - sortOrder
+      title: SmartGroupSegment
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
   securitySchemes:
     APIKeyHeader:
       type: apiKey
@@ -288,6 +288,8 @@ components:
             company_checklist.write: company checklist - write
             recognitions.read: recognitions - read
             celebrations.read: celebrations - read
+            documents.read: documents - read
+            documents.write: documents - write
           tokenUrl: /oauth/v1/token
     HTTPBasic:
       type: http

@@ -42,10 +42,8 @@ paths:
         content:
           application/json:
             schema:
-              title: Performance Data
+              $ref: '#/components/schemas/PerformanceDataRequest'
               description: Performance data values to update
-              allOf:
-              - $ref: '#/components/schemas/PerformanceDataRequest'
       responses:
         '200':
           description: Successful Response
@@ -61,6 +59,15 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
     PerformanceDataValue:
       properties:
         indicatorId:
@@ -123,15 +130,6 @@ components:
       - msg
       - type
       title: ValidationError
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
     APIResponse_PerformanceUpdateResponse_:
       properties:
         requestId:
@@ -217,6 +215,8 @@ components:
             company_checklist.write: company checklist - write
             recognitions.read: recognitions - read
             celebrations.read: celebrations - read
+            documents.read: documents - read
+            documents.write: documents - write
           tokenUrl: /oauth/v1/token
     HTTPBasic:
       type: http

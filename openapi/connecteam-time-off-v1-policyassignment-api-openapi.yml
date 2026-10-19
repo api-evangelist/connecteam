@@ -51,13 +51,15 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
-    PolicyUnitsEnum:
-      type: string
-      enum:
-      - hours
-      - days
-      title: PolicyUnitsEnum
-      description: An enumeration.
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
     TimeOffAssignPolicyRequest:
       properties:
         userId:
@@ -76,6 +78,21 @@ components:
       required:
       - userId
       title: TimeOffAssignPolicyRequest
+    TimeOffAssignPolicyResponse:
+      properties: {}
+      type: object
+      title: TimeOffAssignPolicyResponse
+    APIResponse_TimeOffAssignPolicyResponse_:
+      properties:
+        requestId:
+          type: string
+          title: Requestid
+        data:
+          $ref: '#/components/schemas/TimeOffAssignPolicyResponse'
+      type: object
+      required:
+      - data
+      title: APIResponse[TimeOffAssignPolicyResponse]
     ValidationError:
       properties:
         loc:
@@ -97,30 +114,13 @@ components:
       - msg
       - type
       title: ValidationError
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
-    APIResponse_TimeOffAssignPolicyResponse_:
-      properties:
-        requestId:
-          type: string
-          title: Requestid
-        data:
-          $ref: '#/components/schemas/TimeOffAssignPolicyResponse'
-      type: object
-      required:
-      - data
-      title: APIResponse[TimeOffAssignPolicyResponse]
-    TimeOffAssignPolicyResponse:
-      properties: {}
-      type: object
-      title: TimeOffAssignPolicyResponse
+    PolicyUnitsEnum:
+      type: string
+      enum:
+      - hours
+      - days
+      title: PolicyUnitsEnum
+      description: An enumeration.
   securitySchemes:
     APIKeyHeader:
       type: apiKey
@@ -195,6 +195,8 @@ components:
             company_checklist.write: company checklist - write
             recognitions.read: recognitions - read
             celebrations.read: celebrations - read
+            documents.read: documents - read
+            documents.write: documents - write
           tokenUrl: /oauth/v1/token
     HTTPBasic:
       type: http

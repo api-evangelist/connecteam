@@ -23,29 +23,35 @@ paths:
         in: query
         required: false
         schema:
-          title: Locationids
+          anyOf:
+          - type: array
+            items:
+              type: integer
+          - type: 'null'
           description: List of location IDs to filter by
-          type: array
-          items:
-            type: integer
+          title: Locationids
         description: List of location IDs to filter by
       - name: locationNames
         in: query
         required: false
         schema:
-          title: Locationnames
+          anyOf:
+          - type: array
+            items:
+              type: string
+          - type: 'null'
           description: List of location names to filter by
-          type: array
-          items:
-            type: string
+          title: Locationnames
         description: List of location names to filter by
       - name: isActive
         in: query
         required: false
         schema:
-          title: Isactive
+          anyOf:
+          - type: boolean
+          - type: 'null'
           description: Filter by active status
-          type: boolean
+          title: Isactive
         description: Filter by active status
       - name: limit
         in: query
@@ -74,7 +80,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/APIResponse_LocationsGetResponse_'
+                $ref: '#/components/schemas/APIResponseV2_LocationsGetResponse_'
         '422':
           description: Validation Error
           content:
@@ -96,16 +102,14 @@ paths:
         content:
           application/json:
             schema:
-              title: Request
-              allOf:
-              - $ref: '#/components/schemas/LocationRequest'
+              $ref: '#/components/schemas/LocationRequest'
       responses:
         '200':
           description: Successful Response
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/APIResponse_LocationResponse_'
+                $ref: '#/components/schemas/APIResponseV2_LocationResponse_'
         '422':
           description: Validation Error
           content:
@@ -114,6 +118,57 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
+    APIResponseV2_LocationResponse_:
+      properties:
+        requestId:
+          type: string
+          title: Requestid
+        data:
+          $ref: '#/components/schemas/LocationResponse'
+      type: object
+      required:
+      - data
+      title: APIResponseV2[LocationResponse]
+    LocationResponse:
+      properties:
+        id:
+          type: integer
+          title: Id
+          description: Unique identifier for the location
+        name:
+          type: string
+          title: Name
+          description: The location name
+        isActive:
+          type: boolean
+          title: Isactive
+          description: Indicates whether the location is active
+      type: object
+      required:
+      - id
+      - name
+      - isActive
+      title: LocationResponse
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    APIResponseV2_LocationsGetResponse_:
+      properties:
+        requestId:
+          type: string
+          title: Requestid
+        data:
+          $ref: '#/components/schemas/LocationsGetResponse'
+      type: object
+      required:
+      - data
+      title: APIResponseV2[LocationsGetResponse]
     LocationsGetResponse:
       properties:
         locations:
@@ -126,17 +181,6 @@ components:
       required:
       - locations
       title: LocationsGetResponse
-    APIResponse_LocationsGetResponse_:
-      properties:
-        requestId:
-          type: string
-          title: Requestid
-        data:
-          $ref: '#/components/schemas/LocationsGetResponse'
-      type: object
-      required:
-      - data
-      title: APIResponse[LocationsGetResponse]
     Location:
       properties:
         id:
@@ -178,46 +222,6 @@ components:
       - msg
       - type
       title: ValidationError
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
-    APIResponse_LocationResponse_:
-      properties:
-        requestId:
-          type: string
-          title: Requestid
-        data:
-          $ref: '#/components/schemas/LocationResponse'
-      type: object
-      required:
-      - data
-      title: APIResponse[LocationResponse]
-    LocationResponse:
-      properties:
-        id:
-          type: integer
-          title: Id
-          description: Unique identifier for the location
-        name:
-          type: string
-          title: Name
-          description: The location name
-        isActive:
-          type: boolean
-          title: Isactive
-          description: Indicates whether the location is active
-      type: object
-      required:
-      - id
-      - name
-      - isActive
-      title: LocationResponse
     LocationRequest:
       properties:
         name:
@@ -307,6 +311,8 @@ components:
             company_checklist.write: company checklist - write
             recognitions.read: recognitions - read
             celebrations.read: celebrations - read
+            documents.read: documents - read
+            documents.write: documents - write
           tokenUrl: /oauth/v1/token
     HTTPBasic:
       type: http

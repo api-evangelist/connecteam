@@ -99,6 +99,58 @@ components:
       required:
       - autoAssignRequestId
       title: AutoAssignResponse
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    APIResponseV2_AutoAssignStatusResponse_:
+      properties:
+        requestId:
+          type: string
+          title: Requestid
+        data:
+          $ref: '#/components/schemas/AutoAssignStatusResponse'
+      type: object
+      required:
+      - data
+      title: APIResponseV2[AutoAssignStatusResponse]
+    AutoAssignStatusResponse:
+      properties:
+        autoAssignRequestId:
+          type: string
+          title: Autoassignrequestid
+          description: The unique identifier of the auto assign request
+        status:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Status
+          description: The status of the request
+        assignedShiftIds:
+          anyOf:
+          - items:
+              type: string
+            type: array
+          - type: 'null'
+          title: Assignedshiftids
+          description: List of shift IDs that were successfully assigned
+        unassignedShiftIds:
+          anyOf:
+          - items:
+              type: string
+            type: array
+          - type: 'null'
+          title: Unassignedshiftids
+          description: List of shift IDs that were not successfully assigned
+      type: object
+      required:
+      - autoAssignRequestId
+      title: AutoAssignStatusResponse
     ValidationError:
       properties:
         loc:
@@ -120,26 +172,6 @@ components:
       - msg
       - type
       title: ValidationError
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
-    APIResponseV2_AutoAssignStatusResponse_:
-      properties:
-        requestId:
-          type: string
-          title: Requestid
-        data:
-          $ref: '#/components/schemas/AutoAssignStatusResponse'
-      type: object
-      required:
-      - data
-      title: APIResponseV2[AutoAssignStatusResponse]
     AutoAssignRequest:
       properties:
         shiftsIds:
@@ -180,38 +212,6 @@ components:
       required:
       - shiftsIds
       title: AutoAssignRequest
-    AutoAssignStatusResponse:
-      properties:
-        autoAssignRequestId:
-          type: string
-          title: Autoassignrequestid
-          description: The unique identifier of the auto assign request
-        status:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Status
-          description: The status of the request
-        assignedShiftIds:
-          anyOf:
-          - items:
-              type: string
-            type: array
-          - type: 'null'
-          title: Assignedshiftids
-          description: List of shift IDs that were successfully assigned
-        unassignedShiftIds:
-          anyOf:
-          - items:
-              type: string
-            type: array
-          - type: 'null'
-          title: Unassignedshiftids
-          description: List of shift IDs that were not successfully assigned
-      type: object
-      required:
-      - autoAssignRequestId
-      title: AutoAssignStatusResponse
     APIResponseV2_AutoAssignResponse_:
       properties:
         requestId:
@@ -297,6 +297,8 @@ components:
             company_checklist.write: company checklist - write
             recognitions.read: recognitions - read
             celebrations.read: celebrations - read
+            documents.read: documents - read
+            documents.write: documents - write
           tokenUrl: /oauth/v1/token
     HTTPBasic:
       type: http

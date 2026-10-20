@@ -1,28 +1,36 @@
 {
+  "endpoint": "https://developer.connecteam.com/mcp",
+  "captured": "2026-10-20",
+  "method": "initialize + tools/list (anonymous, no tool called; roadmap#992)",
+  "protocol_version": "2025-06-18",
+  "server_info": {
+    "name": "Connecteam",
+    "version": "1.0"
+  },
   "result": {
     "tools": [
       {
         "name": "list-endpoints",
+        "title": "List API Endpoints",
         "description": "Lists all API paths and their HTTP methods with summaries, organized by path. Results can be passed directly into 'get-endpoint'.",
         "inputSchema": {
-          "$schema": "http://json-schema.org/draft-07/schema#",
           "type": "object",
+          "$schema": "https://json-schema.org/draft/2020-12/schema",
           "properties": {}
         },
         "annotations": {
           "readOnlyHint": true,
+          "destructiveHint": false,
           "openWorldHint": false
-        },
-        "execution": {
-          "taskSupport": "forbidden"
         }
       },
       {
         "name": "get-endpoint",
+        "title": "Get Endpoint Details",
         "description": "Gets detailed information about a specific API endpoint, including security schemes and servers",
         "inputSchema": {
-          "$schema": "http://json-schema.org/draft-07/schema#",
           "type": "object",
+          "$schema": "https://json-schema.org/draft/2020-12/schema",
           "properties": {
             "path": {
               "type": "string",
@@ -40,18 +48,17 @@
         },
         "annotations": {
           "readOnlyHint": true,
+          "destructiveHint": false,
           "openWorldHint": false
-        },
-        "execution": {
-          "taskSupport": "forbidden"
         }
       },
       {
         "name": "search-endpoints",
+        "title": "Search API Endpoints",
         "description": "Performs a deep search through paths, operations, and parameters to discover relevant API endpoints. Use this tool to find specific API capabilities, required parameters, or data models based on search keywords. Results can be passed directly into 'get-endpoint'.",
         "inputSchema": {
-          "$schema": "http://json-schema.org/draft-07/schema#",
           "type": "object",
+          "$schema": "https://json-schema.org/draft/2020-12/schema",
           "properties": {
             "pattern": {
               "type": "string",
@@ -64,14 +71,10 @@
         },
         "annotations": {
           "readOnlyHint": true,
+          "destructiveHint": false,
           "openWorldHint": false
-        },
-        "execution": {
-          "taskSupport": "forbidden"
         }
       }
     ]
-  },
-  "jsonrpc": "2.0",
-  "id": 1
+  }
 }

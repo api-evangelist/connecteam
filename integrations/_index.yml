@@ -15,45 +15,6 @@
   relationship: distribution-channel
   status: not-a-workflow
   arazzo: null
-- slug: connecteam-adp-own
-  label: ADP (own)
-  partner: adp
-  partner_name: ADP (own)
-  category: RUN.CompleteHR
-  type: marketplace
-  marketplace: own
-  channel: partner-built
-  evidence: https://apps.adp.com/apps/469962/connecteam-connector-for-run-powered-by-adp
-  source: edge
-  relationship: platform-app
-  status: not-a-workflow
-  arazzo: null
-- slug: connecteam-bamboohr-own
-  label: BambooHR (own)
-  partner: bamboohr
-  partner_name: BambooHR (own)
-  category: Time Tracking & Scheduling
-  type: marketplace
-  marketplace: own
-  channel: partner-built
-  evidence: https://www.bamboohr.com/integrations/listings/connecteam
-  source: edge
-  relationship: platform-app
-  status: not-a-workflow
-  arazzo: null
-- slug: connecteam-microsoft-teams-own
-  label: Microsoft Teams (own)
-  partner: microsoft-teams
-  partner_name: Microsoft Teams (own)
-  category: Microsoft Teams app
-  type: marketplace
-  marketplace: own
-  channel: partner-built
-  evidence: https://appsource.microsoft.com/en-us/product/office/WA200008436
-  source: edge
-  relationship: platform-app
-  status: not-a-workflow
-  arazzo: null
 - slug: connecteam-zapier
   label: Zapier
   partner: zapier
@@ -103,5 +64,57 @@
     actions: true
     sources: true
     builder: Pipedream repo (component)
+  status: not-a-workflow
+  arazzo: null
+- slug: connecteam-adp-own
+  label: ADP (own)
+  partner: adp
+  partner_name: ADP (own)
+  category: RUN.CompleteHR
+  type: marketplace
+  marketplace: own
+  channel: partner-built
+  evidence: https://apps.adp.com/apps/469962/connecteam-connector-for-run-powered-by-adp
+  source: edge
+  relationship: platform-app
+  status: not-a-workflow
+  arazzo: null
+- slug: connecteam-bamboohr-own
+  label: BambooHR (own)
+  partner: bamboohr
+  partner_name: BambooHR (own)
+  category: Time Tracking & Scheduling
+  type: marketplace
+  marketplace: own
+  channel: partner-built
+  evidence: https://www.bamboohr.com/integrations/listings/connecteam
+  source: edge
+  relationship: platform-app
+  status: not-a-workflow
+  arazzo: null
+- slug: connecteam-microsoft-teams-own
+  label: Microsoft Teams (own)
+  partner: microsoft-teams
+  partner_name: Microsoft Teams (own)
+  category: Microsoft Teams app
+  type: marketplace
+  marketplace: own
+  channel: partner-built
+  evidence: https://appsource.microsoft.com/en-us/product/office/WA200008436
+  source: edge
+  relationship: platform-app
+  status: not-a-workflow
+  arazzo: null
+- slug: connecteam-wix-own
+  label: Wix (own)
+  partner: wix
+  partner_name: Wix (own)
+  category: Bookings
+  type: marketplace
+  marketplace: own
+  channel: partner-built
+  evidence: https://www.wix.com/app-market/developer/connecteam
+  source: edge
+  relationship: platform-app
   status: not-a-workflow
   arazzo: null
